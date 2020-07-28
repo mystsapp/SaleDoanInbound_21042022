@@ -1,0 +1,166 @@
+﻿@model KhachHangViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Thêm Mới</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item"><a asp-route-strUrl="@Model.StrUrl" asp-action="DetailsRedirect">Danh Sách Khách Hàng</a></li>
+                    <li class="breadcrumb-item active">Thêm Mới Khách Hàng</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-file text-info"></i> Thêm Mới Khách Hàng</h3>
+
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+
+
+            <form method="post" autocomplete="off">
+                <div class="p-4 border rounded">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <input type="hidden" asp-for="Company.CompanyId" /> <!-- because it required-->
+                    <input type="hidden" asp-for="Company.Name" value="abc" /> <!-- because it required-->
+
+                    <div class="form-group row">
+
+                        <div class="col-md-6">
+                            <label asp-for="Company.Name" class="control-label"></label>
+                            <input asp-for="TenCreate" class="form-control" />
+                            <span asp-validation-for="TenCreate" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="Company.Fullname" class="control-label"></label>
+                            <input asp-for="Company.Fullname" class="form-control" />
+                            <span asp-validation-for="Company.Fullname" class="text-danger"></span>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-md-6">
+                            <label asp-for="Company.Nation" class="control-label"></label>
+                            <select asp-for="Company.Nation" class="form-control border-input" id="ddlQuocGia"
+                                    asp-items="@(new SelectList(Model.Quocgias,"TenNuoc","TenNuoc"))">
+                                <option value="">-- Select --</option>
+                            </select>
+                            <span asp-validation-for="Company.Nation" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label asp-for="Company.Tel" class="control-label"></label>
+                            <input asp-for="Company.Tel" class="form-control " />
+                            <span asp-validation-for="Company.Tel" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label asp-for="Company.Fax" class="control-label"></label>
+                            <input asp-for="Company.Fax" class="form-control" />
+                            <span asp-validation-for="Company.Fax" class="text-danger"></span>
+                        </div>
+
+                    </div>
+                    <div class="form-group row">
+
+                        <div class="col-md-3">
+                            <label asp-for="Company.Address" class="control-label"></label>
+                            <input asp-for="Company.Address" class="form-control" />
+                            <span asp-validation-for="Company.Address" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label asp-for="Company.Contact" class="control-label"></label>
+                            <input asp-for="Company.Contact" class="form-control" />
+                            <span asp-validation-for="Company.Contact" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="Company.Natione" class="control-label"></label>
+                            <input asp-for="Company.Natione" class="form-control" />
+                            <span asp-validation-for="Company.Natione" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-6">
+                            <label asp-for="Company.Headoffice" class="control-label"></label>
+                            <input asp-for="Company.Headoffice" class="form-control" />
+                            <span asp-validation-for="Company.Headoffice" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="Company.Msthue" class="control-label"></label>
+                            <input asp-for="Company.Msthue" class="form-control" />
+                            <span asp-validation-for="Company.Msthue" class="text-danger"></span>
+                        </div>
+
+                    </div>
+                    <div class="form-group row">
+
+                        <div class="col-md-12">
+                            <label asp-for="Company.Chinhanh" class="control-label"></label>
+                            <select asp-for="Company.Chinhanh" class="form-control border-input" id="ddlChiNhanh"
+                                    asp-items="@(new SelectList(Model.Dmchinhanhs,"Macn","Macn"))">
+                                <option value="">-- Select --</option>
+                            </select>                            
+                            <span asp-validation-for="Company.Chinhanh" class="text-danger"></span>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i></button>
+                        <a class="btn btn-success" asp-route-strUrl="@Model.StrUrl" asp-action="DetailsRedirect"><i class="fas fa-backward"></i></a>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+        <!-- /.card-body -->
+
+    </div>
+    <!-- /.card -->
+
+</section>
+<!-- /.content -->
+
+@section Scripts{
+    @*<script>
+
+            $(function () {
+                $(".datepicker").datepicker({
+                    dateFormat: 'dd/mm/yy'
+                });
+            });
+        </script>*@
+    <script src="~/js/Admin/KhachHang/createController.js"></script>
+}

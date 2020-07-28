@@ -1,0 +1,116 @@
+﻿@model ChiNhanhViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                @*<h1>Thêm Mới</h1>*@
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item"><a asp-controller="KhachHangs" asp-route-strUrl="@Model.StrUrl" asp-action="DetailsRedirect">Danh Sách Ngành Nghề</a></li>
+                    <li class="breadcrumb-item active">Chi tiết</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-file text-info"></i> Chi tiết</h3>
+
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+
+            <div class="p-4 border rounded">
+
+                <div class="form-group row">
+
+                    <div class="col-md-1">
+                        <label asp-for="Dmchinhanh.Macn" class="control-label"></label>
+                        <input asp-for="Dmchinhanh.Macn" class="form-control" readonly />
+                    </div>
+                    
+                    <div class="col-md-3">
+                        <label asp-for="Dmchinhanh.Tencn" class="control-label"></label>
+                        <input asp-for="Dmchinhanh.Tencn" class="form-control" readonly />
+                    </div>
+
+                    <div class="col-md-2">
+                        <label asp-for="Dmchinhanh.Masothue" class="control-label"></label>
+                        <input asp-for="Dmchinhanh.Masothue" class="form-control" readonly />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Dmchinhanh.Diachi" class="control-label"></label>
+                        <input asp-for="Dmchinhanh.Diachi" class="form-control" readonly />
+                    </div>
+
+                </div>
+                
+                <div class="form-group row">
+
+                    <div class="col-md-3">
+                        <label asp-for="Dmchinhanh.Dienthoai" class="control-label"></label>
+                        <input asp-for="Dmchinhanh.Dienthoai" class="form-control" readonly />
+                    </div>
+
+                    <div class="col-md-3">
+                        <label asp-for="Dmchinhanh.Fax" class="control-label"></label>
+                        <input asp-for="Dmchinhanh.Fax" class="form-control" readonly />
+                    </div>
+
+                    <div class="col-md-3">
+                        <label asp-for="Dmchinhanh.Thanhpho" class="control-label"></label>
+                        <input asp-for="Dmchinhanh.Thanhpho" class="form-control" readonly />
+                    </div>
+
+                    <div class="col-md-3">
+
+                        <label asp-for="Dmchinhanh.Trangthai" class="control-label "></label>
+                        <br />
+                        @if(Model.Dmchinhanh.Trangthai)
+                        {
+                            <span class="badge badge-success">Kích hoạt</span>
+                        }
+                        else
+                        {
+                            <span class="badge badge-warning">Khóa</span>
+                        }
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @*<a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Dmchinhanh.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>*@
+                    <a class="btn btn-success" asp-controller="KhachHangs" asp-route-strUrl="@Model.StrUrl" asp-action="DetailsRedirect"><i class="fas fa-backward"></i></a>
+                </div>
+            </div>
+
+        </div>
+        <!-- /.card-body -->
+
+    </div>
+    <!-- /.card -->
+
+</section>
+<!-- /.content -->

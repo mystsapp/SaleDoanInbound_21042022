@@ -1,0 +1,205 @@
+﻿@model CacNoiDungHuyTourViewModel
+
+@using X.PagedList;
+@using X.PagedList.Mvc.Core
+@using X.PagedList.Mvc.Core.Common
+
+
+@{
+    ViewData["Title"] = "Nganh nghe";
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <a class="btn btn-outline-info" asp-action="Create" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-plus"></i>&nbsp; Thêm Mới</a>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item active">Danh sách nội dung hủy</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Danh sách nội dung hủy</h3>
+
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+
+            <form method="get" autocomplete="off">
+
+                <div class="container" style="padding-bottom:10px; background-color: aliceblue;" id="search">
+                    @* we will add search criteria *@
+
+                    <div class="col-md-12">
+                        <div class="row" style="padding-top: 10px;">
+
+                            <div class="col-md-2">
+                                Nhập thông tin
+                            </div>
+                            <div class="col-md-3">
+                                @*@Html.Editor("searchName", new { htmlAttributes = new { @class = "form-control", @value="@ViewData["currentFilter"]" } })*@
+                                <input class="form-control" name="searchString" value="@ViewBag.searchString" />
+                            </div>
+
+                            <!-- click row and submit to index -->
+                            @*<input type="hidden" name="id" id="hidId" />
+                                <input type="hidden" name="page" id="hidPage" />*@
+
+                            <div class="col-md-2">
+                                <button type="submit" class="btn btn-primary form-control" id="btnSubmit">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <br />
+            <div style="overflow-x:auto;">
+                <table class="table mytable text-nowrap tblEMD" id="listAll">
+                    <thead>
+                        <tr class="table-info">
+                            <th>#</th>
+                            <th>@Html.DisplayNameFor(m => m.CacNoiDungHuyTours.FirstOrDefault().NoiDung)</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.CacNoiDungHuyTours)
+                        {
+
+                            <tr class="cursor-pointer ">
+
+                                <td>
+                                    <div class="btn-group text-white" role="group">
+                                        <a class="btn btn-primary btn-sm" title="Cập nhật" asp-action="Edit" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
+                                        <a class="btn btn-success btn-sm" title="Chi tiết" asp-action="Details" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
+                                        <form asp-action="Delete" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" method="post">
+
+                                            <span id="confirmDeleteSpan_@item.Id" style="display: none">
+                                                <span class="text-light">Xóa?</span>
+                                                <button type="submit" class="btn btn-danger">Yes</button>
+                                                <a href="#" class="btn btn-primary" onclick="confirmDelete('@item.Id', false)">No</a>
+                                            </span>
+
+                                            <span id="deleteSpan_@item.Id">
+                                                <a href="#" class="btn btn-danger btn-sm" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></a>
+                                            </span>
+                                        </form>
+                                    </div>
+                                </td>
+
+                                <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.NoiDung)</td>
+                            </tr>
+
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+
+            @if (Model.CacNoiDungHuyTours != null)
+            {
+                @Html.PagedListPager((IPagedList)Model.CacNoiDungHuyTours, page => Url.Action("Index", new
+           {
+               page = page,
+               option = Context.Request.Query["option"],
+               searchString = @ViewBag.searchString
+           }),
+                    PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new PagedListRenderOptions
+                    {
+                        LiElementClasses = new string[] { "page-item" },
+                        PageClasses = new string[] { "page-link" },
+                        MaximumPageNumbersToDisplay = 5,
+                        UlElementClasses = new[] { "pagination" },
+                        ContainerDivClasses = new[] { "pagination-container" }
+                    }, new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "nameListContainer" }))
+            }
+
+        </div>
+        <!-- /.card-body -->
+
+    </div>
+    <!-- /.card -->
+
+</section>
+<!-- /.content -->
+
+
+
+@section Scripts{
+    <script>
+
+        $(function () {
+            //$("#datepicker").datepicker({
+            //    dateFormat: 'dd/mm/yy'
+            //});
+
+            $('#listAll').DataTable({
+                "paging": false,
+                "lengthChange": true,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+            });
+        });
+    </script>
+    @*<script src="~/js/Admin/NganhNghe/indexController.js"></script>*@
+
+    <script>
+        function confirmDelete(uniqueId, isDeleteClicked) {
+            var deleteSpan = 'deleteSpan_' + uniqueId;
+            var confirmDeleteSpan = 'confirmDeleteSpan_' + uniqueId;
+
+            if (isDeleteClicked) {
+                $('#' + deleteSpan).hide();
+                $('#' + confirmDeleteSpan).show();
+            } else {
+                $('#' + deleteSpan).show();
+                $('#' + confirmDeleteSpan).hide();
+            }
+        }
+    </script>
+
+
+    <style>
+        #listAll {
+            box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        }
+
+        #search {
+            box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        }
+
+        .tblEMD .cursor-pointer:hover {
+            background-color: #3E5C9A;
+            cursor: pointer;
+        }
+
+        .hoverClass {
+            background-color: #3E5C9A;
+        }
+    </style>
+}
+
