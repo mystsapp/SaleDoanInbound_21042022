@@ -56,7 +56,7 @@ namespace SaleDoanInbound.Controllers
             return View(KhachHangVM);
         }
 
-        public async Task<IActionResult> Create(string strUrl /*int maQuocGia = 0*/)
+        public IActionResult Create(string strUrl /*int maQuocGia = 0*/)
         {
             
             KhachHangVM.StrUrl = strUrl;
