@@ -39,5 +39,9 @@ namespace Data.Models_IB
         public DbSet<UsrKhuCN> UsrKhuCNs { get; set; }
         public DbSet<VeMayBay> VeMayBays { get; set; }
 
+        public DbSet<TourIB> TourIBs { get; set; }
+        public DbSet<Invoice> Invoices { get; set; }
+        public DbSet<CTVAT> CTVATs { get; set; }
+
     }
 }

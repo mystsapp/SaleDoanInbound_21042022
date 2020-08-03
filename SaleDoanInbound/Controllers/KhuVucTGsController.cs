@@ -129,7 +129,7 @@ namespace SaleDoanInbound.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id, string strUrl)
         {
-            var khuVucTG = await _unitOfWork.khuVucTGRepository.GetByIdAsync(id);
+            var khuVucTG = _unitOfWork.khuVucTGRepository.GetById(id);
             if (khuVucTG == null)
                 return NotFound();
             try

@@ -28,7 +28,7 @@ namespace Data.Repository
 
             // retrieve list from database/whereverand
 
-            var list = GetAll().AsQueryable();
+            var list = GetAll().OrderByDescending(x => x.CompanyId).AsQueryable();
             if (!string.IsNullOrEmpty(searchName))
             {
                 list = list.Where(x => x.CompanyId.ToLower().Contains(searchName.ToLower()) ||

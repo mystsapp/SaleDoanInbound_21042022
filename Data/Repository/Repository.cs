@@ -101,5 +101,10 @@ namespace Data.Repository
         {
             return await _context.Set<T>().FindAsync(id);
         }
+
+        public async Task<T> GetByLongIdAsync(long id)
+        {
+            return await _context.Set<T>().FindAsync(id);
+        }
     }
 }

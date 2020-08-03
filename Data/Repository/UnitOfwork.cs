@@ -21,6 +21,9 @@ namespace Data.Repository
         IDiemTQRepository diemTQRepository { get; }
         IThanhPhoRepository thanhPhoRepository { get; }
         IQuocGiaRepository quocGiaRepository { get; }
+        ITourIBRepository tourIBRepository { get; }
+        ICTVATRepository cTVATRepository { get; }
+        IInvoiceRepository invoiceRepository { get; }
         Task<int> Complete();
     }
     public class UnitOfwork : IUnitOfWork
@@ -45,6 +48,9 @@ namespace Data.Repository
             chiNhanhRepository = new ChiNhanhRepository(_qltourContext);
             diemTQRepository = new DiemTQRepository(_qltourContext);
             thanhPhoRepository = new ThanhPhoRepository(_context);
+            tourIBRepository = new TourIBRepository(_context);
+            cTVATRepository = new CTVATRepository(_context);
+            invoiceRepository = new InvoiceRepository(_context);
         }
 
         public IKhachHangRepository khachHangRepository { get; }
@@ -66,6 +72,12 @@ namespace Data.Repository
         public IDiemTQRepository diemTQRepository { get; }
 
         public IThanhPhoRepository thanhPhoRepository { get; }
+
+        public ITourIBRepository tourIBRepository { get; }
+
+        public ICTVATRepository cTVATRepository { get; }
+
+        public IInvoiceRepository invoiceRepository { get; }
 
         public async Task<int> Complete()
         {

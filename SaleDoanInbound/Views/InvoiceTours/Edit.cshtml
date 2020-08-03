@@ -1,0 +1,166 @@
+﻿@model InvoiceTourViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                @*<h1>Cập nhật Tour</h1>*@
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item"><a asp-controller="KhachHangs" asp-route-strUrl="@Model.StrUrl" asp-action="DetailsRedirect">Danh Sách Tour</a></li>
+                    <li class="breadcrumb-item active">Cập nhật Tour</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-file text-info"></i> Cập nhật Tour</h3>
+
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+
+
+            <form method="post" autocomplete="off">
+                <div class="p-4 border rounded">
+
+                    <input asp-for="TourIB.Id" type="hidden" /> <!-- this field is required-->
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-group row">
+
+                        <div class="col-md-2">
+                            <label asp-for="TourIB.CompanyId" class="control-label"></label>
+                            <select asp-for="TourIB.CompanyId" class="form-control border-input select2"
+                                    asp-items="@(new SelectList(Model.Companies,"CompanyId","CompanyId"))">
+                                <option value="">-- Select --</option>
+                            </select>
+                            <span asp-validation-for="TourIB.CompanyId" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-5">
+                            <label asp-for="TourIB.Name" class="control-label"></label>
+                            <input asp-for="TourIB.Name" class="form-control" />
+                            <span asp-validation-for="TourIB.Name" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-5">
+                            <label asp-for="TourIB.Address" class="control-label"></label>
+                            <input asp-for="TourIB.Address" class="form-control" />
+                            <span asp-validation-for="TourIB.Address" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-md-3">
+                            <label asp-for="TourIB.SGTCode" class="control-label"></label>
+                            <input asp-for="TourIB.SGTCode" class="form-control" />
+                            <span asp-validation-for="TourIB.SGTCode" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-1">
+                            <label asp-for="TourIB.Pax" class="control-label"></label>
+                            <input type="text" asp-for="TourIB.Pax" class="form-control numbers" />
+                            <span asp-validation-for="TourIB.Pax" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label asp-for="TourIB.Arr" class="control-label"></label>
+                            <input type="text" asp-for="TourIB.Arr" class="form-control maskInput" />
+                            <span asp-validation-for="TourIB.Arr" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label asp-for="TourIB.Dep" class="control-label"></label>
+                            <input type="text" asp-for="TourIB.Dep" class="form-control maskInput" />
+                            <span asp-validation-for="TourIB.Dep" class="text-danger"></span>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-md-6">
+                            <label asp-for="TourIB.NoiDungHuy" class="control-label"></label>
+                            <select asp-for="TourIB.NoiDungHuy" class="form-control border-input" id="ddlQuocGia"
+                                    asp-items="@(new SelectList(Model.CacNoiDungHuyTours,"Id","NoiDung"))">
+                                <option value="0">-- Select --</option>
+                            </select>
+                            <span asp-validation-for="TourIB.NoiDungHuy" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="TourIB.Ref" class="control-label"></label>
+                            <input type="text" asp-for="TourIB.Ref" class="form-control" />
+                            <span asp-validation-for="TourIB.Ref" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-md-12">
+                            <label asp-for="TourIB.Note" class="control-label"></label>
+                            <input asp-for="TourIB.Note" class="form-control" />
+                            <span asp-validation-for="TourIB.Note" class="text-danger"></span>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i></button>
+                            <a class="btn btn-success" asp-controller="KhachHangs" asp-route-strUrl="@Model.StrUrl" asp-action="DetailsRedirect"><i class="fas fa-backward"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+        <!-- /.card-body -->
+
+    </div>
+    <!-- /.card -->
+
+</section>
+<!-- /.content -->
+
+@section Scripts{
+    @*<script>
+
+            $(function () {
+                $(".datepicker").datepicker({
+                    dateFormat: 'dd/mm/yy'
+                });
+            });
+        </script>*@
+    <script>
+        $(function () {
+            $('.select2').select2()
+        });
+    </script>
+
+    <script src="~/js/Admin/InvoiceTour/EditController.js"></script>
+}
+

@@ -4,64 +4,22 @@ using Data.Models_IB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
     [DbContext(typeof(SaleDoanIBDbContext))]
-    partial class SaleDoanIBDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200729030833_del")]
+    partial class del
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("Data.Models_IB.CTVAT", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Descript")
-                        .HasColumnType("nvarchar(250)")
-                        .HasMaxLength(250);
-
-                    b.Property<string>("InvoiceId")
-                        .HasColumnType("varchar(10)")
-                        .HasMaxLength(10);
-
-                    b.Property<decimal>("Percent")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("ServiceFee")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Unit")
-                        .HasColumnType("varchar(6)")
-                        .HasMaxLength(6);
-
-                    b.Property<decimal>("UnitPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("VAT")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("InvoiceId");
-
-                    b.ToTable("CTVATs");
-                });
 
             modelBuilder.Entity("Data.Models_IB.CacNoiDungHuyTour", b =>
                 {
@@ -594,117 +552,6 @@ namespace Data.Migrations
                     b.ToTable("DatCocLogs");
                 });
 
-            modelBuilder.Entity("Data.Models_IB.Invoice", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(10)")
-                        .HasMaxLength(10);
-
-                    b.Property<DateTime>("Arr")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Bill")
-                        .HasColumnType("varchar(12)")
-                        .HasMaxLength(12);
-
-                    b.Property<string>("BillMoi")
-                        .HasColumnType("varchar(12)")
-                        .HasMaxLength(12);
-
-                    b.Property<string>("Currency")
-                        .HasColumnType("varchar(3)")
-                        .HasMaxLength(3);
-
-                    b.Property<int>("DBL")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("DOFP")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("Dep")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("HopDong")
-                        .HasColumnType("varchar(10)")
-                        .HasMaxLength(10);
-
-                    b.Property<DateTime>("HuyVAT")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("KeyHDDT")
-                        .HasColumnType("varchar(120)")
-                        .HasMaxLength(120);
-
-                    b.Property<string>("KyHieuHD")
-                        .HasColumnType("varchar(10)")
-                        .HasMaxLength(10);
-
-                    b.Property<DateTime>("Lock")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("MOFP")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MauSoHD")
-                        .HasColumnType("varchar(11)")
-                        .HasMaxLength(11);
-
-                    b.Property<string>("MsThue")
-                        .HasColumnType("varchar(16)")
-                        .HasMaxLength(16);
-
-                    b.Property<DateTime>("NgayVAT")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("NgayVATMoi")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Pax")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Rate")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Ref")
-                        .HasColumnType("varchar(100)")
-                        .HasMaxLength(100);
-
-                    b.Property<string>("Replace")
-                        .HasColumnType("varchar(10)")
-                        .HasMaxLength(10);
-
-                    b.Property<int>("SGL")
-                        .HasColumnType("int");
-
-                    b.Property<string>("STT")
-                        .HasColumnType("varchar(12)")
-                        .HasMaxLength(12);
-
-                    b.Property<string>("SttMoi")
-                        .HasColumnType("varchar(12)")
-                        .HasMaxLength(12);
-
-                    b.Property<int>("TPL")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TourIBId")
-                        .HasColumnType("varchar(10)")
-                        .HasMaxLength(10);
-
-                    b.Property<string>("Type")
-                        .HasColumnType("varchar(1)")
-                        .HasMaxLength(1);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TourIBId");
-
-                    b.ToTable("Invoices");
-                });
-
             modelBuilder.Entity("Data.Models_IB.KhuVuc", b =>
                 {
                     b.Property<int>("Id")
@@ -1103,61 +950,6 @@ namespace Data.Migrations
                     b.HasIndex("IdLoaiTour");
 
                     b.ToTable("Tours");
-                });
-
-            modelBuilder.Entity("Data.Models_IB.TourIB", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(10)")
-                        .HasMaxLength(10);
-
-                    b.Property<string>("Address")
-                        .HasColumnType("nvarchar(250)")
-                        .HasMaxLength(250);
-
-                    b.Property<DateTime>("Arr")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CompanyId")
-                        .HasColumnType("varchar(5)")
-                        .HasMaxLength(5);
-
-                    b.Property<DateTime?>("Dep")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal>("Deposit")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(150)")
-                        .HasMaxLength(150);
-
-                    b.Property<long>("NoiDungHuy")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Note")
-                        .HasColumnType("nvarchar(150)")
-                        .HasMaxLength(150);
-
-                    b.Property<string>("Order")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Pax")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Ref")
-                        .HasColumnType("nvarchar(100)")
-                        .HasMaxLength(100);
-
-                    b.Property<string>("SGTCode")
-                        .IsRequired()
-                        .HasColumnType("varchar(17)")
-                        .HasMaxLength(17);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TourIBs");
                 });
 
             modelBuilder.Entity("Data.Models_IB.TourLog", b =>
@@ -1607,13 +1399,6 @@ namespace Data.Migrations
                     b.ToTable("VeMayBays");
                 });
 
-            modelBuilder.Entity("Data.Models_IB.CTVAT", b =>
-                {
-                    b.HasOne("Data.Models_IB.Invoice", "Invoice")
-                        .WithMany()
-                        .HasForeignKey("InvoiceId");
-                });
-
             modelBuilder.Entity("Data.Models_IB.ChiNhanh", b =>
                 {
                     b.HasOne("Data.Models_IB.PhanKhuCN", "PhanKhuCN")
@@ -1666,13 +1451,6 @@ namespace Data.Migrations
                         .HasForeignKey("IdDatCoc")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Data.Models_IB.Invoice", b =>
-                {
-                    b.HasOne("Data.Models_IB.TourIB", "TourIB")
-                        .WithMany()
-                        .HasForeignKey("TourIBId");
                 });
 
             modelBuilder.Entity("Data.Models_IB.RoomingList", b =>

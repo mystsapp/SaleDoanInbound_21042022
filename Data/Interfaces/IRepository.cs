@@ -24,6 +24,7 @@ namespace Data.Interfaces
         Task Save();
 
         Task<T> GetByIdAsync(int? id);
+        Task<T> GetByLongIdAsync(long id);
         Task<T> GetByIdAsync(string id);
 
 
