@@ -9,6 +9,8 @@
     ViewData["Title"] = "TourIB";
 }
 
+<br />
+<br />
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <div class="container-fluid">
@@ -190,8 +192,8 @@
                 </div>
             </div>
             <div class="card-body">
-                <div class="form-group text-bold">
-                    <button type="button" class="btn btn-default text-bold" title="Thêm 1 invoice vào đoàn">Add</button>
+                <div class="form-group ">
+                    <a asp-action="Create" asp-controller="Invoices" asp-route-tourIBId="@Model.TourIBDto.Id" asp-route-strUrl="@Model.StrUrl"  class="btn btn-default text-bold" title="Thêm 1 invoice vào đoàn">Add</a>
                     <button type="button" class="btn btn-default text-bold" title="Cấp số invoice cho invoice hiện hành">Number</button>
                     <button type="button" class="btn btn-default text-bold" title="In invoice hiện hành">Print</button>
                     <button type="button" class="btn btn-default text-bold" title="In các invoice theo thời gian lập invoice">P.Range</button>
@@ -220,6 +222,9 @@
                                 <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().DBL)</th>
                                 <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().TPL)</th>
                                 <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().MOFP)</th>
+                                <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().DOFP)</th>
+                                <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Ref)</th>
+                                <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().HopDong)</th>
 
                             </tr>
                         </thead>
@@ -231,18 +236,18 @@
 
                                     <td>
                                         <div class="btn-group text-white" role="group">
-                                            <a class="btn btn-primary btn-sm" title="Cập nhật" asp-action="Edit" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
-                                            <a class="btn btn-success btn-sm" title="Chi tiết" asp-action="Details" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
-                                            <form asp-action="Delete" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" method="post">
+                                            <a class="btn btn-primary btn-sm" title="Cập nhật" asp-action="Edit" asp-controller="Invoices" asp-route-id="@item.Id" asp-route-tourIBId="@Model.TourIBDto.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
+                                            <a class="btn btn-success btn-sm" title="Chi tiết" asp-action="Details" asp-controller="Invoices" asp-route-id="@item.Id" asp-route-tourIBId="@Model.TourIBDto.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
+                                            <form asp-action="Delete" asp-controller="Invoices" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" method="post">
 
-                                                <span id="confirmDeleteSpan_@item.Id" style="display: none">
+                                                <span id="confirmInvoiceDeleteSpan_@item.Id" style="display: none">
                                                     <span class="text-light">Xóa?</span>
                                                     <button type="submit" class="btn btn-danger">Yes</button>
-                                                    <a href="#" class="btn btn-primary" onclick="confirmDelete('@item.Id', false)">No</a>
+                                                    <a href="#" class="btn btn-primary" onclick="confirmInvoiceDelete('@item.Id', false)">No</a>
                                                 </span>
 
-                                                <span id="deleteSpan_@item.Id">
-                                                    <a href="#" class="btn btn-danger btn-sm" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></a>
+                                                <span id="deleteInvoiceSpan_@item.Id">
+                                                    <a href="#" class="btn btn-danger btn-sm" onclick="confirmInvoiceDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></a>
                                                 </span>
                                             </form>
                                         </div>
@@ -266,6 +271,9 @@
                                     <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.DBL)</td>
                                     <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.TPL)</td>
                                     <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.MOFP)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.DOFP)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Ref)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.HopDong)</td>
                                 </tr>
 
                             }
@@ -315,6 +323,19 @@
             } else {
                 $('#' + deleteSpan).show();
                 $('#' + confirmDeleteSpan).hide();
+            }
+        }
+        function confirmInvoiceDelete(uniqueId, isDeleteClicked) {
+            debugger
+            var deleteInvoiceSpan = 'deleteInvoiceSpan_' + uniqueId;
+            var confirmInvoiceDeleteSpan = 'confirmInvoiceDeleteSpan_' + uniqueId;
+
+            if (isDeleteClicked) {
+                $('#' + deleteInvoiceSpan).hide();
+                $('#' + confirmInvoiceDeleteSpan).show();
+            } else {
+                $('#' + deleteInvoiceSpan).show();
+                $('#' + confirmInvoiceDeleteSpan).hide();
             }
         }
     </script>

@@ -54,7 +54,8 @@ namespace Data.Repository
                 list = list.Where(x => x.Name.ToLower().Contains(searchString.ToLower()) ||
                                        x.NoiDungHuy.ToLower().Contains(searchString.ToLower()) ||
                                        x.Address.ToLower().Contains(searchString.ToLower()) ||
-                                       x.CompanyName.ToLower().Contains(searchString.ToLower())).ToList();
+                                       x.CompanyName.ToLower().Contains(searchString.ToLower())||
+                                       x.SGTCode.ToLower().Contains(searchString.ToLower())).ToList();
             }
             
             var count = list.Count();

@@ -4,14 +4,16 @@ using Data.Models_IB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
     [DbContext(typeof(SaleDoanIBDbContext))]
-    partial class SaleDoanIBDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200803035021_fixDateNullable")]
+    partial class fixDateNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -665,8 +667,8 @@ namespace Data.Migrations
                     b.Property<int>("Pax")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("Rate")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int>("Rate")
+                        .HasColumnType("int");
 
                     b.Property<string>("Ref")
                         .HasColumnType("varchar(100)")

@@ -1,0 +1,189 @@
+﻿@model InvoiceViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Cập nhật</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item"><a asp-controller="KhachHangs" asp-route-strUrl="@Model.StrUrl" asp-action="DetailsRedirect">Danh Sách Tour</a></li>
+                    <li class="breadcrumb-item active">Cập nhật Invoice</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-file text-info"></i> Cập nhật Invoice - <b>@Model.TourIB.Name</b></h3>
+
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+
+
+            <form method="post" autocomplete="off">
+                <div class="p-4 border rounded">
+
+                    <input asp-for="Invoice.Id" type="hidden" /> <!-- this field is required-->
+                    <input asp-for="Invoice.TourIBId" type="hidden" /> <!-- this field is required - foreignkey to tourIB-->
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-group row">
+
+                        <div class="col-md-2">
+                            <label asp-for="Invoice.Replace" class="control-label"></label>
+                            <input asp-for="Invoice.Replace" class="form-control" />
+                            <span asp-validation-for="Invoice.Replace" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-1">
+                            <label asp-for="Invoice.Type" class="control-label"></label>
+                            <input asp-for="Invoice.Type" class="form-control" />
+                            <span asp-validation-for="Invoice.Type" class="text-danger"></span>
+                        </div>
+
+                        @*<div class="col-md-3">
+                                <label asp-for="Invoice.Date" class="control-label"></label>
+                                <input type="text" value="" asp-for="Invoice.Date" class="form-control maskInput" />
+                                <span asp-validation-for="Invoice.Date" class="text-danger"></span>
+                            </div>*@
+
+                        <div class="col-md-3">
+                            <label asp-for="Invoice.Arr" class="control-label"></label>
+                            <input type="text" asp-for="Invoice.Arr" class="form-control maskInput" />
+                            <span asp-validation-for="Invoice.Arr" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label asp-for="Invoice.Dep" class="control-label"></label>
+                            <input type="text" asp-for="Invoice.Dep" class="form-control maskInput" />
+                            <span asp-validation-for="Invoice.Dep" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-1">
+                            <label asp-for="Invoice.Pax" class="control-label"></label>
+                            <input type="text" asp-for="Invoice.Pax" class="form-control numbers" />
+                            <span asp-validation-for="Invoice.Pax" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label asp-for="Invoice.Currency" class="control-label"></label>
+                            <input asp-for="Invoice.Currency" class="form-control" />
+                            <span asp-validation-for="Invoice.Currency" class="text-danger"></span>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-md-2">
+                            <label asp-for="Invoice.Rate" class="control-label"></label>
+                            <input asp-for="Invoice.Rate" class="form-control numbers" />
+                            <span asp-validation-for="Invoice.Rate" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-1">
+                            <label asp-for="Invoice.SGL" class="control-label"></label>
+                            <input type="text" asp-for="Invoice.SGL" class="form-control numbers" />
+                            <span asp-validation-for="Invoice.SGL" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-1">
+                            <label asp-for="Invoice.DBL" class="control-label"></label>
+                            <input type="text" asp-for="Invoice.DBL" class="form-control numbers" />
+                            <span asp-validation-for="Invoice.DBL" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-1">
+                            <label asp-for="Invoice.TPL" class="control-label"></label>
+                            <input type="text" asp-for="Invoice.TPL" class="form-control numbers" />
+                            <span asp-validation-for="Invoice.TPL" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label asp-for="Invoice.MOFP" class="control-label"></label>
+                            <input asp-for="Invoice.MOFP" class="form-control" />
+                            <span asp-validation-for="Invoice.MOFP" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label asp-for="Invoice.DOFP" class="control-label"></label>
+                            <input type="text" value="" asp-for="Invoice.DOFP" class="form-control maskInput" />
+                            <span asp-validation-for="Invoice.DOFP" class="text-danger"></span>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-md-6">
+                            <label asp-for="Invoice.Ref" class="control-label"></label>
+                            <input asp-for="Invoice.Ref" class="form-control " />
+                            <span asp-validation-for="Invoice.Ref" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="Invoice.HopDong" class="control-label"></label>
+                            <input asp-for="Invoice.HopDong" class="form-control " />
+                            <span asp-validation-for="Invoice.HopDong" class="text-danger"></span>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i></button>
+                            <a class="btn btn-success" asp-controller="KhachHangs" asp-route-strUrl="@Model.StrUrl" asp-action="DetailsRedirect"><i class="fas fa-backward"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+        <!-- /.card-body -->
+
+    </div>
+    <!-- /.card -->
+
+</section>
+<!-- /.content -->
+
+@section Scripts{
+    @*<script>
+
+            $(function () {
+                $(".datepicker").datepicker({
+                    dateFormat: 'dd/mm/yy'
+                });
+            });
+        </script>*@
+    <script>
+        $(function () {
+            $('.select2').select2()
+        });
+    </script>
+
+    <script src="~/js/Admin/InvoiceTour/editController.js"></script>
+}
+

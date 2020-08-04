@@ -11,7 +11,7 @@ namespace Data.Models_IB
         [MaxLength(10), Column(TypeName = "varchar(10)")]
         public string Id { get; set; } // invoice
 
-        [DisplayName("LoaiIV")]
+        [DisplayName("Loai IV")]
         [MaxLength(1), Column(TypeName = "varchar(1)")]
         public string Type { get; set; }
 
@@ -28,14 +28,14 @@ namespace Data.Models_IB
         [DisplayName("Ngày đi")]
         public DateTime? Dep { get; set; }
 
-        [DisplayName("Số khách")]
+        [DisplayName("SK")]
         public int Pax { get; set; }
 
         public int SGL { get; set; }
         public int DBL { get; set; }
         public int TPL { get; set; }
         public string MOFP { get; set; }
-        public DateTime DOFP { get; set; }
+        public DateTime? DOFP { get; set; }
 
         [DisplayName("TourIB")]
         [MaxLength(10), Column(TypeName = "varchar(10)")]
@@ -49,7 +49,7 @@ namespace Data.Models_IB
         public string Currency { get; set; }
 
         [DisplayName("Tỷ giá")]
-        public int Rate { get; set; }
+        public decimal Rate { get; set; }
 
         [MaxLength(12, ErrorMessage = "Tối đa 12 ký tự"), Column(TypeName = "varchar(12)")]
         public string STT { get; set; }
