@@ -49,6 +49,8 @@ namespace SaleDoanInbound
             services.AddTransient<ITourIBRepository, TourIBRepository>();
             services.AddTransient<ICTVATRepository, CTVATRepository>();
             services.AddTransient<IInvoiceRepository, InvoiceRepository>();
+            services.AddTransient<IBienNhanRepository, BienNhanRepository>();
+            services.AddTransient<IChiTietBNRepository, ChiTietBNRepository>();
             services.AddTransient<IUnitOfWork, UnitOfwork>();
 
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();

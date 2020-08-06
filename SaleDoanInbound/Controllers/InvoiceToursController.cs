@@ -27,7 +27,8 @@ namespace SaleDoanInbound.Controllers
                 CacNoiDungHuyTours = _unitOfWork.cacNoiDungHuyTourRepository.GetAll(),
                 Companies = _unitOfWork.khachHangRepository.GetAll(),
                 TourIB = new Data.Models_IB.TourIB(),
-                TourIBDto = new TourIBDto()
+                TourIBDto = new TourIBDto(),
+                BienNhans = _unitOfWork.bienNhanRepository.GetAll()
             };
         }
         public async Task<IActionResult> Index(string id = null, string searchString = null, string invoiceId = null, int page = 1, string tabActive = null)
@@ -38,7 +39,7 @@ namespace SaleDoanInbound.Controllers
             {
                 // cat bo phai sau % --> too long error
                 var newStrUrl = InvoiceTourVM.StrUrl.Split('%');
-                if(newStrUrl.Length > 1)
+                if (newStrUrl.Length > 1)
                 {
                     InvoiceTourVM.StrUrl = newStrUrl[0];
                 }
@@ -67,7 +68,12 @@ namespace SaleDoanInbound.Controllers
             // when we click TourIB --> get list invoice
             if (!string.IsNullOrEmpty(id))
             {
+                // DS invoice theo tourIB
                 InvoiceTourVM.Invoices = _unitOfWork.invoiceRepository.Find(x => x.TourIBId == id);
+
+                // DS biên nhận theo tourIB
+                InvoiceTourVM.BienNhans = InvoiceTourVM.BienNhans.Where(x => x.TourIBId == id);
+
                 // get detail touribDto for invoice view index
                 var tourIB = _unitOfWork.tourIBRepository.Find(x => x.Id == id).FirstOrDefault();
                 var tourIBDto = new TourIBDto()
@@ -93,12 +99,20 @@ namespace SaleDoanInbound.Controllers
                 InvoiceTourVM.Invoice = await _unitOfWork.invoiceRepository.GetByIdAsync(invoiceId);
                 InvoiceTourVM.CTVATs = _unitOfWork.cTVATRepository.Find(x => x.InvoiceId == invoiceId);
             }
-            
+
             if (!string.IsNullOrEmpty(tabActive))
             {
                 InvoiceTourVM.tabActive = tabActive;
+
+                // reset url -> cut tabActive
+                var newStrUrl = InvoiceTourVM.StrUrl.Split("&tabActive");
+                if (newStrUrl.Length > 1)
+                {
+                    InvoiceTourVM.StrUrl = newStrUrl[0];
+                }
+
             }
-            
+
             return View(InvoiceTourVM);
         }
 

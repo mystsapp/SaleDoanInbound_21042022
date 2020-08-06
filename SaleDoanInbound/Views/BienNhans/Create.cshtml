@@ -1,0 +1,148 @@
+﻿@model BienNhanViewModel
+
+@{
+    ViewData["Title"] = "Create";
+
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Thêm Mới</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item"><a asp-controller="KhachHangs" asp-route-strUrl="@Model.StrUrl" asp-action="DetailsRedirect">Danh Sách Tour</a></li>
+                    <li class="breadcrumb-item active">Thêm mới biên nhận</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-file text-info"></i> Thêm mới biên nhận - <b>@Model.TourIB.Id</b></h3>
+
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+
+
+            <form method="post" autocomplete="off">
+                <div class="p-4 border rounded">
+
+                    <input asp-for="BienNhan.TourIBId" type="hidden" /> <!-- this field is required - foreignkey to tourIB-->
+                    <input asp-for="StrUrl" type="hidden" value="@Model.StrUrl" /> <!-- this field for action post -> to current tab-->
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-group row">
+
+                        <div class="col-md-3">
+                            <label asp-for="BienNhan.NgayBN" class="control-label"></label>
+                            <input type="text" value="" asp-for="BienNhan.NgayBN" class="form-control maskInput" />
+                            <span asp-validation-for="BienNhan.NgayBN" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label asp-for="BienNhan.TenKhach" class="control-label"></label>
+                            <input asp-for="BienNhan.TenKhach" class="form-control " />
+                            <span asp-validation-for="BienNhan.TenKhach" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-1">
+                            <label asp-for="BienNhan.SK" class="control-label"></label>
+                            <input type="text" asp-for="BienNhan.SK" class="form-control numbers" />
+                            <span asp-validation-for="BienNhan.SK" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-5">
+                            <label asp-for="BienNhan.GhiChu" class="control-label"></label>
+                            <input asp-for="BienNhan.GhiChu" class="form-control" />
+                            <span asp-validation-for="BienNhan.GhiChu" class="text-danger"></span>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-md-1">
+                            <label asp-for="BienNhan.LoaiTien" class="control-label"></label>
+                            <input asp-for="BienNhan.LoaiTien" class="form-control" />
+                            <span asp-validation-for="BienNhan.LoaiTien" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label asp-for="BienNhan.TyGia" class="control-label"></label>
+                            <input asp-for="BienNhan.TyGia" class="form-control numbers" />
+                            <span asp-validation-for="BienNhan.TyGia" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-1">
+                            <label asp-for="BienNhan.KhachLe" class="control-label"></label>
+                            <br />
+                            <input type="checkbox" asp-for="BienNhan.KhachLe" />
+                            <span asp-validation-for="BienNhan.KhachLe" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-8">
+                            <label asp-for="BienNhan.NoiDungHuy" class="control-label"></label>
+                            <select asp-for="BienNhan.NoiDungHuy" class="form-control border-input" id="ddlQuocGia"
+                                    asp-items="@(new SelectList(Model.CacNoiDungHuyTours,"Id","NoiDung"))">
+                                <option value="0">-- Select --</option>
+                            </select>
+                            <span asp-validation-for="BienNhan.NoiDungHuy" class="text-danger"></span>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i></button>
+                            <a class="btn btn-success" asp-controller="KhachHangs" asp-route-strUrl="@Model.StrUrl" asp-action="DetailsRedirect"><i class="fas fa-backward"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+        <!-- /.card-body -->
+
+    </div>
+    <!-- /.card -->
+
+</section>
+<!-- /.content -->
+
+@section Scripts{
+    @*<script>
+
+            $(function () {
+                $(".datepicker").datepicker({
+                    dateFormat: 'dd/mm/yy'
+                });
+            });
+        </script>*@
+    @*<script>
+        $(function () {
+            $('.select2').select2()
+        });
+    </script>*@
+
+    <script src="~/js/Admin/BienNhan/createController.js"></script>
+}
+

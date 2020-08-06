@@ -28,11 +28,9 @@
         $('.tdValInvoice').click(function () {
             var invoiceId = $(this).data('id');
             $('#hidInvoiceId').val(invoiceId);
-            var tourIBId = $(this).data('touribid');
+            var tourIBId = $('.tdVal').data('id');
             $('#hidId').val(tourIBId);
-            // page
-            var page = $('.active .page-link').text();
-            $('#hidPage').val(page);
+            
 
             $('#btnSubmit').click();
         });

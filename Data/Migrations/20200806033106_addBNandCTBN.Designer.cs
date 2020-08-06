@@ -4,14 +4,16 @@ using Data.Models_IB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
     [DbContext(typeof(SaleDoanIBDbContext))]
-    partial class SaleDoanIBDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200806033106_addBNandCTBN")]
+    partial class addBNandCTBN
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -54,12 +56,9 @@ namespace Data.Migrations
                         .HasMaxLength(50);
 
                     b.Property<string>("TouIBId")
-                        .HasColumnType("varchar(10)");
-
-                    b.Property<string>("TourIBId")
                         .IsRequired()
                         .HasColumnName("varchar(10")
-                        .HasColumnType("nvarchar(10)")
+                        .HasColumnType("varchar(10)")
                         .HasMaxLength(10);
 
                     b.Property<decimal>("TyGia")
@@ -1692,7 +1691,9 @@ namespace Data.Migrations
                 {
                     b.HasOne("Data.Models_IB.TourIB", "TourIB")
                         .WithMany()
-                        .HasForeignKey("TouIBId");
+                        .HasForeignKey("TouIBId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Data.Models_IB.CTVAT", b =>

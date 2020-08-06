@@ -84,6 +84,7 @@
                     <thead>
                         <tr class="table-info">
                             <th>#</th>
+                            <th>@Html.DisplayNameFor(m => m.TourIBs.FirstOrDefault().Id)</th>
                             <th>@Html.DisplayNameFor(m => m.TourIBs.FirstOrDefault().CompanyName)</th>
                             <th>@Html.DisplayNameFor(m => m.TourIBs.FirstOrDefault().Name)</th>
                             <th>@Html.DisplayNameFor(m => m.TourIBs.FirstOrDefault().Address)</th>
@@ -122,6 +123,7 @@
                                     </div>
                                 </td>
 
+                                <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Id)</td>
                                 <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.CompanyName)</td>
                                 <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Name)</td>
                                 <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Address)</td>
@@ -283,27 +285,27 @@
                                                                 </div>
                                                             </td>
 
-                                                            <td class="tdValInvoice" data-id="@item.Id">@Html.DisplayFor(m => item.Id)</td>
-                                                            <td class="tdValInvoice" data-id="@item.Id">@Html.DisplayFor(m => item.Replace)</td>
-                                                            <td class="tdValInvoice" data-id="@item.Id">@Html.DisplayFor(m => item.Type)</td>
-                                                            <td class="tdValInvoice" data-id="@item.Id">@Html.Raw(item.Date.ToShortDateString())</td>
-                                                            <td class="tdValInvoice" data-id="@item.Id">@Html.Raw(item.Arr.ToShortDateString())</td>
-                                                            <td class="tdValInvoice" data-id="@item.Id">
+                                                            <td class="tdValInvoice" data-id="@item.Id" data-touribid="@Model.TourIBDto.Id">@Html.DisplayFor(m => item.Id)</td>
+                                                            <td class="tdValInvoice" data-id="@item.Id" data-touribid="@Model.TourIBDto.Id">@Html.DisplayFor(m => item.Replace)</td>
+                                                            <td class="tdValInvoice" data-id="@item.Id" data-touribid="@Model.TourIBDto.Id">@Html.DisplayFor(m => item.Type)</td>
+                                                            <td class="tdValInvoice" data-id="@item.Id" data-touribid="@Model.TourIBDto.Id">@Html.Raw(item.Date.ToShortDateString())</td>
+                                                            <td class="tdValInvoice" data-id="@item.Id" data-touribid="@Model.TourIBDto.Id">@Html.Raw(item.Arr.ToShortDateString())</td>
+                                                            <td class="tdValInvoice" data-id="@item.Id" data-touribid="@Model.TourIBDto.Id">
                                                                 @if (item.Dep.HasValue)
                                                                 {
                                                                     @Html.Raw(item.Dep.Value.ToShortDateString())
                                                                 }
                                                             </td>
-                                                            <td class="tdValInvoice" data-id="@item.Id">@Html.DisplayFor(m => item.Pax)</td>
-                                                            <td class="tdValInvoice" data-id="@item.Id">@Html.DisplayFor(m => item.Currency)</td>
-                                                            <td class="tdValInvoice" data-id="@item.Id">@Html.DisplayFor(m => item.Rate)</td>
-                                                            <td class="tdValInvoice" data-id="@item.Id">@Html.DisplayFor(m => item.SGL)</td>
-                                                            <td class="tdValInvoice" data-id="@item.Id">@Html.DisplayFor(m => item.DBL)</td>
-                                                            <td class="tdValInvoice" data-id="@item.Id">@Html.DisplayFor(m => item.TPL)</td>
-                                                            <td class="tdValInvoice" data-id="@item.Id">@Html.DisplayFor(m => item.MOFP)</td>
-                                                            <td class="tdValInvoice" data-id="@item.Id">@Html.DisplayFor(m => item.DOFP)</td>
-                                                            <td class="tdValInvoice" data-id="@item.Id">@Html.DisplayFor(m => item.Ref)</td>
-                                                            <td class="tdValInvoice" data-id="@item.Id">@Html.DisplayFor(m => item.HopDong)</td>
+                                                            <td class="tdValInvoice" data-id="@item.Id" data-touribid="@Model.TourIBDto.Id">@Html.DisplayFor(m => item.Pax)</td>
+                                                            <td class="tdValInvoice" data-id="@item.Id" data-touribid="@Model.TourIBDto.Id">@Html.DisplayFor(m => item.Currency)</td>
+                                                            <td class="tdValInvoice" data-id="@item.Id" data-touribid="@Model.TourIBDto.Id">@Html.DisplayFor(m => item.Rate)</td>
+                                                            <td class="tdValInvoice" data-id="@item.Id" data-touribid="@Model.TourIBDto.Id">@Html.DisplayFor(m => item.SGL)</td>
+                                                            <td class="tdValInvoice" data-id="@item.Id" data-touribid="@Model.TourIBDto.Id">@Html.DisplayFor(m => item.DBL)</td>
+                                                            <td class="tdValInvoice" data-id="@item.Id" data-touribid="@Model.TourIBDto.Id">@Html.DisplayFor(m => item.TPL)</td>
+                                                            <td class="tdValInvoice" data-id="@item.Id" data-touribid="@Model.TourIBDto.Id">@Html.DisplayFor(m => item.MOFP)</td>
+                                                            <td class="tdValInvoice" data-id="@item.Id" data-touribid="@Model.TourIBDto.Id">@Html.DisplayFor(m => item.DOFP)</td>
+                                                            <td class="tdValInvoice" data-id="@item.Id" data-touribid="@Model.TourIBDto.Id">@Html.DisplayFor(m => item.Ref)</td>
+                                                            <td class="tdValInvoice" data-id="@item.Id" data-touribid="@Model.TourIBDto.Id">@Html.DisplayFor(m => item.HopDong)</td>
                                                         </tr>
 
                                                     }
@@ -322,6 +324,7 @@
                             <!-- /Invoice -->
 
                         </div>
+                        <!-- Invoice -->
 
                         <!-- CTVAT -->
                         <div class="tab-pane fade" id="custom-tabs-four-CTVAT" role="tabpanel" aria-labelledby="custom-tabs-four-profile-tab">
@@ -333,7 +336,7 @@
                                     <div class="card">
                                         <div class="card-header">
                                             <h3 class="card-title ">Invoice No.<b>@Model.Invoice.Id</b></h3>
-                                            
+
                                             <div class="card-tools">
 
                                                 <a asp-action="Create" asp-controller="CTVATs" asp-route-invoiceId="@Model.Invoice.Id" asp-route-strUrl="@Model.StrUrl" asp-route-tabActive="custom-tabs-four-CTVAT" class="btn btn-default btn-sm text-bold" title="Thêm 1 chi tiết của invoice hiện hành">Add</a>
@@ -427,13 +430,107 @@
 
                         </div>
                         <!-- CTVAT -->
+
+
                         <div class="tab-pane fade" id="custom-tabs-four-CTVAT2" role="tabpanel" aria-labelledby="custom-tabs-four-messages-tab">
                             Morbi turpis dolor, vulputate vitae felis non, tincidunt congue mauris. Phasellus volutpat augue id mi placerat mollis. Vivamus faucibus eu massa eget condimentum. Fusce nec hendrerit sem, ac tristique nulla. Integer vestibulum orci odio. Cras nec augue ipsum. Suspendisse ut velit condimentum, mattis urna a, malesuada nunc. Curabitur eleifend facilisis velit finibus tristique. Nam vulputate, eros non luctus efficitur, ipsum odio volutpat massa, sit amet sollicitudin est libero sed ipsum. Nulla lacinia, ex vitae gravida fermentum, lectus ipsum gravida arcu, id fermentum metus arcu vel metus. Curabitur eget sem eu risus tincidunt eleifend ac ornare magna.
                         </div>
+
+                        <!-- Bien Nhan -->
                         <div class="tab-pane fade" id="custom-tabs-four-biennhan" role="tabpanel" aria-labelledby="custom-tabs-four-settings-tab">
-                            Biên nhận
-                            Pellentesque vestibulum commodo nibh nec blandit. Maecenas neque magna, iaculis tempus turpis ac, ornare sodales tellus. Mauris eget blandit dolor. Quisque tincidunt venenatis vulputate. Morbi euismod molestie tristique. Vestibulum consectetur dolor a vestibulum pharetra. Donec interdum placerat urna nec pharetra. Etiam eget dapibus orci, eget aliquet urna. Nunc at consequat diam. Nunc et felis ut nisl commodo dignissim. In hac habitasse platea dictumst. Praesent imperdiet accumsan ex sit amet facilisis.
+                            @if (Model.BienNhans != null)
+                            {
+                                <section class="content">
+
+                                    <!-- Default box -->
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3 class="card-title ">Danh sách biên nhận - <b>@Model.TourIBDto.Id</b></h3>
+
+                                            <div class="card-tools">
+
+                                                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                                                    <i class="fas fa-minus"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div style="overflow-x:auto;">
+                                                <table class="table mytable text-nowrap tblEMD" id="listAll">
+                                                    <thead>
+                                                        <tr class="table-info">
+                                                            <th>
+                                                                <a asp-action="Create" asp-controller="BienNhans" asp-route-tourIBId="@Model.TourIBDto.Id" asp-route-strUrl="@Model.StrUrl" asp-route-tabActive="custom-tabs-four-biennhan" class="btn btn-default btn-sm text-bold" title="Thêm 1 biên nhận">New</a>
+                                                            </th>
+                                                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().Id)</th> <!-- so bien nhan-->
+                                                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().NgayBN)</th>
+                                                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().TenKhach)</th>
+                                                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().SK)</th>
+                                                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().GhiChu)</th>
+                                                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().LoaiTien)</th>
+                                                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().TyGia)</th>
+                                                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().KhachLe)</th>
+                                                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().NoiDungHuy)</th>
+                                                            
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var item in Model.BienNhans)
+                                                        {
+
+                                                            <tr class="cursor-pointer ">
+
+                                                                <td>
+                                                                    <div class="btn-group text-white" role="group">
+                                                                        <a class="btn btn-primary btn-sm" title="Cập nhật" asp-action="Edit" asp-controller="BienNhans" asp-route-id="@item.Id" asp-route-tourIBId="@Model.TourIBDto.Id" asp-route-strUrl="@Model.StrUrl" asp-route-tabActive="custom-tabs-four-biennhan"><i class="fas fa-edit"></i></a>
+                                                                        <a class="btn btn-success btn-sm" title="Chi tiết" asp-action="Details" asp-controller="BienNhans" asp-route-id="@item.Id" asp-route-invoiceId="@Model.TourIBDto.Id" asp-route-strUrl="@Model.StrUrl" asp-route-tabActive="custom-tabs-four-biennhan"><i class="fas fa-list"></i></a>
+                                                                        <form asp-action="Delete" asp-controller="CTVATs" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" asp-route-tabActive="custom-tabs-four-CTVAT" method="post">
+
+                                                                            <span id="confirmBienNhanDeleteSpan_@item.Id" style="display: none">
+                                                                                <span class="text-light">Xóa?</span>
+                                                                                <button type="submit" class="btn btn-danger">Yes</button>
+                                                                                <a href="#" class="btn btn-primary" onclick="confirmBienNhanDelete('@item.Id', false)">No</a>
+                                                                            </span>
+
+                                                                            <span id="deleteBienNhanSpan_@item.Id">
+                                                                                <a href="#" class="btn btn-danger btn-sm" onclick="confirmBienNhanDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></a>
+                                                                            </span>
+                                                                        </form>
+                                                                    </div>
+                                                                </td>
+
+                                                                <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Id)</td>
+                                                                <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayBN.ToShortDateString())</td>
+                                                                <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.TenKhach)</td>
+                                                                <td class="tdVal" data-id="@item.Id">@Html.Raw(item.SK.ToString("N0"))</td>
+                                                                <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.GhiChu)</td>
+                                                                <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.LoaiTien)</td>
+                                                                <td class="tdVal" data-id="@item.Id">@Html.Raw(item.TyGia.ToString("N0"))</td>
+                                                                <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m =>item.KhachLe)</td>
+                                                                <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.NoiDungHuy) </td>
+                                                            </tr>
+
+                                                        }
+                                                    </tbody>
+
+                                                </table>
+                                            </div>
+
+                                        </div>
+                                        <!-- /.card-body -->
+
+                                    </div>
+                                    <!-- /.card -->
+
+                                </section>
+                            }
+
                         </div>
+                        <!-- Bien Nhan -->
+
                         <div class="tab-pane fade" id="custom-tabs-four-settings" role="tabpanel" aria-labelledby="custom-tabs-four-settings-tab">
                             Pellentesque vestibulum commodo nibh nec blandit. Maecenas neque magna, iaculis tempus turpis ac, ornare sodales tellus. Mauris eget blandit dolor. Quisque tincidunt venenatis vulputate. Morbi euismod molestie tristique. Vestibulum consectetur dolor a vestibulum pharetra. Donec interdum placerat urna nec pharetra. Etiam eget dapibus orci, eget aliquet urna. Nunc at consequat diam. Nunc et felis ut nisl commodo dignissim. In hac habitasse platea dictumst. Praesent imperdiet accumsan ex sit amet facilisis.
                         </div>
@@ -468,6 +565,7 @@
     </script>
     <script src="~/js/Admin/InvoiceTour/indexController.js"></script>
     <script>
+        // tourIB
         function confirmDelete(uniqueId, isDeleteClicked) {
             var deleteSpan = 'deleteSpan_' + uniqueId;
             var confirmDeleteSpan = 'confirmDeleteSpan_' + uniqueId;
@@ -480,6 +578,8 @@
                 $('#' + confirmDeleteSpan).hide();
             }
         }
+
+        // Invoice
         function confirmInvoiceDelete(uniqueId, isDeleteClicked) {
             debugger
             var deleteInvoiceSpan = 'deleteInvoiceSpan_' + uniqueId;
@@ -494,6 +594,7 @@
             }
         }
 
+        // chitiet invoice
         function confirmCTVATDelete(uniqueId, isDeleteClicked) {
             debugger
             var deleteCTVATSpan = 'deleteCTVATSpan_' + uniqueId;
@@ -507,6 +608,23 @@
                 $('#' + confirmCTVATDeleteSpan).hide();
             }
         }
+
+        // bien nhan
+        function confirmBienNhanDelete(uniqueId, isDeleteClicked) {
+            debugger
+            var deleteBienNhanSpan = 'deleteBienNhanSpan_' + uniqueId;
+            var confirmBienNhanDeleteSpan = 'confirmBienNhanDeleteSpan_' + uniqueId;
+
+            if (isDeleteClicked) {
+                $('#' + deleteBienNhanSpan).hide();
+                $('#' + confirmBienNhanDeleteSpan).show();
+            } else {
+                $('#' + deleteBienNhanSpan).show();
+                $('#' + confirmBienNhanDeleteSpan).hide();
+            }
+        }
+
+        // rollback tab
         $('#myTabs a[href="#@Model.tabActive"]').tab('show') // Select tab by name
 
     </script>
