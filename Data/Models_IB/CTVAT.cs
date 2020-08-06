@@ -17,6 +17,7 @@ namespace Data.Models_IB
 
         [DisplayName("Diễn giải")]
         [MaxLength(250), Column(TypeName = "nvarchar(250)")]
+        [Required(ErrorMessage = "Trường này không được để trống")]
         public string Descript { get; set; }
 
         [DisplayName("Số lượng")]
@@ -24,6 +25,7 @@ namespace Data.Models_IB
 
         [DisplayName("Đơn vị tính")]
         [MaxLength(6), Column(TypeName = "varchar(6)")]
+        [Required(ErrorMessage = "Trường này không được để trống")]
         public string Unit { get; set; }
 
         [DisplayName("Đơn giá")]

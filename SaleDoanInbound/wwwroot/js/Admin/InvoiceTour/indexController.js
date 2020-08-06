@@ -24,6 +24,16 @@
 
             $('#btnSubmit').click();
         });
+
+        $('.tdValInvoice').click(function () {
+            var invoiceId = $(this).data('id');
+            $('#hidInvoiceId').val(invoiceId);
+            var tourIBId = $('.tdVal').data('id');
+            $('#hidId').val(tourIBId);
+            
+
+            $('#btnSubmit').click();
+        });
     }
 };
 indexController.init();

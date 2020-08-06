@@ -30,9 +30,20 @@ namespace SaleDoanInbound.Controllers
                 TourIBDto = new TourIBDto()
             };
         }
-        public IActionResult Index(string id = null, string searchString = null, int page = 1)
+        public async Task<IActionResult> Index(string id = null, string searchString = null, string invoiceId = null, int page = 1, string tabActive = null)
         {
             InvoiceTourVM.StrUrl = UriHelper.GetDisplayUrl(Request);
+
+            if (!string.IsNullOrEmpty(InvoiceTourVM.StrUrl))
+            {
+                // cat bo phai sau % --> too long error
+                var newStrUrl = InvoiceTourVM.StrUrl.Split('%');
+                if(newStrUrl.Length > 1)
+                {
+                    InvoiceTourVM.StrUrl = newStrUrl[0];
+                }
+            }
+
             ViewBag.searchString = searchString;
 
             // for delete
@@ -53,7 +64,7 @@ namespace SaleDoanInbound.Controllers
                                                                             InvoiceTourVM.Companies.ToList(),
                                                                             InvoiceTourVM.CacNoiDungHuyTours.ToList(), page);
 
-            // when we click --> get list invoice
+            // when we click TourIB --> get list invoice
             if (!string.IsNullOrEmpty(id))
             {
                 InvoiceTourVM.Invoices = _unitOfWork.invoiceRepository.Find(x => x.TourIBId == id);
@@ -76,6 +87,16 @@ namespace SaleDoanInbound.Controllers
                     SGTCode = tourIB.SGTCode
                 };
                 InvoiceTourVM.TourIBDto = tourIBDto;
+            }
+            if (!string.IsNullOrEmpty(invoiceId))
+            {
+                InvoiceTourVM.Invoice = await _unitOfWork.invoiceRepository.GetByIdAsync(invoiceId);
+                InvoiceTourVM.CTVATs = _unitOfWork.cTVATRepository.Find(x => x.InvoiceId == invoiceId);
+            }
+            
+            if (!string.IsNullOrEmpty(tabActive))
+            {
+                InvoiceTourVM.tabActive = tabActive;
             }
             
             return View(InvoiceTourVM);
@@ -214,7 +235,16 @@ namespace SaleDoanInbound.Controllers
                 return Redirect(strUrl);
             }
         }
-
+        //public async Task<IActionResult> LoadCTVAT(string strUrl, string invoiceId)
+        //{
+        //    InvoiceTourVM.StrUrl = strUrl;
+        //    if (!string.IsNullOrEmpty(invoiceId))
+        //    {
+        //        InvoiceTourVM.CTVATs = _unitOfWork.cTVATRepository.Find(x => x.InvoiceId == invoiceId);
+        //        InvoiceTourVM.Invoice = await _unitOfWork.invoiceRepository.GetByIdAsync(invoiceId);
+        //    }
+        //    return Redirect(strUrl);
+        //}
         //public JsonResult IsStringNameAvailable(string TenCreate)
         //{
         //    var boolName = _unitOfWork.dMNganhNgheRepository.Find(x => x.TenNganhNghe.Trim().ToLower() == TenCreate.Trim().ToLower()).FirstOrDefault();

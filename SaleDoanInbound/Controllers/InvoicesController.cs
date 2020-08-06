@@ -191,6 +191,7 @@ namespace SaleDoanInbound.Controllers
             }
         }
 
+        
         //public JsonResult IsStringNameAvailable(string TenCreate)
         //{
         //    var boolName = _unitOfWork.dMNganhNgheRepository.Find(x => x.TenNganhNghe.Trim().ToLower() == TenCreate.Trim().ToLower()).FirstOrDefault();

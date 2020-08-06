@@ -1,0 +1,137 @@
+﻿@model CTVATViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Chi tiết</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item"><a asp-controller="KhachHangs" asp-route-strUrl="@Model.StrUrl" asp-action="DetailsRedirect">Danh Sách Tour</a></li>
+                    <li class="breadcrumb-item active">Chi tiết</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-file text-info"></i> Chi tiết - <b>@Model.Invoice.Id</b></h3>
+
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+
+
+            <form method="post" autocomplete="off">
+                <div class="p-4 border rounded">
+
+                    <div class="form-group row">
+
+                        <div class="col-md-6">
+                            <label asp-for="CTVAT.Descript" class="control-label"></label>
+                            <input asp-for="CTVAT.Descript" class="form-control" readonly/>
+                    
+                        </div>
+
+                        <div class="col-md-2">
+                            <label asp-for="CTVAT.Quantity" class="control-label"></label>
+                            <input type="text" asp-for="CTVAT.Quantity" class="form-control numbers" readonly/>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label asp-for="CTVAT.Unit" class="control-label"></label>
+                            <input asp-for="CTVAT.Unit" class="form-control" readonly/>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label asp-for="CTVAT.UnitPrice" class="control-label"></label>
+                            <input asp-for="CTVAT.UnitPrice" class="form-control numbers" readonly/>
+                            
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-md-2">
+                            <label asp-for="CTVAT.Percent" class="control-label"></label>
+                            <input type="text" asp-for="CTVAT.Percent" class="form-control numbers" readonly/>
+                            
+                        </div>
+
+                        <div class="col-md-2">
+                            <label asp-for="CTVAT.Amount" class="control-label"></label>
+                            <input asp-for="CTVAT.Amount" class="form-control numbers" readonly/>
+                            
+                        </div>
+
+                        <div class="col-md-2">
+                            <label asp-for="CTVAT.ServiceFee" class="control-label"></label>
+                            <input type="text" asp-for="CTVAT.ServiceFee" class="form-control numbers" readonly/>
+                            
+                        </div>
+
+                        <div class="col-md-2">
+                            <label asp-for="CTVAT.VAT" class="control-label"></label>
+                            <input type="text" asp-for="CTVAT.VAT" class="form-control numbers" readonly/>
+                            
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i></button>
+                            <a class="btn btn-success" asp-controller="KhachHangs" asp-route-strUrl="@Model.StrUrl" asp-action="DetailsRedirect"><i class="fas fa-backward"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+        <!-- /.card-body -->
+
+    </div>
+    <!-- /.card -->
+
+</section>
+<!-- /.content -->
+
+@section Scripts{
+    @*<script>
+
+            $(function () {
+                $(".datepicker").datepicker({
+                    dateFormat: 'dd/mm/yy'
+                });
+            });
+        </script>*@
+    @*<script>
+            $(function () {
+                $('.select2').select2()
+            });
+        </script>*@
+
+    @*<script src="~/js/Admin/InvoiceTour/editController.js"></script>*@
+}
+
