@@ -95,7 +95,10 @@
                         <div class="col-md-1">
                             <label asp-for="BienNhan.KhachLe" class="control-label"></label>
                             <br />
-                            <input type="checkbox" asp-for="BienNhan.KhachLe" />
+                            <div class="icheck-primary d-inline ">
+                                <input type="checkbox" asp-for="BienNhan.KhachLe" id="todoCheck1">
+                                <label for="todoCheck1"></label>
+                            </div>
                             <span asp-validation-for="BienNhan.KhachLe" class="text-danger"></span>
                         </div>
 

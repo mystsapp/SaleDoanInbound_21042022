@@ -57,7 +57,7 @@ namespace SaleDoanInbound.Controllers
             }
             else
             {
-                var oldYear = bienNhan.Id.Substring(2, 6);
+                var oldYear = bienNhan.Id.Substring(2, 4);
                 // cung nam
                 if (oldYear == currentYear.ToString())
                 {

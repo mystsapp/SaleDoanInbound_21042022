@@ -29,6 +29,7 @@ namespace SaleDoanInbound.Controllers
                 TourIB = new Data.Models_IB.TourIB(),
                 TourIBDto = new TourIBDto(),
                 BienNhans = _unitOfWork.bienNhanRepository.GetAll()
+                
             };
         }
         public async Task<IActionResult> Index(string id = null, string searchString = null, string invoiceId = null, int page = 1, string tabActive = null)
@@ -93,6 +94,7 @@ namespace SaleDoanInbound.Controllers
                     SGTCode = tourIB.SGTCode
                 };
                 InvoiceTourVM.TourIBDto = tourIBDto;
+
             }
             if (!string.IsNullOrEmpty(invoiceId))
             {
@@ -249,6 +251,8 @@ namespace SaleDoanInbound.Controllers
                 return Redirect(strUrl);
             }
         }
+
+        
         //public async Task<IActionResult> LoadCTVAT(string strUrl, string invoiceId)
         //{
         //    InvoiceTourVM.StrUrl = strUrl;
