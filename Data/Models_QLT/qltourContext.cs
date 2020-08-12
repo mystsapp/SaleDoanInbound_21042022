@@ -1,9 +1,8 @@
 ﻿using System;
-using Data.Models_QLT;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace Data.Models
+namespace Data.Models_QLT
 {
     public partial class qltourContext : DbContext
     {
@@ -56,14 +55,16 @@ namespace Data.Models
         public virtual DbSet<Tourtemplate> Tourtemplate { get; set; }
         public virtual DbSet<Tuyentq> Tuyentq { get; set; }
         public virtual DbSet<Users> Users { get; set; }
+        public virtual DbSet<VDmdiemtq> VDmdiemtq { get; set; }
+        public virtual DbSet<VSupplier> VSupplier { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //            if (!optionsBuilder.IsConfigured)
-            //            {
-            //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-            //                optionsBuilder.UseSqlServer("Server=118.68.170.128;database=qltour;Trusted_Connection=true;User Id=vanhong;Password=Hong@2019;Integrated security=false;MultipleActiveResultSets=true");
-            //            }
+//            if (!optionsBuilder.IsConfigured)
+//            {
+//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+//                optionsBuilder.UseSqlServer("Server=118.68.170.128;database=qltour;Trusted_Connection=true;User Id=vanhong;Password=Hong@2019;Integrated security=false;MultipleActiveResultSets=true");
+//            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -375,11 +376,13 @@ namespace Data.Models
                     .HasMaxLength(5)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Diemtq).HasMaxLength(50);
+                entity.Property(e => e.Diemtq).HasMaxLength(150);
 
                 entity.Property(e => e.Giave).HasColumnType("decimal(10, 0)");
 
                 entity.Property(e => e.Giuxe).HasColumnType("decimal(10, 0)");
+
+                entity.Property(e => e.Logfile).HasColumnName("logfile");
 
                 entity.Property(e => e.Thanhpho)
                     .HasColumnName("thanhpho")
@@ -465,6 +468,7 @@ namespace Data.Models
                 entity.Property(e => e.Sglpax).HasColumnName("sglpax");
 
                 entity.Property(e => e.Sgtcode)
+                    .IsRequired()
                     .HasColumnName("sgtcode")
                     .HasMaxLength(17)
                     .IsUnicode(false);
@@ -905,7 +909,8 @@ namespace Data.Models
                 entity.Property(e => e.Chinhanh).HasMaxLength(3);
 
                 entity.Property(e => e.Codedtq)
-                    .HasMaxLength(5)
+                    .IsRequired()
+                    .HasMaxLength(6)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Debit)
@@ -928,6 +933,12 @@ namespace Data.Models
                 entity.Property(e => e.Unitpricee).HasColumnType("decimal(12, 0)");
 
                 entity.Property(e => e.Unitpricev).HasColumnType("decimal(12, 0)");
+
+                entity.HasOne(d => d.CodedtqNavigation)
+                    .WithMany(p => p.Sightseeing)
+                    .HasForeignKey(d => d.Codedtq)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Sightseeing_Dmdiemtq");
             });
 
             modelBuilder.Entity<SightseeingDel>(entity =>
@@ -989,7 +1000,7 @@ namespace Data.Models
 
                 entity.Property(e => e.Codedtq)
                     .HasColumnName("codedtq")
-                    .HasMaxLength(5)
+                    .HasMaxLength(6)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Debit)
@@ -1025,6 +1036,11 @@ namespace Data.Models
                 entity.Property(e => e.Vatin).HasColumnName("vatin");
 
                 entity.Property(e => e.Vatout).HasColumnName("vatout");
+
+                entity.HasOne(d => d.CodedtqNavigation)
+                    .WithMany(p => p.SightseeingTemp)
+                    .HasForeignKey(d => d.Codedtq)
+                    .HasConstraintName("FK_SightseeingTemp_Dmdiemtq");
             });
 
             modelBuilder.Entity<Supplier>(entity =>
@@ -1118,6 +1134,11 @@ namespace Data.Models
 
                 entity.Property(e => e.Chinhanh)
                     .HasColumnName("chinhanh")
+                    .HasMaxLength(3)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Chinhanhtao)
+                    .HasColumnName("chinhanhtao")
                     .HasMaxLength(3)
                     .IsUnicode(false);
 
@@ -1530,6 +1551,7 @@ namespace Data.Models
                     .IsUnicode(false);
 
                 entity.Property(e => e.Code)
+                    .IsRequired()
                     .HasMaxLength(5)
                     .IsUnicode(false);
 
@@ -1599,7 +1621,7 @@ namespace Data.Models
                 entity.HasOne(d => d.CodeNavigation)
                     .WithMany(p => p.Tourprogtemp)
                     .HasForeignKey(d => d.Code)
-                    .OnDelete(DeleteBehavior.Cascade)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Tourprogtemp_Tourtemplate");
             });
 
@@ -1663,6 +1685,8 @@ namespace Data.Models
 
                 entity.Property(e => e.Hoten).HasMaxLength(50);
 
+                entity.Property(e => e.Khachdoan).HasColumnName("khachdoan");
+
                 entity.Property(e => e.Khachle).HasColumnName("khachle");
 
                 entity.Property(e => e.Maphong)
@@ -1670,6 +1694,77 @@ namespace Data.Models
                     .IsUnicode(false);
 
                 entity.Property(e => e.Password).HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<VDmdiemtq>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("vDmdiemtq");
+
+                entity.Property(e => e.Code)
+                    .IsRequired()
+                    .HasMaxLength(6)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Diemtq).HasMaxLength(150);
+
+                entity.Property(e => e.Tinhtp)
+                    .HasColumnName("tinhtp")
+                    .HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<VSupplier>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("vSupplier");
+
+                entity.Property(e => e.Chinhanh)
+                    .HasColumnName("chinhanh")
+                    .HasMaxLength(3)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Code)
+                    .IsRequired()
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Codecn)
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Diachi).HasMaxLength(150);
+
+                entity.Property(e => e.Dienthoai).HasMaxLength(50);
+
+                entity.Property(e => e.Email).HasMaxLength(50);
+
+                entity.Property(e => e.Fax)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Masothue)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Nganhnghe).HasMaxLength(150);
+
+                entity.Property(e => e.Ngaytao).HasColumnType("datetime");
+
+                entity.Property(e => e.Nguoilienhe).HasMaxLength(150);
+
+                entity.Property(e => e.Nguoitao).HasMaxLength(50);
+
+                entity.Property(e => e.Quocgia).HasMaxLength(50);
+
+                entity.Property(e => e.Tengiaodich).HasMaxLength(70);
+
+                entity.Property(e => e.Tenthuongmai).HasMaxLength(70);
+
+                entity.Property(e => e.Thanhpho).HasMaxLength(50);
+
+                entity.Property(e => e.Website).HasMaxLength(60);
             });
 
             OnModelCreatingPartial(modelBuilder);

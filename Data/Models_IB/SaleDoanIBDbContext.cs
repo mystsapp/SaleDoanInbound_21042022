@@ -13,6 +13,7 @@ namespace Data.Models_IB
 
         }
 
+        // SaleDoanIB
         public DbSet<CacNoiDungHuyTour> CacNoiDungHuyTours { get; set; }
         //public DbSet<ChiNhanh> ChiNhanhs { get; set; }
         public DbSet<DatCoc> DatCocs { get; set; }
@@ -39,12 +40,13 @@ namespace Data.Models_IB
         public DbSet<UsrKhuCN> UsrKhuCNs { get; set; }
         public DbSet<VeMayBay> VeMayBays { get; set; }
 
-        // SaleDoanIB
+        // SaleDoanIB --> Mr.Son
         public DbSet<TourIB> TourIBs { get; set; }
         public DbSet<Invoice> Invoices { get; set; }
         public DbSet<CTVAT> CTVATs { get; set; }
         public DbSet<BienNhan> BienNhans { get; set; }
         public DbSet<ChiTietBN> ChiTietBNs { get; set; }
+
 
     }
 }

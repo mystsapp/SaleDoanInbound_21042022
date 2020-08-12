@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Data.Models
+namespace Data.Models_QLT
 {
     public partial class SightseeingTemp
     {
@@ -20,5 +20,7 @@ namespace Data.Models
         public decimal? Srvprofit { get; set; }
         public string Httt { get; set; }
         public string Chinhanh { get; set; }
+
+        public virtual Dmdiemtq CodedtqNavigation { get; set; }
     }
 }

@@ -1022,8 +1022,13 @@ namespace Data.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("BatDau")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("ChiNhanhDHId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ChiNhanhTaoId")
+                        .IsRequired()
+                        .HasColumnType("varchar(5)")
+                        .HasMaxLength(5);
 
                     b.Property<string>("ChuDeTour")
                         .HasColumnType("nvarchar(250)")
@@ -1033,27 +1038,43 @@ namespace Data.Migrations
                         .HasColumnType("nvarchar(300)")
                         .HasMaxLength(300);
 
+                    b.Property<string>("CompanyId")
+                        .HasColumnType("varchar(5)")
+                        .HasMaxLength(5);
+
                     b.Property<string>("DaiLy")
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
+
+                    b.Property<string>("DiaChi")
+                        .HasColumnType("nvarchar(250)")
+                        .HasMaxLength(250);
 
                     b.Property<string>("DichVu")
                         .HasColumnType("nvarchar(150)")
                         .HasMaxLength(150);
 
-                    b.Property<string>("DiemTQ")
-                        .HasColumnType("nvarchar(250)")
-                        .HasMaxLength(250);
+                    b.Property<string>("DienThoai")
+                        .HasColumnType("varchar(15)")
+                        .HasMaxLength(15);
 
-                    b.Property<decimal>("DoanhThuTT")
+                    b.Property<decimal>("DoanhThuDK")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("DoanhtTuDK")
+                    b.Property<decimal>("DoanhThuTT")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("DoiTacNuocNgoai")
                         .HasColumnType("nvarchar(150)")
                         .HasMaxLength(150);
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("Fax")
+                        .HasColumnType("varchar(15)")
+                        .HasMaxLength(15);
 
                     b.Property<string>("FileBienNhan")
                         .HasColumnType("varchar(100)")
@@ -1067,6 +1088,10 @@ namespace Data.Migrations
                         .HasColumnType("varchar(100)")
                         .HasMaxLength(100);
 
+                    b.Property<string>("GhiChu")
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
                     b.Property<DateTime>("HanXuatVe")
                         .HasColumnType("datetime2");
 
@@ -1074,14 +1099,8 @@ namespace Data.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.Property<long>("IdKH")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("IdLoaiTour")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("KetThuc")
-                        .HasColumnType("datetime2");
+                    b.Property<bool>("KhachLe")
+                        .HasColumnType("bit");
 
                     b.Property<decimal>("LaiChuaVe")
                         .HasColumnType("decimal(18,2)");
@@ -1092,6 +1111,13 @@ namespace Data.Migrations
                     b.Property<decimal>("LaiThucTeGomVe")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<string>("LoaiTien")
+                        .HasColumnType("varchar(3)")
+                        .HasMaxLength(3);
+
+                    b.Property<int?>("LoaiTourId")
+                        .HasColumnType("int");
+
                     b.Property<string>("LogFile")
                         .HasColumnType("nvarchar(MAX)");
 
@@ -1099,14 +1125,26 @@ namespace Data.Migrations
                         .HasColumnType("nvarchar(250)")
                         .HasMaxLength(250);
 
-                    b.Property<string>("MaCN")
+                    b.Property<string>("MaKH")
                         .HasColumnType("varchar(5)")
                         .HasMaxLength(5);
+
+                    b.Property<long>("NDHuyTourId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("NgayDamPhan")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("NgayHuytTour")
+                    b.Property<DateTime>("NgayDen")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("NgayDi")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("NgayHuyTour")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("NgayKhoa")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("NgayKyHopDong")
@@ -1128,6 +1166,10 @@ namespace Data.Migrations
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
 
+                    b.Property<string>("NguoiKhoa")
+                        .HasColumnType("varchar(50)")
+                        .HasMaxLength(50);
+
                     b.Property<string>("NguoiKyHopDong")
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
@@ -1144,13 +1186,12 @@ namespace Data.Migrations
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
 
-                    b.Property<string>("NguyenNhanHuyThau")
-                        .HasColumnType("nvarchar(250)")
-                        .HasMaxLength(250);
-
                     b.Property<string>("NoiDungThanhLyHD")
                         .HasColumnType("nvarchar(250)")
                         .HasMaxLength(250);
+
+                    b.Property<int?>("SKTreEm")
+                        .HasColumnType("int");
 
                     b.Property<string>("Sgtcode")
                         .HasColumnType("varchar(17)")
@@ -1166,6 +1207,10 @@ namespace Data.Migrations
                     b.Property<int>("SoKhachTT")
                         .HasColumnType("int");
 
+                    b.Property<string>("TenKH")
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
                     b.Property<string>("ThiTruong")
                         .HasColumnType("nvarchar(150)")
                         .HasMaxLength(150);
@@ -1177,11 +1222,10 @@ namespace Data.Migrations
                         .HasColumnType("nvarchar(250)")
                         .HasMaxLength(250);
 
+                    b.Property<decimal?>("TyGia")
+                        .HasColumnType("decimal(18,2)");
+
                     b.HasKey("Id");
-
-                    b.HasIndex("IdKH");
-
-                    b.HasIndex("IdLoaiTour");
 
                     b.ToTable("Tours");
                 });
@@ -1793,21 +1837,6 @@ namespace Data.Migrations
                     b.HasOne("Data.Models_IB.Tour", "Tour")
                         .WithMany()
                         .HasForeignKey("IdTour")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Data.Models_IB.Tour", b =>
-                {
-                    b.HasOne("Data.Models_IB.DMKhachHang", "DMKhachHang")
-                        .WithMany()
-                        .HasForeignKey("IdKH")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Data.Models_IB.LoaiTour", "LoaiTour")
-                        .WithMany()
-                        .HasForeignKey("IdLoaiTour")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

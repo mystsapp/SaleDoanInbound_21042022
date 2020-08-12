@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Data.Models
+namespace Data.Models_QLT
 {
     public partial class Hotel
     {
         public decimal Id { get; set; }
         public string Sgtcode { get; set; }
-        public int? Stt { get; set; }
+        public int Stt { get; set; }
         public int Sgl { get; set; }
         public int Sglpax { get; set; }
         public decimal Sglcost { get; set; }

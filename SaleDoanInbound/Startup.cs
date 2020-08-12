@@ -15,8 +15,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Data.Models;
 using Data.Models_QLTaiKhoan;
+using Data.Models_QLT;
 
 namespace SaleDoanInbound
 {
@@ -44,8 +44,12 @@ namespace SaleDoanInbound
             services.AddTransient<ICacNoiDungHuyTourRepository, CacNoiDungHuyTourRepository>();
             services.AddTransient<ILoaiTourRepository, LoaiTourRepository>();
             services.AddTransient<IChiNhanhRepository, ChiNhanhRepository>();
-            services.AddTransient<IDiemTQRepository, DiemTQRepository>();
             services.AddTransient<IThanhPhoRepository, ThanhPhoRepository>();
+            services.AddTransient<ITourRepository, TourRepository>();
+            services.AddTransient<IThanhPhoForTuyenTQRepository, ThanhPhoForTuyenTQRepository>();
+            services.AddTransient<ITourKindRepository, TourKindRepository>();
+
+            // Mr.Son
             services.AddTransient<ITourIBRepository, TourIBRepository>();
             services.AddTransient<ICTVATRepository, CTVATRepository>();
             services.AddTransient<IInvoiceRepository, InvoiceRepository>();

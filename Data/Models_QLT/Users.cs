@@ -10,6 +10,7 @@ namespace Data.Models_QLT
         public string Email { get; set; }
         public string Password { get; set; }
         public bool Khachle { get; set; }
+        public bool? Khachdoan { get; set; }
         public string Maphong { get; set; }
         public bool Newtour { get; set; }
         public bool Dongtour { get; set; }

@@ -1,4 +1,5 @@
-﻿@model KhachHangViewModel
+﻿
+@model KhachHangViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -131,7 +132,7 @@
                             <select asp-for="Company.Chinhanh" class="form-control border-input" id="ddlChiNhanh"
                                     asp-items="@(new SelectList(Model.Dmchinhanhs,"Macn","Macn"))">
                                 <option value="">-- Select --</option>
-                            </select>                            
+                            </select>
                             <span asp-validation-for="Company.Chinhanh" class="text-danger"></span>
                         </div>
 

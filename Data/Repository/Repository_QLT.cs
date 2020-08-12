@@ -1,6 +1,6 @@
 ﻿using Data.Interfaces;
-using Data.Models;
 using Data.Models_IB;
+using Data.Models_QLT;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

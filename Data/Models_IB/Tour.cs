@@ -12,6 +12,9 @@ namespace Data.Models_IB
         [MaxLength(17), Column(TypeName = "varchar(17)")]
         public string Sgtcode { get; set; }
 
+        [DisplayName("Khách lẻ")]
+        public bool KhachLe { get; set; }
+
         [DisplayName("Chủ đề tour")]
         [MaxLength(250), Column(TypeName = "nvarchar(250)")]
         public string ChuDeTour { get; set; }
@@ -21,39 +24,38 @@ namespace Data.Models_IB
         [MaxLength(150), Column(TypeName = "nvarchar(150)")]
         public string ThiTruong { get; set; }
 
+        public DateTime? NgayKhoa { get; set; }
+
+        [DisplayName("Người khóa")]
+        [MaxLength(50), Column(TypeName = "varchar(50)")]
+        public string NguoiKhoa { get; set; }
+
         public DateTime NgayTao { get; set; }
 
         [DisplayName("Người tạo")]
         [MaxLength(50), Column(TypeName = "varchar(50)")]
         public string NguoiTao { get; set; }
 
-        [DisplayName("Bắt đầu")]
-        public DateTime BatDau { get; set; }
+        [DisplayName("Ngày đến")]
+        public DateTime NgayDen { get; set; }
 
-        [DisplayName("Kết thúc")]
-        public DateTime KetThuc { get; set; }
+        [DisplayName("Ngày đi")]
+        public DateTime NgayDi { get; set; }
 
         [DisplayName("Tuyến TQ")]
         [MaxLength(250), Column(TypeName = "nvarchar(250)")]
-        public string TuyenTQ { get; set; }
+        public string TuyenTQ { get; set; } // Reference --> qltour: tourinf | lay tu qltaikhoan.ThanhPho
 
         [DisplayName("Số khách DK")]
         public int SoKhachDK { get; set; }
 
         [DisplayName("Doanh thu DK")]
-        public decimal DoanhtTuDK { get; set; }
+        public decimal DoanhThuDK { get; set; }
 
         [DisplayName("Công ty")]
-        public long IdKH { get; set; }
+        [MaxLength(5), Column(TypeName = "varchar(5)")]
+        public string CompanyId { get; set; } // in qltour -> khachhangscontroller
 
-        [ForeignKey("IdKH")]
-        public virtual DMKhachHang DMKhachHang { get; set; }
-
-        //public string TenKH { get; set; }
-        //public string DiaChi { get; set; }
-        //public string DienThoai { get; set; }
-        //public string Fax { get; set; }
-        //public string Email { get; set; }
         [DisplayName("Ngày đàm phán")]
         public DateTime NgayDamPhan { get; set; }
 
@@ -76,6 +78,9 @@ namespace Data.Models_IB
 
         [DisplayName("Số khách TT")]
         public int SoKhachTT { get; set; }
+
+        [DisplayName("SK trẻ em")]
+        public int? SKTreEm { get; set; }
 
         [DisplayName("Doanh thu TT")]
         public decimal DoanhThuTT { get; set; }
@@ -106,18 +111,15 @@ namespace Data.Models_IB
         public string NguoiSua { get; set; }
 
         [DisplayName("Loại tour")]
-        public int IdLoaiTour { get; set; }
+        public int? LoaiTourId { get; set; } // tourkind: qltour
 
-        [ForeignKey("IdLoaiTour")]
-        public virtual LoaiTour LoaiTour { get; set; }
-
-        [DisplayName("Điểm tham quan")]
-        [MaxLength(250), Column(TypeName = "nvarchar(250)")]
-        public string DiemTQ { get; set; }
+        //[DisplayName("Điểm tham quan")]
+        //[MaxLength(250), Column(TypeName = "nvarchar(250)")]
+        //public string DiemTQ { get; set; }
 
         [DisplayName("Chi nhánh")]
         [MaxLength(5), Column(TypeName = "varchar(5)")]
-        public string MaCN { get; set; }
+        public int ChiNhanhTaoId { get; set; } // chinhanh tao: lay ben qltour
 
         public DateTime NgayNhanDuTien { get; set; }
 
@@ -131,10 +133,6 @@ namespace Data.Models_IB
         public decimal LaiChuaVe { get; set; }
         public decimal LaiGomVe { get; set; }
         public decimal LaiThucTeGomVe { get; set; }
-
-        [DisplayName("Nguyên nhân hủy")]
-        [MaxLength(250), Column(TypeName = "nvarchar(250)")]
-        public string NguyenNhanHuyThau { get; set; }
 
         [DisplayName("Nguồn tour")]
         [MaxLength(100), Column(TypeName = "nvarchar(100)")]
@@ -160,8 +158,52 @@ namespace Data.Models_IB
         [MaxLength(150), Column(TypeName = "nvarchar(150)")]
         public string DoiTacNuocNgoai { get; set; }
 
+        [DisplayName("Chi nhánh DH")]
+        public int ChiNhanhDHId { get; set; } // dm chi nhanh: qltour
+
+        // --> them phong ban dieu hanh
+
         [DisplayName("Ngày hủy tour")]
-        public DateTime NgayHuytTour { get; set; }
+        public DateTime NgayHuyTour { get; set; }
+
+        [DisplayName("Nội dung hủy")]
+        public long NDHuyTourId { get; set; }
+
+        [DisplayName("Ghi chú")]
+        [MaxLength(50), Column(TypeName = "nvarchar(50)")]
+        public string GhiChu { get; set; }
+
+        [DisplayName("Loại tiền")]
+        [MaxLength(3, ErrorMessage = "Tối đa 3 ký tự"), Column(TypeName = "varchar(3)")]
+        public string LoaiTien { get; set; }
+
+        [DisplayName("Tỷ giá")]
+        public decimal? TyGia { get; set; }
+
+        // KH
+        [DisplayName("Mã KH")]
+        [MaxLength(5), Column(TypeName = "varchar(5)")]
+        public string MaKH { get; set; } // company: qltour
+
+        [DisplayName("Tên KH")]
+        [MaxLength(50), Column(TypeName = "nvarchar(50)")]
+        public string TenKH { get; set; }
+
+        [MaxLength(50), Column(TypeName = "nvarchar(50)")]
+        [DataType(DataType.EmailAddress, ErrorMessage = "Chưa đúng định dạng email")]
+        public string Email { get; set; }
+
+        [DisplayName("Điện thoại")]
+        [MaxLength(15), Column(TypeName = "varchar(15)")]
+        public string DienThoai { get; set; }
+
+        [MaxLength(15), Column(TypeName = "varchar(15)")]
+        public string Fax { get; set; }
+
+        [DisplayName("Địa chỉ")]
+        [MaxLength(250), Column(TypeName = "nvarchar(250)")]
+        public string DiaChi { get; set; }
+        // KH
 
         [Column(TypeName = "nvarchar(MAX)")]
         public string LogFile { get; set; }

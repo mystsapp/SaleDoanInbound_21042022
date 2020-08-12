@@ -1,6 +1,6 @@
 ﻿
-using Data.Models;
 using Data.Models_IB;
+using Data.Models_QLT;
 using Data.Models_QLTaiKhoan;
 using System;
 using System.Collections.Generic;
@@ -18,9 +18,13 @@ namespace Data.Repository
         ICacNoiDungHuyTourRepository cacNoiDungHuyTourRepository { get; }
         ILoaiTourRepository loaiTourRepository { get; }
         IChiNhanhRepository chiNhanhRepository { get; }
-        IDiemTQRepository diemTQRepository { get; }
         IThanhPhoRepository thanhPhoRepository { get; }
         IQuocGiaRepository quocGiaRepository { get; }
+        ITourRepository tourRepository { get; }
+        IThanhPhoForTuyenTQRepository thanhPhoForTuyenTQRepository { get; }
+        ITourKindRepository tourKindRepository { get; }
+
+        // Mr.Son Db
         ITourIBRepository tourIBRepository { get; }
         ICTVATRepository cTVATRepository { get; }
         IInvoiceRepository invoiceRepository { get; }
@@ -48,8 +52,12 @@ namespace Data.Repository
             cacNoiDungHuyTourRepository = new CacNoiDungHuyTourRepository(_context);
             loaiTourRepository = new LoaiTourRepository(_context);
             chiNhanhRepository = new ChiNhanhRepository(_qltourContext);
-            diemTQRepository = new DiemTQRepository(_qltourContext);
             thanhPhoRepository = new ThanhPhoRepository(_context);
+            tourRepository = new TourRepository(_context);
+            thanhPhoForTuyenTQRepository = new ThanhPhoForTuyenTQRepository(_qltaikhoanContext);
+            tourKindRepository = new TourKindRepository(_qltourContext);
+
+            // Mr.Son
             tourIBRepository = new TourIBRepository(_context);
             cTVATRepository = new CTVATRepository(_context);
             invoiceRepository = new InvoiceRepository(_context);
@@ -73,7 +81,6 @@ namespace Data.Repository
 
         public IChiNhanhRepository chiNhanhRepository { get; }
 
-        public IDiemTQRepository diemTQRepository { get; }
 
         public IThanhPhoRepository thanhPhoRepository { get; }
 
@@ -86,6 +93,12 @@ namespace Data.Repository
         public IChiTietBNRepository chiTietBNRepository { get; }
 
         public IBienNhanRepository bienNhanRepository { get; }
+
+        public ITourRepository tourRepository { get; }
+
+        public IThanhPhoForTuyenTQRepository thanhPhoForTuyenTQRepository { get; }
+
+        public ITourKindRepository tourKindRepository { get; }
 
         public async Task<int> Complete()
         {

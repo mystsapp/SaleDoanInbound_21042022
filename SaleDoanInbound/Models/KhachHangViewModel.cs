@@ -15,7 +15,7 @@ namespace SaleDoanInbound.Models
         public IPagedList<Company> Companies { get; set; }
         public Company Company { get; set; }
         public IEnumerable<Data.Models_QLT.Dmchinhanh> Dmchinhanhs { get; set; }
-        public IEnumerable<Quocgia> Quocgias { get; set; }
+        public IEnumerable<Data.Models_QLTaiKhoan.Quocgia> Quocgias { get; set; }
         public string StrUrl { get; set; }
         [Remote("IsStringNameAvailable", "KhachHangs", ErrorMessage = "Tên KH đã tồn tại")]
         [Required(ErrorMessage = "Tên không được để trống.")]

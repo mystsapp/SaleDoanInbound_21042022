@@ -1,5 +1,4 @@
 ﻿using Data.Interfaces;
-using Data.Models;
 using Data.Models_IB;
 using Data.Models_QLTaiKhoan;
 using Microsoft.EntityFrameworkCore;

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Data.Models
+namespace Data.Models_QLT
 {
     public partial class Sightseeing
     {
@@ -21,5 +21,7 @@ namespace Data.Models
         public string Chinhanh { get; set; }
         public string Httt { get; set; }
         public string Logfile { get; set; }
+
+        public virtual Dmdiemtq CodedtqNavigation { get; set; }
     }
 }
