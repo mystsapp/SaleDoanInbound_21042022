@@ -1192,8 +1192,8 @@ namespace Data.Models_QLT
                     .HasColumnName("operators")
                     .HasMaxLength(50);
 
-                entity.Property(e => e.Passtype)
-                    .HasColumnName("passtype")
+                entity.Property(e => e.PasstypeId)
+                    .HasColumnName("passtypeId")
                     .HasMaxLength(50);
 
                 entity.Property(e => e.Pax).HasColumnName("pax");

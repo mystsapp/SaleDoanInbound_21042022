@@ -1,22 +1,44 @@
-﻿using Data.Interfaces;
-using Data.Models_IB;
-using Data.Models_QLT;
+﻿using Data.Models_QLT;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using X.PagedList;
 
 namespace Data.Repository
 {
-    public interface IChiNhanhRepository : IRepository<Dmchinhanh>
+    public interface IDmChiNhanhRepository
     {
+        IEnumerable<Dmchinhanh> GetAll();
+
+        Task<Dmchinhanh> GetByIdAsync(int id);
+
+        IEnumerable<Dmchinhanh> Find(Func<Dmchinhanh, bool> predicate);
         IPagedList<Dmchinhanh> ListChiNhanh(string searchString, int? page);
     }
-    public class ChiNhanhRepository : Repository_QLT<Dmchinhanh>, IChiNhanhRepository
+    public class DmChiNhanhRepository : IDmChiNhanhRepository
     {
-        public ChiNhanhRepository(qltourContext qltourContext) : base(qltourContext)
+        private readonly qltourContext _qltourContext;
+
+        public DmChiNhanhRepository(qltourContext qltourContext)
         {
+            _qltourContext = qltourContext;
+        }
+
+        public IEnumerable<Dmchinhanh> Find(Func<Dmchinhanh, bool> predicate)
+        {
+            return _qltourContext.Dmchinhanh.Where(predicate);
+        }
+
+        public IEnumerable<Dmchinhanh> GetAll()
+        {
+            return _qltourContext.Dmchinhanh;
+        }
+
+        public async Task<Dmchinhanh> GetByIdAsync(int id)
+        {
+            return await _qltourContext.Dmchinhanh.FindAsync(id);
         }
 
         public IPagedList<Dmchinhanh> ListChiNhanh(string searchString, int? page)
@@ -31,8 +53,8 @@ namespace Data.Repository
             if (!string.IsNullOrEmpty(searchString))
             {
                 list = list.Where(x => x.Tencn.ToLower().Contains(searchString.ToLower()) ||
-                                       x.Macn.ToLower().Contains(searchString.ToLower())||
-                                       x.Thanhpho.ToLower().Contains(searchString.ToLower())||
+                                       x.Macn.ToLower().Contains(searchString.ToLower()) ||
+                                       x.Thanhpho.ToLower().Contains(searchString.ToLower()) ||
                                        x.Diachi.ToLower().Contains(searchString.ToLower()));
             }
 
@@ -56,6 +78,7 @@ namespace Data.Repository
 
 
             return listPaged;
+
 
         }
     }

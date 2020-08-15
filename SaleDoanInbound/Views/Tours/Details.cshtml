@@ -1,0 +1,281 @@
+﻿@model TourViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Chi Tiết</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item"><a asp-controller="KhachHangs" asp-route-strUrl="@Model.StrUrl" asp-action="DetailsRedirect">Danh Sách Tour</a></li>
+                    <li class="breadcrumb-item active">Chi tiết Tour</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-file text-info"></i> Chi tiết Tour</h3>
+
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+
+            <form method="post" autocomplete="off" id="frmTourCreate">
+                <div class="p-4 border rounded ">
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-group row">
+
+                        <div class="col-md-1">
+                            <label class="control-label">CNDH</label>
+                            <input asp-for="Tour.ChiNhanhDHId" class="form-control" readonly/>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label asp-for="Tour.PhongBanMaCode" class="control-label"></label>
+                            <input asp-for="Tour.PhongBanMaCode" class="form-control" readonly/>
+                        </div>
+
+                        <div class="col-md-2 ">
+                            <label asp-for="Tour.SKTreEm" class="control-label"></label>
+                            <input asp-for="Tour.SKTreEm" class="form-control" readonly/>
+                        </div>
+                        
+                        <div class="col-md-3">
+                            <label asp-for="Tour.Sgtcode" class="control-label"></label>
+                            <input asp-for="Tour.Sgtcode" class="form-control" readonly/>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label asp-for="Tour.NgayTao" class="control-label"></label>
+                            <input value="@Model.Tour.NgayTao.ToString("dd/MM/yyyy") " type="text" class="form-control" readonly/>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label asp-for="Tour.NguoiTao" class="control-label"></label>
+                            <input asp-for="Tour.NguoiTao" class="form-control" readonly/>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-md-3 chuDeTourGroup">
+                            <label asp-for="Tour.NgayDen" class="control-label"></label>
+                            <input type="text" asp-for="Tour.NgayDen" class="form-control maskInput" id="txtNgayDen" readonly/>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label asp-for="Tour.NgayDi" class="control-label"></label>
+                            <input type="text" asp-for="Tour.NgayDi" class="form-control maskInput" id="txtNgayDi" readonly/>
+                        </div>
+
+                        <div class="col-md-6 chuDeTourGroup">
+                            <label asp-for="Tour.ChuDeTour" class="control-label"></label>
+                            <input asp-for="Tour.ChuDeTour" class="form-control" id="txtChuDeTour" readonly/>
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group row">
+
+                        <div class="col-md-6">
+                            <label asp-for="Tour.TuyenTQ" class="control-label"></label>
+                            <input asp-for="Tour.TuyenTQ" class="form-control" readonly/>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label asp-for="Tour.SoKhachDK" class="control-label"></label>
+                            <input asp-for="Tour.SoKhachDK" class="form-control" id="txtSoKhachDK" readonly/>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label asp-for="Tour.SoHopDong" class="control-label"></label>
+                            <input asp-for="Tour.SoHopDong" class="form-control" readonly/>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-md-2">
+                            <label asp-for="Tour.DoanhThuDK" class="control-label"></label>
+                            <input type="text" asp-for="Tour.DoanhThuDK" class="form-control numbers" id="txtDoanhThuDK" asp-format="{0:0,0}" readonly/>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label asp-for="Tour.MaKH" class="control-label"></label>
+                            <input asp-for="Tour.MaKH" class="form-control" readonly/>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="Tour.TenKH" class="control-label"></label>
+                            <input asp-for="Tour.TenKH" class="form-control" id="txtTenKH" readonly/>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label asp-for="Tour.DienThoai" class="control-label"></label>
+                            <input asp-for="Tour.DienThoai" class="form-control" id="txtDienThoai" readonly/>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-md-4">
+                            <label asp-for="Tour.Email" class="control-label"></label>
+                            <input asp-for="Tour.Email" class="form-control" id="txtEmail" readonly/>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label asp-for="Tour.Fax" class="control-label"></label>
+                            <input asp-for="Tour.Fax" class="form-control" id="txtFax" readonly/>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="Tour.DiaChi" class="control-label"></label>
+                            <input asp-for="Tour.DiaChi" class="form-control" id="txtDiaChi" readonly/>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-md-3">
+                            <label asp-for="Tour.NgayDamPhan" class="control-label"></label>
+                            <input type="text" asp-for="Tour.NgayDamPhan" class="form-control maskInput" readonly/>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label asp-for="Tour.NgayKyHopDong" class="control-label"></label>
+                            <input type="text" asp-for="Tour.NgayKyHopDong" class="form-control maskInput" readonly/>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label asp-for="Tour.NguoiKyHopDong" class="control-label"></label>
+                            <input asp-for="Tour.NguoiKyHopDong" class="form-control" readonly/>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label asp-for="Tour.NguoiDaiDien" class="control-label"></label>
+                            <input type="text" asp-for="Tour.NguoiDaiDien" class="form-control maskInput" readonly/>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-md-3">
+                            <label asp-for="Tour.DoiTacNuocNgoai" class="control-label"></label>
+                            <input asp-for="Tour.DoiTacNuocNgoai" class="form-control" readonly/>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label asp-for="Tour.HinhThucGiaoDich" class="control-label"></label>
+                            <input asp-for="Tour.HinhThucGiaoDich" class="form-control " readonly/>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label asp-for="Tour.HanXuatVe" class="control-label"></label>
+                            <input type="text" asp-for="Tour.HanXuatVe" class="form-control maskInput" readonly/>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label asp-for="Tour.NgayThanhLyHD" class="control-label"></label>
+                            <input type="text" asp-for="Tour.NgayThanhLyHD" class="form-control maskInput" readonly/>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-md-3">
+                            <label asp-for="Tour.LoaiTourId" class="control-label"></label>
+                            <input asp-for="TourDto.TenLoaiTour" class="form-control" readonly/>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label asp-for="Tour.NguonTour" class="control-label"></label>
+                            <input asp-for="Tour.NguonTour" class="form-control" />
+                        </div>
+
+                        <div class="col-md-3">
+                            <label asp-for="Tour.SoKhachTT" class="control-label"></label>
+                            <input asp-for="Tour.SoKhachTT" class="form-control " readonly/>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label asp-for="Tour.DoanhThuTT" class="control-label"></label>
+                            <input type="text" asp-for="Tour.DoanhThuTT" class="form-control numbers" asp-format="{0:0,0}" readonly/>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-md-3">
+                            <label asp-for="Tour.NgayNhanDuTien" class="control-label"></label>
+                            <input type="text" asp-for="Tour.NgayNhanDuTien" class="form-control maskInput" readonly/>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label asp-for="Tour.LyDoNhanDu" class="control-label"></label>
+                            <input asp-for="Tour.LyDoNhanDu" class="form-control" readonly/>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label asp-for="Tour.LaiChuaVe" class="control-label"></label>
+                            <input type="text" asp-for="Tour.LaiChuaVe" class="form-control numbers" asp-format="{0:0,0}" readonly/>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label asp-for="Tour.LaiGomVe" class="control-label"></label>
+                            <input type="text" asp-for="Tour.LaiGomVe" class="form-control numbers" asp-format="{0:0,0}" readonly/>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i></button>
+                        <a class="btn btn-success" asp-controller="KhachHangs" asp-route-strUrl="@Model.StrUrl" asp-action="DetailsRedirect"><i class="fas fa-backward"></i></a>
+                    </div>
+                </div>
+            </form>
+
+
+
+        </div>
+        <!-- /.card-body -->
+
+    </div>
+    <!-- /.card -->
+
+</section>
+<!-- /.content -->
+
+@section Scripts{
+    
+}

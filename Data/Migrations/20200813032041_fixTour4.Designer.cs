@@ -4,14 +4,16 @@ using Data.Models_IB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
     [DbContext(typeof(SaleDoanIBDbContext))]
-    partial class SaleDoanIBDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200813032041_fixTour4")]
+    partial class fixTour4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1025,8 +1027,10 @@ namespace Data.Migrations
                     b.Property<int>("ChiNhanhDHId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ChiNhanhTaoId")
-                        .HasColumnType("int");
+                    b.Property<string>("ChiNhanhTaoId")
+                        .IsRequired()
+                        .HasColumnType("varchar(5)")
+                        .HasMaxLength(5);
 
                     b.Property<string>("ChuDeTour")
                         .IsRequired()
@@ -1036,6 +1040,10 @@ namespace Data.Migrations
                     b.Property<string>("ChuongTrinhTour")
                         .HasColumnType("nvarchar(300)")
                         .HasMaxLength(300);
+
+                    b.Property<string>("CompanyId")
+                        .HasColumnType("varchar(5)")
+                        .HasMaxLength(5);
 
                     b.Property<string>("DaiLy")
                         .HasColumnType("nvarchar(100)")
@@ -1111,7 +1119,6 @@ namespace Data.Migrations
                         .HasMaxLength(3);
 
                     b.Property<int?>("LoaiTourId")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("LogFile")
@@ -1122,7 +1129,6 @@ namespace Data.Migrations
                         .HasMaxLength(250);
 
                     b.Property<string>("MaKH")
-                        .IsRequired()
                         .HasColumnType("varchar(5)")
                         .HasMaxLength(5);
 
@@ -1187,11 +1193,7 @@ namespace Data.Migrations
                         .HasColumnType("nvarchar(250)")
                         .HasMaxLength(250);
 
-                    b.Property<string>("PhongBanMaCode")
-                        .HasColumnType("nvarchar(5)")
-                        .HasMaxLength(5);
-
-                    b.Property<int>("SKTreEm")
+                    b.Property<int?>("SKTreEm")
                         .HasColumnType("int");
 
                     b.Property<string>("Sgtcode")
@@ -1209,7 +1211,6 @@ namespace Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("TenKH")
-                        .IsRequired()
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
@@ -1221,7 +1222,6 @@ namespace Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("TuyenTQ")
-                        .IsRequired()
                         .HasColumnType("nvarchar(250)")
                         .HasMaxLength(250);
 

@@ -41,7 +41,7 @@ namespace SaleDoanInbound.Controllers
             //    }
             //}
 
-            ChiNhanhVM.Dmchinhanhs = _unitOfWork.chiNhanhRepository.ListChiNhanh(searchString, page);
+            ChiNhanhVM.Dmchinhanhs = _unitOfWork.dmChiNhanhRepository.ListChiNhanh(searchString, page);
             return View(ChiNhanhVM);
         }
 
@@ -52,7 +52,7 @@ namespace SaleDoanInbound.Controllers
             if (id == null)
                 return NotFound();
 
-            var chiNhanh = await _unitOfWork.chiNhanhRepository.GetByIdAsync(id);
+            var chiNhanh = await _unitOfWork.dmChiNhanhRepository.GetByIdAsync(id.Value);
             ChiNhanhVM.Dmchinhanh = chiNhanh;
             if (chiNhanh == null)
                 return NotFound();

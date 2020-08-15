@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using SaleDoanInbound.Models;
-using SaleDoanInbound.Utilities;
+using Data.Utilities;
 
 namespace SaleDoanInbound.Controllers
 {
@@ -26,7 +26,7 @@ namespace SaleDoanInbound.Controllers
             KhachHangVM = new KhachHangViewModel
             {
                 Company = new Data.Models_QLT.Company(),
-                Dmchinhanhs = _unitOfWork.chiNhanhRepository.GetAll(),
+                Dmchinhanhs = _unitOfWork.dmChiNhanhRepository.GetAll(),
                 Quocgias = _unitOfWork.quocGiaRepository.GetAll()
             };
         }

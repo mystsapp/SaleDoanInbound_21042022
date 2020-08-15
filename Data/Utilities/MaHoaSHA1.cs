@@ -4,7 +4,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 
-namespace SaleDoanInbound.Utilities
+namespace Data.Utilities
 {
     public static class MaHoaSHA1
     {

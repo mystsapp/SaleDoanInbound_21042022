@@ -43,11 +43,14 @@ namespace SaleDoanInbound
             services.AddTransient<IKhuVucTGRepository, KhuVucTGRepository>();
             services.AddTransient<ICacNoiDungHuyTourRepository, CacNoiDungHuyTourRepository>();
             services.AddTransient<ILoaiTourRepository, LoaiTourRepository>();
-            services.AddTransient<IChiNhanhRepository, ChiNhanhRepository>();
+            //services.AddTransient<IChiNhanhRepository, ChiNhanhRepository>();
             services.AddTransient<IThanhPhoRepository, ThanhPhoRepository>();
+            services.AddTransient<IDmChiNhanhRepository, DmChiNhanhRepository>();
+            services.AddTransient<IPhongBanRepository, PhongBanRepository>();
             services.AddTransient<ITourRepository, TourRepository>();
             services.AddTransient<IThanhPhoForTuyenTQRepository, ThanhPhoForTuyenTQRepository>();
             services.AddTransient<ITourKindRepository, TourKindRepository>();
+            services.AddTransient<ITourInfRepository, TourInfRepository>();
 
             // Mr.Son
             services.AddTransient<ITourIBRepository, TourIBRepository>();

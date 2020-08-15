@@ -8,11 +8,12 @@ using System.Linq;
 using System.Text;
 using X.PagedList;
 
+
 namespace Data.Repository
 {
     public interface ITourRepository : IRepository<Tour>
     {
-        IPagedList<TourDto> ListTour(string searchString, IEnumerable<Company> companies, IEnumerable<LoaiTour> loaiTours, IEnumerable<Dmchinhanh> chiNhanhs, IEnumerable<CacNoiDungHuyTour> cacNoiDungHuyTours, int? page);
+        IPagedList<TourDto> ListTour(string searchString, IEnumerable<Company> companies, IEnumerable<Tourkind> loaiTours, IEnumerable<Dmchinhanh> chiNhanhs, IEnumerable<CacNoiDungHuyTour> cacNoiDungHuyTours, int? page);
     }
     public class TourRepository : Repository<Tour>, ITourRepository
     {
@@ -20,7 +21,7 @@ namespace Data.Repository
         {
         }
 
-        public IPagedList<TourDto> ListTour(string searchString, IEnumerable<Company> companies, IEnumerable<LoaiTour> loaiTours, IEnumerable<Dmchinhanh> chiNhanhs, IEnumerable<CacNoiDungHuyTour> cacNoiDungHuyTours, int? page)
+        public IPagedList<TourDto> ListTour(string searchString, IEnumerable<Company> companies, IEnumerable<Tourkind> loaiTours, IEnumerable<Dmchinhanh> chiNhanhs, IEnumerable<CacNoiDungHuyTour> cacNoiDungHuyTours, int? page)
         {
             // return a 404 if user browses to before the first page
             if (page.HasValue && page < 1)
@@ -30,75 +31,76 @@ namespace Data.Repository
 
             var list = new List<TourDto>();
             var tours = _context.Tours;
-            if(tours != null)
+            if (tours == null)
             {
                 return null;
             }
             foreach (var item in tours)
             {
-                list.Add(new TourDto()
-                {
-                    Id = item.Id,
-                    Sgtcode = item.Sgtcode,
-                    KhachLe = item.KhachLe,
-                    ChuDeTour = item.ChuDeTour,
-                    ThiTruong = item.ThiTruong,
-                    NgayKhoa = item.NgayKhoa,
-                    NguoiKhoa = item.NguoiKhoa,
-                    NgayTao = item.NgayTao,
-                    NguoiTao = item.NguoiTao,
-                    NgayDen = item.NgayDen,
-                    NgayDi = item.NgayDi,
-                    TuyenTQ = item.TuyenTQ,
-                    SoKhachDK = item.SoKhachDK,
-                    DoanhThuDK = item.DoanhThuDK,
-                    CompanyName = companies.Where(x => x.CompanyId == item.CompanyId).FirstOrDefault().Name,
-                    NgayDamPhan = item.NgayDamPhan,
-                    HinhThucGiaoDich = item.HinhThucGiaoDich,
-                    NgayKyHopDong = item.NgayKyHopDong,
-                    NguoiKyHopDong = item.NguoiKyHopDong,
-                    HanXuatVe = item.HanXuatVe,
-                    NgayThanhLyHD = item.NgayThanhLyHD,
-                    SoKhachTT = item.SoKhachTT,
-                    SKTreEm = item.SKTreEm,
-                    DoanhThuTT = item.DoanhThuTT,
-                    ChuongTrinhTour = item.ChuongTrinhTour,
-                    NoiDungThanhLyHD = item.NoiDungThanhLyHD,
-                    DichVu = item.DichVu,
-                    DaiLy = item.DaiLy,
-                    TrangThai = item.TrangThai,
-                    NgaySua = item.NgaySua,
-                    NguoiSua = item.NguoiSua,
-                    TenLoaiTour = loaiTours.Where(x => x.Id == item.LoaiTourId).FirstOrDefault().TenLoaiTour,
-                    MaCNTao = chiNhanhs.Where(x => x.Id == item.ChiNhanhTaoId).FirstOrDefault().Macn,
-                    NgayNhanDuTien = item.NgayNhanDuTien,
-                    LyDoNhanDu = item.LyDoNhanDu,
-                    SoHopDong = item.SoHopDong,
-                    LaiChuaVe = item.LaiChuaVe,
-                    LaiGomVe = item.LaiGomVe,
-                    LaiThucTeGomVe = item.LaiThucTeGomVe,
-                    NguonTour = item.NguonTour,
-                    FileKhachDiTour = item.FileKhachDiTour,
-                    FileVeMayBay = item.FileVeMayBay,
-                    FileBienNhan = item.FileBienNhan,
-                    NguoiDaiDien = item.NguoiDaiDien,
-                    DoiTacNuocNgoai = item.DoiTacNuocNgoai,
-                    MaCNDH = chiNhanhs.Where(x => x.Id == item.ChiNhanhDHId).FirstOrDefault().Macn,
-                    NgayHuyTour = item.NgayHuyTour,
-                    NDHuyTour = cacNoiDungHuyTours.Where(x => x.Id == item.NDHuyTourId).FirstOrDefault().NoiDung,
-                    GhiChu = item.GhiChu,
-                    LoaiTien = item.LoaiTien,
-                    TyGia = item.TyGia,
-                    LogFile = item.LogFile
-                });
+                var tourDto = new TourDto();
+
+                tourDto.Id = item.Id;
+                tourDto.Sgtcode = item.Sgtcode;
+                tourDto.KhachLe = item.KhachLe;
+                tourDto.ChuDeTour = item.ChuDeTour;
+                tourDto.ThiTruong = item.ThiTruong;
+                tourDto.NgayKhoa = item.NgayKhoa;
+                tourDto.NguoiKhoa = item.NguoiKhoa;
+                tourDto.NgayTao = item.NgayTao;
+                tourDto.NguoiTao = item.NguoiTao;
+                tourDto.NgayDen = item.NgayDen;
+                tourDto.NgayDi = item.NgayDi;
+                tourDto.TuyenTQ = item.TuyenTQ;
+                tourDto.SoKhachDK = item.SoKhachDK;
+                tourDto.DoanhThuDK = item.DoanhThuDK;
+                tourDto.CompanyName = companies.Where(x => x.CompanyId == item.MaKH).FirstOrDefault().Name;
+                tourDto.NgayDamPhan = item.NgayDamPhan;
+                tourDto.HinhThucGiaoDich = item.HinhThucGiaoDich;
+                tourDto.NgayKyHopDong = item.NgayKyHopDong;
+                tourDto.NguoiKyHopDong = item.NguoiKyHopDong;
+                tourDto.HanXuatVe = item.HanXuatVe;
+                tourDto.NgayThanhLyHD = item.NgayThanhLyHD;
+                tourDto.SoKhachTT = item.SoKhachTT;
+                tourDto.SKTreEm = item.SKTreEm;
+                tourDto.DoanhThuTT = item.DoanhThuTT;
+                tourDto.ChuongTrinhTour = item.ChuongTrinhTour;
+                tourDto.NoiDungThanhLyHD = item.NoiDungThanhLyHD;
+                tourDto.DichVu = item.DichVu;
+                tourDto.DaiLy = item.DaiLy;
+                tourDto.TrangThai = item.TrangThai;
+                tourDto.NgaySua = item.NgaySua;
+                tourDto.NguoiSua = item.NguoiSua;
+                tourDto.TenLoaiTour = loaiTours.Where(x => x.Id == item.LoaiTourId).FirstOrDefault().TourkindInf;
+                tourDto.MaCNTao = (item.ChiNhanhTaoId == 0) ? "" : chiNhanhs.Where(x => x.Id == item.ChiNhanhTaoId).FirstOrDefault().Macn;
+                tourDto.NgayNhanDuTien = item.NgayNhanDuTien;
+                tourDto.LyDoNhanDu = item.LyDoNhanDu;
+                tourDto.SoHopDong = item.SoHopDong;
+                tourDto.LaiChuaVe = item.LaiChuaVe;
+                tourDto.LaiGomVe = item.LaiGomVe;
+                tourDto.LaiThucTeGomVe = item.LaiThucTeGomVe;
+                tourDto.NguonTour = item.NguonTour;
+                tourDto.FileKhachDiTour = item.FileKhachDiTour;
+                tourDto.FileVeMayBay = item.FileVeMayBay;
+                tourDto.FileBienNhan = item.FileBienNhan;
+                tourDto.NguoiDaiDien = item.NguoiDaiDien;
+                tourDto.DoiTacNuocNgoai = item.DoiTacNuocNgoai;
+                tourDto.MaCNDH = chiNhanhs.Where(x => x.Id == item.ChiNhanhDHId).FirstOrDefault().Macn;
+                tourDto.NgayHuyTour = item.NgayHuyTour;
+                tourDto.NDHuyTour = (item.NDHuyTourId == 0) ? "" : cacNoiDungHuyTours.Where(x => x.Id == item.NDHuyTourId).FirstOrDefault().NoiDung;
+                tourDto.GhiChu = item.GhiChu;
+                tourDto.LoaiTien = item.LoaiTien;
+                tourDto.TyGia = item.TyGia;
+                tourDto.LogFile = item.LogFile;
+
+                list.Add(tourDto);
             }
 
             if (!string.IsNullOrEmpty(searchString))
             {
                 list = list.Where(x => x.Sgtcode.ToLower().Contains(searchString.ToLower()) ||
                                        x.SoHopDong.ToLower().Contains(searchString.ToLower()) ||
-                                       x.ChuDeTour.ToLower().Contains(searchString.ToLower())||
-                                       x.TuyenTQ.ToLower().Contains(searchString.ToLower()) ).ToList();
+                                       x.ChuDeTour.ToLower().Contains(searchString.ToLower()) ||
+                                       x.TuyenTQ.ToLower().Contains(searchString.ToLower())).ToList();
             }
 
             var count = list.Count();

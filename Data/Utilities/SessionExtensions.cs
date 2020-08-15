@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SaleDoanInbound.Utilities
+namespace Data.Utilities
 {
     public static class SessionExtensions
     {

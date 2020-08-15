@@ -6,7 +6,7 @@ using Data.Repository;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using SaleDoanInbound.Models;
-using SaleDoanInbound.Utilities;
+using Data.Utilities;
 
 namespace SaleDoanInbound.Controllers
 {

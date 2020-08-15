@@ -12,6 +12,7 @@ namespace Data.Repository
         IEnumerable<Tourkind> GetAll();
 
         Task<Tourkind> GetByIdAsync(int id);
+        Tourkind GetById(int id);
 
         IEnumerable<Tourkind> Find(Func<Tourkind, bool> predicate);
     }
@@ -31,6 +32,11 @@ namespace Data.Repository
         public IEnumerable<Tourkind> GetAll()
         {
             return _qltourContext.Tourkind;
+        }
+
+        public Tourkind GetById(int id)
+        {
+            return _qltourContext.Tourkind.Find(id);
         }
 
         public async Task<Tourkind> GetByIdAsync(int id)

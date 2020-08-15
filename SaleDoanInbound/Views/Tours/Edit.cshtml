@@ -1,7 +1,7 @@
 ﻿@model TourViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edit";
 }
 
 <!-- Content Header (Page header) -->
@@ -9,13 +9,13 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Thêm Mới</h1>
+                <h1>Cập nhật</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="/">Home</a></li>
                     <li class="breadcrumb-item"><a asp-controller="KhachHangs" asp-route-strUrl="@Model.StrUrl" asp-action="DetailsRedirect">Danh Sách Tour</a></li>
-                    <li class="breadcrumb-item active">Thêm Mới Tour</li>
+                    <li class="breadcrumb-item active">Cập nhật Tour</li>
                 </ol>
             </div>
         </div>
@@ -28,7 +28,7 @@
     <!-- Default box -->
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title"><i class="fas fa-file text-info"></i> Thêm Mới Tour</h3>
+            <h3 class="card-title"><i class="fas fa-file text-info"></i> Cập nhật Tour</h3>
 
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
@@ -43,6 +43,11 @@
 
             <form method="post" autocomplete="off" id="frmTourCreate">
                 <div class="p-4 border rounded ">
+
+                    <input type="hidden" asp-for="Tour.Id" />
+                    <input type="hidden" asp-for="Tour.Sgtcode" />
+                    <input type="hidden" asp-for="Tour.NgayTao" />
+                    <input type="hidden" asp-for="Tour.NguoiTao" />
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                     <div class="form-group row">
@@ -126,7 +131,7 @@
 
                         <div class="col-md-2">
                             <label asp-for="Tour.DoanhThuDK" class="control-label"></label>
-                            <input type="text" asp-for="Tour.DoanhThuDK" class="form-control numbers" id="txtDoanhThuDK" />
+                            <input type="text" asp-for="Tour.DoanhThuDK" class="form-control numbers" id="txtDoanhThuDK" asp-format="{0:0,0}"/>
                             <span asp-validation-for="Tour.DoanhThuDK" class="text-danger"></span>
                         </div>
 
@@ -258,7 +263,7 @@
 
                         <div class="col-md-3">
                             <label asp-for="Tour.DoanhThuTT" class="control-label"></label>
-                            <input type="text" asp-for="Tour.DoanhThuTT" class="form-control numbers" />
+                            <input type="text" asp-for="Tour.DoanhThuTT" class="form-control numbers" asp-format="{0:0,0}"/>
                             <span asp-validation-for="Tour.DoanhThuTT" class="text-danger"></span>
                         </div>
 
@@ -280,13 +285,13 @@
 
                         <div class="col-md-3">
                             <label asp-for="Tour.LaiChuaVe" class="control-label"></label>
-                            <input type="text" asp-for="Tour.LaiChuaVe" class="form-control numbers" />
+                            <input type="text" asp-for="Tour.LaiChuaVe" class="form-control numbers" asp-format="{0:0,0}"/>
                             <span asp-validation-for="Tour.LaiChuaVe" class="text-danger"></span>
                         </div>
 
                         <div class="col-md-3">
                             <label asp-for="Tour.LaiGomVe" class="control-label"></label>
-                            <input type="text" asp-for="Tour.LaiGomVe" class="form-control numbers" />
+                            <input type="text" asp-for="Tour.LaiGomVe" class="form-control numbers" asp-format="{0:0,0}"/>
                             <span asp-validation-for="Tour.LaiGomVe" class="text-danger"></span>
                         </div>
 
@@ -320,10 +325,10 @@
             });
         </script>*@
 
-    <script src="~/js/Admin/Tours/createController.js"></script>
+    <script src="~/js/Admin/Tours/editController.js"></script>
 
     <!-- select2 and multi select2 (bootstrap4)-->
-    
+
     <script>
         //$('#txtMaKH').select2()
         $('.select2').select2()
@@ -442,5 +447,5 @@
         });
 
     </script>
-    
+
 }

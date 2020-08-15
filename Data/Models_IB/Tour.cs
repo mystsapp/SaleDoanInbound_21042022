@@ -17,6 +17,7 @@ namespace Data.Models_IB
 
         [DisplayName("Chủ đề tour")]
         [MaxLength(250), Column(TypeName = "nvarchar(250)")]
+        [Required]
         public string ChuDeTour { get; set; }
 
         // PhongBan -> qltour
@@ -37,24 +38,29 @@ namespace Data.Models_IB
         public string NguoiTao { get; set; }
 
         [DisplayName("Ngày đến")]
+        [Required(ErrorMessage = "Ngày đến không được trống")]
         public DateTime NgayDen { get; set; }
 
         [DisplayName("Ngày đi")]
+        [Required(ErrorMessage = "Ngày đi không được trống")]
         public DateTime NgayDi { get; set; }
 
         [DisplayName("Tuyến TQ")]
         [MaxLength(250), Column(TypeName = "nvarchar(250)")]
+        [Required(ErrorMessage = "Tuến TQ không được trống")]
         public string TuyenTQ { get; set; } // Reference --> qltour: tourinf | lay tu qltaikhoan.ThanhPho
 
         [DisplayName("Số khách DK")]
+        [Required(ErrorMessage = "SK không được trống")]
         public int SoKhachDK { get; set; }
 
         [DisplayName("Doanh thu DK")]
+        [Required(ErrorMessage = "Doanh thu không được trống")]
         public decimal DoanhThuDK { get; set; }
 
-        [DisplayName("Công ty")]
-        [MaxLength(5), Column(TypeName = "varchar(5)")]
-        public string CompanyId { get; set; } // in qltour -> khachhangscontroller
+        //[DisplayName("Công ty")]
+        //[MaxLength(5), Column(TypeName = "varchar(5)")]
+        //public string CompanyId { get; set; } // in qltour -> khachhangscontroller
 
         [DisplayName("Ngày đàm phán")]
         public DateTime NgayDamPhan { get; set; }
@@ -80,7 +86,7 @@ namespace Data.Models_IB
         public int SoKhachTT { get; set; }
 
         [DisplayName("SK trẻ em")]
-        public int? SKTreEm { get; set; }
+        public int SKTreEm { get; set; }
 
         [DisplayName("Doanh thu TT")]
         public decimal DoanhThuTT { get; set; }
@@ -111,6 +117,7 @@ namespace Data.Models_IB
         public string NguoiSua { get; set; }
 
         [DisplayName("Loại tour")]
+        [Required(ErrorMessage = "Loại tour không được trống")]
         public int? LoaiTourId { get; set; } // tourkind: qltour
 
         //[DisplayName("Điểm tham quan")]
@@ -118,11 +125,12 @@ namespace Data.Models_IB
         //public string DiemTQ { get; set; }
 
         [DisplayName("Chi nhánh")]
-        [MaxLength(5), Column(TypeName = "varchar(5)")]
         public int ChiNhanhTaoId { get; set; } // chinhanh tao: lay ben qltour
 
+        [DisplayName("Ngày nhận đủ tiền")]
         public DateTime NgayNhanDuTien { get; set; }
 
+        [DisplayName("Lý do")]
         [MaxLength(250), Column(TypeName = "nvarchar(250)")]
         public string LyDoNhanDu { get; set; }
 
@@ -130,7 +138,10 @@ namespace Data.Models_IB
         [MaxLength(50), Column(TypeName = "varchar(50)")]
         public string SoHopDong { get; set; }
 
+        [DisplayName("Lãi dự tính chưa gồm vé (vé máy bay/vé xe lửa)")]
         public decimal LaiChuaVe { get; set; }
+
+        [DisplayName("Lãi dự tính bao gồm vé (vé máy bay/vé xe lửa)")]
         public decimal LaiGomVe { get; set; }
         public decimal LaiThucTeGomVe { get; set; }
 
@@ -158,10 +169,15 @@ namespace Data.Models_IB
         [MaxLength(150), Column(TypeName = "nvarchar(150)")]
         public string DoiTacNuocNgoai { get; set; }
 
+        // chinhanh DH
         [DisplayName("Chi nhánh DH")]
         public int ChiNhanhDHId { get; set; } // dm chi nhanh: qltour
+        
+        [DisplayName("Thị trường / khối")]
+        [MaxLength(5), Column(TypeName = "nvarchar(5)")]
+        public string PhongBanMaCode { get; set; } // phong ban  : qltour
 
-        // --> them phong ban dieu hanh
+        // chinhanh DH
 
         [DisplayName("Ngày hủy tour")]
         public DateTime NgayHuyTour { get; set; }
@@ -183,10 +199,12 @@ namespace Data.Models_IB
         // KH
         [DisplayName("Mã KH")]
         [MaxLength(5), Column(TypeName = "varchar(5)")]
+        [Required(ErrorMessage = "Mã KH không được trống")]
         public string MaKH { get; set; } // company: qltour
 
         [DisplayName("Tên KH")]
         [MaxLength(50), Column(TypeName = "nvarchar(50)")]
+        [Required(ErrorMessage = "Tên KH không được trống")]
         public string TenKH { get; set; }
 
         [MaxLength(50), Column(TypeName = "nvarchar(50)")]

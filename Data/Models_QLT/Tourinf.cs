@@ -31,7 +31,7 @@ namespace Data.Models_QLT
         public string Entryby { get; set; } // dau ra
         public string Note { get; set; }
         public string Visa { get; set; } //
-        public string Passtype { get; set; } // loai khach
+        public string PasstypeId { get; set; } // loai khach
         public decimal? Revenue { get; set; } // doanh thu
         public string Currency { get; set; }
         public decimal? Rate { get; set; }

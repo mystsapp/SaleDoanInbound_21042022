@@ -17,12 +17,15 @@ namespace Data.Repository
         IKhuVucTGRepository khuVucTGRepository { get; }
         ICacNoiDungHuyTourRepository cacNoiDungHuyTourRepository { get; }
         ILoaiTourRepository loaiTourRepository { get; }
-        IChiNhanhRepository chiNhanhRepository { get; }
+        //IChiNhanhRepository chiNhanhRepository { get; }
+        IDmChiNhanhRepository dmChiNhanhRepository { get; }
+        IPhongBanRepository phongBanRepository { get; }
         IThanhPhoRepository thanhPhoRepository { get; }
         IQuocGiaRepository quocGiaRepository { get; }
         ITourRepository tourRepository { get; }
         IThanhPhoForTuyenTQRepository thanhPhoForTuyenTQRepository { get; }
         ITourKindRepository tourKindRepository { get; }
+        ITourInfRepository tourInfRepository { get; }
 
         // Mr.Son Db
         ITourIBRepository tourIBRepository { get; }
@@ -51,11 +54,14 @@ namespace Data.Repository
             khuVucTGRepository = new KhuVucTGRepository(_context);
             cacNoiDungHuyTourRepository = new CacNoiDungHuyTourRepository(_context);
             loaiTourRepository = new LoaiTourRepository(_context);
-            chiNhanhRepository = new ChiNhanhRepository(_qltourContext);
+            //chiNhanhRepository = new ChiNhanhRepository(_qltourContext);
+            dmChiNhanhRepository = new DmChiNhanhRepository(_qltourContext);
+            phongBanRepository = new PhongBanRepository(_qltourContext);
             thanhPhoRepository = new ThanhPhoRepository(_context);
             tourRepository = new TourRepository(_context);
             thanhPhoForTuyenTQRepository = new ThanhPhoForTuyenTQRepository(_qltaikhoanContext);
             tourKindRepository = new TourKindRepository(_qltourContext);
+            tourInfRepository = new TourInfRepository(_qltourContext);
 
             // Mr.Son
             tourIBRepository = new TourIBRepository(_context);
@@ -79,7 +85,7 @@ namespace Data.Repository
 
         public ILoaiTourRepository loaiTourRepository { get; }
 
-        public IChiNhanhRepository chiNhanhRepository { get; }
+        //public IChiNhanhRepository chiNhanhRepository { get; }
 
 
         public IThanhPhoRepository thanhPhoRepository { get; }
@@ -99,6 +105,12 @@ namespace Data.Repository
         public IThanhPhoForTuyenTQRepository thanhPhoForTuyenTQRepository { get; }
 
         public ITourKindRepository tourKindRepository { get; }
+
+        public IDmChiNhanhRepository dmChiNhanhRepository { get; }
+
+        public IPhongBanRepository phongBanRepository { get; }
+
+        public ITourInfRepository tourInfRepository { get; }
 
         public async Task<int> Complete()
         {

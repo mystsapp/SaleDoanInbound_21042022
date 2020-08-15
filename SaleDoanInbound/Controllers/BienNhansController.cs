@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Data.Repository;
 using Microsoft.AspNetCore.Mvc;
 using SaleDoanInbound.Models;
-using SaleDoanInbound.Utilities;
+using Data.Utilities;
 
 namespace SaleDoanInbound.Controllers
 {
