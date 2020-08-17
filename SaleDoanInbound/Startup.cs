@@ -48,6 +48,7 @@ namespace SaleDoanInbound
             services.AddTransient<IDmChiNhanhRepository, DmChiNhanhRepository>();
             services.AddTransient<IPhongBanRepository, PhongBanRepository>();
             services.AddTransient<ITourRepository, TourRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IThanhPhoForTuyenTQRepository, ThanhPhoForTuyenTQRepository>();
             services.AddTransient<ITourKindRepository, TourKindRepository>();
             services.AddTransient<ITourInfRepository, TourInfRepository>();

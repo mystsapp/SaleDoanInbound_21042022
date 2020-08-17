@@ -36,7 +36,8 @@ namespace Data.Models_IB
         public DbSet<Tour> Tours { get; set; }
         public DbSet<TourLog> TourLogs { get; set; }
         public DbSet<TourTMP> TourTMPs { get; set; }
-        //public DbSet<User> Users { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<LoginModel> LoginModels { get; set; }
         public DbSet<UsrKhuCN> UsrKhuCNs { get; set; }
         public DbSet<VeMayBay> VeMayBays { get; set; }
 

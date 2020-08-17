@@ -15,5 +15,6 @@ namespace Data.Models_IB
         [DisplayName("Miêu tả")]
         [MaxLength(250), Column(TypeName = "nvarchar(250)")]
         public string Description { get; set; }
+
     }
 }

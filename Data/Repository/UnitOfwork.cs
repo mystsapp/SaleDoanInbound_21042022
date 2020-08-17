@@ -23,6 +23,7 @@ namespace Data.Repository
         IThanhPhoRepository thanhPhoRepository { get; }
         IQuocGiaRepository quocGiaRepository { get; }
         ITourRepository tourRepository { get; }
+        IUserRepository userRepository { get; }
         IThanhPhoForTuyenTQRepository thanhPhoForTuyenTQRepository { get; }
         ITourKindRepository tourKindRepository { get; }
         ITourInfRepository tourInfRepository { get; }
@@ -59,6 +60,7 @@ namespace Data.Repository
             phongBanRepository = new PhongBanRepository(_qltourContext);
             thanhPhoRepository = new ThanhPhoRepository(_context);
             tourRepository = new TourRepository(_context);
+            userRepository = new UserRepository(_context);
             thanhPhoForTuyenTQRepository = new ThanhPhoForTuyenTQRepository(_qltaikhoanContext);
             tourKindRepository = new TourKindRepository(_qltourContext);
             tourInfRepository = new TourInfRepository(_qltourContext);
@@ -111,6 +113,8 @@ namespace Data.Repository
         public IPhongBanRepository phongBanRepository { get; }
 
         public ITourInfRepository tourInfRepository { get; }
+
+        public IUserRepository userRepository { get; }
 
         public async Task<int> Complete()
         {
