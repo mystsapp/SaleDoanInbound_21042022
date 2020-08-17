@@ -4,14 +4,16 @@ using Data.Models_IB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
     [DbContext(typeof(SaleDoanIBDbContext))]
-    partial class SaleDoanIBDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200817030304_fixTour10")]
+    partial class fixTour10
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1188,12 +1190,10 @@ namespace Data.Migrations
                         .HasMaxLength(250);
 
                     b.Property<string>("PhongBanMaCode")
-                        .IsRequired()
                         .HasColumnType("nvarchar(5)")
                         .HasMaxLength(5);
 
                     b.Property<string>("PhongDH")
-                        .IsRequired()
                         .HasColumnType("nvarchar(150)")
                         .HasMaxLength(150);
 

@@ -20,11 +20,6 @@ namespace Data.Models_IB
         [Required]
         public string ChuDeTour { get; set; }
 
-        // PhongBan -> qltour
-        [DisplayName("Thị Trường")]
-        [MaxLength(150), Column(TypeName = "nvarchar(150)")]
-        public string ThiTruong { get; set; }
-
         public DateTime? NgayKhoa { get; set; }
 
         [DisplayName("Người khóa")]
@@ -58,29 +53,25 @@ namespace Data.Models_IB
         [Required(ErrorMessage = "Doanh thu không được trống")]
         public decimal DoanhThuDK { get; set; }
 
-        //[DisplayName("Công ty")]
-        //[MaxLength(5), Column(TypeName = "varchar(5)")]
-        //public string CompanyId { get; set; } // in qltour -> khachhangscontroller
-
         [DisplayName("Ngày đàm phán")]
-        public DateTime NgayDamPhan { get; set; }
+        public DateTime? NgayDamPhan { get; set; }
 
         [DisplayName("Hình thức giao dịch")]
         [MaxLength(50), Column(TypeName = "nvarchar(50)")]
         public string HinhThucGiaoDich { get; set; }
 
         [DisplayName("Ngày ký hợp đồng")]
-        public DateTime NgayKyHopDong { get; set; }
+        public DateTime? NgayKyHopDong { get; set; }
 
         [DisplayName("Người ký HĐ")]
         [MaxLength(50), Column(TypeName = "nvarchar(50)")]
         public string NguoiKyHopDong { get; set; }
 
         [DisplayName("Hạn xuất vé")]
-        public DateTime HanXuatVe { get; set; }
+        public DateTime? HanXuatVe { get; set; }
 
         [DisplayName("Ngày thanh lý HĐ")]
-        public DateTime NgayThanhLyHD { get; set; }
+        public DateTime? NgayThanhLyHD { get; set; }
 
         [DisplayName("Số khách TT")]
         public int SoKhachTT { get; set; }
@@ -120,15 +111,11 @@ namespace Data.Models_IB
         [Required(ErrorMessage = "Loại tour không được trống")]
         public int? LoaiTourId { get; set; } // tourkind: qltour
 
-        //[DisplayName("Điểm tham quan")]
-        //[MaxLength(250), Column(TypeName = "nvarchar(250)")]
-        //public string DiemTQ { get; set; }
-
         [DisplayName("Chi nhánh")]
         public int ChiNhanhTaoId { get; set; } // chinhanh tao: lay ben qltour
 
         [DisplayName("Ngày nhận đủ tiền")]
-        public DateTime NgayNhanDuTien { get; set; }
+        public DateTime? NgayNhanDuTien { get; set; }
 
         [DisplayName("Lý do")]
         [MaxLength(250), Column(TypeName = "nvarchar(250)")]
@@ -171,16 +158,24 @@ namespace Data.Models_IB
 
         // chinhanh DH
         [DisplayName("Chi nhánh DH")]
+        [Required(ErrorMessage = "Chi nhánh DH không được để trống")]
         public int ChiNhanhDHId { get; set; } // dm chi nhanh: qltour
-        
+
+        // PhongBan -> qltour
+        [DisplayName("Thị Trường")]
+        [MaxLength(150), Column(TypeName = "nvarchar(150)")]
+        [Required(ErrorMessage = "Trường này không được để trống")]
+        public string PhongDH { get; set; }
+
         [DisplayName("Thị trường / khối")]
         [MaxLength(5), Column(TypeName = "nvarchar(5)")]
+        [Required(ErrorMessage = "Trường này không được để trống")]
         public string PhongBanMaCode { get; set; } // phong ban  : qltour
 
         // chinhanh DH
 
         [DisplayName("Ngày hủy tour")]
-        public DateTime NgayHuyTour { get; set; }
+        public DateTime? NgayHuyTour { get; set; }
 
         [DisplayName("Nội dung hủy")]
         public long NDHuyTourId { get; set; }

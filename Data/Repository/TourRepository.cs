@@ -43,7 +43,7 @@ namespace Data.Repository
                 tourDto.Sgtcode = item.Sgtcode;
                 tourDto.KhachLe = item.KhachLe;
                 tourDto.ChuDeTour = item.ChuDeTour;
-                tourDto.ThiTruong = item.ThiTruong;
+                tourDto.ThiTruong = item.PhongDH;
                 tourDto.NgayKhoa = item.NgayKhoa;
                 tourDto.NguoiKhoa = item.NguoiKhoa;
                 tourDto.NgayTao = item.NgayTao;
@@ -54,12 +54,27 @@ namespace Data.Repository
                 tourDto.SoKhachDK = item.SoKhachDK;
                 tourDto.DoanhThuDK = item.DoanhThuDK;
                 tourDto.CompanyName = companies.Where(x => x.CompanyId == item.MaKH).FirstOrDefault().Name;
-                tourDto.NgayDamPhan = item.NgayDamPhan;
+                if (item.NgayDamPhan.HasValue)
+                {
+                    tourDto.NgayDamPhan = item.NgayDamPhan.Value;
+                }
+                
                 tourDto.HinhThucGiaoDich = item.HinhThucGiaoDich;
-                tourDto.NgayKyHopDong = item.NgayKyHopDong;
+                if (item.NgayKyHopDong.HasValue)
+                {
+                    tourDto.NgayKyHopDong = item.NgayKyHopDong.Value;
+                }
+                
                 tourDto.NguoiKyHopDong = item.NguoiKyHopDong;
-                tourDto.HanXuatVe = item.HanXuatVe;
-                tourDto.NgayThanhLyHD = item.NgayThanhLyHD;
+                if (item.HanXuatVe.HasValue)
+                {
+                    tourDto.HanXuatVe = item.HanXuatVe.Value;
+                }
+                if (item.NgayThanhLyHD.HasValue)
+                {
+                    tourDto.NgayThanhLyHD = item.NgayThanhLyHD.Value;
+                }
+                
                 tourDto.SoKhachTT = item.SoKhachTT;
                 tourDto.SKTreEm = item.SKTreEm;
                 tourDto.DoanhThuTT = item.DoanhThuTT;
@@ -72,7 +87,11 @@ namespace Data.Repository
                 tourDto.NguoiSua = item.NguoiSua;
                 tourDto.TenLoaiTour = loaiTours.Where(x => x.Id == item.LoaiTourId).FirstOrDefault().TourkindInf;
                 tourDto.MaCNTao = (item.ChiNhanhTaoId == 0) ? "" : chiNhanhs.Where(x => x.Id == item.ChiNhanhTaoId).FirstOrDefault().Macn;
-                tourDto.NgayNhanDuTien = item.NgayNhanDuTien;
+                if (item.NgayNhanDuTien.HasValue)
+                {
+                    tourDto.NgayNhanDuTien = item.NgayNhanDuTien.Value;
+                }
+                
                 tourDto.LyDoNhanDu = item.LyDoNhanDu;
                 tourDto.SoHopDong = item.SoHopDong;
                 tourDto.LaiChuaVe = item.LaiChuaVe;
@@ -85,7 +104,11 @@ namespace Data.Repository
                 tourDto.NguoiDaiDien = item.NguoiDaiDien;
                 tourDto.DoiTacNuocNgoai = item.DoiTacNuocNgoai;
                 tourDto.MaCNDH = chiNhanhs.Where(x => x.Id == item.ChiNhanhDHId).FirstOrDefault().Macn;
-                tourDto.NgayHuyTour = item.NgayHuyTour;
+                if (item.NgayHuyTour.HasValue)
+                {
+                    tourDto.NgayHuyTour = item.NgayHuyTour.Value;
+                }
+                
                 tourDto.NDHuyTour = (item.NDHuyTourId == 0) ? "" : cacNoiDungHuyTours.Where(x => x.Id == item.NDHuyTourId).FirstOrDefault().NoiDung;
                 tourDto.GhiChu = item.GhiChu;
                 tourDto.LoaiTien = item.LoaiTien;

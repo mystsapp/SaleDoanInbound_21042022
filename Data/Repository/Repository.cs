@@ -106,5 +106,10 @@ namespace Data.Repository
         {
             return await _context.Set<T>().FindAsync(id);
         }
+
+        public T GetByIdAsNoTracking(Func<T, bool> predicate)
+        {
+            return _context.Set<T>().AsNoTracking().SingleOrDefault(predicate);
+        }
     }
 }
