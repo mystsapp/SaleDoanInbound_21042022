@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using X.PagedList;
 
 namespace Data.Repository
 {
@@ -14,6 +15,7 @@ namespace Data.Repository
     {
         LoginModel login(string username, string mact);
         int changepass(string username, string newpass);
+        IPagedList<User> ListUser(string searchString, int? page);
     }
     public class UserRepository : Repository<User>, IUserRepository
     {
@@ -37,6 +39,47 @@ namespace Data.Repository
             {
                 throw;
             }
+        }
+
+        public IPagedList<User> ListUser(string searchString, int? page)
+        {
+            // return a 404 if user browses to before the first page
+            if (page.HasValue && page < 1)
+                return null;
+
+            // retrieve list from database/whereverand
+
+            var list = GetAll().AsQueryable();
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                list = list.Where(x => x.Username.ToLower().Contains(searchString.ToLower()) ||
+                                       x.HoTen.ToLower().Contains(searchString.ToLower()) ||
+                                       x.MaCN.ToLower().Contains(searchString.ToLower()) ||
+                                       x.Email.ToLower().Contains(searchString.ToLower()) ||
+                                       x.DienThoai.ToLower().Contains(searchString.ToLower()));
+            }
+
+            var count = list.Count();
+
+            // page the list
+            const int pageSize = 2;
+            decimal aa = (decimal)list.Count() / (decimal)pageSize;
+            var bb = Math.Ceiling(aa);
+            if (page > bb)
+            {
+                page--;
+            }
+            page = (page == 0) ? 1 : page;
+            var listPaged = list.ToPagedList(page ?? 1, pageSize);
+            //if (page > listPaged.PageCount)
+            //    page--;
+            // return a 404 if user browses to pages beyond last page. special case first page if no items exist
+            if (listPaged.PageNumber != 1 && page.HasValue && page > listPaged.PageCount)
+                return null;
+
+
+            return listPaged;
+
         }
 
         public LoginModel login(string username, string mact)

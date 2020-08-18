@@ -21,12 +21,17 @@ namespace Data.Repository
         IDmChiNhanhRepository dmChiNhanhRepository { get; }
         IPhongBanRepository phongBanRepository { get; }
         IThanhPhoRepository thanhPhoRepository { get; }
-        IQuocGiaRepository quocGiaRepository { get; }
         ITourRepository tourRepository { get; }
         IUserRepository userRepository { get; }
+        IRoleRepository roleRepository { get; }
+        // qltour
         IThanhPhoForTuyenTQRepository thanhPhoForTuyenTQRepository { get; }
         ITourKindRepository tourKindRepository { get; }
         ITourInfRepository tourInfRepository { get; }
+        // qltaikhoan
+        IUserQLTaiKhoanRepository userQLTaiKhoanRepository { get; }
+        IQuocGiaRepository quocGiaRepository { get; }
+        IApplicationUserQLTaiKhoanRepository applicationUserQLTaiKhoanRepository { get; }
 
         // Mr.Son Db
         ITourIBRepository tourIBRepository { get; }
@@ -49,7 +54,7 @@ namespace Data.Repository
             _qltaikhoanContext = qltaikhoanContext;
 
             khachHangRepository = new KhachHangRepository(qltourContext);
-            quocGiaRepository = new QuocGiaRepository(_qltaikhoanContext);
+
             quanRepository = new QuanRepository(_context);
             dMNganhNgheRepository = new DMNganhNgheRepository(_context);
             khuVucTGRepository = new KhuVucTGRepository(_context);
@@ -61,9 +66,15 @@ namespace Data.Repository
             thanhPhoRepository = new ThanhPhoRepository(_context);
             tourRepository = new TourRepository(_context);
             userRepository = new UserRepository(_context);
+            roleRepository = new RoleRepository(_context);
+            // qltour
             thanhPhoForTuyenTQRepository = new ThanhPhoForTuyenTQRepository(_qltaikhoanContext);
             tourKindRepository = new TourKindRepository(_qltourContext);
             tourInfRepository = new TourInfRepository(_qltourContext);
+            // qltaikhoan
+            quocGiaRepository = new QuocGiaRepository(_qltaikhoanContext);
+            userQLTaiKhoanRepository = new UserQLTaiKhoanRepository(_qltaikhoanContext);
+            applicationUserQLTaiKhoanRepository = new ApplicationUserQLTaiKhoanRepository(_qltaikhoanContext);
 
             // Mr.Son
             tourIBRepository = new TourIBRepository(_context);
@@ -74,8 +85,6 @@ namespace Data.Repository
         }
 
         public IKhachHangRepository khachHangRepository { get; }
-
-        public IQuocGiaRepository quocGiaRepository { get; }
 
         public IQuanRepository quanRepository { get; }
 
@@ -115,6 +124,13 @@ namespace Data.Repository
         public ITourInfRepository tourInfRepository { get; }
 
         public IUserRepository userRepository { get; }
+
+        public IRoleRepository roleRepository { get; }
+
+        // qltaikhoan
+        public IUserQLTaiKhoanRepository userQLTaiKhoanRepository { get; }
+        public IQuocGiaRepository quocGiaRepository { get; }
+        public IApplicationUserQLTaiKhoanRepository applicationUserQLTaiKhoanRepository { get; }
 
         public async Task<int> Complete()
         {

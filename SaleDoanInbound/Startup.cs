@@ -37,7 +37,7 @@ namespace SaleDoanInbound
             services.AddDbContext<qltaikhoanContext>(options => options.UseSqlServer(Configuration.GetConnectionString("QLTaiKhoanConnection"))/*.EnableSensitiveDataLogging()*/);
 
             services.AddTransient<IKhachHangRepository, KhachHangRepository>();
-            services.AddTransient<IQuocGiaRepository, QuocGiaRepository>();
+
             services.AddTransient<IQuanRepository, QuanRepository>();
             services.AddTransient<IDMNganhNgheRepository, DMNganhNgheRepository>();
             services.AddTransient<IKhuVucTGRepository, KhuVucTGRepository>();
@@ -49,9 +49,17 @@ namespace SaleDoanInbound
             services.AddTransient<IPhongBanRepository, PhongBanRepository>();
             services.AddTransient<ITourRepository, TourRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IRoleRepository, RoleRepository>();
+
+            // qltour
             services.AddTransient<IThanhPhoForTuyenTQRepository, ThanhPhoForTuyenTQRepository>();
             services.AddTransient<ITourKindRepository, TourKindRepository>();
             services.AddTransient<ITourInfRepository, TourInfRepository>();
+
+            // qltaikhoan
+            services.AddTransient<IQuocGiaRepository, QuocGiaRepository>();
+            services.AddTransient<IUserQLTaiKhoanRepository, UserQLTaiKhoanRepository>();
+            services.AddTransient<IApplicationUserQLTaiKhoanRepository, ApplicationUserQLTaiKhoanRepository>();
 
             // Mr.Son
             services.AddTransient<ITourIBRepository, TourIBRepository>();

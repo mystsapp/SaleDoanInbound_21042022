@@ -13,7 +13,7 @@ namespace Data.Models_IB
         [MaxLength(50), Column(TypeName = "varchar(50)")]
         public string Username { get; set; }
 
-        [Required(ErrorMessage = "Password không được để trống.")]
+        //[Required(ErrorMessage = "Password không được để trống.")]
         [DataType(DataType.Password)]
         [MaxLength(50), Column(TypeName = "varchar(50)")]
         public string Password { get; set; }
@@ -73,9 +73,9 @@ namespace Data.Models_IB
         public bool BanTour { get; set; }
 
         [DisplayName("Role")]
-        public int IdRole { get; set; }
+        public int RoleId { get; set; }
 
-        [ForeignKey("IdRole")]
+        [ForeignKey("RoleId")]
         public virtual Role Role { get; set; }
 
         [DisplayName("Đổi MK")]
