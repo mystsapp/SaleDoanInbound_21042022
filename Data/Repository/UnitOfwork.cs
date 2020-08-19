@@ -32,6 +32,7 @@ namespace Data.Repository
         IUserQLTaiKhoanRepository userQLTaiKhoanRepository { get; }
         IQuocGiaRepository quocGiaRepository { get; }
         IApplicationUserQLTaiKhoanRepository applicationUserQLTaiKhoanRepository { get; }
+        IApplicationQLTaiKhoanRepository applicationQLTaiKhoanRepository { get; }
 
         // Mr.Son Db
         ITourIBRepository tourIBRepository { get; }
@@ -75,6 +76,7 @@ namespace Data.Repository
             quocGiaRepository = new QuocGiaRepository(_qltaikhoanContext);
             userQLTaiKhoanRepository = new UserQLTaiKhoanRepository(_qltaikhoanContext);
             applicationUserQLTaiKhoanRepository = new ApplicationUserQLTaiKhoanRepository(_qltaikhoanContext);
+            applicationQLTaiKhoanRepository = new ApplicationQLTaiKhoanRepository(_qltaikhoanContext);
 
             // Mr.Son
             tourIBRepository = new TourIBRepository(_context);
@@ -131,6 +133,8 @@ namespace Data.Repository
         public IUserQLTaiKhoanRepository userQLTaiKhoanRepository { get; }
         public IQuocGiaRepository quocGiaRepository { get; }
         public IApplicationUserQLTaiKhoanRepository applicationUserQLTaiKhoanRepository { get; }
+
+        public IApplicationQLTaiKhoanRepository applicationQLTaiKhoanRepository { get; }
 
         public async Task<int> Complete()
         {

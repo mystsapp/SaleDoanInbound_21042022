@@ -2,8 +2,11 @@
 using Data.Models_IB;
 using Data.Repository;
 using Data.Utilities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SaleDoanInbound.Models;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SaleDoanInbound.Controllers
@@ -97,5 +100,53 @@ namespace SaleDoanInbound.Controllers
             }
             return View();
         }
+
+        public IActionResult changepass()
+        {
+            var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
+            
+            changepassModel changpassmodel = new changepassModel
+            {
+                Username = user.Username
+            };
+            return View(changpassmodel);
+        }
+        [HttpPost]
+        public IActionResult changepass(changepassModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                string oldpass = HttpContext.Session.GetString("password");
+                if (MaHoaSHA1.EncodeSHA1(oldpass) != MaHoaSHA1.EncodeSHA1(model.Password))
+                {
+                    ModelState.AddModelError("", "Mật khẩu cũ không đúng");
+                }
+                else if (model.Newpassword != model.Confirmpassword)
+                {
+                    ModelState.AddModelError("", "Mật khẩu nhập lại không đúng.");
+                }
+                else
+                {
+                    int result = _unitOfWork.userRepository.changepass(model.Username, MaHoaSHA1.EncodeSHA1(model.Newpassword));
+                    if (result > 0)
+                    {
+                        return RedirectToAction("Index", "home");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Không thể đổi mật khẩu.");
+                    }
+                }
+
+            }
+            return View();
+        }
+
+        public IActionResult logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index", "Home");
+        }
+
     }
 }

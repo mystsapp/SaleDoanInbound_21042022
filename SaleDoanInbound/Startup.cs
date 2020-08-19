@@ -60,6 +60,7 @@ namespace SaleDoanInbound
             services.AddTransient<IQuocGiaRepository, QuocGiaRepository>();
             services.AddTransient<IUserQLTaiKhoanRepository, UserQLTaiKhoanRepository>();
             services.AddTransient<IApplicationUserQLTaiKhoanRepository, ApplicationUserQLTaiKhoanRepository>();
+            services.AddTransient<IApplicationQLTaiKhoanRepository, ApplicationQLTaiKhoanRepository>();
 
             // Mr.Son
             services.AddTransient<ITourIBRepository, TourIBRepository>();

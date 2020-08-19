@@ -105,18 +105,19 @@
                                         <div class="btn-group text-white" role="group">
                                             <a class="btn btn-primary btn-sm" title="Cập nhật" asp-action="Edit" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
                                             <a class="btn btn-success btn-sm" title="Chi tiết" asp-action="Details" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
-                                            <form asp-action="Delete" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" method="post">
+                                            <!-- ko cho xóa -->
+                                            @*<form asp-action="Delete" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" method="post">
 
-                                                <span id="confirmDeleteSpan_@item.Id" style="display: none">
-                                                    <span class="text-light">Xóa?</span>
-                                                    <button type="submit" class="btn btn-danger">Yes</button>
-                                                    <a href="#" class="btn btn-primary" onclick="confirmDelete('@item.Id', false)">No</a>
-                                                </span>
+                                                    <span id="confirmDeleteSpan_@item.Id" style="display: none">
+                                                        <span class="text-light">Xóa?</span>
+                                                        <button type="submit" class="btn btn-danger">Yes</button>
+                                                        <a href="#" class="btn btn-primary" onclick="confirmDelete('@item.Id', false)">No</a>
+                                                    </span>
 
-                                                <span id="deleteSpan_@item.Id">
-                                                    <a href="#" class="btn btn-danger btn-sm" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></a>
-                                                </span>
-                                            </form>
+                                                    <span id="deleteSpan_@item.Id">
+                                                        <a href="#" class="btn btn-danger btn-sm" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></a>
+                                                    </span>
+                                                </form>*@
                                         </div>
                                     </td>
 
