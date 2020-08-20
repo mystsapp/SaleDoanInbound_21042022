@@ -192,6 +192,10 @@ namespace Data.Models_IB
         public decimal? TyGia { get; set; }
 
         // KH
+        [DisplayName("Loại khách")]
+        [MaxLength(50), Column(TypeName = "nvarchar(50)")]
+        public string LoaiKhach { get; set; } // PasstypeId in qltour
+
         [DisplayName("Mã KH")]
         [MaxLength(5), Column(TypeName = "varchar(5)")]
         [Required(ErrorMessage = "Mã KH không được trống")]

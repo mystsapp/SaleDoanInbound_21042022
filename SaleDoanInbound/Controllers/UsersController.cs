@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Data.Models_IB;
+using Data.Models_QLT;
 using Data.Models_QLTaiKhoan;
 using Data.Repository;
 using Data.Utilities;
@@ -24,7 +26,8 @@ namespace SaleDoanInbound.Controllers
             {
                 User = new Data.Models_IB.User(),
                 Dmchinhanhs = _unitOfWork.dmChiNhanhRepository.GetAll(),
-                Roles = _unitOfWork.roleRepository.GetAll()
+                Roles = _unitOfWork.roleRepository.GetAll(),
+                PhongBans = PhongBan()
             };
         }
         public async Task<IActionResult> Index(string searchString = null, int page = 1)
@@ -59,6 +62,8 @@ namespace SaleDoanInbound.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreatePost(string strUrl)
         {
+            // from session
+            var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
 
             if (!ModelState.IsValid)
             {
@@ -68,9 +73,7 @@ namespace SaleDoanInbound.Controllers
             UserVM.User.Username = UserVM.TenCreate;
             UserVM.User.Password = MaHoaSHA1.EncodeSHA1(UserVM.User.Password); // ma hoa password
             UserVM.User.NgayTao = DateTime.Now;
-            UserVM.User.NguoiTao = "Admin";
-
-
+            UserVM.User.NguoiTao = user.Username;
 
             try
             {
@@ -82,7 +85,7 @@ namespace SaleDoanInbound.Controllers
                 if (qltkUserExist == null) // user trong qltk chua co
                 {
                     // INSERT INTO qltaikhoan.dbo.Users(username,[password],hoten,macn, trangthai,doimk,ngaydoimk,ngaytao,nguoitao)
-                    var qltkUser = new Users()
+                    var qltkUser = new Data.Models_QLTaiKhoan.Users()
                     {
                         Username = UserVM.User.Username,
                         Password = UserVM.User.Password,
@@ -92,16 +95,18 @@ namespace SaleDoanInbound.Controllers
                         Doimk = UserVM.User.DoiMK,
                         Ngaydoimk = UserVM.User.NgayDoiMK,
                         Ngaytao = UserVM.User.NgayTao,
-                        Nguoitao = UserVM.User.NguoiTao
+                        Nguoitao = UserVM.User.NguoiTao,
+                        Maphong = UserVM.User.PhongBanId
                     };
 
                     _unitOfWork.userQLTaiKhoanRepository.Create(qltkUser);
                     // INSERT INTO qltaikhoan.dbo.Users(username,[password],hoten,macn, trangthai,doimk,ngaydoimk,ngaytao,nguoitao)
 
                 }
+
                 // kiem tra ton tai user trong applicationuser qltk
                 var qltkApplicationUser = await _unitOfWork.applicationUserQLTaiKhoanRepository.GetByIdTwoKeyAsync(UserVM.User.Username, "015");
-                if(qltkApplicationUser == null)
+                if (qltkApplicationUser == null)
                 {
 
                     // 	insert into qltaikhoan.dbo.ApplicationUser(username, mact)
@@ -116,7 +121,7 @@ namespace SaleDoanInbound.Controllers
                 }
                 // kiem tra ton tai user trong applicationuser qltk
 
-                if(qltkUserExist != null && qltkApplicationUser != null)
+                if (qltkUserExist != null && qltkApplicationUser != null)
                 {
                     SetAlert("User này đã tồn tại trên QLTK và trên ứng dụng này", "warning");
                     UserVM = new UserViewModel()
@@ -161,13 +166,16 @@ namespace SaleDoanInbound.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, string strUrl)
         {
+            // from session
+            var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
+
             if (id != UserVM.User.Id)
                 return NotFound();
 
             if (ModelState.IsValid)
             {
                 UserVM.User.NgayCapNhat = DateTime.Now;
-                UserVM.User.NguoiCapNhat = "Admin";
+                UserVM.User.NguoiCapNhat = user.Username;
 
                 if (!string.IsNullOrEmpty(UserVM.User.Password)) // co' password moi
                 {
@@ -183,7 +191,7 @@ namespace SaleDoanInbound.Controllers
 
                     // update qltaikhoan.dbo.users 
                     // set[password] = i.[password],hoten = i.[Name],trangthai = i.TrangThai,doimk = i.Doimk,ngaydoimk = i.ngaydoimk
-                    var userQLTaiKhoan = new Users()
+                    var userQLTaiKhoan = new Data.Models_QLTaiKhoan.Users()
                     {
                         Username = UserVM.User.Username,
                         Password = UserVM.User.Password,
@@ -193,7 +201,8 @@ namespace SaleDoanInbound.Controllers
                         Doimk = UserVM.User.DoiMK,
                         Ngaydoimk = UserVM.User.NgayDoiMK,
                         Ngaytao = UserVM.User.NgayTao,
-                        Nguoitao = UserVM.User.NguoiTao
+                        Nguoitao = UserVM.User.NguoiTao,
+                        Maphong = UserVM.User.PhongBanId
                     };
                     var userQLTaiKhoanDb = _unitOfWork.userQLTaiKhoanRepository.GetByIdAsNoTracking(x => x.Username == UserVM.User.Username);
                     if (userQLTaiKhoanDb != null)
@@ -264,6 +273,14 @@ namespace SaleDoanInbound.Controllers
                 SetAlert(ex.Message, "error");
                 return Redirect(strUrl);
             }
+        }
+
+
+        private List<Data.Models_QLT.Phongban> PhongBan()
+        {
+            return _unitOfWork.phongBanRepository.GetAll()
+                                                 .Where(x => !string.IsNullOrEmpty(x.Macode) && 
+                                                       (x.Maphong == "IB" || x.Maphong == "TB")).ToList();
         }
 
         public JsonResult IsStringNameAvailable(string TenCreate)

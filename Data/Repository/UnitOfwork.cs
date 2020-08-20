@@ -28,6 +28,7 @@ namespace Data.Repository
         IThanhPhoForTuyenTQRepository thanhPhoForTuyenTQRepository { get; }
         ITourKindRepository tourKindRepository { get; }
         ITourInfRepository tourInfRepository { get; }
+        INgoaiTeRepository ngoaiTeRepository { get; }
         // qltaikhoan
         IUserQLTaiKhoanRepository userQLTaiKhoanRepository { get; }
         IQuocGiaRepository quocGiaRepository { get; }
@@ -72,6 +73,7 @@ namespace Data.Repository
             thanhPhoForTuyenTQRepository = new ThanhPhoForTuyenTQRepository(_qltaikhoanContext);
             tourKindRepository = new TourKindRepository(_qltourContext);
             tourInfRepository = new TourInfRepository(_qltourContext);
+            ngoaiTeRepository = new NgoaiTeRepository(_qltourContext);
             // qltaikhoan
             quocGiaRepository = new QuocGiaRepository(_qltaikhoanContext);
             userQLTaiKhoanRepository = new UserQLTaiKhoanRepository(_qltaikhoanContext);
@@ -115,7 +117,6 @@ namespace Data.Repository
 
         public ITourRepository tourRepository { get; }
 
-        public IThanhPhoForTuyenTQRepository thanhPhoForTuyenTQRepository { get; }
 
         public ITourKindRepository tourKindRepository { get; }
 
@@ -123,11 +124,15 @@ namespace Data.Repository
 
         public IPhongBanRepository phongBanRepository { get; }
 
-        public ITourInfRepository tourInfRepository { get; }
 
         public IUserRepository userRepository { get; }
 
         public IRoleRepository roleRepository { get; }
+
+        // qltour
+        public IThanhPhoForTuyenTQRepository thanhPhoForTuyenTQRepository { get; }
+        public ITourInfRepository tourInfRepository { get; }
+        public INgoaiTeRepository ngoaiTeRepository { get; }
 
         // qltaikhoan
         public IUserQLTaiKhoanRepository userQLTaiKhoanRepository { get; }
@@ -135,6 +140,7 @@ namespace Data.Repository
         public IApplicationUserQLTaiKhoanRepository applicationUserQLTaiKhoanRepository { get; }
 
         public IApplicationQLTaiKhoanRepository applicationQLTaiKhoanRepository { get; }
+
 
         public async Task<int> Complete()
         {

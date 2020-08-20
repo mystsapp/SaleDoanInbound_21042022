@@ -16,6 +16,7 @@ namespace SaleDoanInbound.Models
         public User User { get; set; }
         public IEnumerable<Dmchinhanh> Dmchinhanhs { get; set; }
         public IEnumerable<Role> Roles { get; set; }
+        public IEnumerable<Phongban> PhongBans { get; set; }
         public string StrUrl { get; set; }
 
         [Remote("IsStringNameAvailable", "Users", ErrorMessage = "Tên này đã tồn tại.")]

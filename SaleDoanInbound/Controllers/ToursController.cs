@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Data.Dtos;
+using Data.Models_IB;
 using Data.Models_QLT;
 using Data.Repository;
+using Data.Utilities;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Internal;
@@ -30,8 +32,10 @@ namespace SaleDoanInbound.Controllers
                 Tourkinds = _unitOfWork.tourKindRepository.GetAll(),
                 Dmchinhanhs = _unitOfWork.dmChiNhanhRepository.GetAll(),
                 NguonTours = NguonTour(),
+                LoaiKhachs = LoaiKhach(),
                 listPhongMacode = new List<Data.Models_QLT.Phongban>(),
                 listPhongDH = new List<Phongban>(),
+                Ngoaites = _unitOfWork.ngoaiTeRepository.GetAll(),
                 TourDto = new TourDto()
             };
         }
@@ -69,8 +73,8 @@ namespace SaleDoanInbound.Controllers
         public IActionResult Create(string strUrl)
         {
             TourVM.StrUrl = strUrl;
-            TourVM.Tour.ChiNhanhTaoId = 22; // for test
-            ViewBag.tuyenTQ = "BAL,BAN"; //"[BAL,BAN]"; // for test
+            
+            //ViewBag.tuyenTQ = "BAL,BAN"; //"[BAL,BAN]"; // for test
             // get list phong ban / thi truong
             GetListPhongBanMacode(); // sinh ma cho sgtgode
             // get list phong ban / thi truong
@@ -85,6 +89,9 @@ namespace SaleDoanInbound.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreatePost(string strUrl)
         {
+            // from login session
+            var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
+
             if (!ModelState.IsValid)
             {
                 TourVM = new TourViewModel()
@@ -101,16 +108,19 @@ namespace SaleDoanInbound.Controllers
 
             //TourVM.Tour = new Data.Models_IB.Tour();
             TourVM.Tour.TuyenTQ = TourVM.Tour.TuyenTQ.Replace(',', '-');
-            // create sgtcode
+            
+            TourVM.Tour.ChiNhanhTaoId = _unitOfWork.dmChiNhanhRepository.Find(x => x.Macn == user.MaCN).FirstOrDefault().Id;
+            TourVM.Tour.NgayTao = DateTime.Now;
+            TourVM.Tour.NguoiTao = user.Username;
 
-            var sgtCode = _unitOfWork.tourInfRepository.newSgtcode(Convert.ToDateTime(TourVM.Tour.NgayDen), "STS", TourVM.Tour.PhongBanMaCode);
+            // create sgtcode
+            var sgtCode = _unitOfWork.tourInfRepository.newSgtcode(Convert.ToDateTime(TourVM.Tour.NgayDen), user.MaCN, TourVM.Tour.PhongBanMaCode);
             TourVM.Tour.Sgtcode = sgtCode;
             // create sgtcode
 
-            TourVM.Tour.NgayTao = DateTime.Now;
-            TourVM.Tour.NguoiTao = "Admin";
 
             // insert tourinf
+
             Tourinf tourinf = new Tourinf();
 
             tourinf.Sgtcode = TourVM.Tour.Sgtcode;
@@ -122,19 +132,19 @@ namespace SaleDoanInbound.Controllers
             tourinf.Pax = TourVM.Tour.SoKhachTT;
             tourinf.Childern = TourVM.Tour.SKTreEm;
             tourinf.Reference = TourVM.Tour.TuyenTQ;
-            tourinf.Concernto = "HongVT"; // nguoi tao tour
+            tourinf.Concernto = user.Username; // nguoi tao tour
             tourinf.Operators = ""; // nguoi dieu hanh
             tourinf.Departoperator = TourVM.Tour.PhongDH; //departoperator : qltour / phong dh
-            tourinf.Departcreate = "IB";
+            tourinf.Departcreate = user.PhongBanId; // phong ban tao
             tourinf.Routing = "";
             //tourinf.Rate = TourVM.Tour.TyGia;
             tourinf.Rate = 1;
-            tourinf.Revenue = TourVM.Tour.DoanhThuTT;
-            tourinf.PasstypeId = ""; // tourIB ko co'
+            tourinf.Revenue = (TourVM.Tour.DoanhThuTT > 0) ? TourVM.Tour.DoanhThuTT : TourVM.Tour.DoanhThuDK;
+            tourinf.PasstypeId = TourVM.Tour.LoaiKhach; // Inbound or tau bien
             //tourinf.Currency = TourVM.Tour.LoaiTien;
-            tourinf.Currency = "VND";
-            tourinf.Chinhanh = "STS"; // chinhanh trien khai
-            tourinf.Chinhanhtao = "STS"; // user login
+            tourinf.Currency = TourVM.Tour.LoaiTien;
+            tourinf.Chinhanh = _unitOfWork.dmChiNhanhRepository.GetById(TourVM.Tour.ChiNhanhDHId).Macn; // chinhanh dieu hanh
+            tourinf.Chinhanhtao = user.MaCN; // user login
             tourinf.Createtour = TourVM.Tour.NgayTao;
             tourinf.Logfile = TourVM.Tour.LogFile;
 
@@ -143,7 +153,7 @@ namespace SaleDoanInbound.Controllers
             try
             {
                 // ghi log
-                TourVM.Tour.LogFile = "-User tạo: " + "Admin" + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
+                TourVM.Tour.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
 
                 _unitOfWork.tourRepository.Create(TourVM.Tour);
                 // insert tourinf
@@ -190,6 +200,9 @@ namespace SaleDoanInbound.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditPost(long id, string strUrl)
         {
+            // from login session
+            var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
+
             string temp = "", log = "";
 
             if (id != TourVM.Tour.Id)
@@ -198,7 +211,7 @@ namespace SaleDoanInbound.Controllers
             if (ModelState.IsValid)
             {
                 TourVM.Tour.NgaySua = DateTime.Now;
-                TourVM.Tour.NguoiSua = "Admin";
+                TourVM.Tour.NguoiSua = user.Username;
 
                 TourVM.Tour.TuyenTQ = TourVM.Tour.TuyenTQ.Replace(',', '-');
 
@@ -251,7 +264,7 @@ namespace SaleDoanInbound.Controllers
                     log = System.Environment.NewLine;
                     log += "=============";
                     log += System.Environment.NewLine;
-                    log += temp + " -User cập nhật tour: " + "Admin" + " vào lúc: " + System.DateTime.Now.ToString(); // username
+                    log += temp + " -User cập nhật tour: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // username
                     t.LogFile = t.LogFile + log;
                     TourVM.Tour.LogFile = t.LogFile;
                 }
@@ -268,18 +281,18 @@ namespace SaleDoanInbound.Controllers
                 tourinf.Pax = TourVM.Tour.SoKhachTT;
                 tourinf.Childern = TourVM.Tour.SKTreEm;
                 tourinf.Reference = TourVM.Tour.TuyenTQ;
-                tourinf.Concernto = "HongVT"; // nguoi tao tour
+                tourinf.Concernto = TourVM.Tour.NguoiTao; // nguoi tao tour
                 tourinf.Operators = "";
                 tourinf.Departoperator = TourVM.Tour.PhongDH; //departoperator : qltour
                 tourinf.Departcreate = "IB";
                 tourinf.Routing = "";
                 //tourinf.Rate = TourVM.Tour.TyGia;
                 tourinf.Rate = 1;
-                tourinf.Revenue = TourVM.Tour.DoanhThuTT;
+                tourinf.Revenue = (TourVM.Tour.DoanhThuTT > 0) ? TourVM.Tour.DoanhThuTT : TourVM.Tour.DoanhThuDK;
                 tourinf.PasstypeId = ""; // tourIB ko co'
-                tourinf.Currency = "VND";
-                tourinf.Chinhanh = "STS"; // chinhanh trien khai
-                tourinf.Chinhanhtao = "STS"; // user login
+                tourinf.Currency = TourVM.Tour.LoaiTien;
+                tourinf.Chinhanh = _unitOfWork.dmChiNhanhRepository.GetById(TourVM.Tour.ChiNhanhDHId).Macn; // chinhanh trien khai
+                tourinf.Chinhanhtao = _unitOfWork.dmChiNhanhRepository.GetById(TourVM.Tour.ChiNhanhTaoId).Macn; // user login
                 tourinf.Createtour = TourVM.Tour.NgayTao;
                 tourinf.Logfile = TourVM.Tour.LogFile;
 
@@ -460,6 +473,16 @@ namespace SaleDoanInbound.Controllers
             {
                 new ListViewModel(){id = 1, Name = "Nội bộ" },
                 new ListViewModel(){id = 2, Name = "TMDT" },
+
+            };
+        }
+        
+        private List<ListViewModel> LoaiKhach()
+        {
+            return new List<ListViewModel>()
+            {
+                new ListViewModel(){id = 1, Name = "INBOUND" },
+                new ListViewModel(){id = 2, Name = "TÀU BIỂN" },
 
             };
         }

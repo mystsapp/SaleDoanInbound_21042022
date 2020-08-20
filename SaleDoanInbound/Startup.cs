@@ -55,6 +55,7 @@ namespace SaleDoanInbound
             services.AddTransient<IThanhPhoForTuyenTQRepository, ThanhPhoForTuyenTQRepository>();
             services.AddTransient<ITourKindRepository, TourKindRepository>();
             services.AddTransient<ITourInfRepository, TourInfRepository>();
+            services.AddTransient<INgoaiTeRepository, NgoaiTeRepository>();
 
             // qltaikhoan
             services.AddTransient<IQuocGiaRepository, QuocGiaRepository>();

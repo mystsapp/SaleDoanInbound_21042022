@@ -13,6 +13,7 @@ namespace Data.Repository
         IEnumerable<Dmchinhanh> GetAll();
 
         Task<Dmchinhanh> GetByIdAsync(int id);
+        Dmchinhanh GetById(int id);
 
         IEnumerable<Dmchinhanh> Find(Func<Dmchinhanh, bool> predicate);
         IPagedList<Dmchinhanh> ListChiNhanh(string searchString, int? page);
@@ -34,6 +35,11 @@ namespace Data.Repository
         public IEnumerable<Dmchinhanh> GetAll()
         {
             return _qltourContext.Dmchinhanh;
+        }
+
+        public Dmchinhanh GetById(int id)
+        {
+            return _qltourContext.Dmchinhanh.Find(id);
         }
 
         public async Task<Dmchinhanh> GetByIdAsync(int id)

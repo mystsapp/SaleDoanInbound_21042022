@@ -68,6 +68,10 @@ namespace Data.Models_IB
         [DisplayName("Chi nhánh")]
         [MaxLength(5), Column(TypeName = "varchar(5)")]
         public string MaCN { get; set; }
+        
+        [DisplayName("Phòng ban")]
+        [MaxLength(50), Column(TypeName = "nvarchar(50)")]
+        public string PhongBanId { get; set; } // in qltour
 
         [DisplayName("Bán tour")]
         public bool BanTour { get; set; }

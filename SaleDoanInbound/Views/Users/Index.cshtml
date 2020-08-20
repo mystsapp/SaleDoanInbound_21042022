@@ -85,6 +85,7 @@
                             <th>@Html.DisplayNameFor(m => m.Users.FirstOrDefault().HoTen)</th>
                             <th>@Html.DisplayNameFor(m => m.Users.FirstOrDefault().MaCN)</th>
                             <th>@Html.DisplayNameFor(m => m.Users.FirstOrDefault().RoleId)</th>
+                            <th>@Html.DisplayNameFor(m => m.Users.FirstOrDefault().PhongBanId)</th>
                             <th>@Html.DisplayNameFor(m => m.Users.FirstOrDefault().TrangThai)</th>
 
                         </tr>
@@ -118,6 +119,7 @@
                                 <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.HoTen)</td>
                                 <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.MaCN)</td>
                                 <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Role.RoleName)</td>
+                                <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.PhongBanId)</td>
                                 <td class="tdVal" data-id="@item.Id">
                                     @if (item.TrangThai)
                                     {
