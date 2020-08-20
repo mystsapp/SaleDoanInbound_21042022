@@ -7,15 +7,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using X.PagedList;
 
 namespace Data.Repository
 {
     public interface IUserRepository : IRepository<User>
     {
-        LoginModel login(string username, string mact);
-        int changepass(string username, string newpass);
-        IPagedList<User> ListUser(string searchString, int? page);
+        //LoginModel login(string username, string mact);
+        //int changepass(string username, string newpass);
+        Task <IPagedList<User>> ListUser(string searchString, int? page);
     }
     public class UserRepository : Repository<User>, IUserRepository
     {
@@ -23,25 +24,25 @@ namespace Data.Repository
         {
         }
 
-        public int changepass(string username, string newpass)
-        {
-            var parammeter = new SqlParameter[]
-             {
-                    new SqlParameter("@username",username),
-                    new SqlParameter("@newpass",newpass)
-             };
+        //public int changepass(string username, string newpass)
+        //{
+        //    var parammeter = new SqlParameter[]
+        //     {
+        //            new SqlParameter("@username",username),
+        //            new SqlParameter("@newpass",newpass)
+        //     };
 
-            try
-            {
-                return _context.Database.ExecuteSqlRaw("spChangepass @username, @newpass", parammeter);
-            }
-            catch
-            {
-                throw;
-            }
-        }
+        //    try
+        //    {
+        //        return _context.Database.ExecuteSqlRaw("spChangepass @username, @newpass", parammeter);
+        //    }
+        //    catch
+        //    {
+        //        throw;
+        //    }
+        //}
 
-        public IPagedList<User> ListUser(string searchString, int? page)
+        public async System.Threading.Tasks.Task<IPagedList<User>> ListUser(string searchString, int? page)
         {
             // return a 404 if user browses to before the first page
             if (page.HasValue && page < 1)
@@ -49,7 +50,7 @@ namespace Data.Repository
 
             // retrieve list from database/whereverand
 
-            var list = GetAll().AsQueryable();
+            var list = await GetAllIncludeOneAsync(x => x.Role);
             if (!string.IsNullOrEmpty(searchString))
             {
                 list = list.Where(x => x.Username.ToLower().Contains(searchString.ToLower()) ||
@@ -82,23 +83,23 @@ namespace Data.Repository
 
         }
 
-        public LoginModel login(string username, string mact)
-        {
-            var parammeter = new SqlParameter[]
-           {
-                new SqlParameter("@username",username),
-                new SqlParameter("@mact",mact)
-           };
+        //public LoginModel login(string username, string mact)
+        //{
+        //    var parammeter = new SqlParameter[]
+        //   {
+        //        new SqlParameter("@username",username),
+        //        new SqlParameter("@mact",mact)
+        //   };
 
-            var result = _context.LoginModels.FromSqlRaw("spLogin @username, @mact", parammeter).SingleOrDefault();
-            if (result == null)
-            {
-                return null;
-            }
-            else
-            {
-                return result;
-            }
-        }
+        //    var result = _context.LoginModels.FromSqlRaw("spLogin @username, @mact", parammeter).SingleOrDefault();
+        //    if (result == null)
+        //    {
+        //        return null;
+        //    }
+        //    else
+        //    {
+        //        return result;
+        //    }
+        //}
     }
 }

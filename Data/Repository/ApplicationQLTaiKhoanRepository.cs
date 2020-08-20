@@ -8,6 +8,7 @@ namespace Data.Repository
 {
     public interface IApplicationQLTaiKhoanRepository
     {
+        IEnumerable<Application> GetAll();
         Task<Application> GetByIdAsync(string id);
 
     }
@@ -19,6 +20,12 @@ namespace Data.Repository
         {
             _qltaikhoanContext = qltaikhoanContext;
         }
+
+        public IEnumerable<Application> GetAll()
+        {
+            return _qltaikhoanContext.Application;
+        }
+
         public async Task<Application> GetByIdAsync(string id)
         {
             return await _qltaikhoanContext.Application.FindAsync(id);

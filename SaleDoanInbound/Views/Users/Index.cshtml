@@ -102,7 +102,7 @@
                                         <form asp-action="Delete" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" method="post">
 
                                             <span id="confirmDeleteSpan_@item.Id" style="display: none">
-                                                <span class="text-light">Xóa?</span>
+                                                <span class="text-dark">Xóa?</span>
                                                 <button type="submit" class="btn btn-danger">Yes</button>
                                                 <a href="#" class="btn btn-primary" onclick="confirmDelete('@item.Id', false)">No</a>
                                             </span>

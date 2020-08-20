@@ -1,4 +1,4 @@
-﻿@model Data.Models_IB.LoginModel
+﻿@model changepassModel
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout_Login.cshtml";
@@ -7,7 +7,7 @@
 
 <div class="login-box">
     <div class="login-logo">
-        <a href="#"><b>Đăng nhập</b></a>
+        <a href="#"><b>Đổi mật khẩu</b></a>
     </div>
     <!-- /.login-logo -->
     <div class="card">
@@ -18,7 +18,7 @@
                 <div asp-validation-summary="All" class="text-danger"></div>
 
                 <div class="input-group mb-3">
-                    <input asp-for="Username" class="form-control" placeholder="Username">
+                    <input asp-for="Username" class="form-control" placeholder="Username" readonly>
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-envelope"></span>
@@ -34,11 +34,29 @@
                         </div>
                     </div>
                 </div>
+                
+                <div class="input-group mb-3">
+                    <input type="password" asp-for="Newpassword" class="form-control" placeholder="New Password">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="input-group mb-3">
+                    <input type="password" asp-for="Confirmpassword" class="form-control" placeholder="Confirm Password">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="row">
                     <!-- /.col -->
                     <div class="col-md-12">
-                        <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                        <button type="submit" class="btn btn-primary btn-block">Đồng ý</button>
                     </div>
                     <!-- /.col -->
                 </div>

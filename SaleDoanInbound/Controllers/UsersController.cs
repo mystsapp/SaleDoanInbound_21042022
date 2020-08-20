@@ -27,7 +27,7 @@ namespace SaleDoanInbound.Controllers
                 Roles = _unitOfWork.roleRepository.GetAll()
             };
         }
-        public IActionResult Index(string searchString = null, int page = 1)
+        public async Task<IActionResult> Index(string searchString = null, int page = 1)
         {
             UserVM.StrUrl = UriHelper.GetDisplayUrl(Request);
             ViewBag.searchString = searchString;
@@ -45,7 +45,7 @@ namespace SaleDoanInbound.Controllers
             //    }
             //}
 
-            UserVM.Users = _unitOfWork.userRepository.ListUser(searchString, page);
+            UserVM.Users = await _unitOfWork.userRepository.ListUser(searchString, page);
             return View(UserVM);
         }
 
@@ -228,8 +228,8 @@ namespace SaleDoanInbound.Controllers
             if (id == null)
                 return NotFound();
 
-            var user = await _unitOfWork.userRepository.GetByIdAsync(id);
-            UserVM.User = user;
+            var user = await _unitOfWork.userRepository.FindIncludeOneAsync(x => x.Role, y => y.Id == id);
+            UserVM.User = user.FirstOrDefault();
             if (user == null)
                 return NotFound();
 

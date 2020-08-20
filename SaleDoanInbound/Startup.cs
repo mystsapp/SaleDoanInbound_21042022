@@ -70,6 +70,12 @@ namespace SaleDoanInbound
             services.AddTransient<IChiTietBNRepository, ChiTietBNRepository>();
             services.AddTransient<IUnitOfWork, UnitOfwork>();
 
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.HttpOnly = true;
+            });
+
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddControllersWithViews();
         }
@@ -90,6 +96,7 @@ namespace SaleDoanInbound
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseSession();
 
             var supportedCultures = new[] { new CultureInfo("en-AU") };
             app.UseRequestLocalization(new RequestLocalizationOptions
