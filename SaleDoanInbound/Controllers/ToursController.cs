@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Data.Dtos;
@@ -7,10 +8,13 @@ using Data.Models_IB;
 using Data.Models_QLT;
 using Data.Repository;
 using Data.Utilities;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Internal;
 using Newtonsoft.Json;
+using OfficeOpenXml;
 using SaleDoanInbound.Models;
 
 namespace SaleDoanInbound.Controllers
@@ -18,12 +22,16 @@ namespace SaleDoanInbound.Controllers
     public class ToursController : BaseController
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IWebHostEnvironment _webHostEnvironment;
+
         [BindProperty]
         public TourViewModel TourVM { get; set; }
 
-        public ToursController(IUnitOfWork unitOfWork)
+        public ToursController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
         {
             _unitOfWork = unitOfWork;
+            _webHostEnvironment = webHostEnvironment;
+
             TourVM = new TourViewModel()
             {
                 Tour = new Data.Models_IB.Tour(),
@@ -72,13 +80,18 @@ namespace SaleDoanInbound.Controllers
 
         public IActionResult Create(string strUrl)
         {
+            // from session
+            var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
+
             TourVM.StrUrl = strUrl;
-            
+            TourVM.Tour.SoHopDong = "";
+            ViewBag.chiNhanhTaoId = _unitOfWork.dmChiNhanhRepository.Find(x => x.Macn == user.MaCN).FirstOrDefault().Id;
+
             //ViewBag.tuyenTQ = "BAL,BAN"; //"[BAL,BAN]"; // for test
             // get list phong ban / thi truong
-            GetListPhongBanMacode(); // sinh ma cho sgtgode
-            // get list phong ban / thi truong
-            
+            GetListPhongBanMacode(user.PhongBanId); // sinh ma cho sgtgode / phongbanid = maphong in qltour
+                                                    // get list phong ban / thi truong
+
             // get list phong ban / dh 
             GetListPhongBanDH(); // departoperator (qltour)
             // get list phong ban / dh
@@ -101,14 +114,20 @@ namespace SaleDoanInbound.Controllers
                     Companies = _unitOfWork.khachHangRepository.GetAll(),
                     Tourkinds = _unitOfWork.tourKindRepository.GetAll(),
                     Dmchinhanhs = _unitOfWork.dmChiNhanhRepository.GetAll(),
-                    NguonTours = NguonTour()
+                    LoaiKhachs = LoaiKhach(),
+                    listPhongMacode = new List<Data.Models_QLT.Phongban>(),
+                    listPhongDH = new List<Phongban>(),
+                    Ngoaites = _unitOfWork.ngoaiTeRepository.GetAll(),
+                    NguonTours = NguonTour(),
+                    StrUrl = strUrl
                 };
+
                 return View(TourVM);
             }
 
             //TourVM.Tour = new Data.Models_IB.Tour();
             TourVM.Tour.TuyenTQ = TourVM.Tour.TuyenTQ.Replace(',', '-');
-            
+
             TourVM.Tour.ChiNhanhTaoId = _unitOfWork.dmChiNhanhRepository.Find(x => x.Macn == user.MaCN).FirstOrDefault().Id;
             TourVM.Tour.NgayTao = DateTime.Now;
             TourVM.Tour.NguoiTao = user.Username;
@@ -118,6 +137,8 @@ namespace SaleDoanInbound.Controllers
             TourVM.Tour.Sgtcode = sgtCode;
             // create sgtcode
 
+            // ghi log
+            TourVM.Tour.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
 
             // insert tourinf
 
@@ -138,7 +159,7 @@ namespace SaleDoanInbound.Controllers
             tourinf.Departcreate = user.PhongBanId; // phong ban tao
             tourinf.Routing = "";
             //tourinf.Rate = TourVM.Tour.TyGia;
-            tourinf.Rate = 1;
+            tourinf.Rate = TourVM.Tour.TyGia;
             tourinf.Revenue = (TourVM.Tour.DoanhThuTT > 0) ? TourVM.Tour.DoanhThuTT : TourVM.Tour.DoanhThuDK;
             tourinf.PasstypeId = TourVM.Tour.LoaiKhach; // Inbound or tau bien
             //tourinf.Currency = TourVM.Tour.LoaiTien;
@@ -152,8 +173,6 @@ namespace SaleDoanInbound.Controllers
 
             try
             {
-                // ghi log
-                TourVM.Tour.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
 
                 _unitOfWork.tourRepository.Create(TourVM.Tour);
                 // insert tourinf
@@ -161,6 +180,11 @@ namespace SaleDoanInbound.Controllers
                 // insert tourinf
                 await _unitOfWork.Complete();
                 SetAlert("Thêm mới thành công.", "success");
+
+                // upload excel
+                UploadExcelAsync(TourVM.Tour.Sgtcode);
+                // upload excel
+
                 return Redirect(strUrl);
             }
             catch (Exception ex)
@@ -173,11 +197,16 @@ namespace SaleDoanInbound.Controllers
 
         public async Task<IActionResult> Edit(long id, string strUrl)
         {
+            // from login session
+            var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
+            ViewBag.chiNhanhSession = _unitOfWork.dmChiNhanhRepository.Find(x => x.Macn == user.MaCN).FirstOrDefault().Id; // for compare
+
             TourVM.StrUrl = strUrl;
             if (id == 0)
                 return NotFound();
 
             TourVM.Tour = await _unitOfWork.tourRepository.GetByLongIdAsync(id);
+            ViewBag.maCn = _unitOfWork.dmChiNhanhRepository.GetById(TourVM.Tour.ChiNhanhDHId).Macn; // for view
 
             if (TourVM.Tour == null)
                 return NotFound();
@@ -187,7 +216,7 @@ namespace SaleDoanInbound.Controllers
             // gang qua hid tuyentq
 
             // get list phong ban / thi truong
-            GetListPhongBanMacode();
+            GetListPhongBanMacode(user.PhongBanId); // phongbanid = maphong in qltour
             // get list phong ban / thi truong
 
             // get list phong ban / dh 
@@ -247,7 +276,7 @@ namespace SaleDoanInbound.Controllers
                 {
                     temp += String.Format("- Phòng điều hành thay đổi: {0}->{1}", t.PhongDH, TourVM.Tour.PhongDH);
                 }
-                
+
                 if (t.TuyenTQ != TourVM.Tour.TuyenTQ)
                 {
                     temp += String.Format("- Tuyến tham quan thay đổi: {0}->{1}", t.TuyenTQ, TourVM.Tour.TuyenTQ);
@@ -256,6 +285,13 @@ namespace SaleDoanInbound.Controllers
                 {
                     temp += String.Format("- Doanh thu thay đổi: {0:#,##0.0}->{1:#,##0.0}", t.DoanhThuTT, TourVM.Tour.DoanhThuTT);
                 }
+
+                var fileCheck = Request.Form.Files;
+                if (fileCheck.Count > 0)
+                {
+                    temp += String.Format("- DS Khách đã thay đổi");
+                }
+
                 // loai tien, ty gia mac dinh: vnd, 1
                 #endregion
                 // kiem tra thay doi
@@ -295,26 +331,74 @@ namespace SaleDoanInbound.Controllers
                 tourinf.Chinhanhtao = _unitOfWork.dmChiNhanhRepository.GetById(TourVM.Tour.ChiNhanhTaoId).Macn; // user login
                 tourinf.Createtour = TourVM.Tour.NgayTao;
                 tourinf.Logfile = TourVM.Tour.LogFile;
-
                 // update tourinf
 
                 try
                 {
-                    
+
                     _unitOfWork.tourRepository.Update(TourVM.Tour);
                     // insert tourinf
                     _unitOfWork.tourInfRepository.Update(tourinf);
                     // insert tourinf
                     await _unitOfWork.Complete();
                     SetAlert("Cập nhật thành công", "success");
+
+                    // update excel
+                    //IFormFile file = Request.Form.Files[0];
+
+                    if (fileCheck.Count > 0)
+                    {
+                        var khachHangs = _unitOfWork.dSKhachHangRepository.Find(x => x.TourId == TourVM.Tour.Id);
+                        // xoa' di de upload lai
+                        foreach (var item in khachHangs)
+                        {
+                            _unitOfWork.dSKhachHangRepository.Delete(item);
+                        }
+                        await _unitOfWork.Complete();
+                        // xoa' di de upload lai
+                        UploadExcelAsync(TourVM.Tour.Sgtcode);
+                    }
+                    // update excel
+
                     return Redirect(strUrl);
                 }
                 catch (Exception ex)
                 {
                     SetAlert(ex.Message, "error");
+
+                    TourVM = new TourViewModel()
+                    {
+                        Tour = new Data.Models_IB.Tour(),
+                        Thanhphos = _unitOfWork.thanhPhoForTuyenTQRepository.GetAll(),
+                        Companies = _unitOfWork.khachHangRepository.GetAll(),
+                        Tourkinds = _unitOfWork.tourKindRepository.GetAll(),
+                        Dmchinhanhs = _unitOfWork.dmChiNhanhRepository.GetAll(),
+                        LoaiKhachs = LoaiKhach(),
+                        listPhongMacode = new List<Data.Models_QLT.Phongban>(),
+                        listPhongDH = new List<Phongban>(),
+                        Ngoaites = _unitOfWork.ngoaiTeRepository.GetAll(),
+                        NguonTours = NguonTour(),
+                        StrUrl = strUrl
+                    };
+
                     return View(TourVM);
                 }
             }
+            // not valid
+            TourVM = new TourViewModel()
+            {
+                Tour = new Data.Models_IB.Tour(),
+                Thanhphos = _unitOfWork.thanhPhoForTuyenTQRepository.GetAll(),
+                Companies = _unitOfWork.khachHangRepository.GetAll(),
+                Tourkinds = _unitOfWork.tourKindRepository.GetAll(),
+                Dmchinhanhs = _unitOfWork.dmChiNhanhRepository.GetAll(),
+                LoaiKhachs = LoaiKhach(),
+                listPhongMacode = new List<Data.Models_QLT.Phongban>(),
+                listPhongDH = new List<Phongban>(),
+                Ngoaites = _unitOfWork.ngoaiTeRepository.GetAll(),
+                NguonTours = NguonTour(),
+                StrUrl = strUrl
+            };
 
             return View(TourVM);
         }
@@ -353,13 +437,13 @@ namespace SaleDoanInbound.Controllers
             {
                 tourDto.NgayDamPhan = tour.NgayDamPhan.Value;
             }
-            
+
             tourDto.HinhThucGiaoDich = tour.HinhThucGiaoDich;
             if (tour.NgayKyHopDong.HasValue)
             {
                 tourDto.NgayKyHopDong = tour.NgayKyHopDong.Value;
             }
-            
+
             tourDto.NguoiKyHopDong = tour.NguoiKyHopDong;
             if (tour.HanXuatVe.HasValue)
             {
@@ -369,7 +453,7 @@ namespace SaleDoanInbound.Controllers
             {
                 tourDto.NgayThanhLyHD = tour.NgayThanhLyHD.Value;
             }
-            
+
             tourDto.SoKhachTT = tour.SoKhachTT;
             tourDto.SKTreEm = tour.SKTreEm;
             tourDto.DoanhThuTT = tour.DoanhThuTT;
@@ -386,7 +470,7 @@ namespace SaleDoanInbound.Controllers
             {
                 tourDto.NgayNhanDuTien = tour.NgayNhanDuTien.Value;
             }
-            
+
             tourDto.LyDoNhanDu = tour.LyDoNhanDu;
             tourDto.SoHopDong = tour.SoHopDong;
             tourDto.LaiChuaVe = tour.LaiChuaVe;
@@ -403,7 +487,7 @@ namespace SaleDoanInbound.Controllers
             {
                 tourDto.NgayHuyTour = tour.NgayHuyTour.Value;
             }
-            
+
             tourDto.NDHuyTour = (tour.NDHuyTourId == 0) ? "" : _unitOfWork.cacNoiDungHuyTourRepository.GetById(tour.NDHuyTourId).NoiDung;
             tourDto.GhiChu = tour.GhiChu;
             tourDto.LoaiTien = tour.LoaiTien;
@@ -423,14 +507,14 @@ namespace SaleDoanInbound.Controllers
                 return NotFound();
 
             // tourinf
-            var tourInf = await _unitOfWork.tourInfRepository.GetByIdAsync(tour.Sgtcode);
-            if (tourInf == null)
-                return NotFound();
+            //var tourInf = await _unitOfWork.tourInfRepository.GetByIdAsync(tour.Sgtcode);
+            //if (tourInf == null)
+            //    return NotFound();
             // tourinf
 
             try
             {
-                _unitOfWork.tourInfRepository.Delete(tourInf);
+                // _unitOfWork.tourInfRepository.Delete(tourInf);
                 _unitOfWork.tourRepository.Delete(tour);
                 await _unitOfWork.Complete();
                 SetAlert("Xóa thành công.", "success");
@@ -442,19 +526,6 @@ namespace SaleDoanInbound.Controllers
                 return Redirect(strUrl);
             }
         }
-
-        //public JsonResult IsStringNameAvailable(string TenCreate)
-        //{
-        //    var boolName = _unitOfWork.dMNganhNgheRepository.Find(x => x.TenNganhNghe.Trim().ToLower() == TenCreate.Trim().ToLower()).FirstOrDefault();
-        //    if (boolName == null)
-        //    {
-        //        return Json(true);
-        //    }
-        //    else
-        //    {
-        //        return Json(false);
-        //    }
-        //}
 
         private List<ListViewModel> Visa()
         {
@@ -476,7 +547,7 @@ namespace SaleDoanInbound.Controllers
 
             };
         }
-        
+
         private List<ListViewModel> LoaiKhach()
         {
             return new List<ListViewModel>()
@@ -496,11 +567,11 @@ namespace SaleDoanInbound.Controllers
             });
         }
 
-        private void GetListPhongBanMacode()
+        private void GetListPhongBanMacode(string maPhong)
         {
 
             // get list maphong after distinct space and split ','
-            var phongbans = _unitOfWork.phongBanRepository.GetAll();
+            var phongbans = _unitOfWork.phongBanRepository.GetAll().Where(x => x.Maphong == maPhong);// chi lay macode theo maphong user login
             var maPhongs = phongbans.Select(x => x.Macode).Distinct();
 
             var listString = new List<string>();
@@ -526,15 +597,120 @@ namespace SaleDoanInbound.Controllers
             }
             // get list maphong after distinct space and split ','
         }
-        
+
         private void GetListPhongBanDH()
         {
 
             // get list maphong after distinct space and split ','
             var phongbans = _unitOfWork.phongBanRepository.GetAll();
-            
+
             TourVM.listPhongDH = phongbans.Where(x => !string.IsNullOrEmpty(x.Macode)).ToList();
             // get list maphong after distinct space and split ','
         }
+
+
+        [HttpPost]
+        public void UploadExcelAsync(string sgtCode)
+        {
+            var tour = _unitOfWork.tourRepository.Find(x => x.Sgtcode == sgtCode).FirstOrDefault();
+            IFormFile file = Request.Form.Files[0];
+            string folderName = "excelfolder";
+            string webRootPath = _webHostEnvironment.WebRootPath;
+            string newPath = Path.Combine(webRootPath, folderName);
+
+            string folderPath = webRootPath + @"\excelfolder\";
+            FileInfo fileInfo = new FileInfo(Path.Combine(folderPath, file.FileName));
+
+            if (!Directory.Exists(newPath))
+            {
+                Directory.CreateDirectory(newPath);
+            }
+            if (file.Length > 0)
+            {
+                string sFileExtension = Path.GetExtension(file.FileName).ToLower();
+                string fullPath = Path.Combine(newPath, file.FileName);
+                using (var stream = new FileStream(fullPath, FileMode.Create))
+                {
+                    file.CopyTo(stream);
+                }
+
+                using (ExcelPackage package = new ExcelPackage(fileInfo))
+                {
+                    ExcelWorksheet workSheet = package.Workbook.Worksheets["Sheet1"];
+                    //var list = workSheet.Cells.ToList();
+                    //var table = workSheet.Tables.ToList(); 
+                    int totalRows = workSheet.Dimension.Rows;
+
+                    List<KhachHang> khachHangs = new List<KhachHang>();
+
+                    for (int i = 2; i <= totalRows; i++)
+                    {
+                        var khachHang = new KhachHang();
+
+                        if (workSheet.Cells[i, 1].Value != null)
+                            khachHang.STT = int.Parse(workSheet.Cells[i, 1].Value.ToString());
+
+                        if (workSheet.Cells[i, 2].Value != null)
+                            khachHang.MaKH = workSheet.Cells[i, 2].Value.ToString();
+
+                        if (workSheet.Cells[i, 3].Value != null)
+                            khachHang.TenKH = workSheet.Cells[i, 3].Value.ToString();
+
+                        if (workSheet.Cells[i, 4].Value != null)
+                            khachHang.NgaySinh = DateTime.Parse(workSheet.Cells[i, 4].Value.ToString());
+
+                        if (workSheet.Cells[i, 5].Value != null)
+                            khachHang.GioiTinh = (workSheet.Cells[i, 5].Value.ToString() == "Nam") ? true : false;
+
+                        if (workSheet.Cells[i, 6].Value != null)
+                            khachHang.QuocTich = workSheet.Cells[i, 6].Value.ToString();
+
+                        if (workSheet.Cells[i, 7].Value != null)
+                            khachHang.HoChieu = workSheet.Cells[i, 7].Value.ToString();
+
+                        if (workSheet.Cells[i, 8].Value != null)
+                            khachHang.CMND = int.Parse(workSheet.Cells[i, 8].Value.ToString());
+
+                        if (workSheet.Cells[i, 9].Value != null)
+                            khachHang.LoaiPhong = workSheet.Cells[i, 9].Value.ToString();
+
+                        if (workSheet.Cells[i, 10].Value != null)
+                            khachHang.DiaChi = workSheet.Cells[i, 10].Value.ToString();
+
+                        if (workSheet.Cells[i, 11].Value != null)
+                            khachHang.Visa = workSheet.Cells[i, 11].Value.ToString();
+
+                        if (workSheet.Cells[i, 12].Value != null)
+                            khachHang.YeuCauVisa = workSheet.Cells[i, 12].Value.ToString();
+
+                        //if (workSheet.Cells[i, 20].Value != null)
+                        khachHang.TourId = tour.Id;
+
+                        khachHangs.Add(khachHang);
+                    }
+
+                    //_db.Customers.AddRange(customerList);
+                    //_db.SaveChanges();
+                    try
+                    {
+                        _unitOfWork.dSKhachHangRepository.CreateRange(khachHangs);
+                        _unitOfWork.khachTour
+                        //await _unitOfWork.Complete();
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+                }
+            }
+            if (System.IO.File.Exists(fileInfo.ToString()))
+                System.IO.File.Delete(fileInfo.ToString());
+
+            //return Json(new
+            //{
+            //    status = true
+            //});
+        }
+
     }
 }

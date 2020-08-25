@@ -40,6 +40,7 @@ namespace Data.Models_IB
         public DbSet<LoginModel> LoginModels { get; set; }
         public DbSet<UsrKhuCN> UsrKhuCNs { get; set; }
         public DbSet<VeMayBay> VeMayBays { get; set; }
+        public DbSet<KhachHang> KhachHangs { get; set; }
 
         // SaleDoanIB --> Mr.Son
         public DbSet<TourIB> TourIBs { get; set; }

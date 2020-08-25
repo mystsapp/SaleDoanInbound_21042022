@@ -1,7 +1,10 @@
 ﻿@model TourViewModel
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
 
 @{
     ViewData["Title"] = "Create";
+    
 }
 
 <!-- Content Header (Page header) -->
@@ -41,9 +44,12 @@
         </div>
         <div class="card-body">
 
-            <form method="post" autocomplete="off" id="frmTourCreate">
+            <form method="post" autocomplete="off" id="frmTourCreate" enctype="multipart/form-data">
                 <div class="p-4 border rounded ">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <input type="hidden" value="@ViewBag.chiNhanhTaoId" id="hidChiNhanhTaoId" />
+
+                    <div asp-validation-summary="None" class="text-danger"></div>
 
                     <div class="form-group row">
 
@@ -54,7 +60,9 @@
                                 <!-- qltour -->
                             </select>
                             <span asp-validation-for="Tour.ChiNhanhDHId" class="text-danger"></span>
+                            <span class="badge badge-danger float-left" id="spanChiNhanhAlert" hidden>(*)Nếu chi nhánh tạo khác chi nhánh ĐH lần sau sẽ không cập nhật được chi nhánh ĐH</span>
                         </div>
+                        
 
                         <div class="col-md-3">
                             <label asp-for="Tour.PhongDH" class="control-label"></label>
@@ -84,7 +92,7 @@
 
                     <div class="form-group row">
 
-                        <div class="col-md-3 chuDeTourGroup">
+                        <div class="col-md-3 ">
                             <label asp-for="Tour.NgayDen" class="control-label"></label>
                             <input type="text" value="" asp-for="Tour.NgayDen" class="form-control maskInput" id="txtNgayDen" />
                             <span asp-validation-for="Tour.NgayDen" class="text-danger"></span>
@@ -153,7 +161,7 @@
 
                         <div class="col-md-2">
                             <label asp-for="Tour.NguonTour" class="control-label"></label>
-                            <select asp-for="Tour.NguonTour" class="form-control "
+                            <select asp-for="Tour.NguonTour" class="form-control " id="ddlNguonTour"
                                     asp-items="@(new SelectList(Model.NguonTours, "Name", "Name"))">
                                 <!-- Local -->
                             </select>
@@ -175,8 +183,8 @@
 
                         <div class="col-md-3 ">
                             <label asp-for="Tour.LoaiTien" class="control-label"></label>
-                            <select asp-for="Tour.LoaiTien" class="form-control "
-                                    asp-items="@(new SelectList(Model.Ngoaites, "TenNt", "TenNt"))">
+                            <select asp-for="Tour.LoaiTien" class="form-control " id="ddlLoaiTien"
+                                    asp-items="@(new SelectList(Model.Ngoaites, "MaNt", "TenNt"))">
                                 <!-- ngoaite: qltour-->
                             </select>
                             <span asp-validation-for="Tour.LoaiTien" class="text-danger"></span>
@@ -184,7 +192,7 @@
 
                         <div class="col-md-2 ">
                             <label asp-for="Tour.TyGia" class="control-label"></label>
-                            <input type="text" asp-for="Tour.TyGia" class="form-control numbers" />
+                            <input type="text" asp-for="Tour.TyGia" class="form-control numbers" id="txtTyGia"/>
                             <span asp-validation-for="Tour.TyGia" class="text-danger"></span>
                         </div>
 
@@ -271,7 +279,7 @@
 
                         <div class="col-md-3">
                             <label asp-for="Tour.NguoiDaiDien" class="control-label"></label>
-                            <input type="text" asp-for="Tour.NguoiDaiDien" class="form-control maskInput" />
+                            <input asp-for="Tour.NguoiDaiDien" class="form-control " />
                             <span asp-validation-for="Tour.NguoiDaiDien" class="text-danger"></span>
                         </div>
 
@@ -331,10 +339,26 @@
                         </div>
 
                     </div>
+                    
+                    <div class="form-group row">
+
+                        <div class="col-md-6">
+                            <label class="control-label">Upload DS khách</label>
+                            <input type="file" class="form-control" id="fUpload" name="files">
+                            <div id="dvData"></div><!-- error response -->
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="control-label">Download file mẫu</label>
+                            <br />
+                            <a title="File mẫu" class="btn btn-success" asp-controller="Home" asp-action="DownloadExcel"><i class="fas fa-download fa-1x"></i></a>
+                        </div>
+
+                    </div>
 
                     <div class="form-group">
-                        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i></button>
-                        <a class="btn btn-success" asp-controller="KhachHangs" asp-route-strUrl="@Model.StrUrl" asp-action="DetailsRedirect"><i class="fas fa-backward"></i></a>
+                        <button type="submit" class="btn btn-primary" id="btnSubmit"><i class="fas fa-save"></i></button>
+                        <a class="btn btn-success" asp-controller="KhachHangs" asp-route-strUrl="@Model.StrUrl" asp-action="DetailsRedirect"><i class="fas fa-backward "></i></a>
                     </div>
                 </div>
             </form>
@@ -496,6 +520,34 @@
         });
 
         $('#ddlPhongBanMaCode').rules('add', {
+            required: true,
+            messages: {
+                // required: "Ngày đến không được để trống"
+            }
+        });
+        
+        $('#fUpload').rules('add', {
+            required: true,
+            messages: {
+                // required: "Ngày đến không được để trống"
+            }
+        });
+        
+        $('#ddlLoaiTien').rules('add', {
+            required: true,
+            messages: {
+                // required: "Ngày đến không được để trống"
+            }
+        });
+        
+        $('#txtTyGia').rules('add', {
+            required: true,
+            messages: {
+                // required: "Ngày đến không được để trống"
+            }
+        });
+        
+        $('#ddlLoaiTour').rules('add', {
             required: true,
             messages: {
                 // required: "Ngày đến không được để trống"

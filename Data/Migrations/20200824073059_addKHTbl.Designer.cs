@@ -4,14 +4,16 @@ using Data.Models_IB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
     [DbContext(typeof(SaleDoanIBDbContext))]
-    partial class SaleDoanIBDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200824073059_addKHTbl")]
+    partial class addKHTbl
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -797,6 +799,7 @@ namespace Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("DiaChi")
+                        .HasColumnName("nvarchar(250")
                         .HasColumnType("nvarchar(250)")
                         .HasMaxLength(250);
 
@@ -804,21 +807,25 @@ namespace Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("HoChieu")
+                        .HasColumnName("nvarchar(50")
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
                     b.Property<string>("LoaiPhong")
+                        .HasColumnName("nvarchar(50")
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
                     b.Property<string>("MaKH")
-                        .HasColumnType("varchar(10)")
+                        .HasColumnName("varchar(10")
+                        .HasColumnType("nvarchar(10)")
                         .HasMaxLength(10);
 
                     b.Property<DateTime>("NgaySinh")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("QuocTich")
+                        .HasColumnName("nvarchar(50")
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
@@ -826,6 +833,7 @@ namespace Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("TenKH")
+                        .HasColumnName("nvarchar(50")
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
@@ -833,10 +841,12 @@ namespace Data.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("Visa")
+                        .HasColumnName("nvarchar(50")
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
                     b.Property<string>("YeuCauVisa")
+                        .HasColumnName("nvarchar(50")
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 

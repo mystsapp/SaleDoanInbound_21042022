@@ -4,14 +4,16 @@ using Data.Models_IB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
     [DbContext(typeof(SaleDoanIBDbContext))]
-    partial class SaleDoanIBDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200825035001_removeKHTbl1")]
+    partial class removeKHTbl1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -784,67 +786,6 @@ namespace Data.Migrations
                     b.HasIndex("TourIBId");
 
                     b.ToTable("Invoices");
-                });
-
-            modelBuilder.Entity("Data.Models_IB.KhachHang", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("CMND")
-                        .HasColumnType("int");
-
-                    b.Property<string>("DiaChi")
-                        .HasColumnType("nvarchar(250)")
-                        .HasMaxLength(250);
-
-                    b.Property<bool>("GioiTinh")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("HoChieu")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("LoaiPhong")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("MaKH")
-                        .HasColumnType("varchar(10)")
-                        .HasMaxLength(10);
-
-                    b.Property<DateTime>("NgaySinh")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("QuocTich")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<int>("STT")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TenKH")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<long>("TourId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Visa")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("YeuCauVisa")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TourId");
-
-                    b.ToTable("KhachHangs");
                 });
 
             modelBuilder.Entity("Data.Models_IB.KhuVuc", b =>
@@ -1932,15 +1873,6 @@ namespace Data.Migrations
                     b.HasOne("Data.Models_IB.TourIB", "TourIB")
                         .WithMany()
                         .HasForeignKey("TourIBId");
-                });
-
-            modelBuilder.Entity("Data.Models_IB.KhachHang", b =>
-                {
-                    b.HasOne("Data.Models_IB.Tour", "Tour")
-                        .WithMany()
-                        .HasForeignKey("TourId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Data.Models_IB.RoomingList", b =>

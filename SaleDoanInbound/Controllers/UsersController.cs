@@ -279,8 +279,8 @@ namespace SaleDoanInbound.Controllers
         private List<Data.Models_QLT.Phongban> PhongBan()
         {
             return _unitOfWork.phongBanRepository.GetAll()
-                                                 .Where(x => !string.IsNullOrEmpty(x.Macode) && 
-                                                       (x.Maphong == "IB" || x.Maphong == "TB")).ToList();
+                                                 .Where(x => !string.IsNullOrEmpty(x.Macode))
+                                                 .ToList();
         }
 
         public JsonResult IsStringNameAvailable(string TenCreate)

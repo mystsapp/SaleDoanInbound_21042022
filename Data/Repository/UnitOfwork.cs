@@ -12,6 +12,7 @@ namespace Data.Repository
     public interface IUnitOfWork : IDisposable
     {
         IKhachHangRepository khachHangRepository { get; }
+        IDSKhachHangRepository dSKhachHangRepository { get; }
         IQuanRepository quanRepository { get; }
         IDMNganhNgheRepository dMNganhNgheRepository { get; }
         IKhuVucTGRepository khuVucTGRepository { get; }
@@ -69,6 +70,7 @@ namespace Data.Repository
             tourRepository = new TourRepository(_context);
             userRepository = new UserRepository(_context);
             roleRepository = new RoleRepository(_context);
+            dSKhachHangRepository = new DSKhachHangRepository(_context);
             // qltour
             thanhPhoForTuyenTQRepository = new ThanhPhoForTuyenTQRepository(_qltaikhoanContext);
             tourKindRepository = new TourKindRepository(_qltourContext);
@@ -129,6 +131,8 @@ namespace Data.Repository
 
         public IRoleRepository roleRepository { get; }
 
+        public IDSKhachHangRepository dSKhachHangRepository { get; }
+
         // qltour
         public IThanhPhoForTuyenTQRepository thanhPhoForTuyenTQRepository { get; }
         public ITourInfRepository tourInfRepository { get; }
@@ -141,6 +145,7 @@ namespace Data.Repository
 
         public IApplicationQLTaiKhoanRepository applicationQLTaiKhoanRepository { get; }
 
+        
 
         public async Task<int> Complete()
         {

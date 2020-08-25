@@ -21,6 +21,27 @@ var CreateController = {
                 return addCommas(value);
             });
         });
+
+        // btnSubmit 
+        $('#btnSubmit').off('click').on('click', function () {
+            var fileExtension = ['xls', 'xlsx'];
+            var filename = $('#fUpload').val();
+            if (filename.length !== 0) {
+                var extension = filename.replace(/^.*\./, '');
+                if ($.inArray(extension, fileExtension) === -1) {
+                    bootbox.alert({
+                        size: "small",
+                        title: "Infomation",
+                        message: "Chọn chưa đúng định dạng <b> Excel! </b>"
+                    });
+
+                    return false;
+                }
+            }
+
+        });
+        // btnSubmit
+
         // for tuyentq edit
         var selectedValues = new Array();
         //selectedValues[0] = "BAL";

@@ -162,7 +162,7 @@ namespace Data.Models_IB
         public int ChiNhanhDHId { get; set; } // dm chi nhanh: qltour
 
         // PhongBan -> qltour
-        [DisplayName("Thị Trường")]
+        [DisplayName("Phòng DH")]
         [MaxLength(150), Column(TypeName = "nvarchar(150)")]
         [Required(ErrorMessage = "Trường này không được để trống")]
         public string PhongDH { get; set; }

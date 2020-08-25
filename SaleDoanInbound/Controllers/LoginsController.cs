@@ -43,7 +43,7 @@ namespace SaleDoanInbound.Controllers
                              join au in applicationUsers on a.Mact equals au.Mact
                              join u in users on au.Username equals u.Username
                              join u1 in usersIB on u.Username equals u1.Username
-                             where au.Mact == "015" && u.Username == model.Username
+                             where au.Mact == "015" && u.Username.ToLower() == model.Username.ToLower()
                              select new LoginModel()
                              {
                                  Username = u.Username,
@@ -85,7 +85,8 @@ namespace SaleDoanInbound.Controllers
                         HttpContext.Session.SetString("password", model.Password);
                         //HttpContext.Session.SetString("hoten", result.Hoten);
                         //HttpContext.Session.SetString("phong", result.Maphong);
-                        //HttpContext.Session.SetString("chinhanh", user.chinhanh);
+                        HttpContext.Session.SetString("chinhanh", user.SingleOrDefault().MaCN);
+                        HttpContext.Session.SetString("userId", user.SingleOrDefault().Id.ToString());
                         //HttpContext.Session.SetString("dienthoai", String.IsNullOrEmpty(result.Dienthoai) ? "" : result.Dienthoai);
                         //HttpContext.Session.SetString("macode", result.Macode);
                         //HttpContext.Session.SetString("roleId", string.IsNullOrEmpty(result.RoleId) ? "" : result.RoleId);
@@ -116,6 +117,7 @@ namespace SaleDoanInbound.Controllers
                         //{
                         //    return View("changepass");
                         //}
+
                         if (result.Doimk == true)
                         {
                             return View("changepass");

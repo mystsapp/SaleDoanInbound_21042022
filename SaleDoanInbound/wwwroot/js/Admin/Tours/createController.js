@@ -22,14 +22,43 @@ var CreateController = {
             });
         });
 
-        //var selectedValues = new Array();
-        //selectedValues[0] = "BAL";
-        //selectedValues[1] = "BAN";
+        // btnSubmit 
+        $('#btnSubmit').off('click').on('click', function () {
+            var fileExtension = ['xls', 'xlsx'];
+            var filename = $('#fUpload').val();
+            if (filename.length !== 0) {
+                var extension = filename.replace(/^.*\./, '');
+                if ($.inArray(extension, fileExtension) === -1) {
+                    bootbox.alert({
+                        size: "small",
+                        title: "Infomation",
+                        message: "Chọn chưa đúng định dạng <b> Excel! </b>"
+                    });
+                    
+                    return false;
+                }
+            }
+            
+        });
+        // btnSubmit 
 
-        //$('#ddlTuyenTQ').val(selectedValues);
-        //selectedValues = $('#hidTuyenTQ').val().split(',');
-        //$('#ddlTuyenTQ').val(selectedValues);
-        //console.log(selectedValues);
+        // ddl chinhanhDH change
+        $('#ddlChiNhanhDH').off('change').on('change', function () {
+            // spanChiNhanhAlert
+            var chiNhanhTao = $('#hidChiNhanhTaoId').val();
+            var chiNhanhDH = $(this).val();
+            if (chiNhanhTao !== chiNhanhDH) {
+                $('#spanChiNhanhAlert').prop('hidden', false);
+                
+            }
+            else {
+                
+                $('#spanChiNhanhAlert').prop('hidden', true);
+            }
+
+        });
+    // ddl chinhanhDH change
+
 
         $('#ddlMaKh').off('change').on('change', function () {
             var optionValue = $(this).val();
@@ -62,6 +91,48 @@ var CreateController = {
                 $('#txtDienThoai').val(khachHang.Tel)
                 $('#txtFax').val(khachHang.Fax)
                 $('#txtDiaChi').val(khachHang.Address)
+            }
+        });
+    },
+    Upload: function () {
+        var fileExtension = ['xls', 'xlsx'];
+        var filename = $('#fUpload').val();
+        if (filename.length === 0) {
+            alert("Please select a file.");
+            return false;
+        }
+        else {
+            var extension = filename.replace(/^.*\./, '');
+            if ($.inArray(extension, fileExtension) === -1) {
+                alert("Please select only excel files.");
+                return false;
+            }
+        }
+        var fdata = new FormData();
+        var fileUpload = $("#fUpload").get(0);
+        var files = fileUpload.files;
+        fdata.append(files[0].name, files[0]);
+        $.ajax({
+            type: "POST",
+            //url: "/ImportExcel?handler=Import",
+            url: "/Home/UploadExcel", //OnPostImport
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("XSRF-TOKEN",
+                    $('input:hidden[name="__RequestVerificationToken"]').val());
+            },
+            data: fdata,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                if (response.status)
+                    console.log('Upload success.');
+                else {
+                    //$('#dvData').html(response);
+                    alert('Some error occured while uploading');
+                }
+            },
+            error: function (e) {
+                $('#dvData').html(e.responseText);
             }
         });
     }
