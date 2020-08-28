@@ -51,6 +51,7 @@ namespace Data.Models_IB
 
         [DisplayName("Doanh thu DK")]
         [Required(ErrorMessage = "Doanh thu không được trống")]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal DoanhThuDK { get; set; }
 
         [DisplayName("Ngày đàm phán")]
@@ -80,6 +81,7 @@ namespace Data.Models_IB
         public int SKTreEm { get; set; }
 
         [DisplayName("Doanh thu TT")]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal DoanhThuTT { get; set; }
 
         [DisplayName("Chương trình tour")]
@@ -126,10 +128,14 @@ namespace Data.Models_IB
         public string SoHopDong { get; set; }
 
         [DisplayName("Lãi dự tính chưa gồm vé (vé máy bay/vé xe lửa)")]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal LaiChuaVe { get; set; }
 
         [DisplayName("Lãi dự tính bao gồm vé (vé máy bay/vé xe lửa)")]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal LaiGomVe { get; set; }
+
+        [Column(TypeName = "decimal(18,2)")]
         public decimal LaiThucTeGomVe { get; set; }
 
         [DisplayName("Nguồn tour")]
@@ -189,6 +195,7 @@ namespace Data.Models_IB
         public string LoaiTien { get; set; }
 
         [DisplayName("Tỷ giá")]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal? TyGia { get; set; }
 
         // KH
@@ -220,6 +227,7 @@ namespace Data.Models_IB
         [DisplayName("Địa chỉ")]
         [MaxLength(250), Column(TypeName = "nvarchar(250)")]
         public string DiaChi { get; set; }
+
         // KH
 
         [Column(TypeName = "nvarchar(MAX)")]

@@ -20,6 +20,7 @@ namespace Data.Models_IB
         public string Descript { get; set; }
 
         [DisplayName("Số tiền")]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal Amount { get; set; }
     }
 }

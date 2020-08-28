@@ -29,14 +29,23 @@ namespace Data.Models_IB
         public string Unit { get; set; }
 
         [DisplayName("Đơn giá")]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal UnitPrice { get; set; }
+
         [DisplayName("Số tiền")]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal Amount { get; set; }
+
         [DisplayName("%PDV")]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal ServiceFee { get; set; }
+
         [DisplayName("%VAT")]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal VAT { get; set; }
+
         [DisplayName("%")]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal Percent { get; set; }
     }
 }

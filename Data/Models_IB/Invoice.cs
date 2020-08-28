@@ -49,6 +49,7 @@ namespace Data.Models_IB
         public string Currency { get; set; }
 
         [DisplayName("Tỷ giá")]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal Rate { get; set; }
 
         [MaxLength(12, ErrorMessage = "Tối đa 12 ký tự"), Column(TypeName = "varchar(12)")]

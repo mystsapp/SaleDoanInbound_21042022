@@ -349,10 +349,15 @@ namespace SaleDoanInbound.Controllers
                     if (fileCheck.Count > 0)
                     {
                         var khachHangs = _unitOfWork.dSKhachHangRepository.Find(x => x.TourId == TourVM.Tour.Id);
+                        var khachTours = _unitOfWork.khachTourRepository.Find(x => x.Sgtcode == t.Sgtcode);
                         // xoa' di de upload lai
-                        foreach (var item in khachHangs)
+                        foreach (var item in khachHangs) // ds khachhang trong model_ib
                         {
                             _unitOfWork.dSKhachHangRepository.Delete(item);
+                        }
+                        foreach (var item in khachTours) // ds khachhang trong model_qlt - khachtour
+                        {
+                            _unitOfWork.khachTourRepository.Delete(item);
                         }
                         await _unitOfWork.Complete();
                         // xoa' di de upload lai
@@ -694,7 +699,25 @@ namespace SaleDoanInbound.Controllers
                     try
                     {
                         _unitOfWork.dSKhachHangRepository.CreateRange(khachHangs);
-                        _unitOfWork.khachTour
+                        List<Khachtour> khachtours = new List<Khachtour>();
+                        foreach(var item in khachHangs)
+                        {
+                            khachtours.Add(new Khachtour()
+                            {
+                                Sgtcode = sgtCode,
+                                Stt = item.STT,
+                                Makh = item.MaKH,
+                                Hoten = item.TenKH,
+                                Ngaysinh = item.NgaySinh,
+                                Phai = item.GioiTinh,
+                                Diachi = item.DiaChi,
+                                Quoctich = item.QuocTich,
+                                Loaiphong = item.LoaiPhong,
+                                Cmnd = item.CMND.ToString(),
+                                Hochieu = item.HoChieu
+                            });
+                        }
+                        _unitOfWork.khachTourRepository.CreateRange(khachtours);
                         //await _unitOfWork.Complete();
                     }
                     catch (Exception ex)
@@ -710,6 +733,21 @@ namespace SaleDoanInbound.Controllers
             //{
             //    status = true
             //});
+        }
+
+        public FileResult DownloadExcel()
+        {
+            string webRootPath = _webHostEnvironment.WebRootPath;
+            string folderPath = webRootPath + @"\Doc\";
+            string newPath = Path.Combine(webRootPath, folderPath, "DSKhach.xlsx");
+
+            //return File(newPath, "application/vnd.ms-excel", "Book3.xlsx");
+
+            string filePath = newPath;
+
+            byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+
+            return File(fileBytes, "application/force-download", "File_mau.xlsx");
         }
 
     }

@@ -37,6 +37,7 @@ namespace Data.Models_IB
         [MaxLength(100), Column(TypeName = "nvarchar(100)")]
         public string Ref { get; set; }
 
+        [Column(TypeName = "decimal(18,2)")]
         public decimal Deposit { get; set; }
 
         [DisplayName("Ghi chú")]

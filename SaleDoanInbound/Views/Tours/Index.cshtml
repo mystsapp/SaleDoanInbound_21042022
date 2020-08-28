@@ -77,8 +77,8 @@
                 </div>
             </form>
             <br />
-            <div style="overflow-x:auto;">
-                <table class="table mytable text-nowrap tblEMD" id="listAll">
+            <div style="overflow-x:auto; overflow-y:auto; height: 300px">
+                <table class="table mytable text-nowrap tblTour" id="listAll">
                     <thead>
                         <tr class="table-info">
                             <th>#</th>
@@ -179,7 +179,7 @@
             $('#listAll').DataTable({
                 "paging": false,
                 "lengthChange": true,
-                "searching": true,
+                "searching": false,
                 "ordering": true,
                 "info": true,
                 "autoWidth": false,
@@ -213,7 +213,7 @@
             box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
         }
 
-        .tblEMD .cursor-pointer:hover {
+        .tblTour .cursor-pointer:hover {
             background-color: #3E5C9A;
             cursor: pointer;
         }

@@ -17,6 +17,7 @@ namespace Data.Models_IB
         [MaxLength(50), Column(TypeName = "varchar(50)")]
         public string Sales { get; set; }
 
+        [Column(TypeName = "decimal(18,0)")]
         public decimal Id_DMKH { get; set; }
 
         [DisplayName("Tên khách")]
@@ -28,6 +29,7 @@ namespace Data.Models_IB
         public string SoCMNN { get; set; }
 
         [DisplayName("Số Tiền")]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal SoTien { get; set; }
 
         [MaxLength(50), Column(TypeName = "nvarchar(50)")]

@@ -10,6 +10,7 @@ namespace Data.Models_IB
         public decimal Id { get; set; }
 
         [DisplayName("Tour")]
+        [Column(TypeName = "decimal(18,0)")]
         public decimal IdTour { get; set; }
 
         //[ForeignKey("IdTour")]
@@ -50,6 +51,7 @@ namespace Data.Models_IB
         public int SoKhachDK { get; set; }
 
         [DisplayName("Doanh thu DK")]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal DoanhThuDK { get; set; }
 
         [DisplayName("Công ty")]
@@ -88,6 +90,7 @@ namespace Data.Models_IB
         public int SoKhachTT { get; set; }
 
         [DisplayName("Doanh thu TT")]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal DoanhThuTT { get; set; }
 
         [DisplayName("Chương trình tour")]
@@ -134,8 +137,13 @@ namespace Data.Models_IB
         [MaxLength(50), Column(TypeName = "varchar(50)")]
         public string SoHopDong { get; set; }
 
+        [Column(TypeName = "decimal(18,2)")]
         public decimal LaiChuaVe { get; set; }
+
+        [Column(TypeName = "decimal(18,2)")]
         public decimal LaiGomVe { get; set; }
+
+        [Column(TypeName = "decimal(18,2)")]
         public decimal LaiThucTeGomVe { get; set; }
 
         [DisplayName("Nguyên nhân hủy")]

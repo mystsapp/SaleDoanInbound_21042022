@@ -21,6 +21,8 @@
     <Compile Remove="Migrations\20200723084407_removeKHTbl.Designer.cs" />
     <Compile Remove="Migrations\20200729030730_delTourIb.cs" />
     <Compile Remove="Migrations\20200729030730_delTourIb.Designer.cs" />
+    <Compile Remove="Migrations\20200828035126_fixdecimal.cs" />
+    <Compile Remove="Migrations\20200828035126_fixdecimal.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

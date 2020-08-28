@@ -37,6 +37,7 @@ namespace Data.Models_IB
         public string LoaiTien { get; set; }
 
         [DisplayName("Tỷ giá")]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal TyGia { get; set; }
 
         [DisplayName("Nội dung hủy")]

@@ -51,6 +51,7 @@ namespace Data.Models_IB
         public string NoiDung { get; set; }
 
         [DisplayName("Số tiền")]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal SoTien { get; set; }
 
         public DateTime NgayTao { get; set; }
@@ -81,6 +82,7 @@ namespace Data.Models_IB
         public string LoaiTienn { get; set; }
 
         [DisplayName("Tỷ giá")]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal TyGia { get; set; }
 
         [DisplayName("Người thao tác")]
