@@ -47,7 +47,7 @@ namespace SaleDoanInbound.Controllers
                 TourDto = new TourDto()
             };
         }
-        public IActionResult Index(string searchString = null, int page = 1)
+        public async Task<IActionResult> Index(string sgtCode = null, string searchString = null, int page = 1)
         {
             TourVM.StrUrl = UriHelper.GetDisplayUrl(Request);
             ViewBag.searchString = searchString;
@@ -71,10 +71,14 @@ namespace SaleDoanInbound.Controllers
             var cacNoiDungHuyTours = _unitOfWork.cacNoiDungHuyTourRepository.GetAll();
 
             TourVM.TourDtos = _unitOfWork.tourRepository.ListTour(searchString, companies, loaiTours, chiNhanhs, cacNoiDungHuyTours, page);
-            if (TourVM.TourDtos == null)
-            {
 
+            // sgtCode != null --> click vao tour
+            if (!string.IsNullOrEmpty(sgtCode))
+            {
+                TourVM.listTourProgAsync = await listTourProgAsync(sgtCode);
             }
+            // sgtCode != null --> click vao tour
+
             return View(TourVM);
         }
 
@@ -816,77 +820,77 @@ namespace SaleDoanInbound.Controllers
                             string gia = "";
                             var supplier = await _unitOfWork.supplierRepository.GetByIdAsync(item.Supplierid); // _supplierRepository.GetById(item.supplierid);
                             item.TourItem = item.TourItem + " " + supplier.Tengiaodich + " - " + supplier.Diachi + " phone: " + supplier.Dienthoai;
-                            var hotel = _hotelRepository.Find(x => x.sgtcode == item.sgtcode && x.stt == item.stt);//chi lay dich vu chua xoa
+                            var hotel = _unitOfWork.hotelRepository.Find(x => x.Sgtcode == item.Sgtcode && x.Stt == item.Stt);//chi lay dich vu chua xoa
                             if (hotel != null)
                             {
                                 foreach (var a in hotel)
                                 {
-                                    if (a.sgl > 0)
+                                    if (a.Sgl > 0)
                                     {
-                                        gia += a.sgl + "SGN" + "*" + string.Format("{0:#,##0.0}", a.sglcost) + a.currency;
+                                        gia += a.Sgl + "SGN" + "*" + string.Format("{0:#,##0.0}", a.Sglcost) + a.Currency;
                                     }
-                                    if (a.extsgl > 0)
+                                    if (a.Extsgl > 0)
                                     {
-                                        gia += "," + a.extsgl + "EXT-SGN" + "*" + string.Format("{0:#,##0.0}", a.extsglcost) + a.currency;
+                                        gia += "," + a.Extsgl + "EXT-SGN" + "*" + string.Format("{0:#,##0.0}", a.Extsglcost) + a.Currency;
                                     }
                                     //if (a.sglfoc > 0)
                                     //{
                                     //    gia += "," + gia + " " + a.sglfoc + "SGN FOC";
                                     //}
-                                    if (a.dbl > 0)
+                                    if (a.Dbl > 0)
                                     {
-                                        gia += "," + a.dbl + "DBL" + "*" + string.Format("{0:#,##0.0}", a.dblcost) + a.currency;
+                                        gia += "," + a.Dbl + "DBL" + "*" + string.Format("{0:#,##0.0}", a.Dblcost) + a.Currency;
                                     }
-                                    if (a.extdbl > 0)
+                                    if (a.Extdbl > 0)
                                     {
-                                        gia += "," + a.extdbl + "EXT-DBL" + "*" + string.Format("{0:#,##0.0}", a.extdblcost) + a.currency;
+                                        gia += "," + a.Extdbl + "EXT-DBL" + "*" + string.Format("{0:#,##0.0}", a.Extdblcost) + a.Currency;
                                     }
                                     //if (a.dblfoc > 0)
                                     //{
                                     //    gia += "," + gia + " " + a.dblfoc + "DBL FOC";
                                     //}
-                                    if (a.twn > 0)
+                                    if (a.Twn > 0)
                                     {
-                                        gia += "," + a.twn + "TWN" + "*" + string.Format("{0:#,##0.0}", a.twncost) + a.currency;
+                                        gia += "," + a.Twn + "TWN" + "*" + string.Format("{0:#,##0.0}", a.Twncost) + a.Currency;
                                     }
-                                    if (a.exttwn > 0)
+                                    if (a.Exttwn > 0)
                                     {
-                                        gia += "," + a.exttwn + "EXT-TWN" + "*" + string.Format("{0:#,##0.0}", a.exttwncost) + a.currency;
+                                        gia += "," + a.Exttwn + "EXT-TWN" + "*" + string.Format("{0:#,##0.0}", a.Exttwncost) + a.Currency;
                                     }
                                     //if (a.twnfoc > 0)
                                     //{
                                     //    gia += "," + gia + " " + a.twnfoc + "TWN FOC";
                                     //}
-                                    if (a.tpl > 0)
+                                    if (a.Tpl > 0)
                                     {
-                                        gia += "," + a.tpl + "TPL" + "*" + string.Format("{0:#,##0.0}", a.tplcost) + a.currency;
+                                        gia += "," + a.Tpl + "TPL" + "*" + string.Format("{0:#,##0.0}", a.Tplcost) + a.Currency;
                                     }
-                                    if (a.exttpl > 0)
+                                    if (a.Exttpl > 0)
                                     {
-                                        gia += "," + a.exttpl + "EXT-TPL" + "*" + string.Format("{0:#,##0.0}", a.exttplcost) + a.currency;
+                                        gia += "," + a.Exttpl + "EXT-TPL" + "*" + string.Format("{0:#,##0.0}", a.Exttplcost) + a.Currency;
                                     }
                                     //if (a.tplfoc > 0)
                                     //{
                                     //    gia += "," + gia + " " + a.tplfoc + "TPL FOC";
                                     //}
-                                    if (a.oth > 0)
+                                    if (a.Oth > 0)
                                     {
-                                        gia += "," + a.oth + " OTH-" + a.othpax + "pax" + "*" + string.Format("{0:#,##0.0}", a.othcost) + a.currency + "-" + a.othtype;
+                                        gia += "," + a.Oth + " OTH-" + a.Othpax + "pax" + "*" + string.Format("{0:#,##0.0}", a.Othcost) + a.Currency + "-" + a.Othtype;
                                     }
 
                                 }
 
                             }
-                            item.tour_item = item.tour_item + " " + gia;
+                            item.TourItem = item.TourItem + " " + gia;
                         }
                         else
                         {
-                            item.tour_item = item.tour_item;
+                            item.TourItem = item.TourItem;
                         }
                         break;
                     case "SSE":
-                        var sse = _sightseeingRepository.GetByCodeAndStt(item.sgtcode, item.stt);
-                        var diemtq = _diemtqRepository.GetById(item.tour_item);
+                        var sse = _unitOfWork.sightseeingRepository.Find(x => x.Sgtcode == item.Sgtcode && x.Stt == item.Stt);
+                        var diemtq = await _unitOfWork.dMDiemTQRepository.GetByIdAsync(item.TourItem);// _diemtqRepository.GetById(item.tour_item);
                         string tq = "";
                         if (diemtq != null)
                         {
@@ -899,24 +903,34 @@ namespace SaleDoanInbound.Controllers
                             foreach (var d in sse)
                             {
                                 if (tendtq == "")
-                                    tendtq = _diemtqRepository.GetById(d.Codedtq).Diemtq;
+                                {
+                                    // tendtq = _diemtqRepository.GetById(d.Codedtq).Diemtq;
+                                    var dmDiemTQ = await _unitOfWork.dMDiemTQRepository.GetByIdAsync(d.Codedtq);
+                                    tendtq = dmDiemTQ.Diemtq;
+                                }
+
                                 else
-                                    tendtq += ", " + _diemtqRepository.GetById(d.Codedtq).Diemtq;
+                                {
+                                    // tendtq += ", " + _diemtqRepository.GetById(d.Codedtq).Diemtq;
+                                    var dmDiemTQ = await _unitOfWork.dMDiemTQRepository.GetByIdAsync(d.Codedtq);
+                                    tendtq += ", " + dmDiemTQ.Diemtq;
+                                }
+
                             }
-                            item.tour_item = "Tham quan " + (string.IsNullOrEmpty(tq) ? "" : tq) + "  " + tendtq;
+                            item.TourItem = "Tham quan " + (string.IsNullOrEmpty(tq) ? "" : tq) + "  " + tendtq;
                         }
                         else
                         {
-                            item.tour_item = tq;
+                            item.TourItem = tq;
                         }
                         break;
                     default:
-                        item.tour_item = item.tour_item;
+                        item.TourItem = item.TourItem;
                         break;
                 }
 
             }
-            return PartialView("listTourProg", progtemp);
+            return progtemp;
         }
         //-----------Tour Programe------------
     }

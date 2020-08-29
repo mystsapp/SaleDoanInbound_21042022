@@ -25,6 +25,7 @@ namespace Data.Repository
         ITourRepository tourRepository { get; }
         IUserRepository userRepository { get; }
         IRoleRepository roleRepository { get; }
+
         // qltour
         IThanhPhoForTuyenTQRepository thanhPhoForTuyenTQRepository { get; }
         ITourKindRepository tourKindRepository { get; }
@@ -33,6 +34,10 @@ namespace Data.Repository
         IKhachTourRepository khachTourRepository { get; }
         ITourprogRepository tourproRepository { get; }
         ISupplierRepository supplierRepository { get; }
+        IHotelRepository hotelRepository { get; }
+        ISightseeingRepository sightseeingRepository { get; }
+        IDMDiemTQRepository dMDiemTQRepository { get; }
+
         // qltaikhoan
         IUserQLTaiKhoanRepository userQLTaiKhoanRepository { get; }
         IQuocGiaRepository quocGiaRepository { get; }
@@ -74,6 +79,7 @@ namespace Data.Repository
             userRepository = new UserRepository(_context);
             roleRepository = new RoleRepository(_context);
             dSKhachHangRepository = new DSKhachHangRepository(_context);
+
             // qltour
             thanhPhoForTuyenTQRepository = new ThanhPhoForTuyenTQRepository(_qltaikhoanContext);
             tourKindRepository = new TourKindRepository(_qltourContext);
@@ -82,6 +88,10 @@ namespace Data.Repository
             khachTourRepository = new KhachTourRepository(_qltourContext);
             tourproRepository = new TourprogRepository(_qltourContext);
             supplierRepository = new SupplierRepository(_qltourContext);
+            hotelRepository = new HotelRepository(_qltourContext);
+            sightseeingRepository = new SightseeingRepository(_qltourContext);
+            dMDiemTQRepository = new DMDiemTQRepository(_qltourContext);
+
             // qltaikhoan
             quocGiaRepository = new QuocGiaRepository(_qltaikhoanContext);
             userQLTaiKhoanRepository = new UserQLTaiKhoanRepository(_qltaikhoanContext);
@@ -146,6 +156,10 @@ namespace Data.Repository
         public IKhachTourRepository khachTourRepository { get; }
         public ITourprogRepository tourproRepository { get; }
         public ISupplierRepository supplierRepository { get; }
+        public IHotelRepository hotelRepository { get; }
+        public ISightseeingRepository sightseeingRepository { get; }
+        public IDMDiemTQRepository dMDiemTQRepository { get; }
+
 
         // qltaikhoan
         public IUserQLTaiKhoanRepository userQLTaiKhoanRepository { get; }

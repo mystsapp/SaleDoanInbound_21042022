@@ -167,7 +167,7 @@
 <!-- /.content -->
 <!-- Tabs -->
 
-@if (Model.Invoices != null)
+@if (Model.listTourProgAsync != null)
 {
 
     <div class="row">
@@ -176,34 +176,36 @@
                 <div class="card-header p-0 border-bottom-0">
                     <ul class="nav nav-tabs" @*id="custom-tabs-four-tab"*@ id="myTabs" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link active" id="custom-tabs-four-home-tab" data-toggle="pill" href="#custom-tabs-four-invoice" role="tab" aria-controls="custom-tabs-four-home" aria-selected="true">Invoice</a>
+                            <a class="nav-link active" id="custom-tabs-four-home-tab" data-toggle="pill" href="#tab_cttour" role="tab" aria-controls="custom-tabs-four-home" aria-selected="true">Chương trình tour</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="custom-tabs-four-profile-tab" data-toggle="pill" href="#custom-tabs-four-CTVAT" role="tab" aria-controls="custom-tabs-four-profile" aria-selected="false">Chi tiết invoice</a>
+                            <a class="nav-link" id="custom-tabs-four-profile-tab" data-toggle="pill" href="#tab_ghichu" role="tab" aria-controls="custom-tabs-four-profile" aria-selected="false">Ghi chú</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="custom-tabs-four-messages-tab" data-toggle="pill" href="#custom-tabs-four-CTVAT2" role="tab" aria-controls="custom-tabs-four-messages" aria-selected="false">Chi tiết VAT</a>
+                            <a class="nav-link" id="custom-tabs-four-messages-tab" data-toggle="pill" href="#tab_Dskhach" role="tab" aria-controls="custom-tabs-four-messages" aria-selected="false">Danh sách khách</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="custom-tabs-four-settings-tab" data-toggle="pill" href="#custom-tabs-four-biennhan" role="tab" aria-controls="custom-tabs-four-settings" aria-selected="false">Biên nhận</a>
+                            <a class="nav-link" id="custom-tabs-four-settings-tab" data-toggle="pill" href="#tab_chiphikhac" role="tab" aria-controls="custom-tabs-four-settings" aria-selected="false">Chi phí khác</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="custom-tabs-four-settings-tab" data-toggle="pill" href="#custom-tabs-four-settings" role="tab" aria-controls="custom-tabs-four-settings" aria-selected="false">Settings</a>
+                            <a class="nav-link" id="custom-tabs-four-settings-tab" data-toggle="pill" href="#tab_ycxe" role="tab" aria-controls="custom-tabs-four-settings" aria-selected="false">Xe</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="custom-tabs-four-settings-tab" data-toggle="pill" href="#tab_huongdan" role="tab" aria-controls="custom-tabs-four-settings" aria-selected="false">Hướng dẫn</a>
                         </li>
                     </ul>
                 </div>
                 <div class="card-body">
                     <div class="tab-content" id="custom-tabs-four-tabContent">
                         <!-- Invoice -->
-                        <div class="tab-pane fade active show" id="custom-tabs-four-invoice" role="tabpanel" aria-labelledby="custom-tabs-four-home-tab">
-
+                        <div class="tab-pane fade active show" id="tab_cttour" role="tabpanel" aria-labelledby="custom-tabs-four-home-tab">
 
                             <section class="content">
 
                                 <!-- Default box -->
                                 <div class="card">
                                     <div class="card-header">
-                                        <h3 class="card-title">invoice - <b>@Model.TourIBDto.SGTCode</b></h3>
+                                        <h3 class="card-title">invoice - <b>@Model.TourDto.Sgtcode</b></h3>
 
                                         <div class="card-tools">
                                             <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
@@ -215,92 +217,184 @@
                                         </div>
                                     </div>
                                     <div class="card-body">
-                                        <div class="form-group ">
-                                            <a asp-action="Create" asp-controller="Invoices" asp-route-tourIBId="@Model.TourIBDto.Id" asp-route-strUrl="@Model.StrUrl" class="btn btn-default text-bold" title="Thêm 1 invoice vào đoàn">Add</a>
-                                            <button type="button" class="btn btn-default text-bold" title="Cấp số invoice cho invoice hiện hành">Number</button>
-                                            <button type="button" class="btn btn-default text-bold" title="In invoice hiện hành">Print</button>
-                                            <button type="button" class="btn btn-default text-bold" title="In các invoice theo thời gian lập invoice">P.Range</button>
-                                            <button type="button" class="btn btn-default text-bold" title="Cấp số VAT">VAT number</button>
-                                            <button type="button" class="btn btn-default text-bold" title="In hóa đơn VAT">Print VAT</button>
-                                            <button type="button" class="btn btn-default text-bold" title="Hủy bill VAT">Cancel VAT</button>
-                                            <button type="button" class="btn btn-default text-bold" title="Thông báo đoàn chưa lập invoice">No invoice</button>
-                                            <button type="button" class="btn btn-default text-bold" title="Thông báo các đoàn chưa lập VAT">No VAT</button>
-                                            <button type="button" class="btn btn-default text-bold" title="So sánh tiền của invoice và VAT">Compare</button>
-                                        </div>
+                                       
                                         <div style="overflow-x:auto;">
                                             <table class="table mytable text-nowrap tblEMD" id="listAll">
                                                 <thead>
                                                     <tr class="table-info">
-                                                        <th>#</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Id)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Replace)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Type)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Date)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Arr)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Dep)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Pax)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Currency)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Rate)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().SGL)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().DBL)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().TPL)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().MOFP)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().DOFP)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Ref)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().HopDong)</th>
-
+                                                        <th class="text-center" width="5%"><i class="fa fa-gear"></i></th>
+                                                        @*<th class="text-center" width="5%">STT</th>*@
+                                                        <th class="text-center" width="5%">Triển khai</th>
+                                                        <th class="text-center" width="5%">Trạng thái</th>
+                                                        <th class="text-center" width="5%">Ngày</th>
+                                                        <th class="text-center" width="5%">Ngày tháng</th>
+                                                        <th class="text-center" width="5%">Giờ</th>
+                                                        <th class="text-center" width="5%">Dịch vụ</th>
+                                                        <th class="text-center" width="5%">Loại tiền</th>
+                                                        <th>Chương trình</th>
+                                                        <th>Ghi chú</th>
+                                                        <th width="10%">Điều hành</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    @foreach (var item in Model.Invoices)
+                                                    @foreach (var item in Model.listTourProgAsync)
                                                     {
 
                                                         <tr class="cursor-pointer ">
 
-                                                            <td>
-                                                                <div class="btn-group text-white" role="group">
-                                                                    <a class="btn btn-primary btn-sm" title="Cập nhật" asp-action="Edit" asp-controller="Invoices" asp-route-id="@item.Id" asp-route-tourIBId="@Model.TourIBDto.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
-                                                                    <a class="btn btn-success btn-sm" title="Chi tiết" asp-action="Details" asp-controller="Invoices" asp-route-id="@item.Id" asp-route-tourIBId="@Model.TourIBDto.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
-                                                                    <form asp-action="Delete" asp-controller="Invoices" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" method="post">
+                                                            <td class="text-center">
 
-                                                                        <span id="confirmInvoiceDeleteSpan_@item.Id" style="display: none">
-                                                                            <span class="text-light">Xóa?</span>
-                                                                            <button type="submit" class="btn btn-danger">Yes</button>
-                                                                            <a href="#" class="btn btn-primary" onclick="confirmInvoiceDelete('@item.Id', false)">No</a>
-                                                                        </span>
-
-                                                                        <span id="deleteInvoiceSpan_@item.Id">
-                                                                            <a href="#" class="btn btn-danger btn-sm" onclick="confirmInvoiceDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></a>
-                                                                        </span>
-                                                                    </form>
-                                                                </div>
-                                                            </td>
-
-                                                            <td class="tdValInvoice" data-id="@item.Id" data-touribid="@Model.TourIBDto.Id">@Html.DisplayFor(m => item.Id)</td>
-                                                            <td class="tdValInvoice" data-id="@item.Id" data-touribid="@Model.TourIBDto.Id">@Html.DisplayFor(m => item.Replace)</td>
-                                                            <td class="tdValInvoice" data-id="@item.Id" data-touribid="@Model.TourIBDto.Id">@Html.DisplayFor(m => item.Type)</td>
-                                                            <td class="tdValInvoice" data-id="@item.Id" data-touribid="@Model.TourIBDto.Id">@Html.Raw(item.Date.ToShortDateString())</td>
-                                                            <td class="tdValInvoice" data-id="@item.Id" data-touribid="@Model.TourIBDto.Id">@Html.Raw(item.Arr.ToShortDateString())</td>
-                                                            <td class="tdValInvoice" data-id="@item.Id" data-touribid="@Model.TourIBDto.Id">
-                                                                @if (item.Dep.HasValue)
+                                                                @if (item.chinhanh == ViewBag.cn || Context.Session.GetString("roleId") == "superadmin")
                                                                 {
-                                                                    @Html.Raw(item.Dep.Value.ToShortDateString())
+                                                                    <a id=@Html.Raw("btnEditpro_" + item.Id) class="EditProg" href="javascript:;" data-id="@item.Id" data-srvtyp="@item.srvtype" data-cn="@item.chinhanh" data-session="@ViewBag.cn"><i class="fa fa-edit"></i></a> <span> | </span>
+                                                                    @if (item.dieuhanh == Context.Session.GetString("username"))
+                                                                    {
+                                                                        <a href="javascript:;" data-id="@item.Id" title="dịch vụ" class="text-danger DelTourProg_"><i class="fa fa-trash"></i></a>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <i class="fa fa-trash text-danger"></i>
+                                                                    }
+
+                                                                }
+                                                                else
+                                                                {
+                                                                    <i class="fa fa-edit"></i> <span> | </span>
+                                                                    <i class="fa fa-trash"></i>
+                                                                }
+
+                                                            </td>
+                                                            @*<td class="text-center">@item.stt</td>*@
+                                                            <td class="text-center">
+                                                                @if (item.dieuhanh == Context.Session.GetString("username") || Context.Session.GetString("roleId") == "superadmin")
+                                                                {
+                                                                    <select id=@Html.Raw("ddlcn_" + item.Id) class="form-control" asp-for="@item.chinhanh" asp-items="@ViewBag.chinhanh" data-cn="@item.chinhanh" data-dieuhanh="@item.dieuhanh" data-id="@item.Id" style="border:none; background:inherit"></select>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <select class="form-control" disabled asp-for="@item.chinhanh" asp-items="@ViewBag.chinhanh" style="border:none; background:inherit"></select>
                                                                 }
                                                             </td>
-                                                            <td class="tdValInvoice" data-id="@item.Id" data-touribid="@Model.TourIBDto.Id">@Html.DisplayFor(m => item.Pax)</td>
-                                                            <td class="tdValInvoice" data-id="@item.Id" data-touribid="@Model.TourIBDto.Id">@Html.DisplayFor(m => item.Currency)</td>
-                                                            <td class="tdValInvoice" data-id="@item.Id" data-touribid="@Model.TourIBDto.Id">@Html.DisplayFor(m => item.Rate)</td>
-                                                            <td class="tdValInvoice" data-id="@item.Id" data-touribid="@Model.TourIBDto.Id">@Html.DisplayFor(m => item.SGL)</td>
-                                                            <td class="tdValInvoice" data-id="@item.Id" data-touribid="@Model.TourIBDto.Id">@Html.DisplayFor(m => item.DBL)</td>
-                                                            <td class="tdValInvoice" data-id="@item.Id" data-touribid="@Model.TourIBDto.Id">@Html.DisplayFor(m => item.TPL)</td>
-                                                            <td class="tdValInvoice" data-id="@item.Id" data-touribid="@Model.TourIBDto.Id">@Html.DisplayFor(m => item.MOFP)</td>
-                                                            <td class="tdValInvoice" data-id="@item.Id" data-touribid="@Model.TourIBDto.Id">@Html.DisplayFor(m => item.DOFP)</td>
-                                                            <td class="tdValInvoice" data-id="@item.Id" data-touribid="@Model.TourIBDto.Id">@Html.DisplayFor(m => item.Ref)</td>
-                                                            <td class="tdValInvoice" data-id="@item.Id" data-touribid="@Model.TourIBDto.Id">@Html.DisplayFor(m => item.HopDong)</td>
+                                                            <td class="text-center">@item.status</td>
+                                                            <td class="text-center">@item.date</td>
+
+                                                            @switch (item.logfile)
+                                                            {
+                                                                case string x when x.StartsWith("S"):
+                                                                    <td style="background-color:#FF7800">@item.logfile</td>
+                                                                    break;
+                                                                default:
+                                                                    <td>@item.logfile</td>
+                                                                    break;
+                                                            }
+                                                            <td class="text-center">@item.time</td>
+                                                            <td class="text-center">@item.srvtype</td>
+                                                            <td class="text-center">@item.currency</td>
+                                                            <td>
+                                                                @item.tour_item
+                                                            </td>
+                                                            <td>@item.srvnode</td>
+                                                            <td>@item.dieuhanh</td>
+                                                            <td style="display:none;">
+
+                                                                <script>
+                            $("table").on("click", "#btnEditpro_" +@item.Id, function () {
+                                var id = $(this).data('id'); //sgtcode
+                                var cn = $(this).data('cn');
+
+                                var session = $(this).data('session');
+
+                                if (session != cn) {
+                                    alert("Bạn không có quyền cập nhật chương trình này.");
+                                    return;
+                                }
+                                if (locktour.length > 0) {
+                                    alert("Tour đã khoá, không thể cập nhật thông tin.");
+                                    return;
+                                }
+                                else {
+                                    var srvtype = $(this).data('srvtyp');
+                                    switch (srvtype) {
+                                        case 'LUN':
+                                        case 'DIN':
+                                        case 'BRK':
+                                            EditTourProgControl.EditLunchProg(id);
+                                            break;
+                                        case 'OVR':
+                                        case 'WPU':
+                                        case 'TRS':
+                                            EditTourProgControl.EditOverseaProg(id);
+                                            break;
+                                        case 'PAC':
+                                            EditTourProgControl.EditPacProg(id);
+                                            break;
+                                        case 'HTL':
+                                            EditTourProgControl.EditHotelProg(id);
+                                            break;
+                                        case 'OTH':
+                                            EditTourProgControl.EditOtherProg(id);
+                                            break;
+                                        case 'TXT':
+                                        case 'GUI':
+                                            EditTourProgControl.EditTextProg(id);
+                                            break;
+                                        case 'CAR':
+                                        case 'CAG':
+                                            EditTourProgControl.EditCarProg(id);
+                                            break;
+                                        case 'AIR':
+                                            EditTourProgControl.EditAirProg(id);
+                                            break;
+                                        case 'SHP':
+                                            EditTourProgControl.EditShopProg(id);
+                                            break;
+                                        case 'SSE':
+                                            EditTourProgControl.EditSightseeing(id);
+                                            break;
+                                        default:
+                                            //EditTourProgControl.loadTourProg();
+                                            EditTourProgControl.EditOverseaProg(id);
+                                            break;
+                                    }
+                                        }
+                            });
+                            $("table").on("change", "#ddlcn_" +@item.Id, function () {
+                                var chinhanh = $(this).val();
+                                var cn = $(this).data('cn');
+                                var id = $(this).data('id');
+                                if (chinhanh != cn) {
+                                    if (confirm('Bạn muốn chi nhánh ' + chinhanh + ' triển khai dịch vụ này?')) {
+                                        $.ajax({
+                                            type: "POST",
+                                            url: "/Tour/changeChinhanh",
+                                            data: {id:id,chinhanh:chinhanh},
+                                            dataType: "json",
+                                            success: function (response) {
+                                                if (response) {
+                                                     EditTourProgControl.loadTourProg();
+                                                }
+                                            },
+                                             error: function (xhr, ajaxOptions, thrownError) {
+                                                 if (xhr.status == "200") {
+                                                        EditTourProgControl.loadTourProg();
+                                                 } else {
+                                                     alert(xhr.status);
+                                                 }
+                                             }
+                                        });
+
+                                    }
+                                }
+                                EditTourProgControl.loadTourProg();
+                            });
+
+                                                                </script>
+
+                                                            </td>
                                                         </tr>
 
-                                                    }
-                                                </tbody>
+                                                        }
+                                                    </tbody>
 
                                             </table>
                                         </div>

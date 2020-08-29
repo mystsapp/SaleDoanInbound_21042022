@@ -60,6 +60,9 @@ namespace SaleDoanInbound
             services.AddTransient<IKhachTourRepository, KhachTourRepository>();
             services.AddTransient<ITourprogRepository, TourprogRepository>();
             services.AddTransient<ISupplierRepository, SupplierRepository>();
+            services.AddTransient<IHotelRepository, HotelRepository>();
+            services.AddTransient<ISightseeingRepository, SightseeingRepository>();
+            services.AddTransient<IDMDiemTQRepository, DMDiemTQRepository>();
 
             // qltaikhoan
             services.AddTransient<IQuocGiaRepository, QuocGiaRepository>();
