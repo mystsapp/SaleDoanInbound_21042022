@@ -31,6 +31,8 @@ namespace Data.Repository
         ITourInfRepository tourInfRepository { get; }
         INgoaiTeRepository ngoaiTeRepository { get; }
         IKhachTourRepository khachTourRepository { get; }
+        ITourprogRepository tourproRepository { get; }
+        ISupplierRepository supplierRepository { get; }
         // qltaikhoan
         IUserQLTaiKhoanRepository userQLTaiKhoanRepository { get; }
         IQuocGiaRepository quocGiaRepository { get; }
@@ -78,6 +80,8 @@ namespace Data.Repository
             tourInfRepository = new TourInfRepository(_qltourContext);
             ngoaiTeRepository = new NgoaiTeRepository(_qltourContext);
             khachTourRepository = new KhachTourRepository(_qltourContext);
+            tourproRepository = new TourprogRepository(_qltourContext);
+            supplierRepository = new SupplierRepository(_qltourContext);
             // qltaikhoan
             quocGiaRepository = new QuocGiaRepository(_qltaikhoanContext);
             userQLTaiKhoanRepository = new UserQLTaiKhoanRepository(_qltaikhoanContext);
@@ -140,6 +144,8 @@ namespace Data.Repository
         public ITourInfRepository tourInfRepository { get; }
         public INgoaiTeRepository ngoaiTeRepository { get; }
         public IKhachTourRepository khachTourRepository { get; }
+        public ITourprogRepository tourproRepository { get; }
+        public ISupplierRepository supplierRepository { get; }
 
         // qltaikhoan
         public IUserQLTaiKhoanRepository userQLTaiKhoanRepository { get; }

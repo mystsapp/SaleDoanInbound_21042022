@@ -750,5 +750,174 @@ namespace SaleDoanInbound.Controllers
             return File(fileBytes, "application/force-download", "File_mau.xlsx");
         }
 
+        //-----------Tour Programe------------
+        public async Task<IEnumerable<Tourprog>> listTourProgAsync(string id) // id == sgtcode
+        {
+            var progtemp = _unitOfWork.tourproRepository.Find(x => x.Sgtcode == id);// _tourprogRepository.ListTourProg(id);
+            var t = await _unitOfWork.tourInfRepository.GetByIdAsync(id);// _tourinfRepository.GetById(id);
+            ViewBag.cn = HttpContext.Session.GetString("chinhanh");
+
+            // ViewBag.dieuhanh = HttpContext.Session.GetString("username");
+            //ViewBag.concernto = t.concernto;
+            if (t != null)
+            {
+                ViewBag.operators = t.Operators ?? "";
+            }
+            foreach (var item in progtemp)
+            {
+                // Mượn nguoihuydv để so sánh với điều hành=> cho phép kéo thả dịch vụ
+                item.Nguoihuydv = t.Operators;
+                //listChinhanh(item.chinhanh);
+
+                //if (!string.IsNullOrEmpty(item.dieuhanh))
+                //{
+                //    var user = _userRepository.GetById(item.dieuhanh);
+                //    item.dieuhanh = user.Hoten;
+                //}
+                item.Logfile = item.Date > 0 ? t.Arr.AddDays(item.Date.Value - 1).ToString("ddd").ToUpper() + "  " + t.Arr.AddDays(item.Date.Value - 1).ToString("dd/MM") : "";
+                switch (item.Srvtype)
+                {
+                    case "LUN":
+                    case "DIN":
+                    case "SHP":
+                        if (item.Supplierid != null)
+                        {
+                            var supplier = await _unitOfWork.supplierRepository.GetByIdAsync(item.Supplierid); // _supplierRepository.GetById(item.supplierid);
+                            item.TourItem = item.TourItem + " " + supplier.Tengiaodich + " - " + supplier.Diachi + " phone: " + supplier.Dienthoai;
+                        }
+                        else
+                        {
+                            item.TourItem = item.TourItem;
+                        }
+                        break;
+                    case "OVR":
+                    case "PAC":
+                    case "CAN":
+                    case "MUS":
+                    case "SHW":
+                    case "TRA":
+                    case "WPU":
+                        if (item.Supplierid != null)
+                        {
+                            var supplier = await _unitOfWork.supplierRepository.GetByIdAsync(item.Supplierid); // _supplierRepository.GetById(item.supplierid);
+                            item.TourItem = item.TourItem + " " + supplier.Tengiaodich;
+                        }
+                        else
+                        {
+                            item.TourItem = item.TourItem;
+                        }
+                        break;
+                    case "AIR":
+                        item.TourItem = item.TourItem + " chặng: " + item.Dep + "-" + item.Arr + " chuyến: " + item.Carrier + " * " + String.Format("{0:#,##0.0}", item.Unitpricea) + " " + item.Currency;
+                        break;
+                    case "HTL":
+                        if (item.Supplierid != null)
+                        {
+                            string gia = "";
+                            var supplier = await _unitOfWork.supplierRepository.GetByIdAsync(item.Supplierid); // _supplierRepository.GetById(item.supplierid);
+                            item.TourItem = item.TourItem + " " + supplier.Tengiaodich + " - " + supplier.Diachi + " phone: " + supplier.Dienthoai;
+                            var hotel = _hotelRepository.Find(x => x.sgtcode == item.sgtcode && x.stt == item.stt);//chi lay dich vu chua xoa
+                            if (hotel != null)
+                            {
+                                foreach (var a in hotel)
+                                {
+                                    if (a.sgl > 0)
+                                    {
+                                        gia += a.sgl + "SGN" + "*" + string.Format("{0:#,##0.0}", a.sglcost) + a.currency;
+                                    }
+                                    if (a.extsgl > 0)
+                                    {
+                                        gia += "," + a.extsgl + "EXT-SGN" + "*" + string.Format("{0:#,##0.0}", a.extsglcost) + a.currency;
+                                    }
+                                    //if (a.sglfoc > 0)
+                                    //{
+                                    //    gia += "," + gia + " " + a.sglfoc + "SGN FOC";
+                                    //}
+                                    if (a.dbl > 0)
+                                    {
+                                        gia += "," + a.dbl + "DBL" + "*" + string.Format("{0:#,##0.0}", a.dblcost) + a.currency;
+                                    }
+                                    if (a.extdbl > 0)
+                                    {
+                                        gia += "," + a.extdbl + "EXT-DBL" + "*" + string.Format("{0:#,##0.0}", a.extdblcost) + a.currency;
+                                    }
+                                    //if (a.dblfoc > 0)
+                                    //{
+                                    //    gia += "," + gia + " " + a.dblfoc + "DBL FOC";
+                                    //}
+                                    if (a.twn > 0)
+                                    {
+                                        gia += "," + a.twn + "TWN" + "*" + string.Format("{0:#,##0.0}", a.twncost) + a.currency;
+                                    }
+                                    if (a.exttwn > 0)
+                                    {
+                                        gia += "," + a.exttwn + "EXT-TWN" + "*" + string.Format("{0:#,##0.0}", a.exttwncost) + a.currency;
+                                    }
+                                    //if (a.twnfoc > 0)
+                                    //{
+                                    //    gia += "," + gia + " " + a.twnfoc + "TWN FOC";
+                                    //}
+                                    if (a.tpl > 0)
+                                    {
+                                        gia += "," + a.tpl + "TPL" + "*" + string.Format("{0:#,##0.0}", a.tplcost) + a.currency;
+                                    }
+                                    if (a.exttpl > 0)
+                                    {
+                                        gia += "," + a.exttpl + "EXT-TPL" + "*" + string.Format("{0:#,##0.0}", a.exttplcost) + a.currency;
+                                    }
+                                    //if (a.tplfoc > 0)
+                                    //{
+                                    //    gia += "," + gia + " " + a.tplfoc + "TPL FOC";
+                                    //}
+                                    if (a.oth > 0)
+                                    {
+                                        gia += "," + a.oth + " OTH-" + a.othpax + "pax" + "*" + string.Format("{0:#,##0.0}", a.othcost) + a.currency + "-" + a.othtype;
+                                    }
+
+                                }
+
+                            }
+                            item.tour_item = item.tour_item + " " + gia;
+                        }
+                        else
+                        {
+                            item.tour_item = item.tour_item;
+                        }
+                        break;
+                    case "SSE":
+                        var sse = _sightseeingRepository.GetByCodeAndStt(item.sgtcode, item.stt);
+                        var diemtq = _diemtqRepository.GetById(item.tour_item);
+                        string tq = "";
+                        if (diemtq != null)
+                        {
+                            tq = diemtq.Diemtq;
+                        }
+
+                        if (sse.Count() > 0)
+                        {
+                            string tendtq = "";
+                            foreach (var d in sse)
+                            {
+                                if (tendtq == "")
+                                    tendtq = _diemtqRepository.GetById(d.Codedtq).Diemtq;
+                                else
+                                    tendtq += ", " + _diemtqRepository.GetById(d.Codedtq).Diemtq;
+                            }
+                            item.tour_item = "Tham quan " + (string.IsNullOrEmpty(tq) ? "" : tq) + "  " + tendtq;
+                        }
+                        else
+                        {
+                            item.tour_item = tq;
+                        }
+                        break;
+                    default:
+                        item.tour_item = item.tour_item;
+                        break;
+                }
+
+            }
+            return PartialView("listTourProg", progtemp);
+        }
+        //-----------Tour Programe------------
     }
 }
