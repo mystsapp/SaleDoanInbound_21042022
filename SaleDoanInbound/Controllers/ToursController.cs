@@ -43,11 +43,12 @@ namespace SaleDoanInbound.Controllers
                 LoaiKhachs = LoaiKhach(),
                 listPhongMacode = new List<Data.Models_QLT.Phongban>(),
                 listPhongDH = new List<Phongban>(),
+                ListCPKhac = new List<ChiPhiKhachDto>(),
                 Ngoaites = _unitOfWork.ngoaiTeRepository.GetAll(),
                 TourDto = new TourDto()
             };
         }
-        public async Task<IActionResult> Index(string sgtCode = null, string searchString = null, int page = 1)
+        public async Task<IActionResult> Index(long id = 0, string searchString = null, int page = 1)
         {
             TourVM.StrUrl = UriHelper.GetDisplayUrl(Request);
             ViewBag.searchString = searchString;
@@ -72,12 +73,19 @@ namespace SaleDoanInbound.Controllers
 
             TourVM.TourDtos = _unitOfWork.tourRepository.ListTour(searchString, companies, loaiTours, chiNhanhs, cacNoiDungHuyTours, page);
 
-            // sgtCode != null --> click vao tour
-            if (!string.IsNullOrEmpty(sgtCode))
+            //--> click vao tour
+            var tour = _unitOfWork.tourRepository.GetById(id);
+            if (tour != null)
             {
-                TourVM.listTourProgAsync = await listTourProgAsync(sgtCode);
+                TourVM.Tour = tour;
+                TourVM.listTourProgAsync = await listTourProgAsync(tour.Sgtcode);
+                TourVM.TourNoteAsync = await TourNoteAsync(tour.Sgtcode);
+                TourVM.ListDsKhach = ListDsKhach(tour.Sgtcode);
+                TourVM.ListCPKhac = await ListCPKhac(tour.Sgtcode);
+                TourVM.ListYeucauxe = await ListYeucauxe(tour.Sgtcode);
+                TourVM.ListHuongdan = ListHuongdan(tour.Sgtcode);
             }
-            // sgtCode != null --> click vao tour
+            //--> click vao tour
 
             return View(TourVM);
         }
@@ -718,7 +726,8 @@ namespace SaleDoanInbound.Controllers
                                 Quoctich = item.QuocTich,
                                 Loaiphong = item.LoaiPhong,
                                 Cmnd = item.CMND.ToString(),
-                                Hochieu = item.HoChieu
+                                Hochieu = item.HoChieu,
+                                Del = false
                             });
                         }
                         _unitOfWork.khachTourRepository.CreateRange(khachtours);
@@ -933,5 +942,85 @@ namespace SaleDoanInbound.Controllers
             return progtemp;
         }
         //-----------Tour Programe------------
+
+        //-----------Tour Programe------------
+        public async Task<Tournode> TourNoteAsync(string id)
+        {
+            var tournote = await _unitOfWork.tournoteRepository.GetByIdAsync(id);
+            
+            return tournote;
+        }
+        //-----------Tour Programe------------
+
+        //----------- KhachTour------------
+
+        public IEnumerable<Khachtour> ListDsKhach(string id)
+        {
+            var hd = _unitOfWork.khachTourRepository.Find(x => x.Sgtcode == id && x.Del == false).ToList();
+            
+            return hd;
+        }
+
+        //----------- KhachTour------------
+
+        //-----------CP Khac------------
+        public async Task<List<ChiPhiKhachDto>> ListCPKhac(string id)//id = sgtcode
+        {
+            List<Chiphikhac> cp = _unitOfWork.chiPhiKhacRepository.Find(x => x.Sgtcode == id && x.Del == false).ToList();
+            ViewBag.cn = HttpContext.Session.GetString("chinhanh");
+            ViewBag.sgtcode = id;
+            List<ChiPhiKhachDto> lst = new List<ChiPhiKhachDto>();
+            foreach (Chiphikhac c in cp)
+            {
+                ChiPhiKhachDto v = new ChiPhiKhachDto();
+                v.Chiphikhac = c;
+                try
+                {
+                    var dichvu = await _unitOfWork.dichVuRepository.GetByIdAsync(c.Srvtype);// _dichvuRepository.GetById(c.srvtype).Tendv;
+                    v.Tendv = dichvu.Tendv;
+                }
+                catch { }
+                try
+                {
+                    var supplier = await _unitOfWork.supplierRepository.GetByIdAsync(c.Srvcode);// _supplierRepository.GetById(c.srvcode).Tengiaodich;
+                    v.Tengiaodich = supplier.Tengiaodich;
+                }
+                catch { }
+                lst.Add(v);
+            }
+
+            return lst;
+        }
+
+        //-----------CP Khac------------
+
+        //-----------Xe------------
+        public async Task<IEnumerable<Dieuxe>> ListYeucauxe(string id) // id == sgtcode
+        {
+            var xe = _unitOfWork.dieuXeRepository.Find(x => x.Sgtcode == id && x.Del == false).OrderBy(x => x.Sttxe);// _dieuxeRepository.ListXe(id);
+            //ViewBag.cn = HttpContext.Session.GetString("chinhanh");
+            foreach (var x in xe)
+            {
+                if (!String.IsNullOrEmpty(x.Supplierid))
+                {
+                    var supplier = await _unitOfWork.supplierRepository.GetByIdAsync(x.Supplierid);// _supplierRepository.GetById(x.SupplierId).Tengiaodich;
+                    x.Supplierid = supplier.Tengiaodich;
+                }
+            }
+            //ViewBag.sgtcode = id;
+            return xe;
+        }
+        //-----------Xe------------
+
+        //-----------HD------------
+        public IEnumerable<Huongdan> ListHuongdan(string id)
+        {
+            var hd = _unitOfWork.huongDanRepository.Find(x => x.Sgtcode == id && x.Del == false).OrderBy(x => x.Stt);// _huongdanRepository.ListHuongdan(id);
+            //ViewBag.cn = HttpContext.Session.GetString("chinhanh");
+            //ViewBag.sgtcode = id;
+            return hd;
+        }
+
+        //-----------HD------------
     }
 }

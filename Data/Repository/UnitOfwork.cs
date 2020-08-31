@@ -37,6 +37,11 @@ namespace Data.Repository
         IHotelRepository hotelRepository { get; }
         ISightseeingRepository sightseeingRepository { get; }
         IDMDiemTQRepository dMDiemTQRepository { get; }
+        ITournoteRepository tournoteRepository { get; }
+        IChiPhiKhacRepository chiPhiKhacRepository { get; }
+        IDichVuRepository dichVuRepository { get; }
+        IDieuXeRepository dieuXeRepository { get; }
+        IHuongDanRepository huongDanRepository { get; }
 
         // qltaikhoan
         IUserQLTaiKhoanRepository userQLTaiKhoanRepository { get; }
@@ -91,6 +96,11 @@ namespace Data.Repository
             hotelRepository = new HotelRepository(_qltourContext);
             sightseeingRepository = new SightseeingRepository(_qltourContext);
             dMDiemTQRepository = new DMDiemTQRepository(_qltourContext);
+            tournoteRepository = new TournoteRepository(_qltourContext);
+            chiPhiKhacRepository = new ChiPhiKhacRepository(_qltourContext);
+            dichVuRepository = new DichVuRepository(_qltourContext);
+            dieuXeRepository = new DieuXeRepository(_qltourContext);
+            huongDanRepository = new HuongDanRepository(_qltourContext);
 
             // qltaikhoan
             quocGiaRepository = new QuocGiaRepository(_qltaikhoanContext);
@@ -159,6 +169,11 @@ namespace Data.Repository
         public IHotelRepository hotelRepository { get; }
         public ISightseeingRepository sightseeingRepository { get; }
         public IDMDiemTQRepository dMDiemTQRepository { get; }
+        public ITournoteRepository tournoteRepository { get; }
+        public IChiPhiKhacRepository chiPhiKhacRepository { get; }
+        public IDichVuRepository dichVuRepository { get; }
+        public IDieuXeRepository dieuXeRepository { get; }
+        public IHuongDanRepository huongDanRepository { get; }
 
 
         // qltaikhoan

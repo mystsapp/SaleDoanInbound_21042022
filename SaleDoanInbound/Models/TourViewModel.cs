@@ -20,6 +20,11 @@ namespace SaleDoanInbound.Models
         public List<Data.Models_QLT.Phongban> listPhongMacode { get; set; } // qltour
         public List<Data.Models_QLT.Phongban> listPhongDH { get; set; } // qltour
         public IEnumerable<Data.Models_QLT.Tourprog> listTourProgAsync { get; set; } // qltour
+        public IEnumerable<Data.Models_QLT.Khachtour> ListDsKhach { get; set; } // qltour
+        public Data.Models_QLT.Tournode TourNoteAsync { get; set; } // qltour
+        public List<ChiPhiKhachDto> ListCPKhac { get; set; } // qltour
+        public IEnumerable<Dieuxe> ListYeucauxe { get; set; } // qltour
+        public IEnumerable<Huongdan> ListHuongdan { get; set; } // qltour
         public IEnumerable<Ngoaite> Ngoaites { get; set; }
         public List<ListViewModel> NguonTours { get; set; }
         public List<ListViewModel> LoaiKhachs { get; set; }

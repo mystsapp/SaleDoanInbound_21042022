@@ -63,8 +63,8 @@
                             </div>
 
                             <!-- click row and submit to index -->
-                            @*<input type="hidden" name="id" id="hidId" />
-                                <input type="hidden" name="page" id="hidPage" />*@
+                            <input type="hidden" name="id" id="hidId" />
+                            <input type="hidden" name="page" id="hidPage" />
 
                             <div class="col-md-2 btn-group">
                                 <button type="submit" class="btn btn-primary form-control" id="btnSubmit">
@@ -197,7 +197,8 @@
                 </div>
                 <div class="card-body">
                     <div class="tab-content" id="custom-tabs-four-tabContent">
-                        <!-- Invoice -->
+
+                        <!-- tab_cttour -->
                         <div class="tab-pane fade active show" id="tab_cttour" role="tabpanel" aria-labelledby="custom-tabs-four-home-tab">
 
                             <section class="content">
@@ -205,7 +206,7 @@
                                 <!-- Default box -->
                                 <div class="card">
                                     <div class="card-header">
-                                        <h3 class="card-title">invoice - <b>@Model.TourDto.Sgtcode</b></h3>
+                                        <h3 class="card-title">Sgtcode - <b>@Model.Tour.Sgtcode</b></h3>
 
                                         <div class="card-tools">
                                             <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
@@ -217,13 +218,12 @@
                                         </div>
                                     </div>
                                     <div class="card-body">
-                                       
+
                                         <div style="overflow-x:auto;">
                                             <table class="table mytable text-nowrap tblEMD" id="listAll">
                                                 <thead>
                                                     <tr class="table-info">
-                                                        <th class="text-center" width="5%"><i class="fa fa-gear"></i></th>
-                                                        @*<th class="text-center" width="5%">STT</th>*@
+                                                        
                                                         <th class="text-center" width="5%">Triển khai</th>
                                                         <th class="text-center" width="5%">Trạng thái</th>
                                                         <th class="text-center" width="5%">Ngày</th>
@@ -242,159 +242,30 @@
 
                                                         <tr class="cursor-pointer ">
 
-                                                            <td class="text-center">
+                                                            <td class="text-center">@item.Chinhanh</td>
+                                                            <td class="text-center">@item.Status</td>
+                                                            <td class="text-center">@item.Date</td>
 
-                                                                @if (item.chinhanh == ViewBag.cn || Context.Session.GetString("roleId") == "superadmin")
-                                                                {
-                                                                    <a id=@Html.Raw("btnEditpro_" + item.Id) class="EditProg" href="javascript:;" data-id="@item.Id" data-srvtyp="@item.srvtype" data-cn="@item.chinhanh" data-session="@ViewBag.cn"><i class="fa fa-edit"></i></a> <span> | </span>
-                                                                    @if (item.dieuhanh == Context.Session.GetString("username"))
-                                                                    {
-                                                                        <a href="javascript:;" data-id="@item.Id" title="dịch vụ" class="text-danger DelTourProg_"><i class="fa fa-trash"></i></a>
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        <i class="fa fa-trash text-danger"></i>
-                                                                    }
-
-                                                                }
-                                                                else
-                                                                {
-                                                                    <i class="fa fa-edit"></i> <span> | </span>
-                                                                    <i class="fa fa-trash"></i>
-                                                                }
-
-                                                            </td>
-                                                            @*<td class="text-center">@item.stt</td>*@
-                                                            <td class="text-center">
-                                                                @if (item.dieuhanh == Context.Session.GetString("username") || Context.Session.GetString("roleId") == "superadmin")
-                                                                {
-                                                                    <select id=@Html.Raw("ddlcn_" + item.Id) class="form-control" asp-for="@item.chinhanh" asp-items="@ViewBag.chinhanh" data-cn="@item.chinhanh" data-dieuhanh="@item.dieuhanh" data-id="@item.Id" style="border:none; background:inherit"></select>
-                                                                }
-                                                                else
-                                                                {
-                                                                    <select class="form-control" disabled asp-for="@item.chinhanh" asp-items="@ViewBag.chinhanh" style="border:none; background:inherit"></select>
-                                                                }
-                                                            </td>
-                                                            <td class="text-center">@item.status</td>
-                                                            <td class="text-center">@item.date</td>
-
-                                                            @switch (item.logfile)
+                                                            @switch (item.Logfile)
                                                             {
                                                                 case string x when x.StartsWith("S"):
-                                                                    <td style="background-color:#FF7800">@item.logfile</td>
+                                                                    <td style="background-color:#FF7800">@item.Logfile</td>
                                                                     break;
                                                                 default:
-                                                                    <td>@item.logfile</td>
+                                                                    <td>@item.Logfile</td>
                                                                     break;
                                                             }
-                                                            <td class="text-center">@item.time</td>
-                                                            <td class="text-center">@item.srvtype</td>
-                                                            <td class="text-center">@item.currency</td>
-                                                            <td>
-                                                                @item.tour_item
-                                                            </td>
-                                                            <td>@item.srvnode</td>
-                                                            <td>@item.dieuhanh</td>
-                                                            <td style="display:none;">
+                                                            <td class="text-center">@item.Time</td>
+                                                            <td class="text-center">@item.Srvtype</td>
+                                                            <td class="text-center">@item.Currency</td>
+                                                            <td>@item.TourItem</td>
+                                                            <td>@item.Srvnode</td>
+                                                            <td>@item.Dieuhanh</td>
 
-                                                                <script>
-                            $("table").on("click", "#btnEditpro_" +@item.Id, function () {
-                                var id = $(this).data('id'); //sgtcode
-                                var cn = $(this).data('cn');
-
-                                var session = $(this).data('session');
-
-                                if (session != cn) {
-                                    alert("Bạn không có quyền cập nhật chương trình này.");
-                                    return;
-                                }
-                                if (locktour.length > 0) {
-                                    alert("Tour đã khoá, không thể cập nhật thông tin.");
-                                    return;
-                                }
-                                else {
-                                    var srvtype = $(this).data('srvtyp');
-                                    switch (srvtype) {
-                                        case 'LUN':
-                                        case 'DIN':
-                                        case 'BRK':
-                                            EditTourProgControl.EditLunchProg(id);
-                                            break;
-                                        case 'OVR':
-                                        case 'WPU':
-                                        case 'TRS':
-                                            EditTourProgControl.EditOverseaProg(id);
-                                            break;
-                                        case 'PAC':
-                                            EditTourProgControl.EditPacProg(id);
-                                            break;
-                                        case 'HTL':
-                                            EditTourProgControl.EditHotelProg(id);
-                                            break;
-                                        case 'OTH':
-                                            EditTourProgControl.EditOtherProg(id);
-                                            break;
-                                        case 'TXT':
-                                        case 'GUI':
-                                            EditTourProgControl.EditTextProg(id);
-                                            break;
-                                        case 'CAR':
-                                        case 'CAG':
-                                            EditTourProgControl.EditCarProg(id);
-                                            break;
-                                        case 'AIR':
-                                            EditTourProgControl.EditAirProg(id);
-                                            break;
-                                        case 'SHP':
-                                            EditTourProgControl.EditShopProg(id);
-                                            break;
-                                        case 'SSE':
-                                            EditTourProgControl.EditSightseeing(id);
-                                            break;
-                                        default:
-                                            //EditTourProgControl.loadTourProg();
-                                            EditTourProgControl.EditOverseaProg(id);
-                                            break;
-                                    }
-                                        }
-                            });
-                            $("table").on("change", "#ddlcn_" +@item.Id, function () {
-                                var chinhanh = $(this).val();
-                                var cn = $(this).data('cn');
-                                var id = $(this).data('id');
-                                if (chinhanh != cn) {
-                                    if (confirm('Bạn muốn chi nhánh ' + chinhanh + ' triển khai dịch vụ này?')) {
-                                        $.ajax({
-                                            type: "POST",
-                                            url: "/Tour/changeChinhanh",
-                                            data: {id:id,chinhanh:chinhanh},
-                                            dataType: "json",
-                                            success: function (response) {
-                                                if (response) {
-                                                     EditTourProgControl.loadTourProg();
-                                                }
-                                            },
-                                             error: function (xhr, ajaxOptions, thrownError) {
-                                                 if (xhr.status == "200") {
-                                                        EditTourProgControl.loadTourProg();
-                                                 } else {
-                                                     alert(xhr.status);
-                                                 }
-                                             }
-                                        });
-
-                                    }
-                                }
-                                EditTourProgControl.loadTourProg();
-                            });
-
-                                                                </script>
-
-                                                            </td>
                                                         </tr>
 
-                                                        }
-                                                    </tbody>
+                                                    }
+                                                </tbody>
 
                                             </table>
                                         </div>
@@ -406,334 +277,475 @@
                                 <!-- /.card -->
 
                             </section>
-                            <!-- /Invoice -->
 
                         </div>
-                        <!-- Invoice -->
-                        <!-- CTVAT -->
-                        <div class="tab-pane fade" id="custom-tabs-four-CTVAT" role="tabpanel" aria-labelledby="custom-tabs-four-profile-tab">
-                            @if (Model.CTVATs != null)
-                            {
-                                <section class="content">
+                        <!-- tab_cttour -->
 
-                                    <!-- Default box -->
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <h3 class="card-title ">Invoice No.<b>@Model.Invoice.Id</b></h3>
+                        <!-- Tournote -->
+                        <div class="tab-pane fade" id="tab_ghichu" role="tabpanel" aria-labelledby="custom-tabs-four-profile-tab">
+                            <label class="control-label">Đầu tour</label>
+                            <textarea class="form-control" readonly>@((Model.TourNoteAsync == null)?"": Model.TourNoteAsync.Headernode)</textarea>
 
-                                            <div class="card-tools">
+                            <label class="control-label">Cuối tour</label>
+                            <textarea class="form-control" readonly>@((Model.TourNoteAsync == null)?"": Model.TourNoteAsync.Footernode)</textarea>
+                        </div>
+                        <!-- Tournote -->
 
-                                                <a asp-action="Create" asp-controller="CTVATs" asp-route-invoiceId="@Model.Invoice.Id" asp-route-strUrl="@Model.StrUrl" asp-route-tabActive="custom-tabs-four-CTVAT" class="btn btn-default btn-sm text-bold" title="Thêm 1 chi tiết của invoice hiện hành">Add</a>
-                                                <button type="button" class="btn btn-default btn-sm text-bold" title="Chèn thêm trước 1 chi tiết của invoice hiện hành" disabled>Insert</button>
+                        <!-- DS Khach -->
+                        <div class="tab-pane fade" id="tab_Dskhach" role="tabpanel" aria-labelledby="custom-tabs-four-messages-tab">
+                            <section class="content">
 
-                                                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
-                                                    <i class="fas fa-minus"></i>
-                                                </button>
-                                                <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
-                                                    <i class="fas fa-times"></i>
-                                                </button>
-                                            </div>
+                                <!-- Default box -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Sgtcode - <b>@Model.Tour.Sgtcode</b></h3>
+
+                                        <div class="card-tools">
+                                            <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                                                <i class="fas fa-minus"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                                                <i class="fas fa-times"></i>
+                                            </button>
                                         </div>
-                                        <div class="card-body">
-                                            <div style="overflow-x:auto;">
-                                                <table class="table mytable text-nowrap tblEMD" id="listAll">
-                                                    <thead>
-                                                        <tr class="table-info">
-                                                            <th>#</th>
-                                                            <th>@Html.DisplayNameFor(m => m.CTVATs.FirstOrDefault().Descript)</th>
-                                                            <th>@Html.DisplayNameFor(m => m.CTVATs.FirstOrDefault().Quantity)</th>
-                                                            <th>@Html.DisplayNameFor(m => m.CTVATs.FirstOrDefault().Unit)</th>
-                                                            <th>@Html.DisplayNameFor(m => m.CTVATs.FirstOrDefault().UnitPrice)</th>
-                                                            <th>@Html.DisplayNameFor(m => m.CTVATs.FirstOrDefault().Percent)</th>
-                                                            <th>@Html.DisplayNameFor(m => m.CTVATs.FirstOrDefault().Amount)</th>
-                                                            <th>@Html.DisplayNameFor(m => m.CTVATs.FirstOrDefault().ServiceFee)</th>
-                                                            <th>@Html.DisplayNameFor(m => m.CTVATs.FirstOrDefault().VAT)</th>
-                                                            <th>Mục</th>
-                                                            <th>Tên khoãng mục</th>
-                                                            <th>DS</th>
-                                                            <th>DLHH</th>
+                                    </div>
+                                    <div class="card-body">
+
+                                        <div style="overflow-x:auto;">
+                                            <table class="table mytable text-nowrap tblEMD" id="listAll">
+                                                <thead>
+                                                    <tr class="table-info">
+                                                        
+                                                        <th>STT</th>
+                                                        <th>Mã</th>
+                                                        <th>Họ tên</th>
+                                                        <th>Ngày sinh</th>
+                                                        <th>Phái</th>
+                                                        <th>Điện thoại</th>
+                                                        <th>Hộ chiếu</th>
+                                                        <th>CMND</th>
+                                                        <th>Quốc tịch</th>
+                                                        <th>Loại phòng</th>
+                                                        <th class="text-center">
+                                                            Vé máy bay<br /><input type="checkbox" class="tfoot" style="display:none;" onchange="checkAll('tbKhachHang')" /><span class="tfoot" style="display:none"> | </span><a href="javascript:;" id="btSavedata" class="fa fa-save fa-lg tfoot" style="display:none;"></a>
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var item in Model.ListDsKhach)
+                                                    {
+
+                                                        <tr class="cursor-pointer ">
+
+                                                            <td class="text-center">
+                                                                @item.Stt
+                                                            </td>
+                                                            <td>
+                                                                @item.Makh
+                                                            </td>
+                                                            <td>
+                                                                @item.Hoten
+                                                            </td>
+                                                            <td>
+                                                                @Html.Raw(item.Ngaysinh.HasValue ? item.Ngaysinh.Value.ToString("dd/MM/yyyy") : "/ /")
+                                                            </td>
+                                                            <td>
+                                                                @Html.Raw(item.Phai == true ? "Nam" : "Nữ")
+                                                            </td>
+                                                            <td>@item.Dienthoai</td>
+                                                            <td>
+                                                                @item.Hochieu
+                                                            </td>
+                                                            <td>
+                                                                @item.Cmnd
+                                                            </td>
+                                                            <td>
+                                                                @item.Quoctich
+                                                            </td>
+                                                            <td>
+                                                                @item.Loaiphong
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <input type="checkbox" checked="@item.Vmb" name="vmb" class="ckId" disabled/>
+                                                            </td>
+                                                            <td style="display:none">
+                                                            </td>
                                                         </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach (var item in Model.CTVATs)
-                                                        {
 
-                                                            <tr class="cursor-pointer ">
+                                                    }
+                                                </tbody>
 
-                                                                <td>
-                                                                    <div class="btn-group text-white" role="group">
-                                                                        <a class="btn btn-primary btn-sm" title="Cập nhật" asp-action="Edit" asp-controller="CTVATs" asp-route-id="@item.Id" asp-route-invoiceId="@Model.Invoice.Id" asp-route-strUrl="@Model.StrUrl" asp-route-tabActive="custom-tabs-four-CTVAT"><i class="fas fa-edit"></i></a>
-                                                                        <a class="btn btn-success btn-sm" title="Chi tiết" asp-action="Details" asp-controller="CTVATs" asp-route-id="@item.Id" asp-route-invoiceId="@Model.Invoice.Id" asp-route-strUrl="@Model.StrUrl" asp-route-tabActive="custom-tabs-four-CTVAT"><i class="fas fa-list"></i></a>
-                                                                        <form asp-action="Delete" asp-controller="CTVATs" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" asp-route-tabActive="custom-tabs-four-CTVAT" method="post">
-
-                                                                            <span id="confirmCTVATDeleteSpan_@item.Id" style="display: none">
-                                                                                <span class="text-light">Xóa?</span>
-                                                                                <button type="submit" class="btn btn-danger">Yes</button>
-                                                                                <a href="#" class="btn btn-primary" onclick="confirmCTVATDelete('@item.Id', false)">No</a>
-                                                                            </span>
-
-                                                                            <span id="deleteCTVATSpan_@item.Id">
-                                                                                <a href="#" class="btn btn-danger btn-sm" onclick="confirmCTVATDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></a>
-                                                                            </span>
-                                                                        </form>
-                                                                    </div>
-                                                                </td>
-
-                                                                <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Descript)</td>
-                                                                <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Quantity)</td>
-                                                                <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Unit)</td>
-                                                                <td class="tdVal" data-id="@item.Id">@Html.Raw(item.UnitPrice.ToString("N0"))</td>
-                                                                <td class="tdVal" data-id="@item.Id">@Html.Raw(item.Percent.ToString("N0"))</td>
-                                                                <td class="tdVal" data-id="@item.Id">@Html.Raw(item.Amount.ToString("N0"))</td>
-                                                                <td class="tdVal" data-id="@item.Id">@Html.Raw(item.ServiceFee.ToString("N0"))</td>
-                                                                <td class="tdVal" data-id="@item.Id">@Html.Raw(item.VAT.ToString("N0"))</td>
-                                                                <td class="tdVal" data-id="@item.Id"></td>
-                                                                <td class="tdVal" data-id="@item.Id"></td>
-                                                                <td class="tdVal" data-id="@item.Id"></td>
-                                                                <td class="tdVal" data-id="@item.Id"></td>
-                                                            </tr>
-
-                                                        }
-                                                    </tbody>
-
-                                                </table>
-                                            </div>
-
+                                            </table>
                                         </div>
-                                        <!-- /.card-body -->
 
                                     </div>
-                                    <!-- /.card -->
+                                    <!-- /.card-body -->
 
-                                </section>
-                            }
-                            else
-                            {
-                                <span><strong>Bạn chưa chọn invoice nào or invoice chưa có chi tiết</strong></span>
-                            }
+                                </div>
+                                <!-- /.card -->
 
+                            </section>
                         </div>
-                        <!-- CTVAT -->
+                        <!-- DS Khach -->
 
+                        <!-- Chi Phi Khac -->
+                        <div class="tab-pane fade" id="tab_chiphikhac" role="tabpanel" aria-labelledby="custom-tabs-four-settings-tab">
+                            <section class="content">
 
-                        <div class="tab-pane fade" id="custom-tabs-four-CTVAT2" role="tabpanel" aria-labelledby="custom-tabs-four-messages-tab">
-                            Morbi turpis dolor, vulputate vitae felis non, tincidunt congue mauris. Phasellus volutpat augue id mi placerat mollis. Vivamus faucibus eu massa eget condimentum. Fusce nec hendrerit sem, ac tristique nulla. Integer vestibulum orci odio. Cras nec augue ipsum. Suspendisse ut velit condimentum, mattis urna a, malesuada nunc. Curabitur eleifend facilisis velit finibus tristique. Nam vulputate, eros non luctus efficitur, ipsum odio volutpat massa, sit amet sollicitudin est libero sed ipsum. Nulla lacinia, ex vitae gravida fermentum, lectus ipsum gravida arcu, id fermentum metus arcu vel metus. Curabitur eget sem eu risus tincidunt eleifend ac ornare magna.
-                        </div>
+                                <!-- Default box -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Sgtcode - <b>@Model.Tour.Sgtcode</b></h3>
 
-                        <!-- Bien Nhan -->
-                        <div class="tab-pane fade" id="custom-tabs-four-biennhan" role="tabpanel" aria-labelledby="custom-tabs-four-settings-tab">
-                            @if (Model.BienNhans != null)
-                            {
-                                <section class="content">
-
-                                    <!-- Default box -->
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <h3 class="card-title ">Danh sách biên nhận - <b>@Model.TourIBDto.Id</b></h3>
-
-                                            <div class="card-tools">
-
-                                                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
-                                                    <i class="fas fa-minus"></i>
-                                                </button>
-                                                <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
-                                                    <i class="fas fa-times"></i>
-                                                </button>
-                                            </div>
+                                        <div class="card-tools">
+                                            <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                                                <i class="fas fa-minus"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                                                <i class="fas fa-times"></i>
+                                            </button>
                                         </div>
-                                        <div class="card-body">
-                                            <div style="overflow-x:auto;">
-                                                <table class="table mytable text-nowrap tblEMD" id="listAll">
-                                                    <thead>
-                                                        <tr class="table-info">
-                                                            <th>
-                                                                <div class="btn-group">
-                                                                    <a asp-action="Create" asp-controller="BienNhans" asp-route-tourIBId="@Model.TourIBDto.Id" asp-route-strUrl="@Model.StrUrl" asp-route-tabActive="custom-tabs-four-biennhan" class="btn btn-default btn-sm text-bold" title="Thêm 1 biên nhận">New</a>
-                                                                    <button type="button" class="btn btn-default btn-sm text-bold" data-toggle="modal" data-target="#modal-default">Find</button>
-                                                                    <!-- Bien Nhan Find-->
-                                                                    <div class="modal fade" id="modal-default" style="display: none;" aria-hidden="true">
-                                                                        <div class="modal-dialog">
-                                                                            <form asp-action="ChiTietBNFind" asp-controller="ChiTietBNs" asp-route-strUrl="@Model.StrUrl" asp-route-tabActive="custom-tabs-four-biennhan" method="get">
-                                                                                <div class="modal-content">
-                                                                                    <div class="modal-header">
-                                                                                        <h4 class="modal-title">Default Modal</h4>
-                                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                                            <span aria-hidden="true">×</span>
-                                                                                        </button>
-                                                                                    </div>
-                                                                                    <div class="modal-body">
-                                                                                        <div class="form-group">
-                                                                                            <input name="chiTietBNSearchString" class="form-control" />
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div class="modal-footer justify-content-between">
-                                                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                                                        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i></button>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </form>
-                                                                            <!-- /.modal-content -->
-                                                                        </div>
-                                                                        <!-- /.modal-dialog -->
-                                                                    </div>
-                                                                    <!-- Bien Nhan Find-->
-                                                                </div>
-                                                            </th>
-                                                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().Id)</th> <!-- so bien nhan-->
-                                                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().NgayBN)</th>
-                                                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().TenKhach)</th>
-                                                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().SK)</th>
-                                                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().GhiChu)</th>
-                                                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().LoaiTien)</th>
-                                                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().TyGia)</th>
-                                                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().KhachLe)</th>
-                                                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().NoiDungHuy)</th>
+                                    </div>
+                                    <div class="card-body">
 
+                                        <div style="overflow-x:auto;">
+                                            <table class="table mytable text-nowrap tblEMD" id="listAll">
+                                                <thead>
+                                                    <tr class="table-info">
+                                                        
+                                                        <th>CN</th>
+                                                        <th>Từ ngày</th>
+                                                        <th>Đến ngày</th>
+                                                        <th>Dịch vụ</th>
+                                                        <th>Nơi book</th>
+                                                        <th>Mục chương trình</th>
+                                                        <th>Số lượng</th>
+                                                        <th>Đơn giá</th>
+                                                        <th>Km</th>
+                                                        <th>Ngày HD</th>
+                                                        <th>Tổng chi phí</th>
+                                                        <th>Phải trả</th>
+                                                        <th>Phải thu</th>
+                                                        <th>Loại tiền</th>
+                                                        <th>VAT vào</th>
+                                                        <th>VAT ra</th>
+                                                        <th>Lợi nhuận</th>
+                                                        <th>Ghi chú</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var item in Model.ListCPKhac)
+                                                    {
+
+                                                        <tr class="cursor-pointer ">
+                                                            
+                                                            <td>@item.Chiphikhac.Chinhanh</td>
+                                                            <td>
+                                                                @item.Chiphikhac.Fromdate
+                                                            </td>
+                                                            <td>
+                                                                @item.Chiphikhac.Todate
+                                                            </td>
+                                                            <td>
+                                                                @item.Tendv
+                                                            </td>
+                                                            <td>
+                                                                @*@Html.Raw(item.ngaysinh.HasValue ? item.ngaysinh.Value.ToString("dd/MM/yyyy") : "/ /")*@
+                                                                @item.Tengiaodich
+                                                            </td>
+                                                            <td>
+                                                                @item.Chiphikhac.TourItem
+                                                            </td>
+                                                            <td>
+                                                                @item.Chiphikhac.Quantity
+                                                            </td>
+                                                            <td>
+                                                                @item.Chiphikhac.Unitprice
+                                                            </td>
+                                                            <td>
+                                                                @item.Chiphikhac.Km
+                                                            </td>
+                                                            <td>
+                                                                @item.Chiphikhac.Guidedays
+                                                            </td>
+                                                            <td>
+                                                                @item.Chiphikhac.Amount
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <input type="checkbox" class="minimal" checked="@item.Chiphikhac.Debit" />
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <input type="checkbox" class="minimal" checked="@item.Chiphikhac.Credit" />
+                                                            </td>
+                                                            <td>
+                                                                @item.Chiphikhac.Currency
+                                                            </td>
+                                                            <td>
+                                                                @item.Chiphikhac.Vatin
+                                                            </td>
+                                                            <td>
+                                                                @item.Chiphikhac.Vatout
+                                                            </td>
+                                                            <td>
+                                                                @item.Chiphikhac.Srvprofit
+                                                            </td>
+                                                            <td>
+                                                                @item.Chiphikhac.Srvnode
+                                                            </td>
+                                                            <td style="display:none">
+                                                            </td>
                                                         </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach (var item in Model.BienNhans)
-                                                        {
 
-                                                            <tr class="cursor-pointer ">
+                                                    }
+                                                </tbody>
 
-                                                                <td>
-                                                                    <div class="btn-group text-white" role="group">
-                                                                        <a class="btn btn-primary btn-sm" title="Cập nhật" asp-action="Edit" asp-controller="BienNhans" asp-route-id="@item.Id" asp-route-tourIBId="@Model.TourIBDto.Id" asp-route-strUrl="@Model.StrUrl" asp-route-tabActive="custom-tabs-four-biennhan"><i class="fas fa-edit"></i></a>
-                                                                        <a class="btn btn-success btn-sm" title="Chi tiết" asp-action="Details" asp-controller="BienNhans" asp-route-id="@item.Id" asp-route-invoiceId="@Model.TourIBDto.Id" asp-route-strUrl="@Model.StrUrl" asp-route-tabActive="custom-tabs-four-biennhan"><i class="fas fa-list"></i></a>
-                                                                        <form asp-action="Delete" asp-controller="CTVATs" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" asp-route-tabActive="custom-tabs-four-CTVAT" method="post">
-
-                                                                            <span id="confirmBienNhanDeleteSpan_@item.Id" style="display: none">
-                                                                                <span class="text-light">Xóa?</span>
-                                                                                <button type="submit" class="btn btn-danger">Yes</button>
-                                                                                <a href="#" class="btn btn-primary" onclick="confirmBienNhanDelete('@item.Id', false)">No</a>
-                                                                            </span>
-
-                                                                            <span id="deleteBienNhanSpan_@item.Id">
-                                                                                <a href="#" class="btn btn-danger btn-sm" onclick="confirmBienNhanDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></a>
-                                                                            </span>
-                                                                        </form>
-                                                                    </div>
-                                                                </td>
-
-                                                                <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Id)</td>
-                                                                <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayBN.ToShortDateString())</td>
-                                                                <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.TenKhach)</td>
-                                                                <td class="tdVal" data-id="@item.Id">@Html.Raw(item.SK.ToString("N0"))</td>
-                                                                <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.GhiChu)</td>
-                                                                <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.LoaiTien)</td>
-                                                                <td class="tdVal" data-id="@item.Id">@Html.Raw(item.TyGia.ToString("N0"))</td>
-                                                                <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.KhachLe)</td>
-                                                                <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.NoiDungHuy) </td>
-                                                            </tr>
-
-                                                        }
-                                                    </tbody>
-
-                                                </table>
-                                            </div>
-
+                                            </table>
                                         </div>
-                                        <!-- /.card-body -->
 
                                     </div>
-                                    <!-- /.card -->
+                                    <!-- /.card-body -->
 
-                                </section>
+                                </div>
+                                <!-- /.card -->
 
-                                <!-- chi tiet BN -->
-                                <section class="content">
+                            </section>
+                        </div>
+                        <!-- Chi Phi Khac -->
 
-                                    <!-- Default box -->
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <h3 class="card-title">Danh sách Tour</h3>
+                        <!-- Xe -->
+                        <div class="tab-pane fade" id="tab_ycxe" role="tabpanel" aria-labelledby="custom-tabs-four-settings-tab">
+                            <section class="content">
 
-                                            <div class="card-tools">
-                                                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
-                                                    <i class="fas fa-minus"></i>
-                                                </button>
-                                                <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
-                                                    <i class="fas fa-times"></i>
-                                                </button>
-                                            </div>
+                                <!-- Default box -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Sgtcode - <b>@Model.Tour.Sgtcode</b></h3>
+
+                                        <div class="card-tools">
+                                            <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                                                <i class="fas fa-minus"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                                                <i class="fas fa-times"></i>
+                                            </button>
                                         </div>
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div style="overflow-x:auto;" class="col-md-8">
-                                                    <table class="table mytable text-nowrap tblEMD" id="listAll">
-                                                        <thead>
-                                                            <tr class="table-info">
-                                                                <th>#</th>
-                                                                <th>@Html.DisplayNameFor(m => m.ChiTietBNs.FirstOrDefault().Descript)</th>
-                                                                <th>@Html.DisplayNameFor(m => m.ChiTietBNs.FirstOrDefault().Amount)</th>
+                                    </div>
+                                    <div class="card-body">
 
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            @if (Model.ChiTietBNs != null)
-                                                            {
-                                                                @foreach (var item in Model.ChiTietBNs)
-                                                                {
+                                        <div style="overflow-x:auto;">
+                                            <table class="table mytable text-nowrap tblEMD" id="listAll">
+                                                <thead>
+                                                    <tr class="table-info">
+                                                        
+                                                        <th>Triển khai</th>
+                                                        <th>Loại xe</th>
+                                                        <th>SK</th>
+                                                        <th>Từ ngày</th>
+                                                        <th>Đến ngày</th>
+                                                        <th>Chủ xe</th>
+                                                        <th>Số xe</th>
+                                                        <th>Lái xe</th>
+                                                        <th>Điện thoại</th>
+                                                        <th>Giờ hẹn xe</th>
+                                                        <th>Điểm hẹn xe</th>
+                                                        <th>KM</th>
+                                                        <th>Giá VND/KM</th>
+                                                        <th>Thành tiền</th>
+                                                        <th>Lộ trình</th>
 
-                                                                    <tr class="cursor-pointer ">
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var item in Model.ListYeucauxe)
+                                                    {
 
-                                                                        <td>
-                                                                            <div class="btn-group text-white" role="group">
-                                                                                <a class="btn btn-primary btn-sm" title="Cập nhật" asp-action="Edit" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
-                                                                                <a class="btn btn-success btn-sm" title="Chi tiết" asp-action="Details" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
-                                                                                <form asp-action="Delete" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" method="post">
+                                                        <tr class="cursor-pointer ">
 
-                                                                                    <span id="confirmDeleteSpan_@item.Id" style="display: none">
-                                                                                        <span class="text-light">Xóa?</span>
-                                                                                        <button type="submit" class="btn btn-danger">Yes</button>
-                                                                                        <a href="#" class="btn btn-primary" onclick="confirmDelete('@item.Id', false)">No</a>
-                                                                                    </span>
+                                                            <td class="text-center">
+                                                                @item.Chinhanh
+                                                            </td>
+                                                            <td class="text-center">
+                                                                @item.Loaixe
+                                                            </td>
+                                                            <td class="text-center">
+                                                                @item.Sokhach
+                                                            </td>
+                                                            <td>
+                                                                @Html.Raw(item.Ngaydon.HasValue ? item.Ngaydon.Value.ToString("dd/MM/yyyy") : string.Empty)
+                                                            </td>
+                                                            <td>
+                                                                @Html.Raw(item.Denngay.HasValue ? item.Denngay.Value.ToString("dd/MM/yyyy") : string.Empty)
+                                                            </td>
+                                                            <td>
+                                                                @item.Supplierid
+                                                            </td>
+                                                            <td>
+                                                                @item.Soxe
+                                                            </td>
+                                                            <td>
+                                                                @item.Laixe
+                                                            </td>
+                                                            <td>
+                                                                @item.Dienthoai
+                                                            </td>
+                                                            <td>
+                                                                @Html.Raw(String.IsNullOrEmpty(item.Giodon) ? " : " : item.Giodon)
+                                                            </td>
+                                                            <td>
+                                                                @item.Diemdon
+                                                            </td>
+                                                            <td>
+                                                                @item.Km
+                                                            </td>
+                                                            <td class="text-right">
+                                                                @Html.Raw(String.Format("{0:#,##0}", item.Dongiakm))
+                                                            </td>
+                                                            <td class="text-right">
+                                                                @Html.Raw(string.Format("{0:#,##0}", item.Chiphi))
+                                                            </td>
+                                                            <td>
+                                                                @item.Lotrinh
+                                                            </td>
 
-                                                                                    <span id="deleteSpan_@item.Id">
-                                                                                        <a href="#" class="btn btn-danger btn-sm" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></a>
-                                                                                    </span>
-                                                                                </form>
-                                                                            </div>
-                                                                        </td>
+                                                            <td style="display:none">
+                                                            </td>
+                                                        </tr>
 
-                                                                        <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Id)</td>
-                                                                        <td class="tdVal" data-id="@item.Id">@Html.Raw(item.Amount.ToString("N0"))</td>
+                                                    }
+                                                </tbody>
 
-                                                                    </tr>
-
-                                                                }
-                                                            }
-
-                                                        </tbody>
-
-                                                    </table>
-                                                </div>
-                                                <div class="col-md-4">
-
-                                                    <button type="button" class="btn btn-default btn-block" title="Cấp số biên nhận">BN Number</button>
-                                                    <button type="button" class="btn btn-default btn-block btn-flat" title="Thêm 1 chi tiết của biên nhận">Add row</button>
-                                                    <button type="button" class="btn btn-default btn-block btn-sm" title="In hóa đơn biên nhận">Print</button>
-
-                                                </div>
-                                            </div>
+                                            </table>
                                         </div>
-                                        <!-- /.card-body -->
 
                                     </div>
-                                    <!-- /.card -->
+                                    <!-- /.card-body -->
 
-                                </section>
-                                <!-- chi tiet BN -->
+                                </div>
+                                <!-- /.card -->
 
-                            }
-
+                            </section>
                         </div>
-                        <!-- Bien Nhan -->
+                        <!-- Xe -->
 
-                        <div class="tab-pane fade" id="custom-tabs-four-settings" role="tabpanel" aria-labelledby="custom-tabs-four-settings-tab">
-                            Pellentesque vestibulum commodo nibh nec blandit. Maecenas neque magna, iaculis tempus turpis ac, ornare sodales tellus. Mauris eget blandit dolor. Quisque tincidunt venenatis vulputate. Morbi euismod molestie tristique. Vestibulum consectetur dolor a vestibulum pharetra. Donec interdum placerat urna nec pharetra. Etiam eget dapibus orci, eget aliquet urna. Nunc at consequat diam. Nunc et felis ut nisl commodo dignissim. In hac habitasse platea dictumst. Praesent imperdiet accumsan ex sit amet facilisis.
+                        <!-- HD -->
+                        <div class="tab-pane fade" id="tab_huongdan" role="tabpanel" aria-labelledby="custom-tabs-four-settings-tab">
+                            <section class="content">
+
+                                <!-- Default box -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Sgtcode - <b>@Model.Tour.Sgtcode</b></h3>
+
+                                        <div class="card-tools">
+                                            <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                                                <i class="fas fa-minus"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+
+                                        <div style="overflow-x:auto;">
+                                            <table class="table mytable text-nowrap tblEMD" id="listAll">
+                                                <thead>
+                                                    <tr class="table-info">
+                                                        
+                                                        <th>Triển khai</th>
+                                                        <th>Ngày YC</th>
+                                                        <th>Tên HD</th>
+                                                        <th>Điện thoại</th>
+                                                        <th>Ngoại ngữ</th>
+                                                        <th>Bắt đầu</th>
+                                                        <th>Tại</th>
+                                                        <th>Kết thúc</th>
+                                                        <th>Tại</th>
+                                                        <th>Suốt tuyến</th>
+                                                        <th>Ghi chú</th>
+                                                        <th>Nội dung công việc</th>
+                                                        <th>Loại tiền</th>
+                                                        <th>Phí đón tiễn</th>
+                                                        <th>Phí đi đoàn</th>
+                                                        <th>Trả phí</th>
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var item in Model.ListHuongdan)
+                                                    {
+
+                                                        <tr class="cursor-pointer ">
+
+                                                            <td class="text-center">
+                                                                @item.Chinhanh
+                                                            </td>
+                                                            <td class="text-center">
+                                                                @Html.Raw(item.Ngayyeucau.ToString("dd/MM/yyyy"))
+                                                            </td>
+                                                            <td>
+                                                                @item.Tenhd
+                                                            </td>
+                                                            <td>
+                                                                @item.Dienthoai
+                                                            </td>
+                                                            <td>
+                                                                @item.Ngoaingu
+                                                            </td>
+                                                            <td>
+                                                                @Html.Raw(item.Batdau.HasValue ? item.Batdau.Value.ToString("dd/MM/yyyy") : "/ /")
+                                                            </td>
+                                                            <td>
+                                                                @item.Batdautai
+                                                            </td>
+                                                            <td>
+                                                                @Html.Raw(item.Ketthuc.HasValue ? item.Ketthuc.Value.ToString("dd/MM/yyyy") : "/ /")
+                                                            </td>
+                                                            <td>
+                                                                @item.Ketthuctai
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <input type="checkbox" class="minimal" checked="@item.Suottuyen" />
+                                                            </td>
+                                                            <td>
+                                                                @item.Ghichu
+                                                            </td>
+                                                            <td>
+                                                                @item.Ndcongviec
+                                                            </td>
+                                                            <td>
+                                                                @item.Loaitien
+                                                            </td>
+                                                            <td class="text-right">
+                                                                @Html.Raw(String.Format("{0:#,##0}", item.Phidontien))
+                                                            </td>
+                                                            <td class="text-right">
+                                                                @Html.Raw(string.Format("{0:#,##0}", item.Phididoan))
+                                                            </td>
+                                                            <td class="text-right">
+                                                                @Html.Raw(string.Format("{0:#,##0}", item.Traphi))
+                                                            </td>
+
+                                                            <td style="display:none">
+                                                            </td>
+                                                        </tr>
+
+                                                    }
+                                                </tbody>
+
+                                            </table>
+                                        </div>
+
+                                    </div>
+                                    <!-- /.card-body -->
+
+                                </div>
+                                <!-- /.card -->
+
+                            </section>
                         </div>
+                        <!-- HD -->
+
                     </div>
                 </div>
                 <!-- /.card -->
@@ -764,8 +776,7 @@
             });
         });
     </script>
-    @*<script src="~/js/Admin/NganhNghe/indexController.js"></script>*@
-
+    <script src="~/js/Admin/Tours/indexController.js"></script>
     <script>
         function confirmDelete(uniqueId, isDeleteClicked) {
             var deleteSpan = 'deleteSpan_' + uniqueId;
