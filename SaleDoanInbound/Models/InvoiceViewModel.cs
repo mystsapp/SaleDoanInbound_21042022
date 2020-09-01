@@ -12,6 +12,7 @@ namespace SaleDoanInbound.Models
         public IPagedList<Invoice> Invoices { get; set; }
         public Invoice Invoice { get; set; }
         public TourIB TourIB { get; set; }
+        public Tour Tour { get; set; }
         public string StrUrl { get; set; }
     }
 }

@@ -117,8 +117,12 @@ namespace SaleDoanInbound.Controllers
             });
         }
 
-        public IActionResult DetailsRedirect(string strUrl)
+        public IActionResult DetailsRedirect(string strUrl, string tabActive)
         {
+            if (!string.IsNullOrEmpty(tabActive))
+            {
+                strUrl = strUrl + "&tabActive=" + tabActive; // for redirect tab
+            }
             return Redirect(strUrl);
         }
 

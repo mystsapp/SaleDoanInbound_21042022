@@ -46,7 +46,7 @@
                 <div class="p-4 border rounded">
 
                     <input asp-for="Invoice.Id" type="hidden" /> <!-- this field is required-->
-                    <input asp-for="Invoice.TourIBId" type="hidden" /> <!-- this field is required - foreignkey to tourIB-->
+                    @*<input asp-for="Invoice.TourIBId" type="hidden" />*@ <!-- this field is required - foreignkey to tourIB-->
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                     <div class="form-group row">

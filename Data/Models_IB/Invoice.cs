@@ -37,12 +37,18 @@ namespace Data.Models_IB
         public string MOFP { get; set; }
         public DateTime? DOFP { get; set; }
 
-        [DisplayName("TourIB")]
-        [MaxLength(10), Column(TypeName = "varchar(10)")]
-        public string TourIBId { get; set; } // relation (tourib key)
+        //[DisplayName("TourIB")]
+        //[MaxLength(10), Column(TypeName = "varchar(10)")]
+        //public string TourIBId { get; set; } // relation (tourib key)
 
-        [ForeignKey("TourIBId")]
-        public virtual TourIB TourIB { get; set; }
+        //[ForeignKey("TourIBId")]
+        //public virtual TourIB TourIB { get; set; }
+
+        [DisplayName("Tour")]
+        public long TourId { get; set; } // relation (tourib key)
+
+        [ForeignKey("TourId")]
+        public virtual Tour Tour { get; set; }
 
         [DisplayName("Loại tiền")]
         [MaxLength(3, ErrorMessage = "Tối đa 3 ký tự"), Column(TypeName = "varchar(3)")]

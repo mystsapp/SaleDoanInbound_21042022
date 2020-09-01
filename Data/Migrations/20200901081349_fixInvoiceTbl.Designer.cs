@@ -4,14 +4,16 @@ using Data.Models_IB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
     [DbContext(typeof(SaleDoanIBDbContext))]
-    partial class SaleDoanIBDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200901081349_fixInvoiceTbl")]
+    partial class fixInvoiceTbl
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,9 +55,13 @@ namespace Data.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.Property<long>("TourId")
+                    b.Property<string>("TouIBId")
+                        .HasColumnType("varchar(10)");
+
+                    b.Property<string>("TourIBId")
+                        .IsRequired()
                         .HasColumnName("varchar(10")
-                        .HasColumnType("bigint")
+                        .HasColumnType("nvarchar(10)")
                         .HasMaxLength(10);
 
                     b.Property<decimal>("TyGia")
@@ -63,7 +69,7 @@ namespace Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TourId");
+                    b.HasIndex("TouIBId");
 
                     b.ToTable("BienNhans");
                 });
@@ -767,7 +773,10 @@ namespace Data.Migrations
                     b.Property<int>("TPL")
                         .HasColumnType("int");
 
-                    b.Property<long>("TourId")
+                    b.Property<long>("TourIBId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("TourId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Type")
@@ -1849,11 +1858,9 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Data.Models_IB.BienNhan", b =>
                 {
-                    b.HasOne("Data.Models_IB.Tour", "Tour")
+                    b.HasOne("Data.Models_IB.TourIB", "TourIB")
                         .WithMany()
-                        .HasForeignKey("TourId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TouIBId");
                 });
 
             modelBuilder.Entity("Data.Models_IB.CTVAT", b =>
@@ -1928,9 +1935,7 @@ namespace Data.Migrations
                 {
                     b.HasOne("Data.Models_IB.Tour", "Tour")
                         .WithMany()
-                        .HasForeignKey("TourId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TourId");
                 });
 
             modelBuilder.Entity("Data.Models_IB.KhachHang", b =>

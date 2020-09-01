@@ -22,7 +22,8 @@ namespace SaleDoanInbound.Controllers
             InvoiceVM = new InvoiceViewModel()
             {
                 Invoice = new Data.Models_IB.Invoice(),
-                TourIB = new Data.Models_IB.TourIB()
+                TourIB = new Data.Models_IB.TourIB(),
+                Tour = new Data.Models_IB.Tour()
             };
         }
         public IActionResult Index(string searchString = null, int page = 1)
@@ -47,14 +48,14 @@ namespace SaleDoanInbound.Controllers
             return View(InvoiceVM);
         }
 
-        public async Task<IActionResult> Create(string tourIBId, string strUrl)
+        public IActionResult Create(long tourId, string tabActive, string strUrl)
         {
-            InvoiceVM.StrUrl = strUrl;
-            InvoiceVM.TourIB = await _unitOfWork.tourIBRepository.GetByIdAsync(tourIBId);
-            InvoiceVM.Invoice.Arr = InvoiceVM.TourIB.Arr;
-            InvoiceVM.Invoice.Dep = InvoiceVM.TourIB.Dep;
-            InvoiceVM.Invoice.Pax = InvoiceVM.TourIB.Pax;
-            InvoiceVM.Invoice.TourIBId = InvoiceVM.TourIB.Id;
+            InvoiceVM.StrUrl = strUrl + "&tabActive=" + tabActive; // for redirect tab
+            InvoiceVM.Tour = _unitOfWork.tourRepository.GetById(tourId);
+            InvoiceVM.Invoice.Arr = InvoiceVM.Tour.NgayDen;
+            InvoiceVM.Invoice.Dep = InvoiceVM.Tour.NgayDi;
+            InvoiceVM.Invoice.Pax = InvoiceVM.Tour.SoKhachTT;
+            InvoiceVM.Invoice.TourId = InvoiceVM.Tour.Id;
             return View(InvoiceVM);
         }
 
@@ -109,10 +110,10 @@ namespace SaleDoanInbound.Controllers
 
         }
 
-        public async Task<IActionResult> Edit(string id, string tourIBId, string strUrl)
+        public async Task<IActionResult> Edit(string id, long tourId, string tabActive, string strUrl)
         {
-            InvoiceVM.StrUrl = strUrl;
-            InvoiceVM.TourIB = await _unitOfWork.tourIBRepository.GetByIdAsync(tourIBId);
+            InvoiceVM.StrUrl = strUrl + "&tabActive=" + tabActive; // for redirect tab
+            InvoiceVM.Tour = _unitOfWork.tourRepository.GetById(tourId);
 
             if (string.IsNullOrEmpty(id))
                 return NotFound();
@@ -154,10 +155,10 @@ namespace SaleDoanInbound.Controllers
             return View(InvoiceVM);
         }
 
-        public async Task<IActionResult> Details(string id, string tourIBId, string strUrl)
+        public async Task<IActionResult> Details(string id, long tourId, string tabActive, string strUrl)
         {
-            InvoiceVM.StrUrl = strUrl;
-            InvoiceVM.TourIB = await _unitOfWork.tourIBRepository.GetByIdAsync(tourIBId);
+            InvoiceVM.StrUrl = strUrl + "&tabActive=" + tabActive; // for redirect tab
+            InvoiceVM.Tour = _unitOfWork.tourRepository.GetById(tourId);
 
             if (id == null)
                 return NotFound();
@@ -172,8 +173,10 @@ namespace SaleDoanInbound.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id, string strUrl)
+        public async Task<IActionResult> DeleteConfirmed(string id, string strUrl, string tabActive)
         {
+            InvoiceVM.StrUrl = strUrl + "&tabActive=" + tabActive; // for redirect tab
+
             var invoice = await _unitOfWork.invoiceRepository.GetByIdAsync(id);
             if (invoice == null)
                 return NotFound();
@@ -187,7 +190,7 @@ namespace SaleDoanInbound.Controllers
             catch (Exception ex)
             {
                 SetAlert(ex.Message, "error");
-                return Redirect(strUrl);
+                return Redirect(InvoiceVM.StrUrl);
             }
         }
 

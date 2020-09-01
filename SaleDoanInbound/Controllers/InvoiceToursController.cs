@@ -70,10 +70,10 @@ namespace SaleDoanInbound.Controllers
             if (!string.IsNullOrEmpty(id))
             {
                 // DS invoice theo tourIB
-                InvoiceTourVM.Invoices = _unitOfWork.invoiceRepository.Find(x => x.TourIBId == id);
+                //InvoiceTourVM.Invoices = _unitOfWork.invoiceRepository.Find(x => x.TourIBId == id);
 
                 // DS biên nhận theo tourIB
-                InvoiceTourVM.BienNhans = InvoiceTourVM.BienNhans.Where(x => x.TourIBId == id);
+                //InvoiceTourVM.BienNhans = InvoiceTourVM.BienNhans.Where(x => x.TourIBId == id);
 
                 // get detail touribDto for invoice view index
                 var tourIB = _unitOfWork.tourIBRepository.Find(x => x.Id == id).FirstOrDefault();

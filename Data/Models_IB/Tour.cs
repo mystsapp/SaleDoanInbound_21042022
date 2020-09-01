@@ -32,11 +32,11 @@ namespace Data.Models_IB
         [MaxLength(50), Column(TypeName = "varchar(50)")]
         public string NguoiTao { get; set; }
 
-        [DisplayName("Ngày đến")]
+        [DisplayName("Bắt đầu")]
         [Required(ErrorMessage = "Ngày đến không được trống")]
         public DateTime NgayDen { get; set; }
 
-        [DisplayName("Ngày đi")]
+        [DisplayName("Kết thúc")]
         [Required(ErrorMessage = "Ngày đi không được trống")]
         public DateTime NgayDi { get; set; }
 

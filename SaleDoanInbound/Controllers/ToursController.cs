@@ -48,9 +48,20 @@ namespace SaleDoanInbound.Controllers
                 TourDto = new TourDto()
             };
         }
-        public async Task<IActionResult> Index(long id = 0, string searchString = null, int page = 1)
+        public async Task<IActionResult> Index(long id = 0, string searchString = null, string invoiceId = null, string tabActive = null, int page = 1)
         {
             TourVM.StrUrl = UriHelper.GetDisplayUrl(Request);
+
+            if (!string.IsNullOrEmpty(TourVM.StrUrl))
+            {
+                // cat bo phai sau % --> too long error
+                var newStrUrl = TourVM.StrUrl.Split('%');
+                if (newStrUrl.Length > 1)
+                {
+                    TourVM.StrUrl = newStrUrl[0];
+                }
+            }
+
             ViewBag.searchString = searchString;
 
             // for delete
@@ -84,9 +95,27 @@ namespace SaleDoanInbound.Controllers
                 TourVM.ListCPKhac = await ListCPKhac(tour.Sgtcode);
                 TourVM.ListYeucauxe = await ListYeucauxe(tour.Sgtcode);
                 TourVM.ListHuongdan = ListHuongdan(tour.Sgtcode);
+
+                // DS invoice theo tour
+                TourVM.Invoices = _unitOfWork.invoiceRepository.Find(x => x.TourId == id);
+
+                // DS biên nhận theo tour
+                TourVM.BienNhans = _unitOfWork.bienNhanRepository.Find(x => x.TourId == id);
             }
             //--> click vao tour
 
+            if (!string.IsNullOrEmpty(tabActive))
+            {
+                TourVM.tabActive = tabActive;
+
+                // reset url -> cut tabActive
+                var newStrUrl = TourVM.StrUrl.Split("&tabActive");
+                if (newStrUrl.Length > 1)
+                {
+                    TourVM.StrUrl = newStrUrl[0];
+                }
+
+            }
             return View(TourVM);
         }
 
@@ -142,6 +171,11 @@ namespace SaleDoanInbound.Controllers
 
             TourVM.Tour.ChiNhanhTaoId = _unitOfWork.dmChiNhanhRepository.Find(x => x.Macn == user.MaCN).FirstOrDefault().Id;
             TourVM.Tour.NgayTao = DateTime.Now;
+            TourVM.Tour.NguoiTao = user.Username;
+            if(TourVM.Tour.SoHopDong == null)
+            {
+                TourVM.Tour.SoHopDong = "";
+            }
             TourVM.Tour.NguoiTao = user.Username;
 
             // create sgtcode

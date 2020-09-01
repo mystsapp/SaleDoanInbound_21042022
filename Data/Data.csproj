@@ -23,6 +23,8 @@
     <Compile Remove="Migrations\20200729030730_delTourIb.Designer.cs" />
     <Compile Remove="Migrations\20200828035126_fixdecimal.cs" />
     <Compile Remove="Migrations\20200828035126_fixdecimal.Designer.cs" />
+    <Compile Remove="Migrations\20200901090706_fixInvoiceTbl1.cs" />
+    <Compile Remove="Migrations\20200901090706_fixInvoiceTbl1.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

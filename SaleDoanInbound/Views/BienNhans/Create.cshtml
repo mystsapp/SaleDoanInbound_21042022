@@ -46,7 +46,7 @@
             <form method="post" autocomplete="off">
                 <div class="p-4 border rounded">
 
-                    <input asp-for="BienNhan.TourIBId" type="hidden" /> <!-- this field is required - foreignkey to tourIB-->
+                    @*<input asp-for="BienNhan.TourIBId" type="hidden" />*@ <!-- this field is required - foreignkey to tourIB-->
                     <input asp-for="StrUrl" type="hidden" value="@Model.StrUrl" /> <!-- this field for action post -> to current tab-->
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 

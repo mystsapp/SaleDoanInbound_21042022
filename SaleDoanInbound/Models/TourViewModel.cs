@@ -30,6 +30,9 @@ namespace SaleDoanInbound.Models
         public List<ListViewModel> LoaiKhachs { get; set; }
         public Tour Tour { get; set; }
         public TourDto TourDto { get; set; }
+        public IEnumerable<Invoice> Invoices { get; set; }
+        public IEnumerable<BienNhan> BienNhans { get; set; }
         public string StrUrl { get; set; }
+        public string tabActive { get; set; }
     }
 }

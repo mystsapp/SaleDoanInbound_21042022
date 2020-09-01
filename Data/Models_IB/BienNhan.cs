@@ -11,13 +11,13 @@ namespace Data.Models_IB
         [MaxLength(12, ErrorMessage = "Chiều dài tối thiểu 12 ký tự"), Column("varchar(12")]
         public string Id { get; set; } // biennhan in Mr.Son db
 
-        [DisplayName("Tour IB")]
+        [DisplayName("Tour")]
         [MaxLength(10, ErrorMessage = "Chiều dài tối thiểu 10 ký tự"), Column("varchar(10")]
         [Required(ErrorMessage = "Trường này không được để trống")]
-        public string TourIBId { get; set; } // relation --> foreignkey to tourIB
+        public long TourId { get; set; } // relation --> foreignkey to tourIB
 
-        [ForeignKey("TouIBId")]
-        public virtual TourIB TourIB { get; set; }
+        [ForeignKey("TourId")]
+        public virtual Tour Tour { get; set; }
 
         [DisplayName("Ngày BN")]
         public DateTime NgayBN { get; set; }

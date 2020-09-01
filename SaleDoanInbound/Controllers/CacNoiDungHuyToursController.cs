@@ -80,7 +80,7 @@ namespace SaleDoanInbound.Controllers
 
         }
 
-        public async Task<IActionResult> Edit(long id, string strUrl)
+        public IActionResult Edit(long id, string strUrl)
         {
             CacNoiDungHuyTourVM.StrUrl = strUrl;
             if (string.IsNullOrEmpty(id.ToString()))

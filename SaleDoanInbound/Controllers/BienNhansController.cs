@@ -33,7 +33,7 @@ namespace SaleDoanInbound.Controllers
         {
             BienNhanVM.StrUrl = strUrl + "&tabActive=" + tabActive; // for redirect tab
             BienNhanVM.TourIB = await _unitOfWork.tourIBRepository.GetByIdAsync(tourIBId);
-            BienNhanVM.BienNhan.TourIBId = tourIBId;
+            //BienNhanVM.BienNhan.TourIBId = tourIBId;
             return View(BienNhanVM);
         }
 
@@ -92,7 +92,7 @@ namespace SaleDoanInbound.Controllers
         {
             BienNhanVM.StrUrl = strUrl + "&tabActive=" + tabActive; // for redirect tab
             BienNhanVM.TourIB = await _unitOfWork.tourIBRepository.GetByIdAsync(tourIBId);
-            BienNhanVM.BienNhan.TourIBId = tourIBId;
+            //BienNhanVM.BienNhan.TourIBId = tourIBId;
 
             if (string.IsNullOrEmpty(id))
                 return NotFound();
