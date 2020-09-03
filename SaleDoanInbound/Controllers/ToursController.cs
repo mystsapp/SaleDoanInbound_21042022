@@ -241,8 +241,15 @@ namespace SaleDoanInbound.Controllers
 
         }
 
-        public async Task<IActionResult> Edit(long id, string strUrl)
+        public async Task<IActionResult> Edit(long id, string strUrl, string huy)
         {
+            // click nut Huy
+            if (!string.IsNullOrEmpty(huy))
+            {
+                TourVM.huy = huy;
+            }
+            // click nut Huy
+
             // from login session
             var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
             ViewBag.chiNhanhSession = _unitOfWork.dmChiNhanhRepository.Find(x => x.Macn == user.MaCN).FirstOrDefault().Id; // for compare
@@ -549,9 +556,9 @@ namespace SaleDoanInbound.Controllers
             return View(TourVM);
         }
 
-        [HttpPost, ActionName("Delete")]
+        [HttpGet, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(long id, string strUrl)
+        public async Task<IActionResult> DeleteConfirmed(long id, string strUrl, bool huy)
         {
             var tour = _unitOfWork.tourRepository.GetById(id);
             if (tour == null)

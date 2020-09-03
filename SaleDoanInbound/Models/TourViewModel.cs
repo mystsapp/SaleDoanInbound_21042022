@@ -34,5 +34,6 @@ namespace SaleDoanInbound.Models
         public IEnumerable<BienNhan> BienNhans { get; set; }
         public string StrUrl { get; set; }
         public string tabActive { get; set; }
+        public string huy { get; set; }
     }
 }

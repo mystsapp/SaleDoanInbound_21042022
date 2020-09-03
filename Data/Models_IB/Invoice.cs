@@ -61,9 +61,15 @@ namespace Data.Models_IB
         [MaxLength(12, ErrorMessage = "Tối đa 12 ký tự"), Column(TypeName = "varchar(12)")]
         public string STT { get; set; }
 
+        [DisplayName("HD VAT")]
         [MaxLength(12, ErrorMessage = "Tối đa 12 ký tự"), Column(TypeName = "varchar(12)")]
         public string Bill { get; set; }
+        
+        [DisplayName("HTTT")]
+        [MaxLength(12, ErrorMessage = "Tối đa 12 ký tự"), Column(TypeName = "nvarchar(50)")]
+        public string HTTT { get; set; }
 
+        [DisplayName("Ngày tạo")]
         public DateTime NgayVAT { get; set; }
 
         [DisplayName("Reference")]
@@ -78,7 +84,8 @@ namespace Data.Models_IB
         [MaxLength(10, ErrorMessage = "Chiều dài tối đa là 10 ký tự"), Column(TypeName = "varchar(10)")]
         public string HopDong { get; set; }
 
-        public DateTime HuyVAT { get; set; }
+        [DisplayName("Ngày hủy")]
+        public DateTime? HuyVAT { get; set; }
 
         [MaxLength(12, ErrorMessage = "Tối đa 12 ký tự"), Column(TypeName = "varchar(12)")]
         public string SttMoi { get; set; }
