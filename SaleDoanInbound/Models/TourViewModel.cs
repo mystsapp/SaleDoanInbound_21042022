@@ -31,7 +31,10 @@ namespace SaleDoanInbound.Models
         public Tour Tour { get; set; }
         public TourDto TourDto { get; set; }
         public IEnumerable<Invoice> Invoices { get; set; }
+        public IEnumerable<Invoice> InvoicesInTour { get; set; }
         public IEnumerable<BienNhan> BienNhans { get; set; }
+        public IEnumerable<CacNoiDungHuyTour> CacNoiDungHuyTours { get; set; }
+
         public string StrUrl { get; set; }
         public string tabActive { get; set; }
         public string huy { get; set; }

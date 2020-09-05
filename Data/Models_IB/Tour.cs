@@ -182,6 +182,9 @@ namespace Data.Models_IB
 
         [DisplayName("Ngày hủy tour")]
         public DateTime? NgayHuyTour { get; set; }
+        
+        [DisplayName("Hủy tour")]
+        public bool? HuyTour { get; set; }
 
         [DisplayName("Nội dung hủy")]
         public long NDHuyTourId { get; set; }

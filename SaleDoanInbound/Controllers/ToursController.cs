@@ -243,11 +243,7 @@ namespace SaleDoanInbound.Controllers
 
         public async Task<IActionResult> Edit(long id, string strUrl, string huy)
         {
-            // click nut Huy
-            if (!string.IsNullOrEmpty(huy))
-            {
-                TourVM.huy = huy;
-            }
+            
             // click nut Huy
 
             // from login session
@@ -259,10 +255,19 @@ namespace SaleDoanInbound.Controllers
                 return NotFound();
 
             TourVM.Tour = await _unitOfWork.tourRepository.GetByLongIdAsync(id);
+            TourVM.InvoicesInTour = await _unitOfWork.invoiceRepository.FindAsync(x => x.TourId == id);
             ViewBag.maCn = _unitOfWork.dmChiNhanhRepository.GetById(TourVM.Tour.ChiNhanhDHId).Macn; // for view
 
             if (TourVM.Tour == null)
                 return NotFound();
+
+            // click nut Huy
+            if (!string.IsNullOrEmpty(huy) && (TourVM.InvoicesInTour == null))
+            {
+                TourVM.huy = huy;
+                TourVM.TourDto = TourDtoReturn(TourVM.Tour);// tourdto return - '-'
+                TourVM.CacNoiDungHuyTours = _unitOfWork.cacNoiDungHuyTourRepository.GetAll();
+            }
 
             // gang qua hid tuyentq
             TourVM.Tour.TuyenTQ = TourVM.Tour.TuyenTQ.Replace('-', ',');
@@ -345,6 +350,11 @@ namespace SaleDoanInbound.Controllers
                     temp += String.Format("- DS Khách đã thay đổi");
                 }
 
+                if (TourVM.Tour.NgayHuyTour.HasValue)
+                {
+                    temp += String.Format("- Ngày hủy: {0:dd/MM/yyyy} - Người hủy: {1}", TourVM.Tour.NgayDen, user.Username);
+                }
+
                 // loai tien, ty gia mac dinh: vnd, 1
                 #endregion
                 // kiem tra thay doi
@@ -384,11 +394,18 @@ namespace SaleDoanInbound.Controllers
                 tourinf.Chinhanhtao = _unitOfWork.dmChiNhanhRepository.GetById(TourVM.Tour.ChiNhanhTaoId).Macn; // user login
                 tourinf.Createtour = TourVM.Tour.NgayTao;
                 tourinf.Logfile = TourVM.Tour.LogFile;
+                if (TourVM.Tour.NgayHuyTour.HasValue)
+                {
+                    tourinf.Cancel = TourVM.Tour.NgayHuyTour;
+                }
                 // update tourinf
 
                 try
                 {
-
+                    if (TourVM.Tour.NgayHuyTour.HasValue)
+                    {
+                       TourVM.Tour.HuyTour = true;
+                    }
                     _unitOfWork.tourRepository.Update(TourVM.Tour);
                     // insert tourinf
                     _unitOfWork.tourInfRepository.Update(tourinf);
@@ -474,6 +491,14 @@ namespace SaleDoanInbound.Controllers
                 return NotFound();
 
             TourVM.Tour = tour;
+
+            TourVM.TourDto = TourDtoReturn(tour); // tourdto
+            
+            return View(TourVM);
+        }
+
+        private TourDto TourDtoReturn(Tour tour)
+        {
             var tourDto = new TourDto();
 
             tourDto.Id = tour.Id;
@@ -552,8 +577,7 @@ namespace SaleDoanInbound.Controllers
             tourDto.TyGia = tour.TyGia;
             tourDto.LogFile = tour.LogFile;
 
-            TourVM.TourDto = tourDto;
-            return View(TourVM);
+            return tourDto;
         }
 
         [HttpGet, ActionName("Delete")]
