@@ -50,7 +50,7 @@
         <div class="card-body">
 
             <form method="post" autocomplete="off" id="frmTourCreate" enctype="multipart/form-data">
-                @if (Model.huy == "true" && (Model.InvoicesInTour == null))
+                @if (Model.huy == "true")
                 {
                     <div class="p-4 border rounded">
 
@@ -113,7 +113,7 @@
 
                             <div class="col-md-12">
                                 <label asp-for="Tour.TuyenTQ" class="control-label"></label>
-                                <input asp-for="TourDto.TuyenTQ" id="hidDdlTuyenTQ" readonly/>
+                                <input asp-for="TourDto.TuyenTQ" class="form-control" id="hidDdlTuyenTQ" readonly/>
                             </div>
 
                         </div>
@@ -217,7 +217,7 @@
 
                             <div class="col-md-3">
                                 <label asp-for="Tour.NgayDamPhan" class="control-label"></label>
-                                <input type="text" value="" asp-for="Tour.NgayDamPhan" class="form-control maskInput" />
+                                <input type="text" value="" asp-for="Tour.NgayDamPhan" class="form-control maskInput" readonly/>
                                 <span asp-validation-for="Tour.NgayDamPhan" class="text-danger"></span>
                             </div>
 
@@ -309,8 +309,8 @@
 
                             <div class="col-md-3">
                                 <label asp-for="Tour.NgayHuyTour" class="control-label"></label>
-                                <input type="text" asp-for="Tour.NgayHuyTour" class="form-control maskInput" />
-                                <span asp-validation-for="Tour.ChiNhanhDHId" class="text-danger"></span>
+                                <input type="text" asp-for="Tour.NgayHuyTour" class="form-control maskInput" asp-format="{0:dd/MM/yyyy}"/>
+                                <span asp-validation-for="Tour.NgayHuyTour" class="text-danger"></span>
                             </div>
 
                             <div class="col-md-3">
@@ -331,6 +331,7 @@
 
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary" id="btnSubmit"><i class="fas fa-save"></i></button>
+                            <a class="btn btn-info" title="Cập nhật" asp-action="Edit" asp-route-id="@Model.Tour.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
                             <a class="btn btn-success" asp-controller="KhachHangs" asp-route-strUrl="@Model.StrUrl" asp-action="DetailsRedirect"><i class="fas fa-backward"></i></a>
                         </div>
                     </div>

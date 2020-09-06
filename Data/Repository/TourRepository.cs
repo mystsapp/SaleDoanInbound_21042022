@@ -108,7 +108,7 @@ namespace Data.Repository
                 {
                     tourDto.NgayHuyTour = item.NgayHuyTour.Value;
                 }
-                
+                tourDto.HuyTour = item.HuyTour;
                 tourDto.NDHuyTour = (item.NDHuyTourId == 0) ? "" : cacNoiDungHuyTours.Where(x => x.Id == item.NDHuyTourId).FirstOrDefault().NoiDung;
                 tourDto.GhiChu = item.GhiChu;
                 tourDto.LoaiTien = item.LoaiTien;

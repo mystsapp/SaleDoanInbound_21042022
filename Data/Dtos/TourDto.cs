@@ -31,10 +31,10 @@ namespace Data.Dtos
         [DisplayName("Người tạo")]
         public string NguoiTao { get; set; }
 
-        [DisplayName("Ngày đến")]
+        [DisplayName("Bắt đầu")]
         public DateTime NgayDen { get; set; }
 
-        [DisplayName("Ngày đi")]
+        [DisplayName("Kết thúc")]
         public DateTime NgayDi { get; set; }
 
         [DisplayName("Tuyến TQ")]
@@ -136,6 +136,9 @@ namespace Data.Dtos
 
         [DisplayName("Ngày hủy tour")]
         public DateTime NgayHuyTour { get; set; }
+
+        [DisplayName("Hủy tour")]
+        public bool? HuyTour { get; set; }
 
         [DisplayName("Nội dung hủy")]
         public string NDHuyTour { get; set; }

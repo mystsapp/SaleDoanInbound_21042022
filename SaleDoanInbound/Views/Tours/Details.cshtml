@@ -138,7 +138,7 @@
 
                         <div class="col-md-2">
                             <label asp-for="TourDto.NguonTour" class="control-label"></label>
-                            <input asp-for="TourDto.NguonTour" class="form-control" readonly/>
+                            <input asp-for="TourDto.NguonTour" class="form-control" readonly />
                         </div>
 
                     </div>
@@ -278,6 +278,25 @@
                         <div class="col-md-6">
                             <label asp-for="TourDto.LaiGomVe" class="control-label"></label>
                             <input type="text" asp-for="TourDto.LaiGomVe" class="form-control numbers" asp-format="{0:0,0}" readonly />
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-md-3">
+                            <label asp-for="Tour.NgayHuyTour" class="control-label"></label>
+                            <input type="text" asp-for="Tour.NgayHuyTour" asp-format="{0:dd/MM/yyyy}" class="form-control " readonly/>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label asp-for="Tour.NDHuyTourId" class="control-label"></label>
+                            <input asp-for="TourDto.NDHuyTour" class="form-control " readonly/>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="Tour.GhiChu" class="control-label"></label>
+                            <input asp-for="Tour.GhiChu" class="form-control " readonly/>
                         </div>
 
                     </div>

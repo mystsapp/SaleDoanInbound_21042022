@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -172,7 +173,7 @@ namespace SaleDoanInbound.Controllers
             TourVM.Tour.ChiNhanhTaoId = _unitOfWork.dmChiNhanhRepository.Find(x => x.Macn == user.MaCN).FirstOrDefault().Id;
             TourVM.Tour.NgayTao = DateTime.Now;
             TourVM.Tour.NguoiTao = user.Username;
-            if(TourVM.Tour.SoHopDong == null)
+            if (TourVM.Tour.SoHopDong == null)
             {
                 TourVM.Tour.SoHopDong = "";
             }
@@ -243,7 +244,7 @@ namespace SaleDoanInbound.Controllers
 
         public async Task<IActionResult> Edit(long id, string strUrl, string huy)
         {
-            
+
             // click nut Huy
 
             // from login session
@@ -255,14 +256,14 @@ namespace SaleDoanInbound.Controllers
                 return NotFound();
 
             TourVM.Tour = await _unitOfWork.tourRepository.GetByLongIdAsync(id);
-            TourVM.InvoicesInTour = await _unitOfWork.invoiceRepository.FindAsync(x => x.TourId == id);
+            //TourVM.InvoicesInTour = await _unitOfWork.invoiceRepository.FindAsync(x => x.TourId == id);
             ViewBag.maCn = _unitOfWork.dmChiNhanhRepository.GetById(TourVM.Tour.ChiNhanhDHId).Macn; // for view
 
             if (TourVM.Tour == null)
                 return NotFound();
 
             // click nut Huy
-            if (!string.IsNullOrEmpty(huy) && (TourVM.InvoicesInTour == null))
+            if (!string.IsNullOrEmpty(huy)/* && (TourVM.InvoicesInTour == null)*/)
             {
                 TourVM.huy = huy;
                 TourVM.TourDto = TourDtoReturn(TourVM.Tour);// tourdto return - '-'
@@ -352,7 +353,7 @@ namespace SaleDoanInbound.Controllers
 
                 if (TourVM.Tour.NgayHuyTour.HasValue)
                 {
-                    temp += String.Format("- Ngày hủy: {0:dd/MM/yyyy} - Người hủy: {1}", TourVM.Tour.NgayDen, user.Username);
+                    temp += String.Format("- Ngày hủy: {0:dd/MM/yyyy} - Người hủy: {1}", TourVM.Tour.NgayHuyTour, user.Username);
                 }
 
                 // loai tien, ty gia mac dinh: vnd, 1
@@ -360,10 +361,19 @@ namespace SaleDoanInbound.Controllers
                 // kiem tra thay doi
                 if (temp.Length > 0)
                 {
+
                     log = System.Environment.NewLine;
                     log += "=============";
                     log += System.Environment.NewLine;
-                    log += temp + " -User cập nhật tour: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // username
+                    
+                    if (!TourVM.Tour.NgayHuyTour.HasValue)
+                    {
+                        log += temp + " -User cập nhật tour: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // username
+                    }
+                    else
+                    {
+                        log += temp;
+                    }
                     t.LogFile = t.LogFile + log;
                     TourVM.Tour.LogFile = t.LogFile;
                 }
@@ -404,7 +414,7 @@ namespace SaleDoanInbound.Controllers
                 {
                     if (TourVM.Tour.NgayHuyTour.HasValue)
                     {
-                       TourVM.Tour.HuyTour = true;
+                        TourVM.Tour.HuyTour = true;
                     }
                     _unitOfWork.tourRepository.Update(TourVM.Tour);
                     // insert tourinf
@@ -493,7 +503,7 @@ namespace SaleDoanInbound.Controllers
             TourVM.Tour = tour;
 
             TourVM.TourDto = TourDtoReturn(tour); // tourdto
-            
+
             return View(TourVM);
         }
 
@@ -570,7 +580,7 @@ namespace SaleDoanInbound.Controllers
             {
                 tourDto.NgayHuyTour = tour.NgayHuyTour.Value;
             }
-
+            tourDto.HuyTour = tour.HuyTour;
             tourDto.NDHuyTour = (tour.NDHuyTourId == 0) ? "" : _unitOfWork.cacNoiDungHuyTourRepository.GetById(tour.NDHuyTourId).NoiDung;
             tourDto.GhiChu = tour.GhiChu;
             tourDto.LoaiTien = tour.LoaiTien;
@@ -777,7 +787,7 @@ namespace SaleDoanInbound.Controllers
                     {
                         _unitOfWork.dSKhachHangRepository.CreateRange(khachHangs);
                         List<Khachtour> khachtours = new List<Khachtour>();
-                        foreach(var item in khachHangs)
+                        foreach (var item in khachHangs)
                         {
                             khachtours.Add(new Khachtour()
                             {
@@ -1012,7 +1022,7 @@ namespace SaleDoanInbound.Controllers
         public async Task<Tournode> TourNoteAsync(string id)
         {
             var tournote = await _unitOfWork.tournoteRepository.GetByIdAsync(id);
-            
+
             return tournote;
         }
         //-----------Tour Programe------------
@@ -1022,7 +1032,7 @@ namespace SaleDoanInbound.Controllers
         public IEnumerable<Khachtour> ListDsKhach(string id)
         {
             var hd = _unitOfWork.khachTourRepository.Find(x => x.Sgtcode == id && x.Del == false).ToList();
-            
+
             return hd;
         }
 
@@ -1087,5 +1097,37 @@ namespace SaleDoanInbound.Controllers
         }
 
         //-----------HD------------
+
+        public async Task<JsonResult> CheckInvoices(long tourId)
+        {
+            var tours = await _unitOfWork.invoiceRepository.FindAsync(x => x.TourId == tourId);
+
+            if (tours.Count() != 0)
+            {
+                return Json(new
+                {
+                    status = true,
+                    toursCount = tours.Count()
+                });
+            }
+            else
+            {
+                return Json(new
+                {
+                    status = false
+                });
+            }
+        }
+        //public JsonResult CheckHuy(long tourId)
+        //{
+        //    var tour = _unitOfWork.tourRepository.GetById(tourId);
+
+        //    Debug.WriteLine(tour.Id + " - " + tour.HuyTour + "\n");
+        //    return Json(new
+        //    {
+        //        status = tour.HuyTour
+        //    });
+
+        //}
     }
 }
