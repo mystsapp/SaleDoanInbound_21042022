@@ -107,5 +107,13 @@ namespace Data.Models_IB
         [MaxLength(120), Column(TypeName = "varchar(120)")]
         public string KeyHDDT { get; set; }
         public DateTime Lock { get; set; }
+
+        [DisplayName("Tên khách")]
+        [MaxLength(50), Column(TypeName = "nvarchar(50)")]
+        public string TenKhach { get; set; }
+
+        [DisplayName("Ghi chú")]
+        [MaxLength(250), Column(TypeName = "nvarchar(250)")]
+        public string GhiChu { get; set; }
     }
 }

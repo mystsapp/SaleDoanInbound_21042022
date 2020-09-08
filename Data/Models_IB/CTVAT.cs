@@ -47,5 +47,18 @@ namespace Data.Models_IB
         [DisplayName("%")]
         [Column(TypeName = "decimal(18,2)")]
         public decimal Percent { get; set; }
+
+        [DisplayName("Tiếng anh")]
+        public bool TiengAnh { get; set; }
+
+        [DisplayName("Tên khoãn mục")]
+        [MaxLength(100), Column(TypeName = "varchar(100)")]
+        public string TenDanhMuc { get; set; }
+
+        [DisplayName("DS")]
+        public bool DS { get; set; }
+
+        [DisplayName("DLHH")]
+        public bool DLHH { get; set; }
     }
 }
