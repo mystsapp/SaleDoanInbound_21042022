@@ -25,7 +25,7 @@ namespace SaleDoanInbound.Models
         public List<ChiPhiKhachDto> ListCPKhac { get; set; } // qltour
         public IEnumerable<Dieuxe> ListYeucauxe { get; set; } // qltour
         public IEnumerable<Huongdan> ListHuongdan { get; set; } // qltour
-        public IEnumerable<Ngoaite> Ngoaites { get; set; }
+        public IEnumerable<Ngoaite> Ngoaites { get; set; } // qltour
         public List<ListViewModel> NguonTours { get; set; }
         public List<ListViewModel> LoaiKhachs { get; set; }
         public Tour Tour { get; set; }

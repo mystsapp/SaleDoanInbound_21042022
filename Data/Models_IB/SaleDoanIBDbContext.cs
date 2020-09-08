@@ -41,6 +41,7 @@ namespace Data.Models_IB
         public DbSet<UsrKhuCN> UsrKhuCNs { get; set; }
         public DbSet<VeMayBay> VeMayBays { get; set; }
         public DbSet<KhachHang> KhachHangs { get; set; }
+        public DbSet<LoaiIV> LoaiIVs { get; set; }
 
         // SaleDoanIB --> Mr.Son
         public DbSet<TourIB> TourIBs { get; set; }

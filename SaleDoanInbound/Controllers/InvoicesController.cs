@@ -23,6 +23,7 @@ namespace SaleDoanInbound.Controllers
             {
                 Invoice = new Data.Models_IB.Invoice(),
                 TourIB = new Data.Models_IB.TourIB(),
+                Ngoaites = _unitOfWork.ngoaiTeRepository.GetAll(),
                 Tour = new Data.Models_IB.Tour()
             };
         }
@@ -56,6 +57,9 @@ namespace SaleDoanInbound.Controllers
             InvoiceVM.Invoice.Dep = InvoiceVM.Tour.NgayDi;
             InvoiceVM.Invoice.Pax = InvoiceVM.Tour.SoKhachTT;
             InvoiceVM.Invoice.TourId = InvoiceVM.Tour.Id;
+
+            InvoiceVM.LoaiIVs = _unitOfWork.loaiIVRepository.GetAll();
+
             return View(InvoiceVM);
         }
 

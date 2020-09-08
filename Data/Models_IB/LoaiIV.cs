@@ -11,11 +11,11 @@ namespace Data.Models_IB
         public string Id { get; set; }
 
         [DisplayName("Tên loai")]
-        [MaxLength(1, ErrorMessage = "Tối đa 1 ký tự"), Column(TypeName = "varchar(1)")]
+        [MaxLength(100), Column(TypeName = "nvarchar(100)")]
         public string TenLoaiIV { get; set; }
 
         [DisplayName("Ghi chú")]
-        [MaxLength(1, ErrorMessage = "Tối đa 1 ký tự"), Column(TypeName = "varchar(1)")]
+        [MaxLength(250), Column(TypeName = "nvarchar(250)")]
         public string GhiChu { get; set; }
     }
 }

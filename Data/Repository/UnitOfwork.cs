@@ -25,6 +25,7 @@ namespace Data.Repository
         ITourRepository tourRepository { get; }
         IUserRepository userRepository { get; }
         IRoleRepository roleRepository { get; }
+        ILoaiIVRepository loaiIVRepository { get; }
 
         // qltour
         IThanhPhoForTuyenTQRepository thanhPhoForTuyenTQRepository { get; }
@@ -84,6 +85,7 @@ namespace Data.Repository
             userRepository = new UserRepository(_context);
             roleRepository = new RoleRepository(_context);
             dSKhachHangRepository = new DSKhachHangRepository(_context);
+            loaiIVRepository = new LoaiIVRepository(_context);
 
             // qltour
             thanhPhoForTuyenTQRepository = new ThanhPhoForTuyenTQRepository(_qltaikhoanContext);
@@ -158,6 +160,7 @@ namespace Data.Repository
         public IRoleRepository roleRepository { get; }
 
         public IDSKhachHangRepository dSKhachHangRepository { get; }
+        public ILoaiIVRepository loaiIVRepository { get; }
 
         // qltour
         public IThanhPhoForTuyenTQRepository thanhPhoForTuyenTQRepository { get; }

@@ -51,6 +51,7 @@ namespace SaleDoanInbound
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IRoleRepository, RoleRepository>();
             services.AddTransient<IDSKhachHangRepository, DSKhachHangRepository>();
+            services.AddTransient<ILoaiIVRepository, LoaiIVRepository>();
 
             // qltour
             services.AddTransient<IThanhPhoForTuyenTQRepository, ThanhPhoForTuyenTQRepository>();
