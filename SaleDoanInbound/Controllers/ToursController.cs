@@ -180,6 +180,7 @@ namespace SaleDoanInbound.Controllers
             TourVM.Tour.NguoiTao = user.Username;
 
             // create sgtcode
+            //_unitOfWork.quocGiaRepository.FindAsync(x => x.)
             var sgtCode = _unitOfWork.tourInfRepository.newSgtcode(Convert.ToDateTime(TourVM.Tour.NgayDen), user.MaCN, TourVM.Tour.PhongBanMaCode);
             TourVM.Tour.Sgtcode = sgtCode;
             // create sgtcode
@@ -1098,26 +1099,26 @@ namespace SaleDoanInbound.Controllers
 
         //-----------HD------------
 
-        public async Task<JsonResult> CheckInvoices(long tourId)
-        {
-            var tours = await _unitOfWork.invoiceRepository.FindAsync(x => x.TourId == tourId);
+        //public async Task<JsonResult> CheckInvoices(long tourId)
+        //{
+        //    var tours = await _unitOfWork.invoiceRepository.FindAsync(x => x.TourId == tourId);
 
-            if (tours.Count() != 0)
-            {
-                return Json(new
-                {
-                    status = true,
-                    toursCount = tours.Count()
-                });
-            }
-            else
-            {
-                return Json(new
-                {
-                    status = false
-                });
-            }
-        }
+        //    if (tours.Count() != 0)
+        //    {
+        //        return Json(new
+        //        {
+        //            status = true,
+        //            toursCount = tours.Count()
+        //        });
+        //    }
+        //    else
+        //    {
+        //        return Json(new
+        //        {
+        //            status = false
+        //        });
+        //    }
+        //}
         //public JsonResult CheckHuy(long tourId)
         //{
         //    var tour = _unitOfWork.tourRepository.GetById(tourId);

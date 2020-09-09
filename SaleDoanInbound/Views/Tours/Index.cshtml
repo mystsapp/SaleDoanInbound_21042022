@@ -147,9 +147,17 @@
                                                 <!-- ko cho xóa -->
 
                                                 <span id="confirmDeleteSpan_@item.Id" style="display: none">
-                                                    <span class="text-dark">Hủy?</span>
 
-                                                    <a class="btn btn-danger" asp-action="Edit" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" asp-route-huy="true">Yes</a>
+                                                    @if (item.Invoices > 0)
+                                                    {
+                                                        <span class="text-bold text-dark">Tour này dã tồn tại invoices</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="text-dark">Hủy?</span>
+                                                        <a class="btn btn-danger" asp-action="Edit" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" asp-route-huy="true">Yes</a>
+                                                    }
+
                                                     <a href="#" class="btn btn-primary" onclick="confirmDelete('@item.Id', false)">No</a>
                                                 </span>
 

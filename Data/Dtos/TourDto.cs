@@ -153,5 +153,7 @@ namespace Data.Dtos
         public decimal? TyGia { get; set; }
 
         public string LogFile { get; set; }
+
+        public int Invoices { get; set; }
     }
 }

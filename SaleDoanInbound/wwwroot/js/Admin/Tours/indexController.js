@@ -4,14 +4,16 @@
     },
 
     registerEvent: function () {
-        $.each($('.tdVal'), function (i, item) {
+        //$.each($('.tdVal'), function (i, item) {
 
-            var id = $(item).data('id');
-            $.when(indexController.checkInvoices(id)).done(function (response) {
-                if (response.status) { // co invoice roi
-                    $('.btnHuy').addClass('disabled');
-                }
-            })
+            //var id = $(item).data('id');
+            //$.when(indexController.checkInvoices(id)).done(function (response) {
+            //    console.log(response.status);
+            //    if (response.status) { // co invoice roi
+            //        $('.btnHuy').addClass('disabled');
+            //    }
+            //})
+            
             //$.when(indexController.checkHuy(id)).done(function (response) {
             //    if (response.status === true) { // check huy
             //        console.log(response);
@@ -22,7 +24,7 @@
             //if (invoicesCount > 0) {
             //    $('#btnHuy').prop('disabled', true);
             //}
-        });
+        //});
 
         $('.tdVal').click(function () {
             id = $(this).data('id');
@@ -46,50 +48,50 @@
             $('#btnSubmit').click();
         });
 
-    },
-    checkInvoices: function (tourId) {
-
-        return $.ajax({
-            url: '/Tours/CheckInvoices',
-            data: {
-                tourId: tourId
-            },
-            dataType: 'json',
-            type: 'GET',
-            success: function (response) {
-                //console.log(response.status);
-                //if (response.status) {
-                //    console.log(response.toursCount);
-                //    return response.toursCount;
-                //}
-                    
-                //else
-                //    return 10;
-            }
-        });
-
-    },
-    checkHuy: function (tourId) {
-
-        return $.ajax({
-            url: '/Tours/CheckHuy',
-            data: {
-                tourId: tourId
-            },
-            dataType: 'json',
-            type: 'GET',
-            success: function (response) {
-                //console.log(response.status);
-                //if (response.status) {
-                //    console.log(response.toursCount);
-                //    return response.toursCount;
-                //}
-                    
-                //else
-                //    return 10;
-            }
-        });
-
     }
+    //checkInvoices: function (tourId) {
+
+    //    return $.ajax({
+    //        url: '/Tours/CheckInvoices',
+    //        data: {
+    //            tourId: tourId
+    //        },
+    //        dataType: 'json',
+    //        type: 'GET',
+    //        success: function (response) {
+    //            //console.log(response.status);
+    //            //if (response.status) {
+    //            //    console.log(response.toursCount);
+    //            //    return response.toursCount;
+    //            //}
+                    
+    //            //else
+    //            //    return 10;
+    //        }
+    //    });
+
+    //}
+    //checkHuy: function (tourId) {
+
+    //    return $.ajax({
+    //        url: '/Tours/CheckHuy',
+    //        data: {
+    //            tourId: tourId
+    //        },
+    //        dataType: 'json',
+    //        type: 'GET',
+    //        success: function (response) {
+    //            //console.log(response.status);
+    //            //if (response.status) {
+    //            //    console.log(response.toursCount);
+    //            //    return response.toursCount;
+    //            //}
+                    
+    //            //else
+    //            //    return 10;
+    //        }
+    //    });
+
+    //}
 };
 indexController.init();

@@ -115,6 +115,8 @@ namespace Data.Repository
                 tourDto.TyGia = item.TyGia;
                 tourDto.LogFile = item.LogFile;
 
+                tourDto.Invoices = _context.Invoices.Where(x => x.TourId == item.Id).Count();
+
                 list.Add(tourDto);
             }
 
@@ -137,7 +139,7 @@ namespace Data.Repository
                 page--;
             }
             page = (page == 0) ? 1 : page;
-            var listPaged = list.ToPagedList(page ?? 1, pageSize);
+            var listPaged = list.OrderByDescending(x => x.NgayTao).ToPagedList(page ?? 1, pageSize);
             //if (page > listPaged.PageCount)
             //    page--;
             // return a 404 if user browses to pages beyond last page. special case first page if no items exist
