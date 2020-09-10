@@ -393,7 +393,7 @@ namespace SaleDoanInbound.Controllers
 
                 try
                 {
-                    
+
                     _unitOfWork.tourRepository.Update(TourVM.Tour);
                     // insert tourinf
                     _unitOfWork.tourInfRepository.Update(tourinf);
@@ -1104,7 +1104,7 @@ namespace SaleDoanInbound.Controllers
                 var cacNoiDungHuyTour = _unitOfWork.cacNoiDungHuyTourRepository.GetById(TourVM.Tour.NDHuyTourId);
                 temp += String.Format("- Nội dung huy: {0}", cacNoiDungHuyTour.NoiDung);
             }
-            
+
             if (!string.IsNullOrEmpty(TourVM.Tour.GhiChu))
             {
                 temp += String.Format("- Ghi chú: {0}", TourVM.Tour.GhiChu);
@@ -1142,6 +1142,58 @@ namespace SaleDoanInbound.Controllers
             }
         }
         //-----------HuyTour------------
+
+        //-----------KhoiPhucTour------------
+
+        [HttpPost]
+        public async Task<IActionResult> KhoiPhucTour(long id, string strUrl)
+        {
+            // from login session
+            var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
+
+            string temp = "", log;
+
+            // tour
+            var tour = _unitOfWork.tourRepository.GetById(id);
+            tour.NgayHuyTour = null;
+            tour.NDHuyTourId = 0;
+            tour.GhiChu = "";
+            tour.HuyTour = false;
+
+            // tourinf - qltour
+            var tourInfo = await _unitOfWork.tourInfRepository.GetByIdAsync(tour.Sgtcode);
+            tourInfo.Cancel = tour.NgayHuyTour;
+
+            // kiem tra thay doi
+
+            temp += String.Format("- Ngày khôi phục: {0:dd/MM/yyyy} - Người khôi phục: {1}", DateTime.Now, user.Username); // username
+            if (temp.Length > 0)
+            {
+
+                log = System.Environment.NewLine;
+                log += "=============";
+                log += System.Environment.NewLine;
+                log += temp;
+                tour.LogFile = tour.LogFile + log;
+                tourInfo.Logfile += log;
+            }
+
+            try
+            {
+                _unitOfWork.tourRepository.Update(tour);
+                _unitOfWork.tourInfRepository.Update(tourInfo);
+                await _unitOfWork.Complete();
+                SetAlert("Khôi phục thành công.", "success");
+                return Redirect(strUrl);
+            }
+            catch (Exception ex)
+            {
+                SetAlert("Error: " + ex.Message, "error");
+                return Redirect(strUrl);
+
+            }
+        }
+        //-----------KhoiPhucTour------------
 
         //public async Task<JsonResult> CheckInvoices(long tourId)
         //{

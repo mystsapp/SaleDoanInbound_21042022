@@ -105,7 +105,7 @@
                     <thead>
                         <tr class="table-info">
                             <th>#</th>
-                            <th>#</th>
+                            @*<th>#</th>*@
                             <th>@Html.DisplayNameFor(m => m.TourDtos.FirstOrDefault().Sgtcode)</th>
                             <th>@Html.DisplayNameFor(m => m.TourDtos.FirstOrDefault().SoHopDong)</th>
                             <th>@Html.DisplayNameFor(m => m.TourDtos.FirstOrDefault().ChuDeTour)</th>
@@ -156,8 +156,15 @@
 
                                     <td>
                                         <div class="btn-group text-white" role="group">
+                                            @if (item.HuyTour == true)
+                                            {
+                                                <button type="button" disabled class="btn btn-primary btn-sm" title="Cập nhật"><i class="fas fa-edit"></i></button>
+                                            }
+                                            else
+                                            {
+                                                <a class="btn btn-primary btn-sm" title="Cập nhật" asp-action="Edit" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
+                                            }
 
-                                            <a class="btn btn-primary btn-sm" title="Cập nhật" asp-action="Edit" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
                                             <a class="btn btn-success btn-sm" title="Chi tiết" asp-action="Details" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
                                             <!-- ko cho xóa -->
 
@@ -180,7 +187,7 @@
                                             <span id="deleteSpan_@item.Id">
                                                 @if (item.HuyTour == true)
                                                 {
-                                                    <button class="btn btn-danger btn-sm"><i class="fas fa-undo-alt"></i></button>
+                                                    <button type="button" data-id="@item.Id" class="btn btn-danger btn-sm btnKhoiPhucTour"><i class="fas fa-undo-alt"></i></button>
                                                 }
                                                 else
                                                 {
@@ -190,10 +197,15 @@
 
                                             </span>
 
+                                            <!-- hidden form khoiphuc-->
+                                            <form asp-action="KhoiPhucTour" method="post" id="frmKhoiPhucTour">
+                                                <input type="hidden" id="hidTourId" name="id" />
+                                                <input type="hidden" id="hidStrUrl" name="strUrl" value="@Model.StrUrl" />
+                                            </form>
                                         </div>
                                     </td>
 
-                                    <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayTao.ToString("dd/MM/yyyy"))</td>
+                                    @*<td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayTao.ToString("dd/MM/yyyy"))</td>*@
                                     <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
                                     <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.SoHopDong)</td>
                                     <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.ChuDeTour)</td>
@@ -420,7 +432,7 @@
                                                                 @item.Stt
                                                             </td>
                                                             <td>
-                                                                @item.Makh                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  v
+                                                                @item.Makh
                                                             </td>
                                                             <td>
                                                                 @item.Hoten
