@@ -1,7 +1,7 @@
 ﻿using Data.Dtos;
 using Data.Interfaces;
 using Data.Models_IB;
-using Data.Models_QLTaiKhoan;
+using Data.Models_QLT;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,7 +52,7 @@ namespace Data.Repository
                         NgayTao = item.NgayTao,
                         NguoiSua = item.NguoiSua,
                         NguoiTao = item.NguoiTao,
-                        QuocGia = listQG.Where(x => x.Id == item.MaQuocGia).FirstOrDefault().TenNuoc,
+                        QuocGia = listQG.Where(x => x.Code == item.MaQuocGia.ToString()).FirstOrDefault().Nation,
                         TenThanhPho = item.TenThanhPho
                     });
                 }

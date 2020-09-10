@@ -16,7 +16,7 @@ namespace Data.Models_QLT
         public string Tinhtp { get; set; }
         public string Thanhpho { get; set; }
         public decimal? Giave { get; set; }
-        public decimal? Giuxe { get; set; }
+        public decimal? Giatreem { get; set; }
         public string Congno { get; set; }
         public int? Vatvao { get; set; }
         public int? Vatra { get; set; }

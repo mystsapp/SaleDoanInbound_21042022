@@ -180,8 +180,9 @@ namespace SaleDoanInbound.Controllers
             TourVM.Tour.NguoiTao = user.Username;
 
             // create sgtcode
-            //_unitOfWork.quocGiaRepository.FindAsync(x => x.)
-            var sgtCode = _unitOfWork.tourInfRepository.newSgtcode(Convert.ToDateTime(TourVM.Tour.NgayDen), user.MaCN, TourVM.Tour.PhongBanMaCode);
+            var companies = await _unitOfWork.khachHangRepository.FindAsync(x => x.CompanyId == TourVM.Tour.MaKH); // find company by MaKH(companyId)
+            var quocgias = await _unitOfWork.quocGiaRepository.FindAsync(x => x.Nation == companies.FirstOrDefault().Nation); // find by nation(vn)
+            var sgtCode = _unitOfWork.tourInfRepository.newSgtcode(Convert.ToDateTime(TourVM.Tour.NgayDen), user.MaCN, quocgias.FirstOrDefault().Telcode);
             TourVM.Tour.Sgtcode = sgtCode;
             // create sgtcode
 
@@ -243,7 +244,7 @@ namespace SaleDoanInbound.Controllers
 
         }
 
-        public async Task<IActionResult> Edit(long id, string strUrl, string huy)
+        public async Task<IActionResult> Edit(long id, string strUrl)
         {
 
             // click nut Huy
@@ -262,14 +263,6 @@ namespace SaleDoanInbound.Controllers
 
             if (TourVM.Tour == null)
                 return NotFound();
-
-            // click nut Huy
-            if (!string.IsNullOrEmpty(huy)/* && (TourVM.InvoicesInTour == null)*/)
-            {
-                TourVM.huy = huy;
-                TourVM.TourDto = TourDtoReturn(TourVM.Tour);// tourdto return - '-'
-                TourVM.CacNoiDungHuyTours = _unitOfWork.cacNoiDungHuyTourRepository.GetAll();
-            }
 
             // gang qua hid tuyentq
             TourVM.Tour.TuyenTQ = TourVM.Tour.TuyenTQ.Replace('-', ',');
@@ -352,11 +345,6 @@ namespace SaleDoanInbound.Controllers
                     temp += String.Format("- DS Khách đã thay đổi");
                 }
 
-                if (TourVM.Tour.NgayHuyTour.HasValue)
-                {
-                    temp += String.Format("- Ngày hủy: {0:dd/MM/yyyy} - Người hủy: {1}", TourVM.Tour.NgayHuyTour, user.Username);
-                }
-
                 // loai tien, ty gia mac dinh: vnd, 1
                 #endregion
                 // kiem tra thay doi
@@ -366,15 +354,7 @@ namespace SaleDoanInbound.Controllers
                     log = System.Environment.NewLine;
                     log += "=============";
                     log += System.Environment.NewLine;
-                    
-                    if (!TourVM.Tour.NgayHuyTour.HasValue)
-                    {
-                        log += temp + " -User cập nhật tour: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // username
-                    }
-                    else
-                    {
-                        log += temp;
-                    }
+                    log += temp + " -User cập nhật tour: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // username
                     t.LogFile = t.LogFile + log;
                     TourVM.Tour.LogFile = t.LogFile;
                 }
@@ -413,10 +393,7 @@ namespace SaleDoanInbound.Controllers
 
                 try
                 {
-                    if (TourVM.Tour.NgayHuyTour.HasValue)
-                    {
-                        TourVM.Tour.HuyTour = true;
-                    }
+                    
                     _unitOfWork.tourRepository.Update(TourVM.Tour);
                     // insert tourinf
                     _unitOfWork.tourInfRepository.Update(tourinf);
@@ -678,7 +655,6 @@ namespace SaleDoanInbound.Controllers
                 }
             }
 
-            int j = 1;
             foreach (var maCode in listString)
             {
                 TourVM.listPhongMacode.Add(new Phongban()
@@ -942,22 +918,12 @@ namespace SaleDoanInbound.Controllers
                                     {
                                         gia += "," + a.Exttwn + "EXT-TWN" + "*" + string.Format("{0:#,##0.0}", a.Exttwncost) + a.Currency;
                                     }
-                                    //if (a.twnfoc > 0)
-                                    //{
-                                    //    gia += "," + gia + " " + a.twnfoc + "TWN FOC";
-                                    //}
-                                    if (a.Tpl > 0)
+
+                                    if (a.Homestay > 0)
                                     {
-                                        gia += "," + a.Tpl + "TPL" + "*" + string.Format("{0:#,##0.0}", a.Tplcost) + a.Currency;
+                                        gia += "," + a.Homestay + "Home stay" + "*" + a.Homestaypax + " pax*" + string.Format("{0:#,##0.0}", a.Homestaycost) + "/1pax" + a.Currency;
                                     }
-                                    if (a.Exttpl > 0)
-                                    {
-                                        gia += "," + a.Exttpl + "EXT-TPL" + "*" + string.Format("{0:#,##0.0}", a.Exttplcost) + a.Currency;
-                                    }
-                                    //if (a.tplfoc > 0)
-                                    //{
-                                    //    gia += "," + gia + " " + a.tplfoc + "TPL FOC";
-                                    //}
+
                                     if (a.Oth > 0)
                                     {
                                         gia += "," + a.Oth + " OTH-" + a.Othpax + "pax" + "*" + string.Format("{0:#,##0.0}", a.Othcost) + a.Currency + "-" + a.Othtype;
@@ -1098,6 +1064,84 @@ namespace SaleDoanInbound.Controllers
         }
 
         //-----------HD------------
+
+        //-----------HuyTour------------
+        public IActionResult HuyTourPartial(long id, string strUrl)
+        {
+            if (id == 0)
+                return NotFound();
+
+            TourVM.StrUrl = strUrl;
+            TourVM.Tour = _unitOfWork.tourRepository.GetById(id);
+            TourVM.CacNoiDungHuyTours = _unitOfWork.cacNoiDungHuyTourRepository.GetAll();
+
+            return PartialView(TourVM);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> HuyTour()
+        {
+            // from login session
+            var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
+
+            string temp = "", log;
+
+            // tour
+            var tour = _unitOfWork.tourRepository.GetById(TourVM.Tour.Id);
+            tour.NgayHuyTour = TourVM.Tour.NgayHuyTour;
+            tour.NDHuyTourId = TourVM.Tour.NDHuyTourId;
+            tour.GhiChu = TourVM.Tour.GhiChu;
+            tour.HuyTour = true;
+
+            // tourinf - qltour
+            var tourInfo = await _unitOfWork.tourInfRepository.GetByIdAsync(tour.Sgtcode);
+            tourInfo.Cancel = tour.NgayHuyTour;
+
+            // kiem tra thay doi
+
+            if (TourVM.Tour.NDHuyTourId > 0)
+            {
+                var cacNoiDungHuyTour = _unitOfWork.cacNoiDungHuyTourRepository.GetById(TourVM.Tour.NDHuyTourId);
+                temp += String.Format("- Nội dung huy: {0}", cacNoiDungHuyTour.NoiDung);
+            }
+            
+            if (!string.IsNullOrEmpty(TourVM.Tour.GhiChu))
+            {
+                temp += String.Format("- Ghi chú: {0}", TourVM.Tour.GhiChu);
+            }
+
+            if (TourVM.Tour.NgayHuyTour.HasValue)
+            {
+                temp += String.Format("- Ngày hủy: {0:dd/MM/yyyy} - Người hủy: {1}", TourVM.Tour.NgayHuyTour, user.Username); // username
+            }
+
+            if (temp.Length > 0)
+            {
+
+                log = System.Environment.NewLine;
+                log += "=============";
+                log += System.Environment.NewLine;
+                log += temp;
+                tour.LogFile = tour.LogFile + log;
+                tourInfo.Logfile += log;
+            }
+
+            try
+            {
+                _unitOfWork.tourRepository.Update(tour);
+                _unitOfWork.tourInfRepository.Update(tourInfo);
+                await _unitOfWork.Complete();
+                SetAlert("Hủy thành công.", "success");
+                return Redirect(TourVM.StrUrl);
+            }
+            catch (Exception ex)
+            {
+                SetAlert("Error: " + ex.Message, "error");
+                return Redirect(TourVM.StrUrl);
+
+            }
+        }
+        //-----------HuyTour------------
 
         //public async Task<JsonResult> CheckInvoices(long tourId)
         //{

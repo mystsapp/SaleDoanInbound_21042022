@@ -103,9 +103,10 @@ namespace Data.Repository
             dichVuRepository = new DichVuRepository(_qltourContext);
             dieuXeRepository = new DieuXeRepository(_qltourContext);
             huongDanRepository = new HuongDanRepository(_qltourContext);
+            quocGiaRepository = new QuocGiaRepository(_qltourContext);
 
             // qltaikhoan
-            quocGiaRepository = new QuocGiaRepository(_qltaikhoanContext);
+
             userQLTaiKhoanRepository = new UserQLTaiKhoanRepository(_qltaikhoanContext);
             applicationUserQLTaiKhoanRepository = new ApplicationUserQLTaiKhoanRepository(_qltaikhoanContext);
             applicationQLTaiKhoanRepository = new ApplicationQLTaiKhoanRepository(_qltaikhoanContext);

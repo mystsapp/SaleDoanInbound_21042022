@@ -123,7 +123,7 @@ namespace SaleDoanInbound.Controllers
             return View(CacNoiDungHuyTourVM);
         }
 
-        public async Task<IActionResult> Details(long id, string strUrl)
+        public IActionResult Details(long id, string strUrl)
         {
             CacNoiDungHuyTourVM.StrUrl = strUrl;
 

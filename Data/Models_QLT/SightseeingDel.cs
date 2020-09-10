@@ -12,9 +12,9 @@ namespace Data.Models_QLT
         public string Serial { get; set; }
         public string Debit { get; set; }
         public int? Pax { get; set; }
-        public decimal? Unitpricee { get; set; }
-        public int? Paxv { get; set; }
-        public decimal? Unitpricev { get; set; }
+        public decimal? PaxPrice { get; set; }
+        public int? Childern { get; set; }
+        public decimal? ChildernPrice { get; set; }
         public decimal? Amount { get; set; }
         public int? Vatin { get; set; }
         public int? Vatout { get; set; }

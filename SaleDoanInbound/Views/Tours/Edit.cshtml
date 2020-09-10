@@ -1,14 +1,8 @@
 ﻿@model TourViewModel
 
 @{
-    if (Model.huy == "true")
-    {
-        ViewData["Title"] = "Huy";
-    }
-    else
-    {
-        ViewData["Title"] = "Edit";
-    }
+
+    ViewData["Title"] = "Edit";
 
 }
 
@@ -50,625 +44,337 @@
         <div class="card-body">
 
             <form method="post" autocomplete="off" id="frmTourCreate" enctype="multipart/form-data">
-                @if (Model.huy == "true")
-                {
-                    <div class="p-4 border rounded">
 
-                        <input type="hidden" asp-for="Tour.Id" />
-                        <input type="hidden" asp-for="Tour.Sgtcode" />
-                        <input type="hidden" asp-for="Tour.NgayTao" />
-                        <input type="hidden" asp-for="Tour.NguoiTao" />
-                        <input type="hidden" asp-for="Tour.ChiNhanhTaoId" />
-                        <input type="hidden" asp-for="Tour.ChiNhanhDHId" />
-                        <input type="hidden" asp-for="Tour.PhongDH" />
-                        <input type="hidden" asp-for="Tour.TuyenTQ" />
-                        <input type="hidden" asp-for="Tour.LoaiTourId" />
-                        <input type="hidden" asp-for="Tour.LogFile" />
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <div class="form-group row">
+                <div class="p-4 border rounded ">
+
+                    <input type="hidden" asp-for="Tour.Id" />
+                    <input type="hidden" asp-for="Tour.Sgtcode" />
+                    <input type="hidden" asp-for="Tour.NgayTao" />
+                    <input type="hidden" asp-for="Tour.NguoiTao" />
+                    <input type="hidden" asp-for="Tour.ChiNhanhTaoId" />
+                    <input type="hidden" asp-for="Tour.LogFile" />
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group row">
+
+                        @if (ViewBag.chiNhanhSession == Model.Tour.ChiNhanhDHId)
+                        {
+                            <div class="col-md-3">
+                                <label asp-for="Tour.ChiNhanhDHId" class="control-label"></label>
+                                <select asp-for="Tour.ChiNhanhDHId" class="form-control select2"
+                                        asp-items="@(new SelectList(Model.Dmchinhanhs, "Id", "Macn"))" id="ddlChiNhanhDH">
+                                    <!-- qltour -->
+                                </select>
+                                <span asp-validation-for="Tour.ChiNhanhDHId" class="text-danger"></span>
+                            </div>
+
+                        }
+                        else
+                        {
 
                             <div class="col-md-3">
                                 <label asp-for="Tour.ChiNhanhDHId" class="control-label"></label>
-                                <input asp-for="TourDto.MaCNDH" class="form-control" readonly />
+                                <input value="@ViewBag.maCn" class="form-control" readonly />
+                                <span asp-validation-for="Tour.ChiNhanhDHId" class="text-danger"></span>
                             </div>
 
-                            <div class="col-md-3">
-                                <label asp-for="Tour.PhongDH" class="control-label"></label>
-                                <input asp-for="TourDto.ThiTruong" class="form-control" readonly/>
-                            </div>
+                        }
 
-                            <div class="col-md-3">
-                                <label asp-for="Tour.PhongBanMaCode" class="control-label"></label>
-                                <input asp-for="Tour.PhongBanMaCode" class="form-control" readonly />
-                            </div>
-
-                            <div class="col-md-3">
-                                <label asp-for="Tour.SoHopDong" class="control-label"></label>
-                                <input asp-for="Tour.SoHopDong" class="form-control" readonly/>
-                            </div>
-
+                        <div class="col-md-3">
+                            <label asp-for="Tour.PhongDH" class="control-label"></label>
+                            <select asp-for="Tour.PhongDH" class="form-control select2"
+                                    asp-items="@(new SelectList(Model.listPhongDH, "Maphong", "Tenphong"))" id="ddlPhongDH">
+                                <!-- qltour -->
+                            </select>
+                            <span asp-validation-for="Tour.PhongDH" class="text-danger"></span>
                         </div>
 
-                        <div class="form-group row">
+                        <div class="col-md-3">
+                            <label asp-for="Tour.PhongBanMaCode" class="control-label"></label>
+                            @*<select asp-for="Tour.PhongBanMaCode" class="form-control select2"
+                                asp-items="@(new SelectList(Model.listPhongMacode, "Macode", "Macode"))" id="ddlPhongBanMaCode">
 
-                            <div class="col-md-3 chuDeTourGroup">
-                                <label asp-for="Tour.NgayDen" class="control-label"></label>
-                                <input type="text" asp-for="Tour.NgayDen" class="form-control maskInput" id="txtNgayDen" readonly/>
-                            </div>
-
-                            <div class="col-md-3">
-                                <label asp-for="Tour.NgayDi" class="control-label"></label>
-                                <input type="text" asp-for="Tour.NgayDi" class="form-control maskInput" id="txtNgayDi" readonly/>
-                            </div>
-
-                            <div class="col-md-6 chuDeTourGroup">
-                                <label asp-for="Tour.ChuDeTour" class="control-label"></label>
-                                <input asp-for="Tour.ChuDeTour" class="form-control" id="txtChuDeTour" readonly/>
-                            </div>
-
+                                </select>*@
+                            <input asp-for="Tour.PhongBanMaCode" class="form-control" readonly />
+                            <span asp-validation-for="Tour.PhongBanMaCode" class="text-danger"></span>
                         </div>
 
-
-                        <div class="form-group row">
-
-                            <div class="col-md-12">
-                                <label asp-for="Tour.TuyenTQ" class="control-label"></label>
-                                <input asp-for="TourDto.TuyenTQ" class="form-control" id="hidDdlTuyenTQ" readonly/>
-                            </div>
-
+                        <div class="col-md-3">
+                            <label asp-for="Tour.SoHopDong" class="control-label"></label>
+                            <input asp-for="Tour.SoHopDong" class="form-control" />
+                            <span asp-validation-for="Tour.SoHopDong" class="text-danger"></span>
                         </div>
 
-                        <div class="form-group row">
+                    </div>
 
-                            <div class="col-md-2">
-                                <label asp-for="Tour.SoKhachDK" class="control-label"></label>
-                                <input asp-for="Tour.SoKhachDK" class="form-control" id="txtSoKhachDK" readonly/>
-                            </div>
+                    <div class="form-group row">
 
-                            <div class="col-md-2">
-                                <label asp-for="Tour.DoanhThuDK" class="control-label"></label>
-                                <input type="text" asp-for="Tour.DoanhThuDK" class="form-control numbers" asp-format="{0:0,0}" id="txtDoanhThuDK" readonly/>
-                            </div>
-
-                            <div class="col-md-2">
-                                <label asp-for="Tour.SoKhachTT" class="control-label"></label>
-                                <input asp-for="Tour.SoKhachTT" class="form-control " id="txtSoKhachTT" readonly/>
-                            </div>
-
-                            <div class="col-md-2 ">
-                                <label asp-for="Tour.SKTreEm" class="control-label"></label>
-                                <input asp-for="Tour.SKTreEm" class="form-control" readonly/>
-                            </div>
-
-                            <div class="col-md-2">
-                                <label asp-for="Tour.DoanhThuTT" class="control-label"></label>
-                                <input type="text" asp-for="Tour.DoanhThuTT" class="form-control numbers" id="txtDoanhThuTT" asp-format="{0:0,0}" readonly/>
-                            </div>
-
-                            <div class="col-md-2">
-                                <label asp-for="Tour.NguonTour" class="control-label"></label>
-                                <input asp-for="Tour.NguonTour" class="form-control" readonly/>
-                            </div>
+                        <div class="col-md-3 chuDeTourGroup">
+                            <label asp-for="Tour.NgayDen" class="control-label"></label>
+                            <input type="text" asp-for="Tour.NgayDen" class="form-control maskInput" id="txtNgayDen" />
+                            <span asp-validation-for="Tour.NgayDen" class="text-danger"></span>
                         </div>
 
-                        <div class="form-group row">
-
-                            <div class="col-md-5">
-                                <label asp-for="Tour.LoaiTourId" class="control-label"></label>
-                                <input asp-for="TourDto.TenLoaiTour" class="form-control" readonly />
-                            </div>
-
-                            <div class="col-md-3 chuDeTourGroup">
-                                <label asp-for="Tour.LoaiTien" class="control-label"></label>
-                                <input asp-for="Tour.LoaiTien" class="form-control" readonly />
-                            </div>
-
-                            <div class="col-md-2 ">
-                                <label asp-for="Tour.TyGia" class="control-label"></label>
-                                <input type="text" asp-for="Tour.TyGia" class="form-control numbers" asp-format="{0:0,0}" id="txtTyGia" readonly/>
-                            </div>
-
-                            <div class="col-md-2 ">
-                                <label asp-for="Tour.LoaiKhach" class="control-label"></label>
-                                <input asp-for="Tour.LoaiKhach" class="form-control" readonly />
-                            </div>
-
+                        <div class="col-md-3">
+                            <label asp-for="Tour.NgayDi" class="control-label"></label>
+                            <input type="text" asp-for="Tour.NgayDi" class="form-control maskInput" id="txtNgayDi" />
+                            <span asp-validation-for="Tour.NgayDi" class="text-danger"></span>
                         </div>
 
-                        <div class="form-group row">
-
-                            <div class="col-md-2">
-                                <label asp-for="Tour.MaKH" class="control-label"></label>
-                                <input asp-for="Tour.MaKH" class="form-control" readonly />
-                            </div>
-
-                            <div class="col-md-10">
-                                <label asp-for="Tour.TenKH" class="control-label"></label>
-                                <input asp-for="Tour.TenKH" class="form-control" id="txtTenKH" readonly/>
-                            </div>
-
+                        <div class="col-md-6 chuDeTourGroup">
+                            <label asp-for="Tour.ChuDeTour" class="control-label"></label>
+                            <input asp-for="Tour.ChuDeTour" class="form-control" id="txtChuDeTour" />
+                            <span asp-validation-for="Tour.ChuDeTour" class="text-danger"></span>
                         </div>
 
-                        <div class="form-group row">
+                    </div>
 
-                            <div class="col-md-2">
-                                <label asp-for="Tour.DienThoai" class="control-label"></label>
-                                <input asp-for="Tour.DienThoai" class="form-control" id="txtDienThoai" readonly/>
-                            </div>
 
-                            <div class="col-md-10">
-                                <label asp-for="Tour.DiaChi" class="control-label"></label>
-                                <input asp-for="Tour.DiaChi" class="form-control" id="txtDiaChi" readonly/>
-                            </div>
+                    <div class="form-group row">
 
+                        <div class="col-md-12">
+                            <label asp-for="Tour.TuyenTQ" class="control-label"></label>
+                            <input type="hidden" asp-for="Tour.TuyenTQ" id="hidDdlTuyenTQ" />
+                            <select class="tuyenTQ select2-hidden-accessible" multiple="" data-placeholder="Chọn tỉnh" style="width: 100%;" data-select2-id="23" tabindex="-1" aria-hidden="true"
+                                    asp-items="@(new SelectList(Model.Thanhphos, "Tentp", "Tentp"))" id="ddlTuyenTQ">
+                            </select>
+                            <span asp-validation-for="Tour.TuyenTQ" class="text-danger"></span>
                         </div>
 
-                        <div class="form-group row">
+                    </div>
 
-                            <div class="col-md-2">
-                                <label asp-for="Tour.Fax" class="control-label"></label>
-                                <input asp-for="Tour.Fax" class="form-control" id="txtFax" readonly/>
-                            </div>
+                    <div class="form-group row">
 
-                            <div class="col-md-4">
-                                <label asp-for="Tour.Email" class="control-label"></label>
-                                <input asp-for="Tour.Email" class="form-control" id="txtEmail" readonly/>
-                            </div>
-
-                            <div class="col-md-3">
-                                <label asp-for="Tour.NgayDamPhan" class="control-label"></label>
-                                <input type="text" value="" asp-for="Tour.NgayDamPhan" class="form-control maskInput" readonly/>
-                                <span asp-validation-for="Tour.NgayDamPhan" class="text-danger"></span>
-                            </div>
-
-                            <div class="col-md-3">
-                                <label asp-for="Tour.NgayKyHopDong" class="control-label"></label>
-                                <input type="text" value="" asp-for="Tour.NgayKyHopDong" class="form-control maskInput" readonly/>
-                            </div>
-
+                        <div class="col-md-2">
+                            <label asp-for="Tour.SoKhachDK" class="control-label"></label>
+                            <input asp-for="Tour.SoKhachDK" class="form-control" id="txtSoKhachDK" />
+                            <span asp-validation-for="Tour.SoKhachDK" class="text-danger"></span>
                         </div>
 
-                        <div class="form-group row">
-
-                            <div class="col-md-3">
-                                <label asp-for="Tour.NguoiKyHopDong" class="control-label"></label>
-                                <input asp-for="Tour.NguoiKyHopDong" class="form-control" readonly/>
-                            </div>
-
-                            <div class="col-md-3">
-                                <label asp-for="Tour.NguoiDaiDien" class="control-label"></label>
-                                <input asp-for="Tour.NguoiDaiDien" class="form-control " readonly/>
-                            </div>
-
-                            <div class="col-md-3">
-                                <label asp-for="Tour.DoiTacNuocNgoai" class="control-label"></label>
-                                <input asp-for="Tour.DoiTacNuocNgoai" class="form-control" readonly/>
-                            </div>
-
-                            <div class="col-md-3">
-                                <label asp-for="Tour.HinhThucGiaoDich" class="control-label"></label>
-                                <input asp-for="Tour.HinhThucGiaoDich" class="form-control " readonly/>
-                            </div>
-
+                        <div class="col-md-2">
+                            <label asp-for="Tour.DoanhThuDK" class="control-label"></label>
+                            <input type="text" asp-for="Tour.DoanhThuDK" class="form-control numbers" asp-format="{0:0,0}" id="txtDoanhThuDK" />
+                            <span asp-validation-for="Tour.DoanhThuDK" class="text-danger"></span>
                         </div>
 
-                        <div class="form-group row">
-
-                            <div class="col-md-3">
-                                <label asp-for="Tour.HanXuatVe" class="control-label"></label>
-                                <input type="text" asp-for="Tour.HanXuatVe" class="form-control maskInput" readonly/>
-                            </div>
-
-                            <div class="col-md-3">
-                                <label asp-for="Tour.NgayThanhLyHD" class="control-label"></label>
-                                <input type="text" asp-for="Tour.NgayThanhLyHD" class="form-control maskInput" readonly/>
-                            </div>
-
-                            <div class="col-md-3">
-                                <label asp-for="Tour.NgayNhanDuTien" class="control-label"></label>
-                                <input type="text" asp-for="Tour.NgayNhanDuTien" class="form-control maskInput" readonly/>
-                            </div>
-
-                            <div class="col-md-3">
-                                <label asp-for="Tour.LyDoNhanDu" class="control-label"></label>
-                                <input asp-for="Tour.LyDoNhanDu" class="form-control" readonly/>
-                            </div>
+                        <div class="col-md-2">
+                            <label asp-for="Tour.SoKhachTT" class="control-label"></label>
+                            <input asp-for="Tour.SoKhachTT" class="form-control " id="txtSoKhachTT" />
+                            <span asp-validation-for="Tour.SoKhachTT" class="text-danger"></span>
                         </div>
 
-                        <div class="form-group row">
-
-                            <div class="col-md-6">
-                                <label asp-for="Tour.LaiChuaVe" class="control-label"></label>
-                                <input type="text" asp-for="Tour.LaiChuaVe" class="form-control numbers" asp-format="{0:0,0}" readonly/>
-                            </div>
-
-                            <div class="col-md-6">
-                                <label asp-for="Tour.LaiGomVe" class="control-label"></label>
-                                <input type="text" asp-for="Tour.LaiGomVe" class="form-control numbers" asp-format="{0:0,0}" readonly/>
-                            </div>
-
+                        <div class="col-md-2 ">
+                            <label asp-for="Tour.SKTreEm" class="control-label"></label>
+                            <input asp-for="Tour.SKTreEm" class="form-control" />
+                            <span asp-validation-for="Tour.SKTreEm" class="text-danger"></span>
                         </div>
 
-                        <div class="form-group row">
-
-                            <div class="col-md-6">
-                                <label class="control-label">Upload DS khách</label>
-                                <input type="file" class="form-control" id="fUpload" name="files" readonly>
-                                <div id="dvData"></div><!-- error response -->
-                            </div>
-
-                            <div class="col-md-6">
-                                <label class="control-label">Download file mẫu</label>
-                                <br />
-                                <a title="File mẫu" class="btn btn-success disabled" asp-controller="Tours" asp-action="DownloadExcel"><i class="fas fa-download fa-1x"></i></a>
-                            </div>
-
-                        </div>
-                        
-                        <div class="form-group row">
-
-                            <div class="col-md-3">
-                                <label asp-for="Tour.NgayHuyTour" class="control-label"></label>
-                                <input type="text" asp-for="Tour.NgayHuyTour" class="form-control maskInput" asp-format="{0:dd/MM/yyyy}"/>
-                                <span asp-validation-for="Tour.NgayHuyTour" class="text-danger"></span>
-                            </div>
-
-                            <div class="col-md-3">
-                                <label asp-for="Tour.NDHuyTourId" class="control-label"></label>
-                                <select asp-for="Tour.NDHuyTourId" class="form-control select2"
-                                        asp-items="@(new SelectList(Model.CacNoiDungHuyTours, "Id", "NoiDung"))" id="ddlNDHuyTour">
-                                </select>
-                                <span asp-validation-for="Tour.NDHuyTourId" class="text-danger"></span>
-                            </div>
-
-                            <div class="col-md-6">
-                                <label asp-for="Tour.GhiChu" class="control-label"></label>
-                                <input asp-for="Tour.GhiChu" class="form-control " />
-                                <span asp-validation-for="Tour.GhiChu" class="text-danger"></span>
-                            </div>
-
+                        <div class="col-md-2">
+                            <label asp-for="Tour.DoanhThuTT" class="control-label"></label>
+                            <input type="text" asp-for="Tour.DoanhThuTT" class="form-control numbers" id="txtDoanhThuTT" asp-format="{0:0,0}" />
+                            <span asp-validation-for="Tour.DoanhThuTT" class="text-danger"></span>
                         </div>
 
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary" id="btnSubmit"><i class="fas fa-save"></i></button>
-                            <a class="btn btn-info" title="Cập nhật" asp-action="Edit" asp-route-id="@Model.Tour.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
-                            <a class="btn btn-success" asp-controller="KhachHangs" asp-route-strUrl="@Model.StrUrl" asp-action="DetailsRedirect"><i class="fas fa-backward"></i></a>
+                        <div class="col-md-2">
+                            <label asp-for="Tour.NguonTour" class="control-label"></label>
+                            <select asp-for="Tour.NguonTour" class="form-control "
+                                    asp-items="@(new SelectList(Model.NguonTours, "Name", "Name"))">
+                                <!-- Local -->
+                            </select>
+                            <span asp-validation-for="Tour.NguonTour" class="text-danger"></span>
                         </div>
                     </div>
-                }
-                else
-                {
-                    <div class="p-4 border rounded ">
 
-                        <input type="hidden" asp-for="Tour.Id" />
-                        <input type="hidden" asp-for="Tour.Sgtcode" />
-                        <input type="hidden" asp-for="Tour.NgayTao" />
-                        <input type="hidden" asp-for="Tour.NguoiTao" />
-                        <input type="hidden" asp-for="Tour.ChiNhanhTaoId" />
-                        <input type="hidden" asp-for="Tour.LogFile" />
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <div class="form-group row">
+                    <div class="form-group row">
 
-                            @if (ViewBag.chiNhanhSession == Model.Tour.ChiNhanhDHId)
-                            {
-                                <div class="col-md-3">
-                                    <label asp-for="Tour.ChiNhanhDHId" class="control-label"></label>
-                                    <select asp-for="Tour.ChiNhanhDHId" class="form-control select2"
-                                            asp-items="@(new SelectList(Model.Dmchinhanhs, "Id", "Macn"))" id="ddlChiNhanhDH">
-                                        <!-- qltour -->
-                                    </select>
-                                    <span asp-validation-for="Tour.ChiNhanhDHId" class="text-danger"></span>
-                                </div>
-
-                            }
-                            else
-                            {
-
-                                <div class="col-md-3">
-                                    <label asp-for="Tour.ChiNhanhDHId" class="control-label"></label>
-                                    <input value="@ViewBag.maCn" class="form-control" readonly />
-                                    <span asp-validation-for="Tour.ChiNhanhDHId" class="text-danger"></span>
-                                </div>
-
-                            }
-
-                            <div class="col-md-3">
-                                <label asp-for="Tour.PhongDH" class="control-label"></label>
-                                <select asp-for="Tour.PhongDH" class="form-control select2"
-                                        asp-items="@(new SelectList(Model.listPhongDH, "Maphong", "Tenphong"))" id="ddlPhongDH">
-                                    <!-- qltour -->
-                                </select>
-                                <span asp-validation-for="Tour.PhongDH" class="text-danger"></span>
-                            </div>
-
-                            <div class="col-md-3">
-                                <label asp-for="Tour.PhongBanMaCode" class="control-label"></label>
-                                @*<select asp-for="Tour.PhongBanMaCode" class="form-control select2"
-                                    asp-items="@(new SelectList(Model.listPhongMacode, "Macode", "Macode"))" id="ddlPhongBanMaCode">
-
-                                    </select>*@
-                                <input asp-for="Tour.PhongBanMaCode" class="form-control" readonly />
-                                <span asp-validation-for="Tour.PhongBanMaCode" class="text-danger"></span>
-                            </div>
-
-                            <div class="col-md-3">
-                                <label asp-for="Tour.SoHopDong" class="control-label"></label>
-                                <input asp-for="Tour.SoHopDong" class="form-control" />
-                                <span asp-validation-for="Tour.SoHopDong" class="text-danger"></span>
-                            </div>
-
+                        <div class="col-md-5">
+                            <label asp-for="Tour.LoaiTourId" class="control-label"></label>
+                            <select asp-for="Tour.LoaiTourId" class="form-control " id="ddlLoaiTour"
+                                    asp-items="@(new SelectList(Model.Tourkinds, "Id", "TourkindInf"))">
+                                <!-- tourkind: qltour-->
+                            </select>
+                            <span asp-validation-for="Tour.LoaiTourId" class="text-danger"></span>
                         </div>
 
-                        <div class="form-group row">
-
-                            <div class="col-md-3 chuDeTourGroup">
-                                <label asp-for="Tour.NgayDen" class="control-label"></label>
-                                <input type="text" asp-for="Tour.NgayDen" class="form-control maskInput" id="txtNgayDen" />
-                                <span asp-validation-for="Tour.NgayDen" class="text-danger"></span>
-                            </div>
-
-                            <div class="col-md-3">
-                                <label asp-for="Tour.NgayDi" class="control-label"></label>
-                                <input type="text" asp-for="Tour.NgayDi" class="form-control maskInput" id="txtNgayDi" />
-                                <span asp-validation-for="Tour.NgayDi" class="text-danger"></span>
-                            </div>
-
-                            <div class="col-md-6 chuDeTourGroup">
-                                <label asp-for="Tour.ChuDeTour" class="control-label"></label>
-                                <input asp-for="Tour.ChuDeTour" class="form-control" id="txtChuDeTour" />
-                                <span asp-validation-for="Tour.ChuDeTour" class="text-danger"></span>
-                            </div>
-
+                        <div class="col-md-3 chuDeTourGroup">
+                            <label asp-for="Tour.LoaiTien" class="control-label"></label>
+                            <select asp-for="Tour.LoaiTien" class="form-control " id="ddlLoaiTien"
+                                    asp-items="@(new SelectList(Model.Ngoaites, "MaNt", "TenNt"))">
+                                <!-- ngoaite: qltour-->
+                            </select>
+                            <span asp-validation-for="Tour.LoaiTien" class="text-danger"></span>
                         </div>
 
-
-                        <div class="form-group row">
-
-                            <div class="col-md-12">
-                                <label asp-for="Tour.TuyenTQ" class="control-label"></label>
-                                <input type="hidden" asp-for="Tour.TuyenTQ" id="hidDdlTuyenTQ" />
-                                <select class="tuyenTQ select2-hidden-accessible" multiple="" data-placeholder="Chọn tỉnh" style="width: 100%;" data-select2-id="23" tabindex="-1" aria-hidden="true"
-                                        asp-items="@(new SelectList(Model.Thanhphos, "Tentp", "Tentp"))" id="ddlTuyenTQ">
-                                </select>
-                                <span asp-validation-for="Tour.TuyenTQ" class="text-danger"></span>
-                            </div>
-
+                        <div class="col-md-2 ">
+                            <label asp-for="Tour.TyGia" class="control-label"></label>
+                            <input type="text" asp-for="Tour.TyGia" class="form-control numbers" asp-format="{0:0,0}" id="txtTyGia" />
+                            <span asp-validation-for="Tour.TyGia" class="text-danger"></span>
                         </div>
 
-                        <div class="form-group row">
-
-                            <div class="col-md-2">
-                                <label asp-for="Tour.SoKhachDK" class="control-label"></label>
-                                <input asp-for="Tour.SoKhachDK" class="form-control" id="txtSoKhachDK" />
-                                <span asp-validation-for="Tour.SoKhachDK" class="text-danger"></span>
-                            </div>
-
-                            <div class="col-md-2">
-                                <label asp-for="Tour.DoanhThuDK" class="control-label"></label>
-                                <input type="text" asp-for="Tour.DoanhThuDK" class="form-control numbers" asp-format="{0:0,0}" id="txtDoanhThuDK" />
-                                <span asp-validation-for="Tour.DoanhThuDK" class="text-danger"></span>
-                            </div>
-
-                            <div class="col-md-2">
-                                <label asp-for="Tour.SoKhachTT" class="control-label"></label>
-                                <input asp-for="Tour.SoKhachTT" class="form-control " id="txtSoKhachTT" />
-                                <span asp-validation-for="Tour.SoKhachTT" class="text-danger"></span>
-                            </div>
-
-                            <div class="col-md-2 ">
-                                <label asp-for="Tour.SKTreEm" class="control-label"></label>
-                                <input asp-for="Tour.SKTreEm" class="form-control" />
-                                <span asp-validation-for="Tour.SKTreEm" class="text-danger"></span>
-                            </div>
-
-                            <div class="col-md-2">
-                                <label asp-for="Tour.DoanhThuTT" class="control-label"></label>
-                                <input type="text" asp-for="Tour.DoanhThuTT" class="form-control numbers" id="txtDoanhThuTT" asp-format="{0:0,0}" />
-                                <span asp-validation-for="Tour.DoanhThuTT" class="text-danger"></span>
-                            </div>
-
-                            <div class="col-md-2">
-                                <label asp-for="Tour.NguonTour" class="control-label"></label>
-                                <select asp-for="Tour.NguonTour" class="form-control "
-                                        asp-items="@(new SelectList(Model.NguonTours, "Name", "Name"))">
-                                    <!-- Local -->
-                                </select>
-                                <span asp-validation-for="Tour.NguonTour" class="text-danger"></span>
-                            </div>
+                        <div class="col-md-2 ">
+                            <label asp-for="Tour.LoaiKhach" class="control-label"></label>
+                            <select asp-for="Tour.LoaiKhach" class="form-control "
+                                    asp-items="@(new SelectList(Model.LoaiKhachs, "Name", "Name"))">
+                                <!-- ngoaite: qltour-->
+                            </select>
+                            <span asp-validation-for="Tour.LoaiKhach" class="text-danger"></span>
                         </div>
 
-                        <div class="form-group row">
+                    </div>
 
-                            <div class="col-md-5">
-                                <label asp-for="Tour.LoaiTourId" class="control-label"></label>
-                                <select asp-for="Tour.LoaiTourId" class="form-control " id="ddlLoaiTour"
-                                        asp-items="@(new SelectList(Model.Tourkinds, "Id", "TourkindInf"))">
-                                    <!-- tourkind: qltour-->
-                                </select>
-                                <span asp-validation-for="Tour.LoaiTourId" class="text-danger"></span>
-                            </div>
+                    <div class="form-group row">
 
-                            <div class="col-md-3 chuDeTourGroup">
-                                <label asp-for="Tour.LoaiTien" class="control-label"></label>
-                                <select asp-for="Tour.LoaiTien" class="form-control " id="ddlLoaiTien"
-                                        asp-items="@(new SelectList(Model.Ngoaites, "MaNt", "TenNt"))">
-                                    <!-- ngoaite: qltour-->
-                                </select>
-                                <span asp-validation-for="Tour.LoaiTien" class="text-danger"></span>
-                            </div>
-
-                            <div class="col-md-2 ">
-                                <label asp-for="Tour.TyGia" class="control-label"></label>
-                                <input type="text" asp-for="Tour.TyGia" class="form-control numbers" asp-format="{0:0,0}" id="txtTyGia" />
-                                <span asp-validation-for="Tour.TyGia" class="text-danger"></span>
-                            </div>
-
-                            <div class="col-md-2 ">
-                                <label asp-for="Tour.LoaiKhach" class="control-label"></label>
-                                <select asp-for="Tour.LoaiKhach" class="form-control "
-                                        asp-items="@(new SelectList(Model.LoaiKhachs, "Name", "Name"))">
-                                    <!-- ngoaite: qltour-->
-                                </select>
-                                <span asp-validation-for="Tour.LoaiKhach" class="text-danger"></span>
-                            </div>
-
+                        <div class="col-md-2">
+                            <label asp-for="Tour.MaKH" class="control-label"></label>
+                            <select asp-for="Tour.MaKH" class="form-control select2" id="ddlMaKh"
+                                    asp-items="@(new SelectList(Model.Companies, "CompanyId", "CompanyId"))">
+                            </select>
+                            <span asp-validation-for="Tour.MaKH" class="text-danger"></span>
                         </div>
 
-                        <div class="form-group row">
-
-                            <div class="col-md-2">
-                                <label asp-for="Tour.MaKH" class="control-label"></label>
-                                <select asp-for="Tour.MaKH" class="form-control select2" id="ddlMaKh"
-                                        asp-items="@(new SelectList(Model.Companies, "CompanyId", "CompanyId"))">
-                                </select>
-                                <span asp-validation-for="Tour.MaKH" class="text-danger"></span>
-                            </div>
-
-                            <div class="col-md-10">
-                                <label asp-for="Tour.TenKH" class="control-label"></label>
-                                <input asp-for="Tour.TenKH" class="form-control" id="txtTenKH" />
-                                <span asp-validation-for="Tour.TenKH" class="text-danger"></span>
-                            </div>
-
+                        <div class="col-md-10">
+                            <label asp-for="Tour.TenKH" class="control-label"></label>
+                            <input asp-for="Tour.TenKH" class="form-control" id="txtTenKH" />
+                            <span asp-validation-for="Tour.TenKH" class="text-danger"></span>
                         </div>
 
-                        <div class="form-group row">
+                    </div>
 
-                            <div class="col-md-2">
-                                <label asp-for="Tour.DienThoai" class="control-label"></label>
-                                <input asp-for="Tour.DienThoai" class="form-control" id="txtDienThoai" />
-                                <span asp-validation-for="Tour.DienThoai" class="text-danger"></span>
-                            </div>
+                    <div class="form-group row">
 
-                            <div class="col-md-10">
-                                <label asp-for="Tour.DiaChi" class="control-label"></label>
-                                <input asp-for="Tour.DiaChi" class="form-control" id="txtDiaChi" />
-                                <span asp-validation-for="Tour.DiaChi" class="text-danger"></span>
-                            </div>
-
+                        <div class="col-md-2">
+                            <label asp-for="Tour.DienThoai" class="control-label"></label>
+                            <input asp-for="Tour.DienThoai" class="form-control" id="txtDienThoai" />
+                            <span asp-validation-for="Tour.DienThoai" class="text-danger"></span>
                         </div>
 
-                        <div class="form-group row">
-
-                            <div class="col-md-2">
-                                <label asp-for="Tour.Fax" class="control-label"></label>
-                                <input asp-for="Tour.Fax" class="form-control" id="txtFax" />
-                                <span asp-validation-for="Tour.Fax" class="text-danger"></span>
-                            </div>
-
-                            <div class="col-md-4">
-                                <label asp-for="Tour.Email" class="control-label"></label>
-                                <input asp-for="Tour.Email" class="form-control" id="txtEmail" />
-                                <span asp-validation-for="Tour.Email" class="text-danger"></span>
-                            </div>
-
-                            <div class="col-md-3">
-                                <label asp-for="Tour.NgayDamPhan" class="control-label"></label>
-                                <input type="text" value="" asp-for="Tour.NgayDamPhan" class="form-control maskInput" />
-                                <span asp-validation-for="Tour.NgayDamPhan" class="text-danger"></span>
-                            </div>
-
-                            <div class="col-md-3">
-                                <label asp-for="Tour.NgayKyHopDong" class="control-label"></label>
-                                <input type="text" value="" asp-for="Tour.NgayKyHopDong" class="form-control maskInput" />
-                                <span asp-validation-for="Tour.NgayKyHopDong" class="text-danger"></span>
-                            </div>
-
+                        <div class="col-md-10">
+                            <label asp-for="Tour.DiaChi" class="control-label"></label>
+                            <input asp-for="Tour.DiaChi" class="form-control" id="txtDiaChi" />
+                            <span asp-validation-for="Tour.DiaChi" class="text-danger"></span>
                         </div>
 
-                        <div class="form-group row">
+                    </div>
 
-                            <div class="col-md-3">
-                                <label asp-for="Tour.NguoiKyHopDong" class="control-label"></label>
-                                <input asp-for="Tour.NguoiKyHopDong" class="form-control" />
-                                <span asp-validation-for="Tour.NguoiKyHopDong" class="text-danger"></span>
-                            </div>
+                    <div class="form-group row">
 
-                            <div class="col-md-3">
-                                <label asp-for="Tour.NguoiDaiDien" class="control-label"></label>
-                                <input asp-for="Tour.NguoiDaiDien" class="form-control " />
-                                <span asp-validation-for="Tour.NguoiDaiDien" class="text-danger"></span>
-                            </div>
-
-                            <div class="col-md-3">
-                                <label asp-for="Tour.DoiTacNuocNgoai" class="control-label"></label>
-                                <input asp-for="Tour.DoiTacNuocNgoai" class="form-control" />
-                                <span asp-validation-for="Tour.DoiTacNuocNgoai" class="text-danger"></span>
-                            </div>
-
-                            <div class="col-md-3">
-                                <label asp-for="Tour.HinhThucGiaoDich" class="control-label"></label>
-                                <input asp-for="Tour.HinhThucGiaoDich" class="form-control " />
-                                <span asp-validation-for="Tour.HinhThucGiaoDich" class="text-danger"></span>
-                            </div>
-
+                        <div class="col-md-2">
+                            <label asp-for="Tour.Fax" class="control-label"></label>
+                            <input asp-for="Tour.Fax" class="form-control" id="txtFax" />
+                            <span asp-validation-for="Tour.Fax" class="text-danger"></span>
                         </div>
 
-                        <div class="form-group row">
-
-                            <div class="col-md-3">
-                                <label asp-for="Tour.HanXuatVe" class="control-label"></label>
-                                <input type="text" asp-for="Tour.HanXuatVe" class="form-control maskInput" />
-                                <span asp-validation-for="Tour.HanXuatVe" class="text-danger"></span>
-                            </div>
-
-                            <div class="col-md-3">
-                                <label asp-for="Tour.NgayThanhLyHD" class="control-label"></label>
-                                <input type="text" asp-for="Tour.NgayThanhLyHD" class="form-control maskInput" />
-                                <span asp-validation-for="Tour.NgayThanhLyHD" class="text-danger"></span>
-                            </div>
-
-                            <div class="col-md-3">
-                                <label asp-for="Tour.NgayNhanDuTien" class="control-label"></label>
-                                <input type="text" asp-for="Tour.NgayNhanDuTien" class="form-control maskInput" />
-                                <span asp-validation-for="Tour.NgayNhanDuTien" class="text-danger"></span>
-                            </div>
-
-                            <div class="col-md-3">
-                                <label asp-for="Tour.LyDoNhanDu" class="control-label"></label>
-                                <input asp-for="Tour.LyDoNhanDu" class="form-control" />
-                                <span asp-validation-for="Tour.LyDoNhanDu" class="text-danger"></span>
-                            </div>
+                        <div class="col-md-4">
+                            <label asp-for="Tour.Email" class="control-label"></label>
+                            <input asp-for="Tour.Email" class="form-control" id="txtEmail" />
+                            <span asp-validation-for="Tour.Email" class="text-danger"></span>
                         </div>
 
-                        <div class="form-group row">
-
-                            <div class="col-md-6">
-                                <label asp-for="Tour.LaiChuaVe" class="control-label"></label>
-                                <input type="text" asp-for="Tour.LaiChuaVe" class="form-control numbers" asp-format="{0:0,0}" />
-                                <span asp-validation-for="Tour.LaiChuaVe" class="text-danger"></span>
-                            </div>
-
-                            <div class="col-md-6">
-                                <label asp-for="Tour.LaiGomVe" class="control-label"></label>
-                                <input type="text" asp-for="Tour.LaiGomVe" class="form-control numbers" asp-format="{0:0,0}" />
-                                <span asp-validation-for="Tour.LaiGomVe" class="text-danger"></span>
-                            </div>
-
+                        <div class="col-md-3">
+                            <label asp-for="Tour.NgayDamPhan" class="control-label"></label>
+                            <input type="text" value="" asp-for="Tour.NgayDamPhan" class="form-control maskInput" />
+                            <span asp-validation-for="Tour.NgayDamPhan" class="text-danger"></span>
                         </div>
 
-                        <div class="form-group row">
-
-                            <div class="col-md-6">
-                                <label class="control-label">Upload DS khách</label>
-                                <input type="file" class="form-control" id="fUpload" name="files">
-                                <div id="dvData"></div><!-- error response -->
-                            </div>
-
-                            <div class="col-md-6">
-                                <label class="control-label">Download file mẫu</label>
-                                <br />
-                                <a title="File mẫu" class="btn btn-success" asp-controller="Tours" asp-action="DownloadExcel"><i class="fas fa-download fa-1x"></i></a>
-                            </div>
-
+                        <div class="col-md-3">
+                            <label asp-for="Tour.NgayKyHopDong" class="control-label"></label>
+                            <input type="text" value="" asp-for="Tour.NgayKyHopDong" class="form-control maskInput" />
+                            <span asp-validation-for="Tour.NgayKyHopDong" class="text-danger"></span>
                         </div>
 
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary" id="btnSubmit"><i class="fas fa-save"></i></button>
-                            <a class="btn btn-success" asp-controller="KhachHangs" asp-route-strUrl="@Model.StrUrl" asp-action="DetailsRedirect"><i class="fas fa-backward"></i></a>
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-md-3">
+                            <label asp-for="Tour.NguoiKyHopDong" class="control-label"></label>
+                            <input asp-for="Tour.NguoiKyHopDong" class="form-control" />
+                            <span asp-validation-for="Tour.NguoiKyHopDong" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label asp-for="Tour.NguoiDaiDien" class="control-label"></label>
+                            <input asp-for="Tour.NguoiDaiDien" class="form-control " />
+                            <span asp-validation-for="Tour.NguoiDaiDien" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label asp-for="Tour.DoiTacNuocNgoai" class="control-label"></label>
+                            <input asp-for="Tour.DoiTacNuocNgoai" class="form-control" />
+                            <span asp-validation-for="Tour.DoiTacNuocNgoai" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label asp-for="Tour.HinhThucGiaoDich" class="control-label"></label>
+                            <input asp-for="Tour.HinhThucGiaoDich" class="form-control " />
+                            <span asp-validation-for="Tour.HinhThucGiaoDich" class="text-danger"></span>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-md-3">
+                            <label asp-for="Tour.HanXuatVe" class="control-label"></label>
+                            <input type="text" asp-for="Tour.HanXuatVe" class="form-control maskInput" />
+                            <span asp-validation-for="Tour.HanXuatVe" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label asp-for="Tour.NgayThanhLyHD" class="control-label"></label>
+                            <input type="text" asp-for="Tour.NgayThanhLyHD" class="form-control maskInput" />
+                            <span asp-validation-for="Tour.NgayThanhLyHD" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label asp-for="Tour.NgayNhanDuTien" class="control-label"></label>
+                            <input type="text" asp-for="Tour.NgayNhanDuTien" class="form-control maskInput" />
+                            <span asp-validation-for="Tour.NgayNhanDuTien" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label asp-for="Tour.LyDoNhanDu" class="control-label"></label>
+                            <input asp-for="Tour.LyDoNhanDu" class="form-control" />
+                            <span asp-validation-for="Tour.LyDoNhanDu" class="text-danger"></span>
                         </div>
                     </div>
-                }
+
+                    <div class="form-group row">
+
+                        <div class="col-md-6">
+                            <label asp-for="Tour.LaiChuaVe" class="control-label"></label>
+                            <input type="text" asp-for="Tour.LaiChuaVe" class="form-control numbers" asp-format="{0:0,0}" />
+                            <span asp-validation-for="Tour.LaiChuaVe" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="Tour.LaiGomVe" class="control-label"></label>
+                            <input type="text" asp-for="Tour.LaiGomVe" class="form-control numbers" asp-format="{0:0,0}" />
+                            <span asp-validation-for="Tour.LaiGomVe" class="text-danger"></span>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-md-6">
+                            <label class="control-label">Upload DS khách</label>
+                            <input type="file" class="form-control" id="fUpload" name="files">
+                            <div id="dvData"></div><!-- error response -->
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="control-label">Download file mẫu</label>
+                            <br />
+                            <a title="File mẫu" class="btn btn-success" asp-controller="Tours" asp-action="DownloadExcel"><i class="fas fa-download fa-1x"></i></a>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary" id="btnSubmit"><i class="fas fa-save"></i></button>
+                        <a class="btn btn-success" asp-controller="KhachHangs" asp-route-strUrl="@Model.StrUrl" asp-action="DetailsRedirect"><i class="fas fa-backward"></i></a>
+                    </div>
+                </div>
 
             </form>
 

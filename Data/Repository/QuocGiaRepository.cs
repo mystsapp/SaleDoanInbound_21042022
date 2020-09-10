@@ -1,6 +1,6 @@
 ﻿using Data.Interfaces;
 using Data.Models_IB;
-using Data.Models_QLTaiKhoan;
+using Data.Models_QLT;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,9 +13,9 @@ namespace Data.Repository
     {
         IPagedList<Quocgia> ListQuocGia(string searchString, int? page);
     }
-    public class QuocGiaRepository : Repository_QLTaiKhoan<Quocgia>, IQuocGiaRepository
+    public class QuocGiaRepository : Repository_QLT<Quocgia>, IQuocGiaRepository
     {
-        public QuocGiaRepository(qltaikhoanContext context) : base(context)
+        public QuocGiaRepository(qltourContext context) : base(context)
         {
         }
 
@@ -31,7 +31,9 @@ namespace Data.Repository
             var list = GetAll().AsQueryable();
             if (!string.IsNullOrEmpty(searchString))
             {
-                list = list.Where(x => x.TenNuoc.ToLower().Contains(searchString.ToLower()));
+                list = list.Where(x => x.Nation.ToLower().Contains(searchString.ToLower()) ||
+                                       x.Natione.ToLower().Contains(searchString.ToLower()) ||
+                                       x.Telcode.ToLower().Contains(searchString.ToLower()));
             }
 
             var count = list.Count();

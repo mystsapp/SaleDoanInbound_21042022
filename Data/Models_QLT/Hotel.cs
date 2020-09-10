@@ -23,11 +23,10 @@ namespace Data.Models_QLT
         public decimal Twncost { get; set; }
         public int Exttwn { get; set; }
         public decimal Exttwncost { get; set; }
-        public int Tpl { get; set; }
-        public int Tplpax { get; set; }
-        public decimal Tplcost { get; set; }
-        public int Exttpl { get; set; }
-        public decimal Exttplcost { get; set; }
+        public int Homestay { get; set; }
+        public int Homestaypax { get; set; }
+        public decimal? Homestaycost { get; set; }
+        public string Homestaynote { get; set; }
         public int Oth { get; set; }
         public int Othpax { get; set; }
         public decimal Othcost { get; set; }

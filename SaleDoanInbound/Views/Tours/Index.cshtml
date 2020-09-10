@@ -8,7 +8,30 @@
 
 @{
     ViewData["Title"] = "Tours";
+    var url = Model.StrUrl;
 }
+
+<!-- huy tour modal-->
+<div class="modal fade" id="huyTourModal" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-lg">
+
+        <div class="modal-content ">
+            <div class="modal-header">
+                <h4 class="modal-title">Thông tin hủy tour</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body huyTourPartial">
+
+            </div>
+
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- huy tour modal-->
 
 <!-- Content Header (Page header) -->
 <section class="content-header">
@@ -82,6 +105,7 @@
                     <thead>
                         <tr class="table-info">
                             <th>#</th>
+                            <th>#</th>
                             <th>@Html.DisplayNameFor(m => m.TourDtos.FirstOrDefault().Sgtcode)</th>
                             <th>@Html.DisplayNameFor(m => m.TourDtos.FirstOrDefault().SoHopDong)</th>
                             <th>@Html.DisplayNameFor(m => m.TourDtos.FirstOrDefault().ChuDeTour)</th>
@@ -98,87 +122,89 @@
                         {
                             @foreach (var item in Model.TourDtos)
                             {
-                                if (item.HuyTour == true)
-                                {
-                                    <tr class="cursor-pointer bg-secondary">
+                                @*if (item.HuyTour == true)
+                {
+                    <tr class="cursor-pointer bg-secondary">
 
-                                        <td>
-                                            <div class="btn-group text-white" role="group">
+                        <td>
+                            <div class="btn-group text-white" role="group">
 
-                                                <a class="btn btn-primary btn-sm disabled" title="Cập nhật" asp-action="Edit" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
-                                                <a class="btn btn-success btn-sm" title="Chi tiết" asp-action="Details" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
-                                                <!-- ko cho xóa -->
+                                <a class="btn btn-primary btn-sm disabled" title="Cập nhật" asp-action="Edit" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
+                                <a class="btn btn-success btn-sm" title="Chi tiết" asp-action="Details" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
 
-                                                <span id="confirmDeleteSpan_@item.Id" style="display: none">
+                                <a href="#" class="btn btn-danger btn-sm disabled" title="Hủy"><i class="fas fa-trash-alt"></i></a>
+
+                            </div>
+                        </td>
+
+                        <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayTao.ToString("dd/MM/yyyy"))</td>
+                        <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
+                        <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.SoHopDong)</td>
+                        <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.ChuDeTour)</td>
+                        <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.TuyenTQ)</td>
+                        <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayDen.ToString("dd/MM/yyyy"))</td>
+                        <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayDi.ToString("dd/MM/yyyy"))</td>
+                        <td class="tdVal" data-id="@item.Id">
+                            <span class="badge badge-warning">Đã hủy</span>
+                        </td>
+                        <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.NguoiTao)</td>
+                    </tr>
+                }
+                else
+                {*@
+                                <tr class="cursor-pointer " data-huy="@item.HuyTour">
+
+                                    <td>
+                                        <div class="btn-group text-white" role="group">
+
+                                            <a class="btn btn-primary btn-sm" title="Cập nhật" asp-action="Edit" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
+                                            <a class="btn btn-success btn-sm" title="Chi tiết" asp-action="Details" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
+                                            <!-- ko cho xóa -->
+
+                                            <span id="confirmDeleteSpan_@item.Id" style="display: none">
+
+                                                @if (item.Invoices > 0)
+                                                {
+                                                    <span class="text-bold text-dark">Tour này dã tồn tại invoices</span>
+                                                }
+                                                else
+                                                {
                                                     <span class="text-dark">Hủy?</span>
+                                                    <button type="button" class="btn btn-danger btnHuyTour" data-id="@item.Id" data-url="@Model.StrUrl">Yes</button>// HuyTour
 
-                                                    <a class="btn btn-danger" asp-action="Edit" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" asp-route-huy="true">Yes</a>
-                                                    <a href="#" class="btn btn-primary" onclick="confirmDelete('@item.Id', false)">No</a>
-                                                </span>
+                                                }
 
-                                                <span id="deleteSpan_@item.Id">
-                                                    <a href="#" class="btn btn-danger btn-sm disabled" title="Hủy" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></a>
-                                                </span>
+                                                <a href="#" class="btn btn-primary" onclick="confirmDelete('@item.Id', false)">No</a>
+                                            </span>
 
-                                            </div>
-                                        </td>
-
-                                        <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
-                                        <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.SoHopDong)</td>
-                                        <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.ChuDeTour)</td>
-                                        <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.TuyenTQ)</td>
-                                        <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayDen.ToString("dd/MM/yyyy"))</td>
-                                        <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayDi.ToString("dd/MM/yyyy"))</td>
-                                        <td class="tdVal" data-id="@item.Id">
-                                            <span class="badge badge-warning">Đã hủy</span>
-                                        </td>
-                                        <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.NguoiTao)</td>
-                                    </tr>
-                                }
-                                else
-                                {
-                                    <tr class="cursor-pointer ">
-
-                                        <td>
-                                            <div class="btn-group text-white" role="group">
-
-                                                <a class="btn btn-primary btn-sm" title="Cập nhật" asp-action="Edit" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
-                                                <a class="btn btn-success btn-sm" title="Chi tiết" asp-action="Details" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
-                                                <!-- ko cho xóa -->
-
-                                                <span id="confirmDeleteSpan_@item.Id" style="display: none">
-
-                                                    @if (item.Invoices > 0)
-                                                    {
-                                                        <span class="text-bold text-dark">Tour này dã tồn tại invoices</span>
-                                                    }
-                                                    else
-                                                    {
-                                                        <span class="text-dark">Hủy?</span>
-                                                        <a class="btn btn-danger" asp-action="Edit" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" asp-route-huy="true">Yes</a>
-                                                    }
-
-                                                    <a href="#" class="btn btn-primary" onclick="confirmDelete('@item.Id', false)">No</a>
-                                                </span>
-
-                                                <span id="deleteSpan_@item.Id">
+                                            <span id="deleteSpan_@item.Id">
+                                                @if (item.HuyTour == true)
+                                                {
+                                                    <button class="btn btn-danger btn-sm"><i class="fas fa-undo-alt"></i></button>
+                                                }
+                                                else
+                                                {
                                                     <a href="#" class="btn btn-danger btn-sm btnHuy" title="Hủy" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></a>
-                                                </span>
 
-                                            </div>
-                                        </td>
+                                                }
 
-                                        <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
-                                        <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.SoHopDong)</td>
-                                        <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.ChuDeTour)</td>
-                                        <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.TuyenTQ)</td>
-                                        <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayDen.ToString("dd/MM/yyyy"))</td>
-                                        <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayDi.ToString("dd/MM/yyyy"))</td>
-                                        <td class="tdVal" data-id="@item.Id">@*@Html.DisplayFor(m => item.HuyTour)*@</td>
-                                        <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.NguoiTao)</td>
-                                    </tr>
+                                            </span>
 
-                                }
+                                        </div>
+                                    </td>
+
+                                    <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayTao.ToString("dd/MM/yyyy"))</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.SoHopDong)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.ChuDeTour)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.TuyenTQ)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayDen.ToString("dd/MM/yyyy"))</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayDi.ToString("dd/MM/yyyy"))</td>
+                                    <td class="tdVal" data-id="@item.Id">@*@Html.DisplayFor(m => item.HuyTour)*@</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.NguoiTao)</td>
+                                </tr>
+
+                                @* } *@
 
                             }
                         }

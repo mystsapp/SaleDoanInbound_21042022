@@ -80,7 +80,10 @@
                     <thead>
                         <tr class="table-info">
                             <th>#</th>
-                            <th>@Html.DisplayNameFor(m => m.Quocgias.FirstOrDefault().TenNuoc)</th>
+                            <th>@Html.DisplayNameFor(m => m.Quocgias.FirstOrDefault().Code)</th>
+                            <th>@Html.DisplayNameFor(m => m.Quocgias.FirstOrDefault().Nation)</th>
+                            <th>@Html.DisplayNameFor(m => m.Quocgias.FirstOrDefault().Natione)</th>
+                            <th>@Html.DisplayNameFor(m => m.Quocgias.FirstOrDefault().Telcode)</th>
 
                         </tr>
                     </thead>
@@ -93,7 +96,7 @@
                                 <td>
                                     <div class="btn-group text-white" role="group">
                                         @*<a class="btn btn-primary btn-sm" title="Cập nhật" asp-action="Edit" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>*@
-                                        <a class="btn btn-success btn-sm" title="Chi tiết" asp-action="Details" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
+                                        <a class="btn btn-success btn-sm" title="Chi tiết" asp-action="Details" asp-route-id="@item.Code" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
                                         @*<form asp-action="Delete" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" method="post">
 
                                             <span id="confirmDeleteSpan_@item.Id" style="display: none">
@@ -109,7 +112,10 @@
                                     </div>
                                 </td>
 
-                                <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.TenNuoc)</td>
+                                <td class="tdVal" data-id="@item.Code">@Html.DisplayFor(m => item.Code)</td>
+                                <td class="tdVal" data-id="@item.Code">@Html.DisplayFor(m => item.Nation)</td>
+                                <td class="tdVal" data-id="@item.Code">@Html.DisplayFor(m => item.Natione)</td>
+                                <td class="tdVal" data-id="@item.Code">@Html.DisplayFor(m => item.Telcode)</td>
                             </tr>
 
                         }
@@ -158,7 +164,7 @@
             $('#listAll').DataTable({
                 "paging": false,
                 "lengthChange": true,
-                "searching": true,
+                "searching": false,
                 "ordering": true,
                 "info": true,
                 "autoWidth": false,

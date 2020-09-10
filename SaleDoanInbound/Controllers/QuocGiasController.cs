@@ -20,7 +20,7 @@ namespace SaleDoanInbound.Controllers
             _unitOfWork = unitOfWork;
             quocGiaVM = new QuocGiaViewModel()
             {
-                Quocgia = new Data.Models_QLTaiKhoan.Quocgia()
+                Quocgia = new Data.Models_QLT.Quocgia()
             };
         }
         public IActionResult Index(string searchString = null, int page = 1)

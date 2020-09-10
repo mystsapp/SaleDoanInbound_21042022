@@ -27,5 +27,6 @@ namespace Data.Models_QLT
         public string Chinhanh { get; set; }
         public string Logfile { get; set; }
         public bool? Del { get; set; }
+        public string YeuCauXe { get; set; }
     }
 }

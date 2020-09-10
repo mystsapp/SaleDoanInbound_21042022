@@ -1,6 +1,6 @@
 ﻿using Data.Dtos;
 using Data.Models_IB;
-using Data.Models_QLTaiKhoan;
+using Data.Models_QLT;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;

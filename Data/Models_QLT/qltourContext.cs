@@ -315,6 +315,10 @@ namespace Data.Models_QLT
                 entity.Property(e => e.Supplierid)
                     .HasMaxLength(5)
                     .IsUnicode(false);
+
+                entity.Property(e => e.YeuCauXe)
+                    .HasMaxLength(15)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<DmLoaiphong>(entity =>
@@ -378,9 +382,9 @@ namespace Data.Models_QLT
 
                 entity.Property(e => e.Diemtq).HasMaxLength(150);
 
-                entity.Property(e => e.Giave).HasColumnType("decimal(10, 0)");
+                entity.Property(e => e.Giatreem).HasColumnType("decimal(10, 0)");
 
-                entity.Property(e => e.Giuxe).HasColumnType("decimal(10, 0)");
+                entity.Property(e => e.Giave).HasColumnType("decimal(10, 0)");
 
                 entity.Property(e => e.Logfile).HasColumnName("logfile");
 
@@ -429,17 +433,25 @@ namespace Data.Models_QLT
                     .HasColumnName("extsglcost")
                     .HasColumnType("decimal(12, 1)");
 
-                entity.Property(e => e.Exttpl).HasColumnName("exttpl");
-
-                entity.Property(e => e.Exttplcost)
-                    .HasColumnName("exttplcost")
-                    .HasColumnType("decimal(12, 1)");
-
                 entity.Property(e => e.Exttwn).HasColumnName("exttwn");
 
                 entity.Property(e => e.Exttwncost)
                     .HasColumnName("exttwncost")
                     .HasColumnType("decimal(12, 1)");
+
+                entity.Property(e => e.Homestay).HasColumnName("homestay");
+
+                entity.Property(e => e.Homestaycost)
+                    .HasColumnName("homestaycost")
+                    .HasColumnType("decimal(12, 1)");
+
+                entity.Property(e => e.Homestaynote)
+                    .IsRequired()
+                    .HasColumnName("homestaynote")
+                    .HasMaxLength(200)
+                    .HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.Homestaypax).HasColumnName("homestaypax");
 
                 entity.Property(e => e.Logfile).HasColumnName("logfile");
 
@@ -474,14 +486,6 @@ namespace Data.Models_QLT
                     .IsUnicode(false);
 
                 entity.Property(e => e.Stt).HasColumnName("stt");
-
-                entity.Property(e => e.Tpl).HasColumnName("tpl");
-
-                entity.Property(e => e.Tplcost)
-                    .HasColumnName("tplcost")
-                    .HasColumnType("decimal(12, 1)");
-
-                entity.Property(e => e.Tplpax).HasColumnName("tplpax");
 
                 entity.Property(e => e.Twn).HasColumnName("twn");
 
@@ -523,17 +527,24 @@ namespace Data.Models_QLT
                     .HasColumnName("extsglcost")
                     .HasColumnType("decimal(12, 1)");
 
-                entity.Property(e => e.Exttpl).HasColumnName("exttpl");
-
-                entity.Property(e => e.Exttplcost)
-                    .HasColumnName("exttplcost")
-                    .HasColumnType("decimal(12, 1)");
-
                 entity.Property(e => e.Exttwn).HasColumnName("exttwn");
 
                 entity.Property(e => e.Exttwncost)
                     .HasColumnName("exttwncost")
                     .HasColumnType("decimal(12, 1)");
+
+                entity.Property(e => e.Homestay).HasColumnName("homestay");
+
+                entity.Property(e => e.Homestaycost)
+                    .HasColumnName("homestaycost")
+                    .HasColumnType("decimal(12, 1)");
+
+                entity.Property(e => e.Homestaynote)
+                    .IsRequired()
+                    .HasColumnName("homestaynote")
+                    .HasMaxLength(200);
+
+                entity.Property(e => e.Homestaypax).HasColumnName("homestaypax");
 
                 entity.Property(e => e.Logfile).HasColumnName("logfile");
 
@@ -567,14 +578,6 @@ namespace Data.Models_QLT
                     .IsUnicode(false);
 
                 entity.Property(e => e.Stt).HasColumnName("stt");
-
-                entity.Property(e => e.Tpl).HasColumnName("tpl");
-
-                entity.Property(e => e.Tplcost)
-                    .HasColumnName("tplcost")
-                    .HasColumnType("decimal(12, 1)");
-
-                entity.Property(e => e.Tplpax).HasColumnName("tplpax");
 
                 entity.Property(e => e.Twn).HasColumnName("twn");
 
@@ -620,17 +623,25 @@ namespace Data.Models_QLT
                     .HasColumnName("extsglcost")
                     .HasColumnType("decimal(12, 1)");
 
-                entity.Property(e => e.Exttpl).HasColumnName("exttpl");
-
-                entity.Property(e => e.Exttplcost)
-                    .HasColumnName("exttplcost")
-                    .HasColumnType("decimal(12, 1)");
-
                 entity.Property(e => e.Exttwn).HasColumnName("exttwn");
 
                 entity.Property(e => e.Exttwncost)
                     .HasColumnName("exttwncost")
                     .HasColumnType("decimal(12, 1)");
+
+                entity.Property(e => e.Homestay).HasColumnName("homestay");
+
+                entity.Property(e => e.Homestaycost)
+                    .HasColumnName("homestaycost")
+                    .HasColumnType("decimal(12, 1)");
+
+                entity.Property(e => e.Homestaynote)
+                    .IsRequired()
+                    .HasColumnName("homestaynote")
+                    .HasMaxLength(200)
+                    .HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.Homestaypax).HasColumnName("homestaypax");
 
                 entity.Property(e => e.Note)
                     .HasColumnName("note")
@@ -657,14 +668,6 @@ namespace Data.Models_QLT
                 entity.Property(e => e.Sglpax).HasColumnName("sglpax");
 
                 entity.Property(e => e.Stt).HasColumnName("stt");
-
-                entity.Property(e => e.Tpl).HasColumnName("tpl");
-
-                entity.Property(e => e.Tplcost)
-                    .HasColumnName("tplcost")
-                    .HasColumnType("decimal(12, 1)");
-
-                entity.Property(e => e.Tplpax).HasColumnName("tplpax");
 
                 entity.Property(e => e.Twn).HasColumnName("twn");
 
@@ -886,16 +889,38 @@ namespace Data.Models_QLT
             {
                 entity.HasKey(e => e.Maphong);
 
-                entity.Property(e => e.Maphong).HasColumnName("maphong");
+                entity.Property(e => e.Maphong)
+                    .HasColumnName("maphong")
+                    .HasMaxLength(5);
 
                 entity.Property(e => e.Macode)
                     .HasColumnName("macode")
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Tenphong).HasColumnName("tenphong");
+                entity.Property(e => e.Tenphong)
+                    .HasColumnName("tenphong")
+                    .HasMaxLength(100);
 
                 entity.Property(e => e.Trangthai).HasColumnName("trangthai");
+            });
+
+            modelBuilder.Entity<Quocgia>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.Property(e => e.Code)
+                    .IsRequired()
+                    .HasMaxLength(3)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Nation).HasMaxLength(50);
+
+                entity.Property(e => e.Natione).HasMaxLength(50);
+
+                entity.Property(e => e.Telcode)
+                    .HasMaxLength(3)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<Sightseeing>(entity =>
@@ -905,6 +930,8 @@ namespace Data.Models_QLT
                     .ValueGeneratedOnAdd();
 
                 entity.Property(e => e.Amount).HasColumnType("decimal(12, 1)");
+
+                entity.Property(e => e.ChildernPrice).HasColumnType("decimal(12, 0)");
 
                 entity.Property(e => e.Chinhanh).HasMaxLength(3);
 
@@ -921,6 +948,8 @@ namespace Data.Models_QLT
                     .HasMaxLength(20)
                     .IsUnicode(false);
 
+                entity.Property(e => e.PaxPrice).HasColumnType("decimal(12, 0)");
+
                 entity.Property(e => e.Serial)
                     .HasMaxLength(10)
                     .IsUnicode(false);
@@ -929,10 +958,6 @@ namespace Data.Models_QLT
                     .IsRequired()
                     .HasMaxLength(17)
                     .IsUnicode(false);
-
-                entity.Property(e => e.Unitpricee).HasColumnType("decimal(12, 0)");
-
-                entity.Property(e => e.Unitpricev).HasColumnType("decimal(12, 0)");
 
                 entity.HasOne(d => d.CodedtqNavigation)
                     .WithMany(p => p.Sightseeing)
@@ -949,6 +974,8 @@ namespace Data.Models_QLT
 
                 entity.Property(e => e.Amount).HasColumnType("decimal(12, 1)");
 
+                entity.Property(e => e.ChildernPrice).HasColumnType("decimal(12, 0)");
+
                 entity.Property(e => e.Chinhanh).HasMaxLength(3);
 
                 entity.Property(e => e.Codedtq)
@@ -963,6 +990,8 @@ namespace Data.Models_QLT
                     .HasMaxLength(20)
                     .IsUnicode(false);
 
+                entity.Property(e => e.PaxPrice).HasColumnType("decimal(12, 0)");
+
                 entity.Property(e => e.Serial)
                     .HasMaxLength(10)
                     .IsUnicode(false);
@@ -971,10 +1000,6 @@ namespace Data.Models_QLT
                     .IsRequired()
                     .HasMaxLength(17)
                     .IsUnicode(false);
-
-                entity.Property(e => e.Unitpricee).HasColumnType("decimal(12, 0)");
-
-                entity.Property(e => e.Unitpricev).HasColumnType("decimal(12, 0)");
             });
 
             modelBuilder.Entity<SightseeingTemp>(entity =>
@@ -986,6 +1011,10 @@ namespace Data.Models_QLT
                 entity.Property(e => e.Amount)
                     .HasColumnName("amount")
                     .HasColumnType("decimal(12, 1)");
+
+                entity.Property(e => e.Childernprice)
+                    .HasColumnName("childernprice")
+                    .HasColumnType("decimal(12, 0)");
 
                 entity.Property(e => e.Chinhanh)
                     .HasColumnName("chinhanh")
@@ -1013,7 +1042,9 @@ namespace Data.Models_QLT
                     .HasMaxLength(20)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Paxv).HasColumnName("paxv");
+                entity.Property(e => e.Paxprice)
+                    .HasColumnName("paxprice")
+                    .HasColumnType("decimal(12, 0)");
 
                 entity.Property(e => e.Serial)
                     .HasColumnName("serial")
@@ -1024,14 +1055,6 @@ namespace Data.Models_QLT
                     .HasColumnType("decimal(12, 1)");
 
                 entity.Property(e => e.Stt).HasColumnName("stt");
-
-                entity.Property(e => e.Unitpricea)
-                    .HasColumnName("unitpricea")
-                    .HasColumnType("decimal(12, 0)");
-
-                entity.Property(e => e.Unitpricec)
-                    .HasColumnName("unitpricec")
-                    .HasColumnType("decimal(12, 0)");
 
                 entity.Property(e => e.Vatin).HasColumnName("vatin");
 
@@ -1164,6 +1187,11 @@ namespace Data.Models_QLT
                     .HasColumnName("dep")
                     .HasColumnType("datetime");
 
+                entity.Property(e => e.Departcreate)
+                    .HasColumnName("departcreate")
+                    .HasMaxLength(5)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.Departoperator)
                     .HasColumnName("departoperator")
                     .HasMaxLength(50);
@@ -1259,8 +1287,7 @@ namespace Data.Models_QLT
 
                 entity.Property(e => e.Arr)
                     .HasColumnName("arr")
-                    .HasMaxLength(10)
-                    .IsUnicode(false);
+                    .HasMaxLength(100);
 
                 entity.Property(e => e.Carguide)
                     .HasColumnName("carguide")
@@ -1288,8 +1315,7 @@ namespace Data.Models_QLT
 
                 entity.Property(e => e.Dep)
                     .HasColumnName("dep")
-                    .HasMaxLength(10)
-                    .IsUnicode(false);
+                    .HasMaxLength(100);
 
                 entity.Property(e => e.Dieuhanh)
                     .HasColumnName("dieuhanh")
@@ -1336,7 +1362,7 @@ namespace Data.Models_QLT
 
                 entity.Property(e => e.Srvnode)
                     .HasColumnName("srvnode")
-                    .HasMaxLength(300);
+                    .HasMaxLength(500);
 
                 entity.Property(e => e.Srvtype)
                     .HasColumnName("srvtype")
@@ -1400,8 +1426,7 @@ namespace Data.Models_QLT
 
                 entity.Property(e => e.Arr)
                     .HasColumnName("arr")
-                    .HasMaxLength(10)
-                    .IsUnicode(false);
+                    .HasMaxLength(100);
 
                 entity.Property(e => e.Carguide)
                     .HasColumnName("carguide")
@@ -1429,8 +1454,7 @@ namespace Data.Models_QLT
 
                 entity.Property(e => e.Dep)
                     .HasColumnName("dep")
-                    .HasMaxLength(10)
-                    .IsUnicode(false);
+                    .HasMaxLength(100);
 
                 entity.Property(e => e.Dieuhanh)
                     .HasColumnName("dieuhanh")
@@ -1476,7 +1500,7 @@ namespace Data.Models_QLT
 
                 entity.Property(e => e.Srvnode)
                     .HasColumnName("srvnode")
-                    .HasMaxLength(300);
+                    .HasMaxLength(500);
 
                 entity.Property(e => e.Srvtype)
                     .HasColumnName("srvtype")
@@ -1534,8 +1558,7 @@ namespace Data.Models_QLT
 
                 entity.Property(e => e.Arr)
                     .HasColumnName("arr")
-                    .HasMaxLength(10)
-                    .IsUnicode(false);
+                    .HasMaxLength(100);
 
                 entity.Property(e => e.Carguide)
                     .HasColumnName("carguide")
@@ -1566,8 +1589,7 @@ namespace Data.Models_QLT
 
                 entity.Property(e => e.Dep)
                     .HasColumnName("dep")
-                    .HasMaxLength(10)
-                    .IsUnicode(false);
+                    .HasMaxLength(100);
 
                 entity.Property(e => e.Foc).HasColumnName("foc");
 

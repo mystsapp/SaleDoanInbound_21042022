@@ -1,4 +1,5 @@
-﻿using Data.Models_QLTaiKhoan;
+﻿
+using Data.Models_QLT;
 using System;
 using System.Collections.Generic;
 using System.Linq;

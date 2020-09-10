@@ -152,7 +152,7 @@ namespace SaleDoanInbound.Controllers
             var thanhPho = await _unitOfWork.thanhPhoRepository.GetByIdAsync(id);
             ThanhPhoVM.ThanhPhoDto.Id = thanhPho.Id;
             ThanhPhoVM.ThanhPhoDto.TenThanhPho = thanhPho.TenThanhPho;
-            ThanhPhoVM.ThanhPhoDto.QuocGia = _unitOfWork.quocGiaRepository.GetById(thanhPho.MaQuocGia).TenNuoc;
+            ThanhPhoVM.ThanhPhoDto.QuocGia = _unitOfWork.quocGiaRepository.GetById(thanhPho.MaQuocGia).Nation;
             if (thanhPho == null)
                 return NotFound();
 
