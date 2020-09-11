@@ -64,13 +64,23 @@ namespace Data.Models_IB
         [DisplayName("HD VAT")]
         [MaxLength(12, ErrorMessage = "Tối đa 12 ký tự"), Column(TypeName = "varchar(12)")]
         public string Bill { get; set; }
-        
+
         [DisplayName("HTTT")]
         [MaxLength(12, ErrorMessage = "Tối đa 12 ký tự"), Column(TypeName = "nvarchar(50)")]
         public string HTTT { get; set; }
 
         [DisplayName("Ngày tạo")]
         public DateTime NgayVAT { get; set; }
+
+        [DisplayName("Người tạo")]
+        [MaxLength(50), Column(TypeName = "varchar(50)")]
+        public string NguoiTao { get; set; }
+
+        public DateTime NgaySua { get; set; }
+
+        [DisplayName("Người sửa")]
+        [MaxLength(50), Column(TypeName = "varchar(50)")]
+        public string NguoiSua { get; set; }
 
         [DisplayName("Reference")]
         [MaxLength(100), Column(TypeName = "varchar(100)")]
@@ -106,6 +116,7 @@ namespace Data.Models_IB
         [DisplayName("Key HDDT")]
         [MaxLength(120), Column(TypeName = "varchar(120)")]
         public string KeyHDDT { get; set; }
+
         public DateTime Lock { get; set; }
 
         [DisplayName("Tên khách")]
@@ -115,5 +126,8 @@ namespace Data.Models_IB
         [DisplayName("Ghi chú")]
         [MaxLength(250), Column(TypeName = "nvarchar(250)")]
         public string GhiChu { get; set; }
+
+        [Column(TypeName = "nvarchar(MAX)")]
+        public string LogFile { get; set; }
     }
 }

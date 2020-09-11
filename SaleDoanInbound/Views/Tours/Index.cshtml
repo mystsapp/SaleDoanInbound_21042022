@@ -897,8 +897,8 @@
 
                                                             <td>
                                                                 <div class="btn-group text-white" role="group">
-                                                                    <a class="btn btn-primary btn-sm" title="Cập nhật" asp-action="Edit" asp-controller="Invoices" asp-route-id="@item.Id" asp-route-tourId="@Model.Tour.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
-                                                                    <a class="btn btn-success btn-sm" title="Chi tiết" asp-action="Details" asp-controller="Invoices" asp-route-id="@item.Id" asp-route-tourIBId="@Model.Tour.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
+                                                                    <a class="btn btn-primary btn-sm" title="Cập nhật" asp-action="Edit" asp-controller="Invoices" asp-route-id="@item.Id" asp-route-tourId="@Model.Tour.Id" asp-route-tabActive="custom-tabs-four-invoice" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
+                                                                    <a class="btn btn-success btn-sm" title="Chi tiết" asp-action="Details" asp-controller="Invoices" asp-route-id="@item.Id" asp-route-tourId="@Model.Tour.Id" asp-route-tabActive="custom-tabs-four-invoice" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
                                                                     <form asp-action="Delete" asp-controller="Invoices" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" method="post">
 
                                                                         <span id="confirmInvoiceDeleteSpan_@item.Id" style="display: none">
@@ -922,7 +922,7 @@
                                                             <td class="tdValInvoice" data-id="@item.Id" data-tourid="@Model.Tour.Id">
                                                                 @if (item.Dep.HasValue)
                                                                 {
-                                                                    @Html.Raw(item.Dep.Value.ToShortDateString())
+                                                                    @Html.Raw(item.Dep.Value.ToString("dd/MM/yyyy"))
                                                                 }
                                                             </td>
                                                             <td class="tdValInvoice" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Pax)</td>
@@ -932,7 +932,13 @@
                                                             <td class="tdValInvoice" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.DBL)</td>
                                                             <td class="tdValInvoice" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.TPL)</td>
                                                             <td class="tdValInvoice" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.MOFP)</td>
-                                                            <td class="tdValInvoice" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.DOFP)</td>
+                                                            <td class="tdValInvoice" data-id="@item.Id" data-tourid="@Model.Tour.Id">
+                                                                @if (item.DOFP.HasValue)
+                                                                {
+                                                                    @Html.Raw(item.DOFP.Value.ToString("dd/MM/yyyy"))
+                                                                }
+                                                                
+                                                            </td>
                                                             <td class="tdValInvoice" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Ref)</td>
                                                             <td class="tdValInvoice" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.HopDong)</td>
                                                         </tr>

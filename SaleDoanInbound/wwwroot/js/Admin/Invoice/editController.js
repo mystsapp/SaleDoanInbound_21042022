@@ -6,6 +6,7 @@
 
 var editController = {
     init: function () {
+        editController.loaiIVChange();
         editController.registerEvent();
     },
     registerEvent: function () {
@@ -21,6 +22,23 @@ var editController = {
             });
         });
 
+        // loaiiv : R - E
+        $('#ddlLoaiIV').off('change').on('change', function () {
+            editController.loaiIVChange();
+        });
+        // loaiiv : R - E
+
+    },
+    loaiIVChange: function () {
+        loaiIV = $('#ddlLoaiIV').val();
+        if (loaiIV === 'R') {
+            $('#txtTenKhach').prop('disabled', true);
+            $('#txtGhiChu').prop('disabled', true);
+        }
+        else {
+            $('#txtTenKhach').prop('disabled', false);
+            $('#txtGhiChu').prop('disabled', false);
+        }
     }
     
 };

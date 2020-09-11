@@ -21,6 +21,7 @@ var createController = {
             });
         });
 
+        // loaiiv : R - E
         $('#ddlLoaiIV').off('change').on('change', function () {
             loaiIV = $(this).val();
             if (loaiIV === 'R') {
@@ -32,7 +33,7 @@ var createController = {
                 $('#txtGhiChu').prop('disabled', false);
             }
         });
-
+        // loaiiv : R - E
     }
     
 };

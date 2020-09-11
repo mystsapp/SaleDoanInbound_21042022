@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Edit";
+    var url = Model.StrUrl;
 }
 
 <!-- Content Header (Page header) -->
@@ -46,7 +47,12 @@
                 <div class="p-4 border rounded">
 
                     <input asp-for="Invoice.Id" type="hidden" /> <!-- this field is required-->
-                    @*<input asp-for="Invoice.TourIBId" type="hidden" />*@ <!-- this field is required - foreignkey to tourIB-->
+                    <input asp-for="Invoice.TourId" type="hidden" /> <!-- this field is required-->
+                    <input asp-for="StrUrl" value="@url" type="hidden" /> <!-- this field is required-->
+                    <input asp-for="Invoice.NgayVAT" type="hidden" /> <!--ngay tao-->
+                    <input asp-for="Invoice.Date" type="hidden" /> <!--ngay tao-->
+                    <input asp-for="Invoice.NguoiTao" type="hidden" />
+
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                     <div class="form-group row">
@@ -59,15 +65,26 @@
 
                         <div class="col-md-1">
                             <label asp-for="Invoice.Type" class="control-label"></label>
-                            <input asp-for="Invoice.Type" class="form-control" />
+                            <select asp-for="Invoice.Type" class="form-control" id="ddlLoaiIV"
+                                    asp-items="@(new SelectList(Model.LoaiIVs, "Id", "Id"))"></select>
                             <span asp-validation-for="Invoice.Type" class="text-danger"></span>
                         </div>
 
-                        @*<div class="col-md-3">
-                                <label asp-for="Invoice.Date" class="control-label"></label>
-                                <input type="text" value="" asp-for="Invoice.Date" class="form-control maskInput" />
-                                <span asp-validation-for="Invoice.Date" class="text-danger"></span>
-                            </div>*@
+                        <div class="col-md-3">
+                            <label asp-for="Invoice.TenKhach" class="control-label"></label>
+                            <input asp-for="Invoice.TenKhach" class="form-control " id="txtTenKhach" />
+                            <span asp-validation-for="Invoice.TenKhach" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="Invoice.GhiChu" class="control-label"></label>
+                            <input asp-for="Invoice.GhiChu" class="form-control " id="txtGhiChu" />
+                            <span asp-validation-for="Invoice.GhiChu" class="text-danger"></span>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
 
                         <div class="col-md-3">
                             <label asp-for="Invoice.Arr" class="control-label"></label>
@@ -81,15 +98,18 @@
                             <span asp-validation-for="Invoice.Dep" class="text-danger"></span>
                         </div>
 
-                        <div class="col-md-1">
+                        <div class="col-md-3">
                             <label asp-for="Invoice.Pax" class="control-label"></label>
                             <input type="text" asp-for="Invoice.Pax" class="form-control numbers" />
                             <span asp-validation-for="Invoice.Pax" class="text-danger"></span>
                         </div>
 
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <label asp-for="Invoice.Currency" class="control-label"></label>
-                            <input asp-for="Invoice.Currency" class="form-control" />
+                            <select asp-for="Invoice.Currency" class="form-control " id="ddlLoaiTien"
+                                    asp-items="@(new SelectList(Model.Ngoaites, "MaNt", "TenNt"))">
+                                <!-- ngoaite: qltour-->
+                            </select>
                             <span asp-validation-for="Invoice.Currency" class="text-danger"></span>
                         </div>
 
@@ -184,6 +204,6 @@
         });
     </script>
 
-    <script src="~/js/Admin/InvoiceTour/editController.js"></script>
+    <script src="~/js/Admin/Invoice/editController.js"></script>
 }
 
