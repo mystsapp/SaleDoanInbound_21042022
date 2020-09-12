@@ -899,16 +899,16 @@
                                                                 <div class="btn-group text-white" role="group">
                                                                     <a class="btn btn-primary btn-sm" title="Cập nhật" asp-action="Edit" asp-controller="Invoices" asp-route-id="@item.Id" asp-route-tourId="@Model.Tour.Id" asp-route-tabActive="custom-tabs-four-invoice" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
                                                                     <a class="btn btn-success btn-sm" title="Chi tiết" asp-action="Details" asp-controller="Invoices" asp-route-id="@item.Id" asp-route-tourId="@Model.Tour.Id" asp-route-tabActive="custom-tabs-four-invoice" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
-                                                                    <form asp-action="Delete" asp-controller="Invoices" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" method="post">
+                                                                    <form asp-action="Delete" asp-controller="Invoices" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" asp-route-tabActive="custom-tabs-four-invoice" method="post">
 
                                                                         <span id="confirmInvoiceDeleteSpan_@item.Id" style="display: none">
-                                                                            <span class="text-light">Xóa?</span>
+                                                                            <span class="text-dark">Xóa?</span>
                                                                             <button type="submit" class="btn btn-danger">Yes</button>
-                                                                            <a href="#" class="btn btn-primary" onclick="confirmInvoiceDelete('@item.Id', false)">No</a>
+                                                                            <button type="button" class="btn btn-primary" onclick="confirmInvoiceDelete('@item.Id', false)">No</button>
                                                                         </span>
 
                                                                         <span id="deleteInvoiceSpan_@item.Id">
-                                                                            <a href="#" class="btn btn-danger btn-sm" onclick="confirmInvoiceDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></a>
+                                                                            <button type="button" class="btn btn-danger btn-sm" onclick="confirmInvoiceDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
                                                                         </span>
                                                                     </form>
                                                                 </div>
@@ -1202,6 +1202,18 @@
         function confirmDelete(uniqueId, isDeleteClicked) {
             var deleteSpan = 'deleteSpan_' + uniqueId;
             var confirmDeleteSpan = 'confirmDeleteSpan_' + uniqueId;
+
+            if (isDeleteClicked) {
+                $('#' + deleteSpan).hide();
+                $('#' + confirmDeleteSpan).show();
+            } else {
+                $('#' + deleteSpan).show();
+                $('#' + confirmDeleteSpan).hide();
+            }
+        }
+        function confirmInvoiceDelete(uniqueId, isDeleteClicked) {
+            var deleteSpan = 'deleteInvoiceSpan_' + uniqueId;
+            var confirmDeleteSpan = 'confirmInvoiceDeleteSpan_' + uniqueId;
 
             if (isDeleteClicked) {
                 $('#' + deleteSpan).hide();

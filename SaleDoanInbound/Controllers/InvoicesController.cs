@@ -127,6 +127,16 @@ namespace SaleDoanInbound.Controllers
         public async Task<IActionResult> Edit(string id, long tourId, string tabActive, string strUrl)
         {
             InvoiceVM.StrUrl = strUrl + "&tabActive=" + tabActive; // for redirect tab
+            if (!string.IsNullOrEmpty(tabActive))
+            {
+                // reset url -> cut tabActive
+                var newStrUrl = InvoiceVM.StrUrl.Split("&tabActive");
+                if (newStrUrl.Length > 1)
+                {
+                    InvoiceVM.StrUrl = newStrUrl[0];
+                }
+
+            }
             InvoiceVM.Tour = _unitOfWork.tourRepository.GetById(tourId);
 
             if (string.IsNullOrEmpty(id))
@@ -300,7 +310,7 @@ namespace SaleDoanInbound.Controllers
                 _unitOfWork.invoiceRepository.Delete(invoice);
                 await _unitOfWork.Complete();
                 SetAlert("Xóa thành công.", "success");
-                return Redirect(strUrl);
+                return Redirect(InvoiceVM.StrUrl);
             }
             catch (Exception ex)
             {
