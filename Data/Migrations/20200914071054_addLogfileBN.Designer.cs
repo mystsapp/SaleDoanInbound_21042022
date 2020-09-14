@@ -4,14 +4,16 @@ using Data.Models_IB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
     [DbContext(typeof(SaleDoanIBDbContext))]
-    partial class SaleDoanIBDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200914071054_addLogfileBN")]
+    partial class addLogfileBN
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,10 +24,12 @@ namespace Data.Migrations
             modelBuilder.Entity("Data.Models_IB.BienNhan", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("varchar(12)")
+                        .HasColumnName("varchar(12)")
+                        .HasColumnType("nvarchar(12)")
                         .HasMaxLength(12);
 
                     b.Property<string>("GhiChu")
+                        .HasColumnName("nvarchar(150)")
                         .HasColumnType("nvarchar(150)")
                         .HasMaxLength(150);
 
@@ -34,7 +38,8 @@ namespace Data.Migrations
 
                     b.Property<string>("LoaiTien")
                         .IsRequired()
-                        .HasColumnType("varchar(3)")
+                        .HasColumnName("varchar(3)")
+                        .HasColumnType("nvarchar(3)")
                         .HasMaxLength(3);
 
                     b.Property<string>("LogFile")
@@ -43,20 +48,6 @@ namespace Data.Migrations
                     b.Property<DateTime>("NgayBN")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("NgaySua")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("NgayTao")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("NguoiSua")
-                        .HasColumnType("varchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("NguoiTao")
-                        .HasColumnType("varchar(50)")
-                        .HasMaxLength(50);
-
                     b.Property<long>("NoiDungHuy")
                         .HasColumnType("bigint");
 
@@ -64,6 +55,7 @@ namespace Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("TenKhach")
+                        .HasColumnName("nvarchar(50)")
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
@@ -244,7 +236,8 @@ namespace Data.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("BienNhanId")
-                        .HasColumnType("varchar(12)")
+                        .HasColumnName("varchar(12")
+                        .HasColumnType("nvarchar(12)")
                         .HasMaxLength(12);
 
                     b.Property<string>("Descript")

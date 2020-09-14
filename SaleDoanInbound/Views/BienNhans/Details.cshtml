@@ -1,0 +1,157 @@
+﻿@model BienNhanViewModel
+
+@{
+    ViewData["Title"] = "Details";
+
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Chi tiết</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item"><a asp-controller="KhachHangs" asp-route-strUrl="@Model.StrUrl" asp-action="DetailsRedirect">Danh sách biên nhận</a></li>
+                    <li class="breadcrumb-item active">Chi tiết biên nhận</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-file text-info"></i> Chi tiết biên nhận - <b>@Model.Tour.Sgtcode</b></h3>
+
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+
+            <form method="post" autocomplete="off">
+                <div class="p-4 border rounded">
+
+                    <div class="form-group row">
+
+                        <div class="col-md-3">
+                            <label asp-for="BienNhan.Id" class="control-label"></label>
+                            <input asp-for="BienNhan.Id" class="form-control " readonly />
+                        </div>
+
+                        <div class="col-md-3">
+                            <label asp-for="BienNhan.Tour.Sgtcode" class="control-label"></label>
+                            <input asp-for="BienNhan.Tour.Sgtcode" class="form-control " readonly />
+                        </div>
+
+                        <div class="col-md-3">
+                            <label asp-for="BienNhan.NgayTao" class="control-label"></label>
+                            <input type="text" asp-for="BienNhan.NgayTao" class="form-control maskInput" readonly />
+                        </div>
+
+                        <div class="col-md-3">
+                            <label asp-for="BienNhan.NguoiTao" class="control-label"></label>
+                            <input asp-for="BienNhan.NguoiTao" class="form-control " readonly />
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-md-3">
+                            <label asp-for="BienNhan.NgayBN" class="control-label"></label>
+                            <input type="text" asp-for="BienNhan.NgayBN" class="form-control maskInput" readonly />
+                        </div>
+
+                        <div class="col-md-3">
+                            <label asp-for="BienNhan.TenKhach" class="control-label"></label>
+                            <input asp-for="BienNhan.TenKhach" class="form-control " readonly />
+                        </div>
+
+                        <div class="col-md-1">
+                            <label asp-for="BienNhan.SK" class="control-label"></label>
+                            <input type="text" asp-for="BienNhan.SK" class="form-control numbers" readonly />
+                        </div>
+
+                        <div class="col-md-5">
+                            <label asp-for="BienNhan.GhiChu" class="control-label"></label>
+                            <input asp-for="BienNhan.GhiChu" class="form-control" readonly />
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-md-2">
+                            <label asp-for="BienNhan.LoaiTien" class="control-label"></label>
+                            <input asp-for="BienNhan.LoaiTien" class="form-control" readonly />
+                        </div>
+
+                        <div class="col-md-2">
+                            <label asp-for="BienNhan.TyGia" class="control-label"></label>
+                            <input asp-for="BienNhan.TyGia" class="form-control numbers" readonly />
+                        </div>
+
+                        <div class="col-md-2">
+                            <label asp-for="BienNhan.KhachLe" class="control-label"></label>
+                            <br />
+                            <input type="checkbox" asp-for="BienNhan.KhachLe" id="todoCheck1" disabled>
+
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="BienNhan.NoiDungHuy" class="control-label"></label>
+                            <input class="form-control" value="@ViewBag.NDHuy" readonly />
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row btn-group">
+                        <a class="btn btn-primary btn-sm" title="Cập nhật" asp-action="Edit" asp-controller="BienNhans" asp-route-id="@Model.BienNhan.Id" asp-route-tourId="@Model.Tour.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
+                        <a class="btn btn-success" asp-controller="KhachHangs" asp-route-strUrl="@Model.StrUrl" asp-action="DetailsRedirect"><i class="fas fa-backward"></i></a>
+                        <a class="btn btn-outline-primary" title="Danh sách nguyên nhân" asp-controller="CacNoiDungHuyTours" asp-action="Index"><i class="fas fa-list"></i></a>
+
+                    </div>
+                </div>
+            </form>
+
+        </div>
+        <!-- /.card-body -->
+
+    </div>
+    <!-- /.card -->
+
+</section>
+<!-- /.content -->
+
+@section Scripts{
+    @*<script>
+
+            $(function () {
+                $(".datepicker").datepicker({
+                    dateFormat: 'dd/mm/yy'
+                });
+            });
+        </script>*@
+    @*<script>
+            $(function () {
+                $('.select2').select2()
+            });
+        </script>*@
+
+    @*<script src="~/js/Admin/BienNhan/createController.js"></script>*@
+}
+

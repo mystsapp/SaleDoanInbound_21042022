@@ -25,6 +25,14 @@
     <Compile Remove="Migrations\20200828035126_fixdecimal.Designer.cs" />
     <Compile Remove="Migrations\20200901090706_fixInvoiceTbl1.cs" />
     <Compile Remove="Migrations\20200901090706_fixInvoiceTbl1.Designer.cs" />
+    <Compile Remove="Migrations\20200914081442_fixBNTbl1.cs" />
+    <Compile Remove="Migrations\20200914081442_fixBNTbl1.Designer.cs" />
+    <Compile Remove="Migrations\20200914081941_fixBNTbl1.cs" />
+    <Compile Remove="Migrations\20200914081941_fixBNTbl1.Designer.cs" />
+    <Compile Remove="Migrations\20200914082100_fixBNTbl1.cs" />
+    <Compile Remove="Migrations\20200914082100_fixBNTbl1.Designer.cs" />
+    <Compile Remove="Migrations\20200914082656_addBNCTBNTbl.cs" />
+    <Compile Remove="Migrations\20200914082656_addBNCTBNTbl.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

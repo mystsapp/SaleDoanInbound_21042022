@@ -27,7 +27,7 @@
     <!-- Default box -->
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Danh sách Invoice - <b>@Model.Tour.Sgtcode</b></h3>
+            <h3 class="card-title">Danh sách biên nhận - <b>@Model.Tour.Sgtcode</b></h3>
 
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
@@ -142,18 +142,18 @@
 
                                 <td>
                                     <div class="btn-group text-white" role="group">
-                                        <a class="btn btn-primary btn-sm" title="Cập nhật" asp-action="Edit" asp-controller="BienNhans" asp-route-id="@item.Id" asp-route-tourIBId="@Model.Tour.Id" asp-route-strUrl="@Model.StrUrl" asp-route-tabActive="custom-tabs-four-biennhan"><i class="fas fa-edit"></i></a>
-                                        <a class="btn btn-success btn-sm" title="Chi tiết" asp-action="Details" asp-controller="BienNhans" asp-route-id="@item.Id" asp-route-invoiceId="@Model.Tour.Id" asp-route-strUrl="@Model.StrUrl" asp-route-tabActive="custom-tabs-four-biennhan"><i class="fas fa-list"></i></a>
+                                        <a class="btn btn-primary btn-sm" title="Cập nhật" asp-action="Edit" asp-controller="BienNhans" asp-route-id="@item.Id" asp-route-tourId="@Model.Tour.Id" asp-route-strUrl="@Model.StrUrl" ><i class="fas fa-edit"></i></a>
+                                        <a class="btn btn-success btn-sm" title="Chi tiết" asp-action="Details" asp-controller="BienNhans" asp-route-id="@item.Id" asp-route-tourId="@Model.Tour.Id" asp-route-strUrl="@Model.StrUrl" ><i class="fas fa-list"></i></a>
                                         <form asp-action="Delete" asp-controller="CTVATs" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" asp-route-tabActive="custom-tabs-four-CTVAT" method="post">
 
-                                            <span id="confirmBienNhanDeleteSpan_@item.Id" style="display: none">
-                                                <span class="text-light">Xóa?</span>
+                                            <span id="confirmDeleteSpan_@item.Id" style="display: none">
+                                                <span class="text-dark">Xóa?</span>
                                                 <button type="submit" class="btn btn-danger">Yes</button>
-                                                <a href="#" class="btn btn-primary" onclick="confirmBienNhanDelete('@item.Id', false)">No</a>
+                                                <a href="#" class="btn btn-primary" onclick="confirmDelete('@item.Id', false)">No</a>
                                             </span>
 
-                                            <span id="deleteBienNhanSpan_@item.Id">
-                                                <a href="#" class="btn btn-danger btn-sm" onclick="confirmBienNhanDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></a>
+                                            <span id="deleteSpan_@item.Id">
+                                                <a href="#" class="btn btn-danger btn-sm" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></a>
                                             </span>
                                         </form>
                                     </div>

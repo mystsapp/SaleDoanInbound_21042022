@@ -9,7 +9,7 @@ namespace Data.Models_IB
         public long Id { get; set; }
 
         [DisplayName("Biên nhận")]
-        [MaxLength(12, ErrorMessage = "Chiều dài tối thiểu 12 ký tự"), Column("varchar(12")]
+        [MaxLength(12, ErrorMessage = "Chiều dài tối thiểu 12 ký tự"), Column(TypeName = "varchar(12)")]
         public string BienNhanId { get; set; }
 
         [ForeignKey("BienNhanId")]

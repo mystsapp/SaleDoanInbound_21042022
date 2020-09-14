@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using SaleDoanInbound.Models;
 using Data.Utilities;
 using Microsoft.AspNetCore.Http.Extensions;
+using Data.Models_IB;
 
 namespace SaleDoanInbound.Controllers
 {
@@ -55,6 +56,9 @@ namespace SaleDoanInbound.Controllers
             BienNhanVM.StrUrl = strUrl;// + "&tabActive=" + tabActive; // for redirect tab
             BienNhanVM.Tour = _unitOfWork.tourRepository.GetById(tourId);
             BienNhanVM.BienNhan.TourId = tourId;
+            BienNhanVM.BienNhan.SK = BienNhanVM.Tour.SoKhachDK;
+            BienNhanVM.BienNhan.LoaiTien = BienNhanVM.Tour.LoaiTien;
+            BienNhanVM.BienNhan.TyGia = BienNhanVM.Tour.TyGia.Value;
             return View(BienNhanVM);
         }
 
@@ -62,11 +66,17 @@ namespace SaleDoanInbound.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreatePost()
         {
+            // from login session
+            var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
+
             //000099IB2020
             if (!ModelState.IsValid)
             {
                 return View(BienNhanVM);
             }
+
+            BienNhanVM.BienNhan.NgayTao = DateTime.Now;
+            BienNhanVM.BienNhan.NguoiTao = user.Username;
 
             // next id (so bien nhan)
             var currentYear = DateTime.Now.Year;
@@ -94,6 +104,8 @@ namespace SaleDoanInbound.Controllers
 
             // next id (so bien nhan)
 
+            // ghi log
+            BienNhanVM.BienNhan.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
             try
             {
                 _unitOfWork.bienNhanRepository.Create(BienNhanVM.BienNhan);
@@ -109,10 +121,10 @@ namespace SaleDoanInbound.Controllers
 
         }
 
-        public async Task<IActionResult> Edit(string id, string tourIBId, /*string tabActive, */string strUrl)
+        public async Task<IActionResult> Edit(string id, long tourId, /*string tabActive, */string strUrl)
         {
             BienNhanVM.StrUrl = strUrl;// + "&tabActive=" + tabActive; // for redirect tab
-            BienNhanVM.TourIB = await _unitOfWork.tourIBRepository.GetByIdAsync(tourIBId);
+            BienNhanVM.Tour = _unitOfWork.tourRepository.GetById(tourId);
             //BienNhanVM.BienNhan.TourIBId = tourIBId;
 
             if (string.IsNullOrEmpty(id))
@@ -130,11 +142,73 @@ namespace SaleDoanInbound.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditPost(string id/*, string strUrl*/)
         {
+            // from login session
+            var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
+
+            string temp = "", log = "";
+
             if (id != BienNhanVM.BienNhan.Id)
                 return NotFound();
 
             if (ModelState.IsValid)
             {
+                BienNhanVM.BienNhan.NgaySua = DateTime.Now;
+                BienNhanVM.BienNhan.NguoiSua = user.Username;
+
+                // kiem tra thay doi : trong getbyid() va ngoai view
+                #region log file
+                //var t = _unitOfWork.tourRepository.GetById(id);
+                var t = _unitOfWork.bienNhanRepository.GetByIdAsNoTracking(x => x.Id == id);
+                if (t.NgayBN != BienNhanVM.BienNhan.NgayBN)
+                {
+                    temp += String.Format("- Ngày BN thay đổi: {0:dd/MM/yyyy}->{1:dd/MM/yyyy}", t.NgayBN, BienNhanVM.BienNhan.NgayBN);
+                }
+                if (t.TenKhach != BienNhanVM.BienNhan.TenKhach)
+                {
+                    temp += String.Format("- Tên khách thay đổi: {0}->{1}", t.TenKhach, BienNhanVM.BienNhan.TenKhach);
+                }
+                if (t.SK != BienNhanVM.BienNhan.SK)
+                {
+                    temp += String.Format("- SK thay đổi: {0}->{1}", t.SK, BienNhanVM.BienNhan.SK);
+                }
+                if (t.GhiChu != BienNhanVM.BienNhan.GhiChu)
+                {
+                    temp += String.Format("- Ghi chú thay đổi: {0}->{1}", t.GhiChu, BienNhanVM.BienNhan.GhiChu);
+                }
+                if (t.LoaiTien != BienNhanVM.BienNhan.LoaiTien)
+                {
+                    temp += String.Format("- Loại tiền thay đổi: {0}->{1}", t.LoaiTien, BienNhanVM.BienNhan.LoaiTien);
+                }
+                if (t.TyGia != BienNhanVM.BienNhan.TyGia)
+                {
+                    temp += String.Format("- Tỷ giá thay đổi: {0}->{1}", t.TyGia, BienNhanVM.BienNhan.TyGia);
+                }
+                if (t.KhachLe != BienNhanVM.BienNhan.KhachLe)
+                {
+                    temp += String.Format("- Khách lẻ thay đổi: {0}->{1}", t.KhachLe, BienNhanVM.BienNhan.KhachLe);
+                }
+
+                if (t.NoiDungHuy != BienNhanVM.BienNhan.NoiDungHuy)
+                {
+                    temp += String.Format("- Nội dung thay đổi: {0}->{1}",
+                        (t.NoiDungHuy == 0) ? "0" : _unitOfWork.cacNoiDungHuyTourRepository.GetById(t.NoiDungHuy).NoiDung, 
+                        (BienNhanVM.BienNhan.NoiDungHuy == 0) ? "0" : _unitOfWork.cacNoiDungHuyTourRepository.GetById(BienNhanVM.BienNhan.NoiDungHuy).NoiDung);
+                }
+
+                // loai tien, ty gia mac dinh: vnd, 1
+                #endregion
+                // kiem tra thay doi
+                if (temp.Length > 0)
+                {
+
+                    log = System.Environment.NewLine;
+                    log += "=============";
+                    log += System.Environment.NewLine;
+                    log += temp + " -User cập nhật tour: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // username
+                    t.LogFile = t.LogFile + log;
+                    BienNhanVM.BienNhan.LogFile = t.LogFile;
+                }
+
                 try
                 {
 
@@ -153,20 +227,21 @@ namespace SaleDoanInbound.Controllers
             return View(BienNhanVM);
         }
 
-        public async Task<IActionResult> Details(string id, string tourId/*, string tabActive*/, string strUrl)
+        public async Task<IActionResult> Details(string id, long tourId/*, string tabActive*/, string strUrl)
         {
             BienNhanVM.StrUrl = strUrl;// + "&tabActive=" + tabActive; // for redirect tab
-            BienNhanVM.Tour = await _unitOfWork.tourRepository.GetByIdAsync(id);
+            BienNhanVM.Tour = _unitOfWork.tourRepository.GetById(tourId);
 
             if (string.IsNullOrEmpty(id))
                 return NotFound();
 
             var bienNhan = await _unitOfWork.bienNhanRepository.GetByIdAsync(id);
-            
+
             if (bienNhan == null)
                 return NotFound();
 
             BienNhanVM.BienNhan = bienNhan;
+            ViewBag.NDHuy = _unitOfWork.cacNoiDungHuyTourRepository.GetById(bienNhan.NoiDungHuy).NoiDung;
 
             return View(BienNhanVM);
         }

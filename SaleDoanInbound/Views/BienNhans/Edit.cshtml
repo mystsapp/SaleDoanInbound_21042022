@@ -1,7 +1,7 @@
 ﻿@model BienNhanViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edit";
 
 }
 
@@ -10,13 +10,13 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Thêm Mới</h1>
+                <h1>Cập nhật</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="/">Home</a></li>
                     <li class="breadcrumb-item"><a asp-controller="KhachHangs" asp-route-strUrl="@Model.StrUrl" asp-action="DetailsRedirect">Danh sách biên nhận</a></li>
-                    <li class="breadcrumb-item active">Thêm mới biên nhận</li>
+                    <li class="breadcrumb-item active">Cập nhật biên nhận</li>
                 </ol>
             </div>
         </div>
@@ -29,7 +29,7 @@
     <!-- Default box -->
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title"><i class="fas fa-file text-info"></i> Thêm mới biên nhận - <b>@Model.Tour.Sgtcode</b></h3>
+            <h3 class="card-title"><i class="fas fa-file text-info"></i> Cập nhật biên nhận - <b>@Model.Tour.Sgtcode</b></h3>
 
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
@@ -46,15 +46,19 @@
             <form method="post" autocomplete="off">
                 <div class="p-4 border rounded">
 
-                    <input asp-for="BienNhan.TourId" type="hidden" /> <!-- this field is required - foreignkey to tourIB-->
-                    <input asp-for="StrUrl" type="hidden" value="@Model.StrUrl" /> <!-- this field for action post -> to current tab-->
+                    <input asp-for="BienNhan.Id" type="hidden" /> <!-- this field is required -->
+                    <input asp-for="BienNhan.TourId" type="hidden" /> <!-- this field is required -->
+                    <input asp-for="BienNhan.NgayTao" type="hidden" />
+                    <input asp-for="BienNhan.NguoiTao" type="hidden" />
+                    <input asp-for="StrUrl" type="hidden" value="@Model.StrUrl" /> 
+
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                     <div class="form-group row">
 
                         <div class="col-md-3">
                             <label asp-for="BienNhan.NgayBN" class="control-label"></label>
-                            <input type="text" value="" asp-for="BienNhan.NgayBN" class="form-control maskInput" />
+                            <input type="text" asp-for="BienNhan.NgayBN" class="form-control maskInput" />
                             <span asp-validation-for="BienNhan.NgayBN" class="text-danger"></span>
                         </div>
 
@@ -117,10 +121,10 @@
                     </div>
 
                     <div class="form-group row btn-group">
-                            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i></button>
-                            <a class="btn btn-success" asp-controller="KhachHangs" asp-route-strUrl="@Model.StrUrl" asp-action="DetailsRedirect"><i class="fas fa-backward"></i></a>
-                            <a class="btn btn-outline-primary" title="Danh sách nguyên nhân" asp-controller="CacNoiDungHuyTours" asp-action="Index"><i class="fas fa-list"></i></a>
-                        
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i></button>
+                        <a class="btn btn-success" asp-controller="KhachHangs" asp-route-strUrl="@Model.StrUrl" asp-action="DetailsRedirect"><i class="fas fa-backward"></i></a>
+                        <a class="btn btn-outline-primary" title="Danh sách nguyên nhân" asp-controller="CacNoiDungHuyTours" asp-action="Index"><i class="fas fa-list"></i></a>
+
                     </div>
                 </div>
             </form>
@@ -144,10 +148,10 @@
             });
         </script>*@
     @*<script>
-        $(function () {
-            $('.select2').select2()
-        });
-    </script>*@
+            $(function () {
+                $('.select2').select2()
+            });
+        </script>*@
 
     <script src="~/js/Admin/BienNhan/createController.js"></script>
 }

@@ -301,13 +301,15 @@ namespace SaleDoanInbound.Controllers
                 #region log file
                 //var t = _unitOfWork.tourRepository.GetById(id);
                 var t = _unitOfWork.tourRepository.GetByIdAsNoTracking(x => x.Id == id);
-                if (t.MaKH != TourVM.Tour.MaKH)
+
+                if (t.PhongDH != TourVM.Tour.PhongDH)
                 {
-                    temp += String.Format("- Hãng thay đổi: {0}->{1}", t.MaKH, TourVM.Tour.MaKH);
+                    temp += String.Format("- Phòng điều hành thay đổi: {0}->{1}", t.PhongDH, TourVM.Tour.PhongDH);
                 }
-                if (t.LoaiTourId != TourVM.Tour.LoaiTourId)
+
+                if (t.SoHopDong != TourVM.Tour.SoHopDong)
                 {
-                    temp += String.Format("- Loại tour thay đổi: {0}->{1}", t.LoaiTourId, TourVM.Tour.LoaiTourId);
+                    temp += String.Format("- Số HD thay đổi: {0}->{1}", t.SoHopDong, TourVM.Tour.SoHopDong);
                 }
                 if (t.NgayDen != TourVM.Tour.NgayDen)
                 {
@@ -317,27 +319,86 @@ namespace SaleDoanInbound.Controllers
                 {
                     temp += String.Format("- Đến ngày thay đổi: {0:dd/MM/yyyy}->{1:dd/MM/yyyy}", t.NgayDi, TourVM.Tour.NgayDi);
                 }
-                if (t.SoKhachTT != TourVM.Tour.SoKhachTT)
+                if (t.ChuDeTour != TourVM.Tour.ChuDeTour)
                 {
-                    temp += String.Format("- Số khách thay đổi: {0}->{1}", t.SoKhachTT, TourVM.Tour.SoKhachTT);
-                }
-                if (t.SKTreEm != TourVM.Tour.SKTreEm)
-                {
-                    temp += String.Format("- Trẻ em thay đổi: {0}->{1}", t.SKTreEm, TourVM.Tour.SKTreEm);
-                }
-                if (t.PhongDH != TourVM.Tour.PhongDH)
-                {
-                    temp += String.Format("- Phòng điều hành thay đổi: {0}->{1}", t.PhongDH, TourVM.Tour.PhongDH);
+                    temp += String.Format("- Chủ đề tour thay đổi: {0}->{1}", t.ChuDeTour, TourVM.Tour.ChuDeTour);
                 }
 
                 if (t.TuyenTQ != TourVM.Tour.TuyenTQ)
                 {
                     temp += String.Format("- Tuyến tham quan thay đổi: {0}->{1}", t.TuyenTQ, TourVM.Tour.TuyenTQ);
                 }
+                if (t.SoKhachDK != TourVM.Tour.SoKhachDK)
+                {
+                    temp += String.Format("- Số khách DK thay đổi: {0}->{1}", t.SoKhachDK, TourVM.Tour.SoKhachDK);
+                }
+                if (t.DoanhThuDK != TourVM.Tour.DoanhThuDK)
+                {
+                    temp += String.Format("- Doanh thu DK thay đổi: {0:N0}->{1:N0}", t.DoanhThuDK, TourVM.Tour.DoanhThuDK);
+                }
+                if (t.SoKhachTT != TourVM.Tour.SoKhachTT)
+                {
+                    temp += String.Format("- Số khách TT thay đổi: {0}->{1}", t.SoKhachTT, TourVM.Tour.SoKhachTT);
+                }
+                if (t.SKTreEm != TourVM.Tour.SKTreEm)
+                {
+                    temp += String.Format("- SK trẻ em thay đổi: {0}->{1}", t.SKTreEm, TourVM.Tour.SKTreEm);
+                }
                 if (t.DoanhThuTT != TourVM.Tour.DoanhThuTT)
                 {
-                    temp += String.Format("- Doanh thu thay đổi: {0:#,##0.0}->{1:#,##0.0}", t.DoanhThuTT, TourVM.Tour.DoanhThuTT);
+                    temp += String.Format("- Doanh thu TT thay đổi: {0:N0}->{1:N0}", t.DoanhThuTT, TourVM.Tour.DoanhThuTT);
                 }
+                if (t.NguonTour != TourVM.Tour.NguonTour)
+                {
+                    temp += String.Format("- Nguồn tour thay đổi: {0}->{1}", t.NguonTour, TourVM.Tour.NguonTour);
+                }
+                if (t.LoaiTourId != TourVM.Tour.LoaiTourId)
+                {
+                    temp += String.Format("- Loại tour thay đổi: {0}->{1}", 
+                        (t.LoaiTourId == 0)? "0": _unitOfWork.tourKindRepository.GetById(t.LoaiTourId.Value).TourkindInf, 
+                        (TourVM.Tour.LoaiTourId == 0)? "0": _unitOfWork.tourKindRepository.GetById(TourVM.Tour.LoaiTourId.Value).TourkindInf);
+                }
+                if (t.LoaiTien != TourVM.Tour.LoaiTien)
+                {
+                    temp += String.Format("- Loại tour thay đổi: {0}->{1}", t.LoaiTien, TourVM.Tour.LoaiTien);
+                }
+                if (t.TyGia != TourVM.Tour.TyGia)
+                {
+                    temp += String.Format("- Loại tiền thay đổi: {0:N0}->{1:N0}", t.TyGia, TourVM.Tour.TyGia);
+                }
+                if (t.LoaiKhach != TourVM.Tour.LoaiKhach)
+                {
+                    temp += String.Format("- Loại khách thay đổi: {0}->{1}", t.LoaiKhach, TourVM.Tour.LoaiKhach);
+                }
+                 if (t.MaKH != TourVM.Tour.MaKH)
+                {
+                    temp += String.Format("- Hãng thay đổi: {0}->{1}", t.MaKH, TourVM.Tour.MaKH);
+                }
+                 if (t.NgayDamPhan != TourVM.Tour.NgayDamPhan)
+                {
+                    temp += String.Format("- Ngày đàm phán thay đổi: {0:dd/MM/yyyy}->{1:dd/MM/yyyy}", t.NgayDamPhan, TourVM.Tour.NgayDamPhan);
+                }
+                 if (t.NgayKyHopDong != TourVM.Tour.NgayKyHopDong)
+                {
+                    temp += String.Format("- Ngày ký HD phán thay đổi: {0:dd/MM/yyyy}->{1:dd/MM/yyyy}", t.NgayKyHopDong, TourVM.Tour.NgayKyHopDong);
+                }
+                if (t.NguoiKyHopDong != TourVM.Tour.NguoiKyHopDong)
+                {
+                    temp += String.Format("- Người ký HD thay đổi: {0}->{1}", t.NguoiKyHopDong, TourVM.Tour.NguoiKyHopDong);
+                }
+                if (t.NguoiDaiDien != TourVM.Tour.NguoiDaiDien)
+                {
+                    temp += String.Format("- Người đại diện thay đổi: {0}->{1}", t.NguoiDaiDien, TourVM.Tour.NguoiDaiDien);
+                }
+                if (t.DoiTacNuocNgoai != TourVM.Tour.DoiTacNuocNgoai)
+                {
+                    temp += String.Format("- Đối tác nước ngoài thay đổi: {0}->{1}", t.DoiTacNuocNgoai, TourVM.Tour.DoiTacNuocNgoai);
+                }
+
+                //if (t.DoanhThuTT != TourVM.Tour.DoanhThuTT)
+                //{
+                //    temp += String.Format("- Doanh thu thay đổi: {0:#,##0.0}->{1:#,##0.0}", t.DoanhThuTT, TourVM.Tour.DoanhThuTT);
+                //}
 
                 var fileCheck = Request.Form.Files;
                 if (fileCheck.Count > 0)
