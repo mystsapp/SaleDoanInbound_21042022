@@ -2,6 +2,7 @@
 using Data.Models_IB;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using X.PagedList;
 
@@ -9,7 +10,7 @@ namespace Data.Repository
 {
     public interface IInvoiceRepository : IRepository<Invoice>
     {
-        IPagedList<Invoice> ListInvoice(string searchString, int page);
+        IEnumerable<Invoice> ListInvoice(string searchString, long tourId);
     }
     public class InvoiceRepository : Repository<Invoice>, IInvoiceRepository
     {
@@ -17,9 +18,22 @@ namespace Data.Repository
         {
         }
 
-        public IPagedList<Invoice> ListInvoice(string searchString, int page)
+        public IEnumerable<Invoice> ListInvoice(string searchString, long tourId)
         {
-            throw new NotImplementedException();
+
+            var list = Find(x => x.TourId == tourId);
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                list = list.Where(x => x.Id.ToLower().Contains(searchString.ToLower()) ||
+                                       x.Replace.ToLower().Contains(searchString.ToLower()) ||
+                                       x.Type.ToLower().Contains(searchString.ToLower()) ||
+                                       x.Ref.ToLower().Contains(searchString.ToLower()) ||
+                                       x.HopDong.ToLower().Contains(searchString.ToLower()));
+            }
+
+            var count = list.Count();
+            return list;
+
         }
     }
 }

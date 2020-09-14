@@ -28,9 +28,10 @@ namespace SaleDoanInbound.Controllers
                 Tour = new Data.Models_IB.Tour()
             };
         }
-        public IActionResult Index(string searchString = null, int page = 1)
+        public IActionResult Index(long tourId, string searchString = null)
         {
             InvoiceVM.StrUrl = UriHelper.GetDisplayUrl(Request);
+            InvoiceVM.Tour = _unitOfWork.tourRepository.GetById(tourId);
             ViewBag.searchString = searchString;
 
             // for delete
@@ -46,13 +47,14 @@ namespace SaleDoanInbound.Controllers
             //    }
             //}
 
-            InvoiceVM.Invoices = _unitOfWork.invoiceRepository.ListInvoice(searchString, page);
+            InvoiceVM.Invoices = _unitOfWork.invoiceRepository.ListInvoice(searchString, tourId);
             return View(InvoiceVM);
         }
 
-        public IActionResult Create(long tourId, string tabActive, string strUrl)
+        public IActionResult Create(long tourId, /*string tabActive,*/ string strUrl)
         {
-            InvoiceVM.StrUrl = strUrl + "&tabActive=" + tabActive; // for redirect tab
+            InvoiceVM.StrUrl = strUrl;// + "&tabActive=" + tabActive; // for redirect tab
+            
             InvoiceVM.Tour = _unitOfWork.tourRepository.GetById(tourId);
             InvoiceVM.Invoice.Arr = InvoiceVM.Tour.NgayDen;
             InvoiceVM.Invoice.Dep = InvoiceVM.Tour.NgayDi;
@@ -124,19 +126,19 @@ namespace SaleDoanInbound.Controllers
 
         }
 
-        public async Task<IActionResult> Edit(string id, long tourId, string tabActive, string strUrl)
+        public async Task<IActionResult> Edit(string id, long tourId/*, string tabActive*/, string strUrl)
         {
-            InvoiceVM.StrUrl = strUrl + "&tabActive=" + tabActive; // for redirect tab
-            if (!string.IsNullOrEmpty(tabActive))
-            {
-                // reset url -> cut tabActive
-                var newStrUrl = InvoiceVM.StrUrl.Split("&tabActive");
-                if (newStrUrl.Length > 1)
-                {
-                    InvoiceVM.StrUrl = newStrUrl[0];
-                }
+            InvoiceVM.StrUrl = strUrl;// + "&tabActive=" + tabActive; // for redirect tab
+            //if (!string.IsNullOrEmpty(tabActive))
+            //{
+            //    // reset url -> cut tabActive
+            //    var newStrUrl = InvoiceVM.StrUrl.Split("&tabActive");
+            //    if (newStrUrl.Length > 1)
+            //    {
+            //        InvoiceVM.StrUrl = newStrUrl[0];
+            //    }
 
-            }
+            //}
             InvoiceVM.Tour = _unitOfWork.tourRepository.GetById(tourId);
 
             if (string.IsNullOrEmpty(id))
@@ -168,6 +170,18 @@ namespace SaleDoanInbound.Controllers
             {
                 InvoiceVM.Invoice.NgaySua = DateTime.Now;
                 InvoiceVM.Invoice.NguoiSua = user.Username;
+                if (string.IsNullOrEmpty(InvoiceVM.Invoice.Replace))
+                {
+                    InvoiceVM.Invoice.Replace = "";
+                }
+                if (string.IsNullOrEmpty(InvoiceVM.Invoice.Ref))
+                {
+                    InvoiceVM.Invoice.Ref = "";
+                }
+                if (string.IsNullOrEmpty(InvoiceVM.Invoice.HopDong))
+                {
+                    InvoiceVM.Invoice.HopDong = "";
+                }
 
                 // kiem tra thay doi : trong getbyid() va ngoai view
                 #region log file
@@ -222,7 +236,7 @@ namespace SaleDoanInbound.Controllers
                 {
                     temp += String.Format("- TPL thay đổi: {0:#,##0.0}->{1:#,##0.0}", t.TPL, InvoiceVM.Invoice.TPL);
                 }
-                 if (t.MOFP != InvoiceVM.Invoice.MOFP)
+                if (t.MOFP != InvoiceVM.Invoice.MOFP)
                 {
                     temp += String.Format("- MOFP thay đổi: {0:#,##0.0}->{1:#,##0.0}", t.MOFP, InvoiceVM.Invoice.MOFP);
                 }
@@ -234,7 +248,7 @@ namespace SaleDoanInbound.Controllers
                 {
                     temp += String.Format("- Ref thay đổi: {0}->{1}", t.Ref, InvoiceVM.Invoice.Ref);
                 }
-                 if (t.HopDong != InvoiceVM.Invoice.HopDong)
+                if (t.HopDong != InvoiceVM.Invoice.HopDong)
                 {
                     temp += String.Format("- Hộp đồng thay đổi: {0}->{1}", t.HopDong, InvoiceVM.Invoice.HopDong);
                 }
@@ -279,16 +293,16 @@ namespace SaleDoanInbound.Controllers
             return View(InvoiceVM);
         }
 
-        public async Task<IActionResult> Details(string id, long tourId, string tabActive, string strUrl)
+        public async Task<IActionResult> Details(string id, long tourId/*, string tabActive*/, string strUrl)
         {
-            InvoiceVM.StrUrl = strUrl + "&tabActive=" + tabActive; // for redirect tab
+            InvoiceVM.StrUrl = strUrl;// + "&tabActive=" + tabActive; // for redirect tab
             InvoiceVM.Tour = _unitOfWork.tourRepository.GetById(tourId);
 
             if (id == null)
                 return NotFound();
 
             var invoice = await _unitOfWork.invoiceRepository.GetByIdAsync(id);
-            
+
             if (invoice == null)
                 return NotFound();
 
@@ -298,9 +312,9 @@ namespace SaleDoanInbound.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id, string strUrl, string tabActive)
+        public async Task<IActionResult> DeleteConfirmed(string id, string strUrl/*, string tabActive*/)
         {
-            InvoiceVM.StrUrl = strUrl + "&tabActive=" + tabActive; // for redirect tab
+            InvoiceVM.StrUrl = strUrl;// + "&tabActive=" + tabActive; // for redirect tab
 
             var invoice = await _unitOfWork.invoiceRepository.GetByIdAsync(id);
             if (invoice == null)
@@ -319,7 +333,7 @@ namespace SaleDoanInbound.Controllers
             }
         }
 
-        
+
         //public JsonResult IsStringNameAvailable(string TenCreate)
         //{
         //    var boolName = _unitOfWork.dMNganhNgheRepository.Find(x => x.TenNganhNghe.Trim().ToLower() == TenCreate.Trim().ToLower()).FirstOrDefault();

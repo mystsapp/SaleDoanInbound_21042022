@@ -37,7 +37,7 @@
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
-            <div class="col-sm-6">
+            @*<div class="col-sm-6">
                 <a class="btn btn-outline-info" asp-action="Create" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-plus"></i>&nbsp; Thêm Mới</a>
             </div>
             <div class="col-sm-6">
@@ -45,7 +45,7 @@
                     <li class="breadcrumb-item"><a href="/">Home</a></li>
                     <li class="breadcrumb-item active">Danh sách tour</li>
                 </ol>
-            </div>
+            </div>*@
         </div>
     </div><!-- /.container-fluid -->
 </section>
@@ -156,6 +156,9 @@
 
                                     <td>
                                         <div class="btn-group text-white" role="group">
+                                            <a class="btn btn-outline-info btn-sm" title="Invoice" asp-action="Index" asp-controller="Invoices" asp-route-tourId="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-file-invoice"></i></a>
+                                            <a class="btn btn-outline-success btn-sm" title="Biên nhận" asp-action="Index" asp-controller="BienNhans" asp-route-tourId="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-file-alt"></i></a>
+
                                             @if (item.HuyTour == true)
                                             {
                                                 <button type="button" disabled class="btn btn-primary btn-sm" title="Cập nhật"><i class="fas fa-edit"></i></button>
@@ -280,12 +283,12 @@
                         <li class="nav-item">
                             <a class="nav-link" id="custom-tabs-four-settings-tab" data-toggle="pill" href="#tab_huongdan" role="tab" aria-controls="custom-tabs-four-settings" aria-selected="false">Hướng dẫn</a>
                         </li>
-                        <li class="nav-item">
+                        @*<li class="nav-item">
                             <a class="nav-link" id="custom-tabs-four-home-tab" data-toggle="pill" href="#custom-tabs-four-invoice" role="tab" aria-controls="custom-tabs-four-home" aria-selected="true">Invoice</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" id="custom-tabs-four-settings-tab" data-toggle="pill" href="#custom-tabs-four-biennhan" role="tab" aria-controls="custom-tabs-four-settings" aria-selected="false">Biên nhận</a>
-                        </li>
+                        </li>*@
                     </ul>
                 </div>
                 <div class="card-body">
@@ -834,11 +837,10 @@
                         </div>
                         <!-- HD -->
                         <!-- Invoices -->
-                        <div class="tab-pane fade " id="custom-tabs-four-invoice" role="tabpanel" aria-labelledby="custom-tabs-four-home-tab">
+                        @*<div class="tab-pane fade " id="custom-tabs-four-invoice" role="tabpanel" aria-labelledby="custom-tabs-four-home-tab">
 
                             <section class="content">
 
-                                <!-- Default box -->
                                 <div class="card">
                                     <div class="card-header">
                                         <h3 class="card-title">Sgtcode - <b>@Model.Tour.Sgtcode</b></h3>
@@ -950,14 +952,12 @@
                                         </div>
 
                                     </div>
-                                    <!-- /.card-body -->
-
+                                    
                                 </div>
-                                <!-- /.card -->
-
+                                
                             </section>
 
-                        </div>
+                        </div>*@
                         <!-- Invoices -->
                         <!-- Bien Nhan -->
                         <div class="tab-pane fade" id="custom-tabs-four-biennhan" role="tabpanel" aria-labelledby="custom-tabs-four-settings-tab">

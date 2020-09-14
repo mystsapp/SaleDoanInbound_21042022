@@ -10,7 +10,7 @@ namespace SaleDoanInbound.Models
 {
     public class InvoiceViewModel
     {
-        public IPagedList<Invoice> Invoices { get; set; }
+        public IEnumerable<Invoice> Invoices { get; set; }
         public IEnumerable<LoaiIV> LoaiIVs { get; set; }
         public IEnumerable<Ngoaite> Ngoaites { get; set; } // qltour
         public Invoice Invoice { get; set; }

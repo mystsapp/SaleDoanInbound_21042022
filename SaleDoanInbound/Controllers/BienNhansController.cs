@@ -6,6 +6,7 @@ using Data.Repository;
 using Microsoft.AspNetCore.Mvc;
 using SaleDoanInbound.Models;
 using Data.Utilities;
+using Microsoft.AspNetCore.Http.Extensions;
 
 namespace SaleDoanInbound.Controllers
 {
@@ -21,19 +22,39 @@ namespace SaleDoanInbound.Controllers
             BienNhanVM = new BienNhanViewModel()
             {
                 BienNhan = new Data.Models_IB.BienNhan(),
+                Tour = new Data.Models_IB.Tour(),
+                Ngoaites = _unitOfWork.ngoaiTeRepository.GetAll(),
                 CacNoiDungHuyTours = _unitOfWork.cacNoiDungHuyTourRepository.GetAll()
             };
         }
-        public IActionResult Index()
+        public IActionResult Index(long tourId, string searchString = null, string searchFromDate = null, string searchToDate = null)
         {
-            return View();
+            BienNhanVM.StrUrl = UriHelper.GetDisplayUrl(Request);
+            BienNhanVM.Tour = _unitOfWork.tourRepository.GetById(tourId);
+            ViewBag.searchString = searchString;
+
+            // for delete
+            //if (id != 0)
+            //{
+            //    var nganhNghe = _unitOfWork.dMNganhNgheRepository.GetById(id);
+            //    if (nganhNghe == null)
+            //    {
+            //        var lastId = _unitOfWork.dMNganhNgheRepository
+            //                                  .GetAll().OrderByDescending(x => x.Id)
+            //                                  .FirstOrDefault().Id;
+            //        id = lastId;
+            //    }
+            //}
+
+            BienNhanVM.BienNhans = _unitOfWork.bienNhanRepository.ListBienNhan(searchString, tourId, searchFromDate, searchToDate);
+            return View(BienNhanVM);
         }
 
-        public async Task<IActionResult> Create(string tourIBId, string tabActive, string strUrl)
+        public IActionResult Create(long tourId/*, string tabActive*/, string strUrl)
         {
-            BienNhanVM.StrUrl = strUrl + "&tabActive=" + tabActive; // for redirect tab
-            BienNhanVM.TourIB = await _unitOfWork.tourIBRepository.GetByIdAsync(tourIBId);
-            //BienNhanVM.BienNhan.TourIBId = tourIBId;
+            BienNhanVM.StrUrl = strUrl;// + "&tabActive=" + tabActive; // for redirect tab
+            BienNhanVM.Tour = _unitOfWork.tourRepository.GetById(tourId);
+            BienNhanVM.BienNhan.TourId = tourId;
             return View(BienNhanVM);
         }
 
@@ -88,9 +109,9 @@ namespace SaleDoanInbound.Controllers
 
         }
 
-        public async Task<IActionResult> Edit(string id, string tourIBId, string tabActive, string strUrl)
+        public async Task<IActionResult> Edit(string id, string tourIBId, /*string tabActive, */string strUrl)
         {
-            BienNhanVM.StrUrl = strUrl + "&tabActive=" + tabActive; // for redirect tab
+            BienNhanVM.StrUrl = strUrl;// + "&tabActive=" + tabActive; // for redirect tab
             BienNhanVM.TourIB = await _unitOfWork.tourIBRepository.GetByIdAsync(tourIBId);
             //BienNhanVM.BienNhan.TourIBId = tourIBId;
 
@@ -132,10 +153,10 @@ namespace SaleDoanInbound.Controllers
             return View(BienNhanVM);
         }
 
-        public async Task<IActionResult> Details(string id, string tourIBId, string tabActive, string strUrl)
+        public async Task<IActionResult> Details(string id, string tourId/*, string tabActive*/, string strUrl)
         {
-            BienNhanVM.StrUrl = strUrl + "&tabActive=" + tabActive; // for redirect tab
-            BienNhanVM.TourIB = await _unitOfWork.tourIBRepository.GetByIdAsync(id);
+            BienNhanVM.StrUrl = strUrl;// + "&tabActive=" + tabActive; // for redirect tab
+            BienNhanVM.Tour = await _unitOfWork.tourRepository.GetByIdAsync(id);
 
             if (string.IsNullOrEmpty(id))
                 return NotFound();
@@ -152,9 +173,9 @@ namespace SaleDoanInbound.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id, string strUrl, string tabActive)
+        public async Task<IActionResult> DeleteConfirmed(string id, string strUrl/*, string tabActive*/)
         {
-            BienNhanVM.StrUrl = strUrl + "&tabActive=" + tabActive; // for redirect tab
+            BienNhanVM.StrUrl = strUrl;// + "&tabActive=" + tabActive; // for redirect tab
 
             var bienNhan = await _unitOfWork.bienNhanRepository.GetByIdAsync(id);
             if (bienNhan == null)
