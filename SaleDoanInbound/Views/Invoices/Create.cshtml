@@ -115,7 +115,7 @@
 
                         <div class="col-md-2">
                             <label asp-for="Invoice.Rate" class="control-label"></label>
-                            <input asp-for="Invoice.Rate" class="form-control numbers" id="txtTyGia"/>
+                            <input value="" asp-for="Invoice.Rate" class="form-control numbers" id="txtTyGia"/>
                             <span asp-validation-for="Invoice.Rate" class="text-danger"></span>
                         </div>
 
@@ -258,5 +258,12 @@
         });
 
     </script>
+
+<style>
+    #ddlLoaiIV {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+    }
+</style>
 }
 

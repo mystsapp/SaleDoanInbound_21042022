@@ -23,12 +23,14 @@ namespace SaleDoanInbound.Controllers
             InvoiceVM = new InvoiceViewModel()
             {
                 Invoice = new Data.Models_IB.Invoice(),
+                CTVAT = new CTVAT(),
+                CTInvoice = new CTVAT(),
                 TourIB = new Data.Models_IB.TourIB(),
                 Ngoaites = _unitOfWork.ngoaiTeRepository.GetAll(),
                 Tour = new Data.Models_IB.Tour()
             };
         }
-        public IActionResult Index(long tourId, string searchString = null)
+        public async Task<IActionResult> Index(long tourId, string id, string searchString = null)
         {
             InvoiceVM.StrUrl = UriHelper.GetDisplayUrl(Request);
             InvoiceVM.Tour = _unitOfWork.tourRepository.GetById(tourId);
@@ -48,13 +50,24 @@ namespace SaleDoanInbound.Controllers
             //}
 
             InvoiceVM.Invoices = _unitOfWork.invoiceRepository.ListInvoice(searchString, tourId);
+
+            // invoice click
+            if (!string.IsNullOrEmpty(id))
+            {
+                InvoiceVM.Invoice = await _unitOfWork.invoiceRepository.GetByIdAsync(id);
+                InvoiceVM.CTVATs = await _unitOfWork.cTVATRepository.FindIncludeOneAsync(x => x.Invoice, y => y.InvoiceId == id && !y.TiengAnh);
+                InvoiceVM.CTInvoices = await _unitOfWork.cTVATRepository.FindIncludeOneAsync(x => x.Invoice, y => y.InvoiceId == id && y.TiengAnh);
+            }
+
+            // invoice click
+
             return View(InvoiceVM);
         }
 
         public IActionResult Create(long tourId, /*string tabActive,*/ string strUrl)
         {
             InvoiceVM.StrUrl = strUrl;// + "&tabActive=" + tabActive; // for redirect tab
-            
+
             InvoiceVM.Tour = _unitOfWork.tourRepository.GetById(tourId);
             InvoiceVM.Invoice.Arr = InvoiceVM.Tour.NgayDen;
             InvoiceVM.Invoice.Dep = InvoiceVM.Tour.NgayDi;

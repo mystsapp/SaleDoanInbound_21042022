@@ -135,7 +135,7 @@ namespace SaleDoanInbound.Controllers
                                                     // get list phong ban / thi truong
 
             // get list phong ban / dh 
-            GetListPhongBanDH(); // departoperator (qltour)
+            TourVM.listPhongDH = GetListPhongBanDH(); // departoperator (qltour)
             // get list phong ban / dh
             return View(TourVM);
         }
@@ -247,11 +247,9 @@ namespace SaleDoanInbound.Controllers
         public async Task<IActionResult> Edit(long id, string strUrl)
         {
 
-            // click nut Huy
-
             // from login session
             var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
-            ViewBag.chiNhanhSession = _unitOfWork.dmChiNhanhRepository.Find(x => x.Macn == user.MaCN).FirstOrDefault().Id; // for compare
+            ViewBag.chiNhanhTaoId = _unitOfWork.dmChiNhanhRepository.Find(x => x.Macn == user.MaCN).FirstOrDefault().Id; // for compare
 
             TourVM.StrUrl = strUrl;
             if (id == 0)
@@ -269,7 +267,7 @@ namespace SaleDoanInbound.Controllers
             // gang qua hid tuyentq
 
             // get list phong ban / thi truong
-            GetListPhongBanMacode(user.PhongBanId); // phongbanid = maphong in qltour
+            TourVM.listPhongDH = GetListPhongBanDH(); // departoperator (qltour)
             // get list phong ban / thi truong
 
             // get list phong ban / dh 
@@ -302,6 +300,11 @@ namespace SaleDoanInbound.Controllers
                 //var t = _unitOfWork.tourRepository.GetById(id);
                 var t = _unitOfWork.tourRepository.GetByIdAsNoTracking(x => x.Id == id);
 
+                if (t.ChiNhanhDHId != TourVM.Tour.ChiNhanhDHId)
+                {
+                    temp += String.Format("- CN DH thay đổi: {0}->{1}", _unitOfWork.dmChiNhanhRepository.GetById(t.ChiNhanhDHId).Macn, _unitOfWork.dmChiNhanhRepository.GetById(TourVM.Tour.ChiNhanhDHId).Macn);
+                }
+                
                 if (t.PhongDH != TourVM.Tour.PhongDH)
                 {
                     temp += String.Format("- Phòng điều hành thay đổi: {0}->{1}", t.PhongDH, TourVM.Tour.PhongDH);
@@ -394,11 +397,20 @@ namespace SaleDoanInbound.Controllers
                 {
                     temp += String.Format("- Đối tác nước ngoài thay đổi: {0}->{1}", t.DoiTacNuocNgoai, TourVM.Tour.DoiTacNuocNgoai);
                 }
+                if (t.HinhThucGiaoDich != TourVM.Tour.HinhThucGiaoDich)
+                {
+                    temp += String.Format("- Hình thức giao dịch thay đổi: {0}->{1}", t.HinhThucGiaoDich, TourVM.Tour.HinhThucGiaoDich);
+                }
 
-                //if (t.DoanhThuTT != TourVM.Tour.DoanhThuTT)
-                //{
-                //    temp += String.Format("- Doanh thu thay đổi: {0:#,##0.0}->{1:#,##0.0}", t.DoanhThuTT, TourVM.Tour.DoanhThuTT);
-                //}
+                if (t.NgayThanhLyHD != TourVM.Tour.NgayThanhLyHD)
+                {
+                    //temp += String.Format("- Ngày thanh lý HD thay đổi: {0:#,##0.0}->{1:#,##0.0}", t.NgayThanhLyHD, TourVM.Tour.NgayThanhLyHD);
+                    temp += String.Format("- Ngày thanh lý HD thay đổi: {0:dd/MM/yyyy}->{1:dd/MM/yyyy}", t.NgayThanhLyHD, TourVM.Tour.NgayThanhLyHD);
+                }
+                if (t.LyDoNhanDu != TourVM.Tour.LyDoNhanDu)
+                {
+                    temp += String.Format("- Hình thức giao dịch thay đổi: {0}->{1}", t.HinhThucGiaoDich, TourVM.Tour.HinhThucGiaoDich);
+                }
 
                 var fileCheck = Request.Form.Files;
                 if (fileCheck.Count > 0)
@@ -445,7 +457,7 @@ namespace SaleDoanInbound.Controllers
                 tourinf.Chinhanh = _unitOfWork.dmChiNhanhRepository.GetById(TourVM.Tour.ChiNhanhDHId).Macn; // chinhanh trien khai
                 tourinf.Chinhanhtao = _unitOfWork.dmChiNhanhRepository.GetById(TourVM.Tour.ChiNhanhTaoId).Macn; // user login
                 tourinf.Createtour = TourVM.Tour.NgayTao;
-                tourinf.Logfile = TourVM.Tour.LogFile;
+                tourinf.Logfile += TourVM.Tour.LogFile;
                 if (TourVM.Tour.NgayHuyTour.HasValue)
                 {
                     tourinf.Cancel = TourVM.Tour.NgayHuyTour;
@@ -489,36 +501,36 @@ namespace SaleDoanInbound.Controllers
                 catch (Exception ex)
                 {
                     SetAlert(ex.Message, "error");
+                    ViewBag.chiNhanhTaoId = _unitOfWork.dmChiNhanhRepository.Find(x => x.Macn == user.MaCN).FirstOrDefault().Id; // for compare
+                    TourVM = new TourViewModel();
 
-                    TourVM = new TourViewModel()
-                    {
-                        Tour = new Data.Models_IB.Tour(),
-                        Thanhphos = _unitOfWork.thanhPhoForTuyenTQRepository.GetAll(),
-                        Companies = _unitOfWork.khachHangRepository.GetAll(),
-                        Tourkinds = _unitOfWork.tourKindRepository.GetAll(),
-                        Dmchinhanhs = _unitOfWork.dmChiNhanhRepository.GetAll(),
-                        LoaiKhachs = LoaiKhach(),
-                        listPhongMacode = new List<Data.Models_QLT.Phongban>(),
-                        listPhongDH = new List<Phongban>(),
-                        Ngoaites = _unitOfWork.ngoaiTeRepository.GetAll(),
-                        NguonTours = NguonTour(),
-                        StrUrl = strUrl
-                    };
-
+                    TourVM.Tour = new Data.Models_IB.Tour();
+                    TourVM.Thanhphos = _unitOfWork.thanhPhoForTuyenTQRepository.GetAll();
+                    TourVM.Companies = _unitOfWork.khachHangRepository.GetAll();
+                    TourVM.Tourkinds = _unitOfWork.tourKindRepository.GetAll();
+                    TourVM.Dmchinhanhs = _unitOfWork.dmChiNhanhRepository.GetAll();
+                    TourVM.LoaiKhachs = LoaiKhach();
+                    TourVM.listPhongMacode = new List<Data.Models_QLT.Phongban>();
+                    TourVM.listPhongDH = GetListPhongBanDH();
+                    TourVM.Ngoaites = _unitOfWork.ngoaiTeRepository.GetAll();
+                    TourVM.NguonTours = NguonTour();
+                    TourVM.StrUrl = strUrl;
+                
                     return View(TourVM);
                 }
             }
             // not valid
+            ViewBag.chiNhanhTaoId = _unitOfWork.dmChiNhanhRepository.Find(x => x.Macn == user.MaCN).FirstOrDefault().Id; // for compare
             TourVM = new TourViewModel()
             {
-                Tour = new Data.Models_IB.Tour(),
+                Tour = await _unitOfWork.tourRepository.GetByLongIdAsync(id),
                 Thanhphos = _unitOfWork.thanhPhoForTuyenTQRepository.GetAll(),
                 Companies = _unitOfWork.khachHangRepository.GetAll(),
                 Tourkinds = _unitOfWork.tourKindRepository.GetAll(),
                 Dmchinhanhs = _unitOfWork.dmChiNhanhRepository.GetAll(),
                 LoaiKhachs = LoaiKhach(),
                 listPhongMacode = new List<Data.Models_QLT.Phongban>(),
-                listPhongDH = new List<Phongban>(),
+                listPhongDH = GetListPhongBanDH(),
                 Ngoaites = _unitOfWork.ngoaiTeRepository.GetAll(),
                 NguonTours = NguonTour(),
                 StrUrl = strUrl
@@ -728,13 +740,13 @@ namespace SaleDoanInbound.Controllers
             // get list maphong after distinct space and split ','
         }
 
-        private void GetListPhongBanDH()
+        private List<Phongban> GetListPhongBanDH()
         {
 
             // get list maphong after distinct space and split ','
             var phongbans = _unitOfWork.phongBanRepository.GetAll();
 
-            TourVM.listPhongDH = phongbans.Where(x => !string.IsNullOrEmpty(x.Macode)).ToList();
+            return phongbans.Where(x => !string.IsNullOrEmpty(x.Macode)).ToList();
             // get list maphong after distinct space and split ','
         }
 

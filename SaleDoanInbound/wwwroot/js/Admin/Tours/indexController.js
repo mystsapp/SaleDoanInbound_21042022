@@ -69,6 +69,21 @@
             });
         });
 
+        // check invoices
+        $('.btnHuy').off('click').on('click', function () {
+            invoices = $(this).data('invoices');
+            if (parseInt(invoices) > 0) {
+                bootbox.alert({
+                    size: "small",
+                    title: "Infomation!",
+                    message: "Tour này đã có invoices!"
+                });
+                $('#confirmDeleteSpan_' + $(this).data('id')).hide();
+                $('#deleteSpan_' + $(this).data('id')).show();
+            }
+        });
+        // check invoices
+
         $('.btnHuyTour').off('click').on('click', function () {
             //return $.ajax({
             //    url: '/Tours/HuyTourPartial',

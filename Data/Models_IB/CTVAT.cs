@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -25,7 +26,7 @@ namespace Data.Models_IB
 
         [DisplayName("Đơn vị tính")]
         [MaxLength(6), Column(TypeName = "varchar(6)")]
-        [Required(ErrorMessage = "Trường này không được để trống")]
+        //[Required(ErrorMessage = "Trường này không được để trống")]
         public string Unit { get; set; }
 
         [DisplayName("Đơn giá")]
@@ -51,14 +52,35 @@ namespace Data.Models_IB
         [DisplayName("Tiếng anh")]
         public bool TiengAnh { get; set; }
 
+        [DisplayName("Mục")]
+        [MaxLength(100), Column(TypeName = "nvarchar(100)")]
+        public string Muc { get; set; }
+        
         [DisplayName("Tên khoãn mục")]
-        [MaxLength(100), Column(TypeName = "varchar(100)")]
-        public string TenDanhMuc { get; set; }
+        [MaxLength(100), Column(TypeName = "nvarchar(100)")]
+        public string TenKhoanMuc { get; set; }
 
         [DisplayName("DS")]
         public bool DS { get; set; }
 
         [DisplayName("DLHH")]
         public bool DLHH { get; set; }
+
+
+        [DisplayName("Ngày tạo")]
+        public DateTime NgayTao { get; set; }
+
+        [DisplayName("Người tạo")]
+        [MaxLength(50), Column(TypeName = "varchar(50)")]
+        public string NguoiTao { get; set; }
+
+        public DateTime NgaySua { get; set; }
+
+        [DisplayName("Người sửa")]
+        [MaxLength(50), Column(TypeName = "varchar(50)")]
+        public string NguoiSua { get; set; }
+
+        [Column(TypeName = "nvarchar(MAX)")]
+        public string LogFile { get; set; }
     }
 }

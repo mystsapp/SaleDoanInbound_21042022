@@ -1,7 +1,9 @@
-﻿@model CTVATViewModel
+﻿
+@model CTVATViewModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "EditCTVAT";
+
 }
 
 <!-- Content Header (Page header) -->
@@ -9,13 +11,13 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Chi tiết</h1>
+                <h1>Cập nhật</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="/">Home</a></li>
-                    <li class="breadcrumb-item"><a asp-controller="KhachHangs" asp-route-strUrl="@Model.StrUrl" asp-action="DetailsRedirect">Danh Sách Tour</a></li>
-                    <li class="breadcrumb-item active">Chi tiết</li>
+                    <li class="breadcrumb-item"><a asp-controller="KhachHangs" asp-route-strUrl="@Model.StrUrl" asp-action="DetailsRedirect">Danh Sách Invoice</a></li>
+                    <li class="breadcrumb-item active">Cập nhật CTVAT</li>
                 </ol>
             </div>
         </div>
@@ -28,7 +30,7 @@
     <!-- Default box -->
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title"><i class="fas fa-file text-info"></i> Chi tiết - <b>@Model.Invoice.Id</b></h3>
+            <h3 class="card-title"><i class="fas fa-file text-info"></i> Cập nhật CTVAT - <b>@Model.Invoice.Id</b></h3>
 
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
@@ -41,32 +43,41 @@
         </div>
         <div class="card-body">
 
-
             <form method="post" autocomplete="off">
                 <div class="p-4 border rounded">
+
+                    <input asp-for="CTVAT.InvoiceId" type="hidden" /> <!-- this field is required - foreignkey to invoice-->
+                    <input asp-for="CTVAT.Id" type="hidden" /> <!-- this field is required-->
+                    <input asp-for="StrUrl" type="hidden" value="@Model.StrUrl" /> <!-- this field for action post-->
+                    <input asp-for="CTVAT.NgayTao" type="hidden" />
+                    <input asp-for="CTVAT.NguoiTao" type="hidden" />
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                     <div class="form-group row">
 
                         <div class="col-md-6">
                             <label asp-for="CTVAT.Descript" class="control-label"></label>
-                            <input asp-for="CTVAT.Descript" class="form-control" readonly/>
-                    
+                            <input asp-for="CTVAT.Descript" class="form-control" />
+                            <span asp-validation-for="CTVAT.Descript" class="text-danger"></span>
                         </div>
 
                         <div class="col-md-2">
                             <label asp-for="CTVAT.Quantity" class="control-label"></label>
-                            <input type="text" asp-for="CTVAT.Quantity" class="form-control numbers" readonly/>
+                            <input asp-for="CTVAT.Quantity" class="form-control numbers" />
+                            <span asp-validation-for="CTVAT.Quantity" class="text-danger"></span>
                         </div>
 
                         <div class="col-md-2">
                             <label asp-for="CTVAT.Unit" class="control-label"></label>
-                            <input asp-for="CTVAT.Unit" class="form-control" readonly/>
+                            <input asp-for="CTVAT.Unit" class="form-control" />
+                            <span asp-validation-for="CTVAT.Unit" class="text-danger"></span>
                         </div>
 
                         <div class="col-md-2">
                             <label asp-for="CTVAT.UnitPrice" class="control-label"></label>
-                            <input asp-for="CTVAT.UnitPrice" class="form-control numbers" readonly/>
-                            
+                            <input type="text" asp-for="CTVAT.UnitPrice" class="form-control numbers" asp-format="{0:0,0}"/>
+                            <span asp-validation-for="CTVAT.UnitPrice" class="text-danger"></span>
                         </div>
 
                     </div>
@@ -75,26 +86,26 @@
 
                         <div class="col-md-2">
                             <label asp-for="CTVAT.Percent" class="control-label"></label>
-                            <input type="text" asp-for="CTVAT.Percent" class="form-control numbers" readonly/>
-                            
+                            <input type="text" asp-for="CTVAT.Percent" class="form-control numbers" />
+                            <span asp-validation-for="CTVAT.Percent" class="text-danger"></span>
                         </div>
 
                         <div class="col-md-2">
                             <label asp-for="CTVAT.Amount" class="control-label"></label>
-                            <input asp-for="CTVAT.Amount" class="form-control numbers" readonly/>
-                            
+                            <input asp-for="CTVAT.Amount" class="form-control numbers" asp-format="{0:0,0}"/>
+                            <span asp-validation-for="CTVAT.Amount" class="text-danger"></span>
                         </div>
 
                         <div class="col-md-2">
                             <label asp-for="CTVAT.ServiceFee" class="control-label"></label>
-                            <input type="text" asp-for="CTVAT.ServiceFee" class="form-control numbers" readonly/>
-                            
+                            <input type="text" asp-for="CTVAT.ServiceFee" class="form-control numbers" />
+                            <span asp-validation-for="CTVAT.ServiceFee" class="text-danger"></span>
                         </div>
 
                         <div class="col-md-2">
                             <label asp-for="CTVAT.VAT" class="control-label"></label>
-                            <input type="text" asp-for="CTVAT.VAT" class="form-control numbers" readonly/>
-                            
+                            <input type="text" asp-for="CTVAT.VAT" class="form-control numbers" />
+                            <span asp-validation-for="CTVAT.VAT" class="text-danger"></span>
                         </div>
 
                     </div>
@@ -126,12 +137,12 @@
                 });
             });
         </script>*@
-    @*<script>
-            $(function () {
-                $('.select2').select2()
-            });
-        </script>*@
+    <script>
+        $(function () {
+            $('.select2').select2()
+        });
+    </script>
 
-    @*<script src="~/js/Admin/InvoiceTour/editController.js"></script>*@
+    <script src="~/js/Admin/CTVAT/editController.js"></script>
 }
 

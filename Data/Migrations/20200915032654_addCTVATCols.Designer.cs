@@ -4,14 +4,16 @@ using Data.Models_IB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
     [DbContext(typeof(SaleDoanIBDbContext))]
-    partial class SaleDoanIBDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200915032654_addCTVATCols")]
+    partial class addCTVATCols
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -135,7 +137,7 @@ namespace Data.Migrations
                     b.Property<decimal>("ServiceFee")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("TenKhoanMuc")
+                    b.Property<string>("TenDanhMuc")
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
 
@@ -143,6 +145,7 @@ namespace Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Unit")
+                        .IsRequired()
                         .HasColumnType("varchar(6)")
                         .HasMaxLength(6);
 

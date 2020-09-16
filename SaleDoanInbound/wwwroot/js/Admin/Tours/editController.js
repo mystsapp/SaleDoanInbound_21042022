@@ -22,6 +22,23 @@ var CreateController = {
             });
         });
 
+        // ddl chinhanhDH change
+        $('#ddlChiNhanhDH').off('change').on('change', function () {
+            // spanChiNhanhAlert
+            var chiNhanhTao = $('#hidChiNhanhTaoId').val();
+            var chiNhanhDH = $(this).val();
+            if (chiNhanhTao !== chiNhanhDH) {
+                $('#spanChiNhanhAlert').prop('hidden', false);
+
+            }
+            else {
+
+                $('#spanChiNhanhAlert').prop('hidden', true);
+            }
+
+        });
+    // ddl chinhanhDH change
+
         // btnSubmit 
         $('#btnSubmit').off('click').on('click', function () {
             var fileExtension = ['xls', 'xlsx'];

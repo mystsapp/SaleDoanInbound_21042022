@@ -10,6 +10,7 @@ namespace SaleDoanInbound.Models
     {
         public IEnumerable<CTVAT> CTVATs { get; set; }
         public CTVAT CTVAT { get; set; }
+        public CTVAT CTInvoice { get; set; }
         public Invoice Invoice { get; set; }
         public string StrUrl { get; set; }
     }
