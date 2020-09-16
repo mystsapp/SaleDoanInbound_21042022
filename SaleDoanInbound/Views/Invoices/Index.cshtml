@@ -108,7 +108,7 @@
 
                                 <td>
                                     <div class="btn-group text-white" role="group">
-                                        <a class="btn btn-primary btn-sm" title="Cập nhật" asp-action="Edit"  asp-route-tourId="@Model.Tour.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
+                                        <a class="btn btn-primary btn-sm" title="Cập nhật" asp-action="Edit" asp-route-tourId="@Model.Tour.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
                                         <a class="btn btn-success btn-sm" title="Chi tiết" asp-action="Details" asp-route-tourId="@Model.Tour.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
                                         <form asp-action="Delete" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" method="post">
 
@@ -162,7 +162,6 @@
 
 </section>
 <!-- /Invoice -->
-
 <!-- CTInvoice -->
 <section class="content">
 
@@ -222,18 +221,18 @@
 
                                     <td>
                                         <div class="btn-group text-white" role="group">
-                                            <a class="btn btn-primary btn-sm" title="Cập nhật" asp-action="EditInvoice" asp-controller="CTVATs" asp-route-invoiceId="@Model.Invoice.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
-                                            <a class="btn btn-success btn-sm" title="Chi tiết" asp-action="DetailsInvoice" asp-controller="CTVATs" asp-route-invoiceId="@Model.Invoice.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
-                                            <form asp-action="DeleteInvoice" asp-controller="CTVATs" asp-route-id="@item.Id" asp-route-invoiceId="@Model.Invoice.Id" asp-route-strUrl="@Model.StrUrl" method="post">
+                                            <a class="btn btn-primary btn-sm" title="Cập nhật" asp-action="EditCTInvoice" asp-controller="CTVATs" asp-route-invoiceId="@Model.Invoice.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
+                                            <a class="btn btn-success btn-sm" title="Chi tiết" asp-action="DetailsCTInvoice" asp-controller="CTVATs" asp-route-invoiceId="@Model.Invoice.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
+                                            <form asp-action="DeleteCTInvoice" asp-controller="CTVATs" asp-route-id="@item.Id" asp-route-invoiceId="@Model.Invoice.Id" asp-route-strUrl="@Model.StrUrl" method="post">
 
                                                 <span id="confirmDeleteSpan_@item.Id" style="display: none">
                                                     <span class="text-dark">Xóa?</span>
                                                     <button type="submit" class="btn btn-danger">Yes</button>
-                                                    <a href="#" class="btn btn-primary" onclick="confirmDelete('@item.Id', false)">No</a>
+                                                    <button type="button" class="btn btn-primary" onclick="confirmDelete('@item.Id', false)">No</button>
                                                 </span>
 
                                                 <span id="deleteSpan_@item.Id">
-                                                    <a href="#" class="btn btn-danger btn-sm" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></a>
+                                                    <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
                                                 </span>
                                             </form>
                                         </div>
@@ -247,7 +246,10 @@
                                     <td class="tdVal" data-id="@item.Id">@Html.Raw(item.Amount.ToString("N0"))</td>
                                     <td class="tdVal" data-id="@item.Id">@Html.Raw(item.ServiceFee.ToString("N0"))</td>
                                     <td class="tdVal" data-id="@item.Id">@Html.Raw(item.VAT.ToString("N0"))</td>
-
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Muc)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.TenKhoanMuc)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.DS)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.DLHH)</td>
                                 </tr>
 
                             }
@@ -266,7 +268,6 @@
 
 </section>
 <!-- /CTInvoice -->
-
 <!-- CTVAT -->
 <section class="content">
 
@@ -418,7 +419,6 @@
         .hoverClass {
             background-color: #3E5C9A;
         }
-        
     </style>
 }
 

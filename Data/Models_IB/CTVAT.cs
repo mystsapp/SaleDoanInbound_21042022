@@ -18,7 +18,7 @@ namespace Data.Models_IB
 
         [DisplayName("Diễn giải")]
         [MaxLength(250), Column(TypeName = "nvarchar(250)")]
-        [Required(ErrorMessage = "Trường này không được để trống")]
+        //[Required(ErrorMessage = "Trường này không được để trống")]
         public string Descript { get; set; }
 
         [DisplayName("Số lượng")]

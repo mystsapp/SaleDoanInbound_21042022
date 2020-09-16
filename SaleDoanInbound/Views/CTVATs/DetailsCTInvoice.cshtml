@@ -9,13 +9,13 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Chi tiết</h1>
+                <h1>CTInvoice</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="/">Home</a></li>
                     <li class="breadcrumb-item"><a asp-controller="KhachHangs" asp-route-strUrl="@Model.StrUrl" asp-action="DetailsRedirect">Danh Sách Tour</a></li>
-                    <li class="breadcrumb-item active">Chi tiết</li>
+                    <li class="breadcrumb-item active">CTInvoice</li>
                 </ol>
             </div>
         </div>
@@ -28,7 +28,7 @@
     <!-- Default box -->
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title"><i class="fas fa-file text-info"></i> CTVAT invoice - <b>@Model.Invoice.Id</b></h3>
+            <h3 class="card-title"><i class="fas fa-file text-info"></i> CTInvoice invoice - <b>@Model.Invoice.Id</b></h3>
 
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
@@ -41,81 +41,107 @@
         </div>
         <div class="card-body">
 
-                <div class="p-4 border rounded">
+            <div class="p-4 border rounded">
 
-                    <div class="form-group row">
+                <div class="form-group row">
 
-                        <div class="col-md-6">
-                            <label asp-for="CTVAT.Descript" class="control-label"></label>
-                            <input asp-for="CTVAT.Descript" class="form-control" readonly/>
-                    
-                        </div>
-
-                        <div class="col-md-2">
-                            <label asp-for="CTVAT.Quantity" class="control-label"></label>
-                            <input type="text" asp-for="CTVAT.Quantity" class="form-control numbers" readonly/>
-                        </div>
-
-                        <div class="col-md-2">
-                            <label asp-for="CTVAT.Unit" class="control-label"></label>
-                            <input asp-for="CTVAT.Unit" class="form-control" readonly/>
-                        </div>
-
-                        <div class="col-md-2">
-                            <label asp-for="CTVAT.UnitPrice" class="control-label"></label>
-                            <input asp-for="CTVAT.UnitPrice" class="form-control " asp-format="{0:0,0}" readonly/>
-                            
-                        </div>
+                    <div class="col-md-6">
+                        <label asp-for="CTInvoice.Descript" class="control-label"></label>
+                        <input asp-for="CTInvoice.Descript" class="form-control" readonly />
 
                     </div>
 
-                    <div class="form-group row">
+                    <div class="col-md-2">
+                        <label asp-for="CTInvoice.Quantity" class="control-label"></label>
+                        <input type="text" asp-for="CTInvoice.Quantity" class="form-control numbers" readonly />
+                    </div>
 
-                        <div class="col-md-2">
-                            <label asp-for="CTVAT.Percent" class="control-label"></label>
-                            <input type="text" asp-for="CTVAT.Percent" class="form-control numbers" readonly/>
-                            
-                        </div>
+                    <div class="col-md-2">
+                        <label asp-for="CTInvoice.Unit" class="control-label"></label>
+                        <input asp-for="CTInvoice.Unit" class="form-control" readonly />
+                    </div>
 
-                        <div class="col-md-2">
-                            <label asp-for="CTVAT.Amount" class="control-label"></label>
-                            <input asp-for="CTVAT.Amount" class="form-control " asp-format="{0:0,0}" readonly/>
-                            
-                        </div>
-
-                        <div class="col-md-2">
-                            <label asp-for="CTVAT.ServiceFee" class="control-label"></label>
-                            <input type="text" asp-for="CTVAT.ServiceFee" class="form-control numbers" readonly/>
-                            
-                        </div>
-
-                        <div class="col-md-2">
-                            <label asp-for="CTVAT.VAT" class="control-label"></label>
-                            <input type="text" asp-for="CTVAT.VAT" class="form-control numbers" readonly/>
-                            
-                        </div>
-                        
-                        <div class="col-md-2">
-                            <label asp-for="CTVAT.NgayTao" class="control-label"></label>
-                            <input type="text" asp-for="CTVAT.NgayTao" class="form-control " asp-format="{0:dd/MM/yyyy}" readonly/>
-                            
-                        </div>
-
-                        <div class="col-md-2">
-                            <label asp-for="CTVAT.NguoiTao" class="control-label"></label>
-                            <input asp-for="CTVAT.NguoiTao" class="form-control " readonly/>
-                            
-                        </div>
+                    <div class="col-md-2">
+                        <label asp-for="CTInvoice.UnitPrice" class="control-label"></label>
+                        <input asp-for="CTInvoice.UnitPrice" class="form-control " asp-format="{0:0,0}" readonly />
 
                     </div>
 
-                    <div class="form-group row">
-                        <div class="form-group">
-                            <a class="btn btn-primary" title="Cập nhật" asp-action="EditCTVAT" asp-route-invoiceId="@Model.Invoice.Id" asp-route-id="@Model.CTVAT.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
-                            <a class="btn btn-success" asp-controller="KhachHangs" asp-route-strUrl="@Model.StrUrl" asp-action="DetailsRedirect"><i class="fas fa-backward"></i></a>
-                        </div>
+                </div>
+
+                <div class="form-group row">
+
+                    <div class="col-md-2">
+                        <label asp-for="CTInvoice.Percent" class="control-label"></label>
+                        <input type="text" asp-for="CTInvoice.Percent" class="form-control numbers" readonly />
+
+                    </div>
+
+                    <div class="col-md-2">
+                        <label asp-for="CTInvoice.Amount" class="control-label"></label>
+                        <input asp-for="CTInvoice.Amount" class="form-control " asp-format="{0:0,0}" readonly />
+
+                    </div>
+
+                    <div class="col-md-2">
+                        <label asp-for="CTInvoice.ServiceFee" class="control-label"></label>
+                        <input type="text" asp-for="CTInvoice.ServiceFee" class="form-control numbers" readonly />
+
+                    </div>
+
+                    <div class="col-md-2">
+                        <label asp-for="CTInvoice.VAT" class="control-label"></label>
+                        <input type="text" asp-for="CTInvoice.VAT" class="form-control numbers" readonly />
+
+                    </div>
+
+                    <div class="col-md-2">
+                        <label asp-for="CTInvoice.NgayTao" class="control-label"></label>
+                        <input type="text" asp-for="CTInvoice.NgayTao" class="form-control " asp-format="{0:dd/MM/yyyy}" readonly />
+
+                    </div>
+
+                    <div class="col-md-2">
+                        <label asp-for="CTInvoice.NguoiTao" class="control-label"></label>
+                        <input asp-for="CTInvoice.NguoiTao" class="form-control " readonly />
+
+                    </div>
+
+                </div>
+
+                <div class="form-group row">
+
+                    <div class="col-md-3">
+                        <label asp-for="CTInvoice.Muc" class="control-label"></label>
+                        <input asp-for="CTInvoice.Muc" class="form-control" readonly/>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label asp-for="CTInvoice.TenKhoanMuc" class="control-label"></label>
+                        <input asp-for="CTInvoice.TenKhoanMuc" class="form-control" readonly/>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label asp-for="CTInvoice.DS" class="control-label"></label>
+                        <br />
+                        <input type="checkbox" asp-for="CTInvoice.DS" disabled />
+                    </div>
+
+                    <div class="col-md-3">
+                        <label asp-for="CTInvoice.DLHH" class="control-label"></label>
+                        <br />
+                        <input type="checkbox" asp-for="CTInvoice.DLHH" disabled />
+                    </div>
+
+                </div>
+
+                <div class="form-group row">
+                    <div class="form-group">
+                        <a class="btn btn-primary" title="Cập nhật" asp-action="EditCTInvoice" asp-route-invoiceId="@Model.Invoice.Id" asp-route-id="@Model.CTInvoice.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
+                        <a class="btn btn-success" asp-controller="KhachHangs" asp-route-strUrl="@Model.StrUrl" asp-action="DetailsRedirect"><i class="fas fa-backward"></i></a>
                     </div>
                 </div>
+            </div>
             
         </div>
         <!-- /.card-body -->
