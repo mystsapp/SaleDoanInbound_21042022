@@ -48,6 +48,22 @@ namespace Data.Models_IB
         [DisplayName("Khách lẽ")]
         public bool KhachLe { get; set; }
 
+        [DisplayName("Địa chỉ")]
+        [MaxLength(150), Column(TypeName = "nvarchar(150)")]
+        public string DiaChi { get; set; }
+
+        [DisplayName("Điện thoại")]
+        [MaxLength(20), Column(TypeName = "varchar(20)")]
+        public string DienThoai { get; set; }
+
+        [DisplayName("Nội dung")]
+        [MaxLength(300), Column(TypeName = "nvarchar(300)")]
+        public string NoiDung { get; set; }
+
+        [DisplayName("Số tiền")]
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal SoTien { get; set; }
+
         [DisplayName("Ngày tạo")]
         public DateTime NgayTao { get; set; }
 

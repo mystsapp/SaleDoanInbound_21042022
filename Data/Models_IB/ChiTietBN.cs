@@ -37,6 +37,18 @@ namespace Data.Models_IB
         [MaxLength(50), Column(TypeName = "varchar(50)")]
         public string NguoiSua { get; set; }
 
+        [MaxLength(50), Column(TypeName = "nvarchar(50)")]
+        public string HTTT { get; set; }
+
+        [DisplayName("Số tiền CT")]
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal SoTienCT { get; set; }
+
+        [DisplayName("Ghi chú")]
+        [MaxLength(150), Column(TypeName = "nvarchar(150)")]
+        public string GhiChu { get; set; }
+
+
         [Column(TypeName = "nvarchar(MAX)")]
         public string LogFile { get; set; }
     }
