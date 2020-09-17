@@ -28,7 +28,8 @@ namespace Data.Repository
                                        x.Replace.ToLower().Contains(searchString.ToLower()) ||
                                        x.Type.ToLower().Contains(searchString.ToLower()) ||
                                        x.Ref.ToLower().Contains(searchString.ToLower()) ||
-                                       x.HopDong.ToLower().Contains(searchString.ToLower()));
+                                       x.HopDong.ToLower().Contains(searchString.ToLower())||
+                                       x.Tour.Sgtcode.ToLower().Contains(searchString.ToLower()));
             }
 
             var count = list.Count();

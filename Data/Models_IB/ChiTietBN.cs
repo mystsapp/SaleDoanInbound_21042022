@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -22,5 +23,21 @@ namespace Data.Models_IB
         [DisplayName("Số tiền")]
         [Column(TypeName = "decimal(18,2)")]
         public decimal Amount { get; set; }
+
+        [DisplayName("Ngày tạo")]
+        public DateTime NgayTao { get; set; }
+
+        [DisplayName("Người tạo")]
+        [MaxLength(50), Column(TypeName = "varchar(50)")]
+        public string NguoiTao { get; set; }
+
+        public DateTime NgaySua { get; set; }
+
+        [DisplayName("Người sửa")]
+        [MaxLength(50), Column(TypeName = "varchar(50)")]
+        public string NguoiSua { get; set; }
+
+        [Column(TypeName = "nvarchar(MAX)")]
+        public string LogFile { get; set; }
     }
 }

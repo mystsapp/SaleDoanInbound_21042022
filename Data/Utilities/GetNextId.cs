@@ -21,7 +21,7 @@ namespace Data.Utilities
                 string zeroNumber = "";
                 for (int i = 1; i <= lengthNumerID; i++)
                 {
-                    if (nextID < Math.Pow(15, i))
+                    if (nextID < Math.Pow(10, i))
                     {
                         for (int j = 1; j <= lengthNumerID - i; i++)
                         {

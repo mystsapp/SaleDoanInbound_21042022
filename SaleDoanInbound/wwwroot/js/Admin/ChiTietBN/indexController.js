@@ -25,14 +25,14 @@
             $('#btnSubmit').click();
         });
 
-        $('#btnNewCTBienNhan').off('click').on('click', function (e) {
-            bienNhanId = $(this).data('id');
-            if (bienNhanId === '') {
+        $('#btnNewCTVAT').off('click').on('click', function (e) {
+            invoiceId = $(this).data('id');
+            if (invoiceId === '') {
                 e.preventDefault();
                 bootbox.alert({
                     title: "Information",
                     size: "small",
-                    message: "Bạn chưa chọn biên nhận nào nào!"
+                    message: "Bạn chưa chọn invoice nào!"
                 });
             }
         });

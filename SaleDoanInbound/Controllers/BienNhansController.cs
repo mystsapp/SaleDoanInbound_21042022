@@ -28,11 +28,13 @@ namespace SaleDoanInbound.Controllers
                 CacNoiDungHuyTours = _unitOfWork.cacNoiDungHuyTourRepository.GetAll()
             };
         }
-        public IActionResult Index(long tourId, string searchString = null, string searchFromDate = null, string searchToDate = null)
+        public async Task<IActionResult> Index(long tourId, string id = null, string searchString = null, string searchFromDate = null, string searchToDate = null)
         {
             BienNhanVM.StrUrl = UriHelper.GetDisplayUrl(Request);
             BienNhanVM.Tour = _unitOfWork.tourRepository.GetById(tourId);
             ViewBag.searchString = searchString;
+            ViewBag.searchFromDate = searchFromDate;
+            ViewBag.searchToDate = searchToDate;
 
             // for delete
             //if (id != 0)
@@ -48,6 +50,13 @@ namespace SaleDoanInbound.Controllers
             //}
 
             BienNhanVM.BienNhans = _unitOfWork.bienNhanRepository.ListBienNhan(searchString, tourId, searchFromDate, searchToDate);
+
+            // click BienNhan row
+            if (!string.IsNullOrEmpty(id))
+            {
+                BienNhanVM.BienNhan = await _unitOfWork.bienNhanRepository.GetByIdAsync(id);
+                BienNhanVM.ChiTietBNs = await _unitOfWork.chiTietBNRepository.FindAsync(x => x.BienNhanId == id);
+            }
             return View(BienNhanVM);
         }
 
@@ -80,24 +89,25 @@ namespace SaleDoanInbound.Controllers
 
             // next id (so bien nhan)
             var currentYear = DateTime.Now.Year;
-            var prefix = "IB" + currentYear.ToString();
+            var subfix = "IB" + currentYear.ToString();
             var bienNhan = _unitOfWork.bienNhanRepository.GetAll().OrderByDescending(x => x.Id).FirstOrDefault();
             if (bienNhan == null)
             {
-                BienNhanVM.BienNhan.Id = GetNextId.NextID("", prefix);
+                BienNhanVM.BienNhan.Id = GetNextId.NextID("", "") + subfix;
             }
             else
             {
-                var oldYear = bienNhan.Id.Substring(2, 4);
+                var oldYear = bienNhan.Id.Substring(8, 4);
                 // cung nam
                 if (oldYear == currentYear.ToString())
                 {
-                    BienNhanVM.BienNhan.Id = GetNextId.NextID(bienNhan.Id, prefix);
+                    var oldId = bienNhan.Id.Substring(0, 6);
+                    BienNhanVM.BienNhan.Id = GetNextId.NextID(oldId, "") + subfix;
                 }
                 else
                 {
                     // sang nam khac' chay lai tu dau
-                    BienNhanVM.BienNhan.Id = GetNextId.NextID("", prefix);
+                    BienNhanVM.BienNhan.Id = GetNextId.NextID("", "") + subfix;
                 }
 
             }
@@ -191,7 +201,7 @@ namespace SaleDoanInbound.Controllers
                 if (t.NoiDungHuy != BienNhanVM.BienNhan.NoiDungHuy)
                 {
                     temp += String.Format("- Nội dung thay đổi: {0}->{1}",
-                        (t.NoiDungHuy == 0) ? "0" : _unitOfWork.cacNoiDungHuyTourRepository.GetById(t.NoiDungHuy).NoiDung, 
+                        (t.NoiDungHuy == 0) ? "0" : _unitOfWork.cacNoiDungHuyTourRepository.GetById(t.NoiDungHuy).NoiDung,
                         (BienNhanVM.BienNhan.NoiDungHuy == 0) ? "0" : _unitOfWork.cacNoiDungHuyTourRepository.GetById(BienNhanVM.BienNhan.NoiDungHuy).NoiDung);
                 }
 
@@ -241,7 +251,7 @@ namespace SaleDoanInbound.Controllers
                 return NotFound();
 
             BienNhanVM.BienNhan = bienNhan;
-            ViewBag.NDHuy = _unitOfWork.cacNoiDungHuyTourRepository.GetById(bienNhan.NoiDungHuy).NoiDung;
+            ViewBag.NDHuy = (bienNhan.NoiDungHuy == 0) ? "0" : _unitOfWork.cacNoiDungHuyTourRepository.GetById(bienNhan.NoiDungHuy).NoiDung;
 
             return View(BienNhanVM);
         }

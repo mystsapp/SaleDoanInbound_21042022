@@ -8,7 +8,9 @@ namespace SaleDoanInbound.Models
 {
     public class ChiTietBNViewModel
     {
+        public BienNhan BienNhan { get; set; }
         public ChiTietBN ChiTietBN { get; set; }
+        public IEnumerable<ChiTietBN> ChiTietBNs { get; set; }
         public string StrUrl { get; set; }
     }
 }

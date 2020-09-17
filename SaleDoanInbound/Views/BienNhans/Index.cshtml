@@ -21,7 +21,7 @@
     </div><!-- /.container-fluid -->
 </section>
 
-<!-- TourIB -->
+<!-- BienNhan -->
 <section class="content">
 
     <!-- Default box -->
@@ -65,8 +65,8 @@
                             </div>
 
                             <!-- click row and submit to index -->
-                            @*<input type="hidden" name="id" id="hidId" />
-        <input type="hidden" name="page" id="hidPage" />*@
+                            <input type="hidden" name="id" id="hidId" />
+                            <input type="hidden" name="tourId" value="@Model.Tour.Id" />
 
                             <div class="col-md-3 ">
                                 <br />
@@ -142,8 +142,8 @@
 
                                 <td>
                                     <div class="btn-group text-white" role="group">
-                                        <a class="btn btn-primary btn-sm" title="Cập nhật" asp-action="Edit" asp-controller="BienNhans" asp-route-id="@item.Id" asp-route-tourId="@Model.Tour.Id" asp-route-strUrl="@Model.StrUrl" ><i class="fas fa-edit"></i></a>
-                                        <a class="btn btn-success btn-sm" title="Chi tiết" asp-action="Details" asp-controller="BienNhans" asp-route-id="@item.Id" asp-route-tourId="@Model.Tour.Id" asp-route-strUrl="@Model.StrUrl" ><i class="fas fa-list"></i></a>
+                                        <a class="btn btn-primary btn-sm" title="Cập nhật" asp-action="Edit" asp-controller="BienNhans" asp-route-id="@item.Id" asp-route-tourId="@Model.Tour.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
+                                        <a class="btn btn-success btn-sm" title="Chi tiết" asp-action="Details" asp-controller="BienNhans" asp-route-id="@item.Id" asp-route-tourId="@Model.Tour.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
                                         <form asp-action="Delete" asp-controller="BienNhans" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" method="post">
 
                                             <span id="confirmDeleteSpan_@item.Id" style="display: none">
@@ -185,7 +185,92 @@
     <!-- /.card -->
 
 </section>
-<!-- /TourIB -->
+<!-- /BienNhan -->
+<!-- CTBienNhan -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            @if (Model.BienNhan.Id != null)
+            {
+                <h3 class="card-title">Danh sách chi tiết biên nhận - <b>@Model.BienNhan.Id</b></h3>
+            }
+            else
+            {
+                <h3 class="card-title">Danh sách chi tiết invoice</h3>
+            }
+
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+
+            <div style="overflow-x:auto; overflow-y: auto; height: 200px;">
+                <table class="table mytable text-nowrap tblEMD">
+                    <thead>
+                        <tr class="table-info">
+                            <th>
+                                <a id="btnNewCTBienNhan" data-id="@Model.BienNhan.Id" asp-action="Create" asp-controller="ChiTietBNs" asp-route-bienNhanId="@Model.BienNhan.Id" asp-route-strUrl="@Model.StrUrl" class="btn btn-default btn-sm text-bold" title="Thêm CT invoice">New</a>
+                                <a id="btnPrint" data-id="@Model.BienNhan.Id" asp-action="Print" asp-controller="ChiTietBNs" asp-route-bienNhanId="@Model.BienNhan.Id" asp-route-strUrl="@Model.StrUrl" class="btn btn-default btn-sm text-bold" title="Print">Print</a>
+                            </th>
+                            <th>@Html.DisplayNameFor(m => m.ChiTietBNs.FirstOrDefault().Descript)</th>
+                            <th>@Html.DisplayNameFor(m => m.ChiTietBNs.FirstOrDefault().Amount)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.ChiTietBNs != null)
+                        {
+                            @foreach (var item in Model.ChiTietBNs)
+                            {
+
+                                <tr class="cursor-pointer ">
+
+                                    <td>
+                                        <div class="btn-group text-white" role="group">
+                                            <a class="btn btn-primary btn-sm" title="Cập nhật" asp-action="Edit" asp-controller="ChiTietBNs" asp-route-bienNhanId="@Model.BienNhan.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
+                                            <a class="btn btn-success btn-sm" title="Chi tiết" asp-action="Details" asp-controller="ChiTietBNs" asp-route-bienNhanId="@Model.BienNhan.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
+                                            <form asp-action="Delete" asp-controller="ChiTietBNs" asp-route-id="@item.Id" asp-route-bienNhanId="@Model.BienNhan.Id" asp-route-strUrl="@Model.StrUrl" method="post">
+
+                                                <span id="confirmDeleteSpan_@item.Id" style="display: none">
+                                                    <span class="text-dark">Xóa?</span>
+                                                    <button type="submit" class="btn btn-danger">Yes</button>
+                                                    <button type="button" class="btn btn-primary" onclick="confirmDelete('@item.Id', false)">No</button>
+                                                </span>
+
+                                                <span id="deleteSpan_@item.Id">
+                                                    <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
+                                                </span>
+                                            </form>
+                                        </div>
+                                    </td>
+
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Descript)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.Raw(item.Amount.ToString("N0"))</td>
+                                </tr>
+
+                            }
+
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+        <!-- /.card-body -->
+
+    </div>
+    <!-- /.card -->
+
+</section>
+<!-- /CTBienNhan -->
 
 @section Scripts{
     <script>
@@ -205,7 +290,7 @@
             });
         });
     </script>
-    @*<script src="~/js/Admin/InvoiceTour/indexController.js"></script>*@
+    <script src="~/js/Admin/BienNhan/indexController.js"></script>
     <script>
         function confirmDelete(uniqueId, isDeleteClicked) {
             var deleteSpan = 'deleteSpan_' + uniqueId;

@@ -10,6 +10,7 @@ namespace SaleDoanInbound.Models
     public class BienNhanViewModel
     {
         public IEnumerable<BienNhan> BienNhans { get; set; }
+        public IEnumerable<ChiTietBN> ChiTietBNs { get; set; }
         public IEnumerable<CacNoiDungHuyTour> CacNoiDungHuyTours { get; set; }
         public BienNhan BienNhan { get; set; }
         public IEnumerable<Ngoaite> Ngoaites { get; set; } // qltour

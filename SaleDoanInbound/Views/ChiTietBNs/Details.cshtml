@@ -1,0 +1,107 @@
+﻿@model ChiTietBNViewModel
+
+@{
+    ViewData["Title"] = "Detail";
+
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Thêm Mới</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item"><a asp-controller="KhachHangs" asp-route-strUrl="@Model.StrUrl" asp-action="DetailsRedirect">Danh Sách Invoice</a></li>
+                    <li class="breadcrumb-item active">Thêm mới chi tiết BN</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-file text-info"></i> Thêm mới chi tiết BN - <b>@Model.BienNhan.Id</b></h3>
+
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+
+            <form method="post" autocomplete="off">
+                <div class="p-4 border rounded">
+
+                    <div class="form-group row">
+
+                        <div class="col-md-6">
+                            <label asp-for="ChiTietBN.Descript" class="control-label"></label>
+                            <input asp-for="ChiTietBN.Descript" class="form-control" readonly/>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="ChiTietBN.Amount" class="control-label"></label>
+                            <input asp-for="ChiTietBN.Amount" class="form-control " readonly asp-format="{0:0,0}" />
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label asp-for="ChiTietBN.NgayTao" class="control-label"></label>
+                            <input type="text" asp-for="ChiTietBN.NgayTao" class="form-control" asp-format="{0:dd/MM/yyyy}" readonly/>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="ChiTietBN.NguoiTao" class="control-label"></label>
+                            <input asp-for="ChiTietBN.NguoiTao" class="form-control numbers" readonly/>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="form-group">
+                            <a class="btn btn-primary " title="Cập nhật" asp-action="Edit" asp-controller="ChiTietBNs" asp-route-bienNhanId="@Model.BienNhan.Id" asp-route-id="@Model.ChiTietBN.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
+                            <a class="btn btn-success" asp-controller="KhachHangs" asp-route-strUrl="@Model.StrUrl" asp-action="DetailsRedirect"><i class="fas fa-backward"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+        <!-- /.card-body -->
+
+    </div>
+    <!-- /.card -->
+
+</section>
+<!-- /.content -->
+
+@section Scripts{
+    @*<script>
+
+            $(function () {
+                $(".datepicker").datepicker({
+                    dateFormat: 'dd/mm/yy'
+                });
+            });
+        </script>*@
+    <script>
+        $(function () {
+            $('.select2').select2()
+        });
+    </script>
+
+    <script src="~/js/Admin/ChiTietBN/createController.js"></script>
+}
+
