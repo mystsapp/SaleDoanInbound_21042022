@@ -49,18 +49,14 @@
                     <input asp-for="BienNhan.Id" type="hidden" /> <!-- this field is required -->
                     <input asp-for="BienNhan.TourId" type="hidden" /> <!-- this field is required -->
                     <input asp-for="BienNhan.NgayTao" type="hidden" />
+                    <input asp-for="BienNhan.NgayBN" type="hidden" />
                     <input asp-for="BienNhan.NguoiTao" type="hidden" />
-                    <input asp-for="StrUrl" type="hidden" value="@Model.StrUrl" /> 
+                    <input asp-for="BienNhan.SK" type="hidden" />
+                    <input asp-for="StrUrl" type="hidden" value="@Model.StrUrl" />
 
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                     <div class="form-group row">
-
-                        <div class="col-md-3">
-                            <label asp-for="BienNhan.NgayBN" class="control-label"></label>
-                            <input type="text" asp-for="BienNhan.NgayBN" class="form-control maskInput" />
-                            <span asp-validation-for="BienNhan.NgayBN" class="text-danger"></span>
-                        </div>
 
                         <div class="col-md-3">
                             <label asp-for="BienNhan.TenKhach" class="control-label"></label>
@@ -68,23 +64,33 @@
                             <span asp-validation-for="BienNhan.TenKhach" class="text-danger"></span>
                         </div>
 
-                        <div class="col-md-1">
-                            <label asp-for="BienNhan.SK" class="control-label"></label>
-                            <input type="text" asp-for="BienNhan.SK" class="form-control numbers" />
-                            <span asp-validation-for="BienNhan.SK" class="text-danger"></span>
+                        <div class="col-md-3">
+                            <label asp-for="BienNhan.DienThoai" class="control-label"></label>
+                            <input asp-for="BienNhan.DienThoai" class="form-control " />
+                            <span asp-validation-for="BienNhan.DienThoai" class="text-danger"></span>
                         </div>
 
-                        <div class="col-md-5">
-                            <label asp-for="BienNhan.GhiChu" class="control-label"></label>
-                            <input asp-for="BienNhan.GhiChu" class="form-control" />
-                            <span asp-validation-for="BienNhan.GhiChu" class="text-danger"></span>
+                        <div class="col-md-6">
+                            <label asp-for="BienNhan.DiaChi" class="control-label"></label>
+                            <input asp-for="BienNhan.DiaChi" class="form-control " />
+                            <span asp-validation-for="BienNhan.DiaChi" class="text-danger"></span>
                         </div>
 
                     </div>
 
                     <div class="form-group row">
 
-                        <div class="col-md-2">
+                        <div class="col-md-12">
+                            <label asp-for="BienNhan.NoiDung" class="control-label"></label>
+                            <input asp-for="BienNhan.NoiDung" class="form-control " />
+                            <span asp-validation-for="BienNhan.NoiDung" class="text-danger"></span>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-md-3">
                             <label asp-for="BienNhan.LoaiTien" class="control-label"></label>
                             <select asp-for="BienNhan.LoaiTien" class="form-control " id="ddlLoaiTien"
                                     asp-items="@(new SelectList(Model.Ngoaites, "MaNt", "TenNt"))">
@@ -93,29 +99,16 @@
                             <span asp-validation-for="BienNhan.LoaiTien" class="text-danger"></span>
                         </div>
 
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <label asp-for="BienNhan.TyGia" class="control-label"></label>
                             <input asp-for="BienNhan.TyGia" class="form-control numbers" />
                             <span asp-validation-for="BienNhan.TyGia" class="text-danger"></span>
                         </div>
 
-                        <div class="col-md-2">
-                            <label asp-for="BienNhan.KhachLe" class="control-label"></label>
-                            <br />
-                            <div class="icheck-primary d-inline ">
-                                <input type="checkbox" asp-for="BienNhan.KhachLe" id="todoCheck1">
-                                <label for="todoCheck1"></label>
-                            </div>
-                            <span asp-validation-for="BienNhan.KhachLe" class="text-danger"></span>
-                        </div>
-
                         <div class="col-md-6">
-                            <label asp-for="BienNhan.NoiDungHuy" class="control-label"></label>
-                            <select asp-for="BienNhan.NoiDungHuy" class="form-control border-input" id="ddlQuocGia"
-                                    asp-items="@(new SelectList(Model.CacNoiDungHuyTours,"Id","NoiDung"))">
-                                <option value="0">-- Select --</option>
-                            </select>
-                            <span asp-validation-for="BienNhan.NoiDungHuy" class="text-danger"></span>
+                            <label asp-for="BienNhan.GhiChu" class="control-label"></label>
+                            <input asp-for="BienNhan.GhiChu" class="form-control" />
+                            <span asp-validation-for="BienNhan.GhiChu" class="text-danger"></span>
                         </div>
 
                     </div>
@@ -126,12 +119,13 @@
                         <a class="btn btn-outline-primary" title="Danh sách nguyên nhân" asp-controller="CacNoiDungHuyTours" asp-action="Index"><i class="fas fa-list"></i></a>
 
                     </div>
+
                 </div>
+
             </form>
-
         </div>
-        <!-- /.card-body -->
 
+        <!-- /.card-body -->
     </div>
     <!-- /.card -->
 

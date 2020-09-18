@@ -53,15 +53,15 @@ namespace SaleDoanInbound.Controllers
         {
             TourVM.StrUrl = UriHelper.GetDisplayUrl(Request);
 
-            if (!string.IsNullOrEmpty(TourVM.StrUrl))
-            {
-                // cat bo phai sau % --> too long error
-                var newStrUrl = TourVM.StrUrl.Split('%');
-                if (newStrUrl.Length > 1)
-                {
-                    TourVM.StrUrl = newStrUrl[0];
-                }
-            }
+            //if (!string.IsNullOrEmpty(TourVM.StrUrl))
+            //{
+            //    // cat bo phai sau % --> too long error
+            //    var newStrUrl = TourVM.StrUrl.Split('%');
+            //    if (newStrUrl.Length > 1)
+            //    {
+            //        TourVM.StrUrl = newStrUrl[0];
+            //    }
+            //}
 
             ViewBag.searchString = searchString;
 
@@ -105,18 +105,18 @@ namespace SaleDoanInbound.Controllers
             }
             //--> click vao tour
 
-            if (!string.IsNullOrEmpty(tabActive))
-            {
-                TourVM.tabActive = tabActive;
+            //if (!string.IsNullOrEmpty(tabActive))
+            //{
+            //    TourVM.tabActive = tabActive;
 
-                // reset url -> cut tabActive
-                var newStrUrl = TourVM.StrUrl.Split("&tabActive");
-                if (newStrUrl.Length > 1)
-                {
-                    TourVM.StrUrl = newStrUrl[0];
-                }
+            //    // reset url -> cut tabActive
+            //    var newStrUrl = TourVM.StrUrl.Split("&tabActive");
+            //    if (newStrUrl.Length > 1)
+            //    {
+            //        TourVM.StrUrl = newStrUrl[0];
+            //    }
 
-            }
+            //}
             return View(TourVM);
         }
 

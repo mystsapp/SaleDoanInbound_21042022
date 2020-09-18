@@ -1,4 +1,5 @@
-﻿using Data.Interfaces;
+﻿using Data.Dtos;
+using Data.Interfaces;
 using Data.Models_IB;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ namespace Data.Repository
 {
     public interface IBienNhanRepository : IRepository<BienNhan>
     {
-        IEnumerable<BienNhan> ListBienNhan(string searchString, long tourId, string searchFromDate, string searchToDate);
+        IEnumerable<BienNhanDto> ListBienNhan(string searchString, long tourId, string searchFromDate, string searchToDate);
     }
     public class BienNhanRepository : Repository<BienNhan>, IBienNhanRepository
     {
@@ -17,15 +18,45 @@ namespace Data.Repository
         {
         }
 
-        public IEnumerable<BienNhan> ListBienNhan(string searchString, long tourId, string searchFromDate, string searchToDate)
+        public IEnumerable<BienNhanDto> ListBienNhan(string searchString, long tourId, string searchFromDate, string searchToDate)
         {
 
-            var list = Find(x => x.TourId == tourId);
+            var bienNhans = Find(x => x.TourId == tourId);
+            List<BienNhanDto> list = new List<BienNhanDto>();
+            foreach(var item in bienNhans)
+            {
+                list.Add(new BienNhanDto()
+                {
+                    DiaChi = item.DiaChi,
+                    DienThoai = item.DienThoai,
+                    GhiChu = item.GhiChu,
+                    HuyBN = item.HuyBN,
+                    Id = item.Id,
+                    KhachLe = item.KhachLe,
+                    LoaiTien = item.LoaiTien,
+                    LogFile = item.LogFile,
+                    NgayBN = item.NgayBN,
+                    NgayHuy = item.NgayHuy,
+                    NgaySua = item.NgaySua,
+                    NgayTao = item.NgayTao,
+                    NguoiSua = item.NguoiSua,
+                    NguoiTao = item.NguoiTao,
+                    NoiDung = item.NoiDung,
+                    NoiDungHuy = (item.NDHuyBNId == 0) ? "0" : _context.CacNoiDungHuyTours.Find(item.NDHuyBNId).NoiDung,
+                    TourId = item.TourId,
+                    Sgtcode = item.Tour.Sgtcode,
+                    SK = item.SK,
+                    SoTien = item.SoTien,
+                    TenKhach = item.TenKhach,
+                    TyGia = item.TyGia
+
+                });
+            }
             if (!string.IsNullOrEmpty(searchString))
             {
                 list = list.Where(x => x.Id.ToLower().Contains(searchString.ToLower()) ||
                                        x.TenKhach.ToLower().Contains(searchString.ToLower()) ||
-                                       x.Tour.Sgtcode.ToLower().Contains(searchString.ToLower()));
+                                       x.Sgtcode.ToLower().Contains(searchString.ToLower())).ToList();
             }
 
             var count = list.Count();

@@ -4,6 +4,16 @@
     },
 
     registerEvent: function () {
+        $.each($('.cursor-pointer'), function (i, item) {
+
+            var huy = $(item).data('huy');
+            //console.log(huy);
+            if (huy === 'True') {
+                $(this).addClass('bg-secondary');
+            }
+
+        });
+
         $('.tdVal').click(function () {
             id = $(this).data('id');
             $('#hidId').val(id);
@@ -36,6 +46,21 @@
                 });
             }
         });
+
+        $('.btnHuyBN').off('click').on('click', function () {
+            id = $(this).data('id');
+            strUrl = $(this).data('url');
+            
+            $.get('/BienNhans/HuyBNPartial', { id: id, strUrl: strUrl }, function (response) {
+
+                console.log(response);
+                $('#huyBNModal').modal('show');
+                $('.huyBNPartial').html(response);
+                $('#huyBNModal').draggable();
+            });
+        });
+
+
     }
 };
 indexController.init();

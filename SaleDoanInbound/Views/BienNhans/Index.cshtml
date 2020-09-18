@@ -4,6 +4,27 @@
     ViewData["Title"] = "Bien Nhan";
 }
 
+<!-- huy tour modal-->
+<div class="modal fade" id="huyBNModal" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-lg">
+
+        <div class="modal-content ">
+            <div class="modal-header">
+                <h4 class="modal-title">Thông tin hủy BN</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body huyBNPartial">
+
+            </div>
+
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- huy tour modal-->
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <div class="container-fluid">
@@ -122,15 +143,15 @@
                                 </div>
                             </th>
                             <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().Id)</th> <!-- so bien nhan-->
-                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().Tour.Sgtcode)</th>
                             <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().NgayBN)</th>
                             <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().TenKhach)</th>
+                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().DienThoai)</th>
+                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().SoTien)</th>
+                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().NoiDung)</th>
                             <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().SK)</th>
                             <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().GhiChu)</th>
                             <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().LoaiTien)</th>
                             <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().TyGia)</th>
-                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().KhachLe)</th>
-                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().NoiDungHuy)</th>
 
                         </tr>
                     </thead>
@@ -147,28 +168,28 @@
                                         <form asp-action="Delete" asp-controller="BienNhans" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" method="post">
 
                                             <span id="confirmDeleteSpan_@item.Id" style="display: none">
-                                                <span class="text-dark">Xóa?</span>
-                                                <button type="submit" class="btn btn-danger">Yes</button>
-                                                <a href="#" class="btn btn-primary" onclick="confirmDelete('@item.Id', false)">No</a>
+                                                <span class="text-dark">Hủy?</span>
+                                                <button type="button" data-id="@item.Id" data-url="@Model.StrUrl" class="btn btn-danger btnHuyBN">Yes</button>
+                                                <button type="button" class="btn btn-primary" onclick="confirmDelete('@item.Id', false)">No</button>
                                             </span>
 
                                             <span id="deleteSpan_@item.Id">
-                                                <a href="#" class="btn btn-danger btn-sm" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></a>
+                                                <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
                                             </span>
                                         </form>
                                     </div>
                                 </td>
 
                                 <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Id)</td>
-                                <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Tour.Sgtcode)</td>
                                 <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayBN.ToString("dd/MM/yyyy"))</td>
                                 <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.TenKhach)</td>
+                                <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.DienThoai)</td>
+                                <td class="tdVal" data-id="@item.Id">@Html.Raw(item.SoTien.ToString("N0"))</td>
+                                <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.NoiDung)</td>
                                 <td class="tdVal" data-id="@item.Id">@Html.Raw(item.SK.ToString("N0"))</td>
                                 <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.GhiChu)</td>
                                 <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.LoaiTien)</td>
                                 <td class="tdVal" data-id="@item.Id">@Html.Raw(item.TyGia.ToString("N0"))</td>
-                                <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.KhachLe)</td>
-                                <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.NoiDungHuy) </td>
                             </tr>
 
                         }

@@ -500,7 +500,7 @@
                                                             <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().LoaiTien)</th>
                                                             <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().TyGia)</th>
                                                             <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().KhachLe)</th>
-                                                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().NoiDungHuy)</th>
+                                                            @*<th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().NoiDungHuy)</th>*@
 
                                                         </tr>
                                                     </thead>
@@ -537,7 +537,7 @@
                                                                 <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.LoaiTien)</td>
                                                                 <td class="tdVal" data-id="@item.Id">@Html.Raw(item.TyGia.ToString("N0"))</td>
                                                                 <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.KhachLe)</td>
-                                                                <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.NoiDungHuy) </td>
+                                                                @*<td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.NoiDungHuy) </td>*@
                                                             </tr>
 
                                                         }
