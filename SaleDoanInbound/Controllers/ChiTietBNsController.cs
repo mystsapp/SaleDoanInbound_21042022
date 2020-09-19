@@ -40,6 +40,8 @@ namespace SaleDoanInbound.Controllers
             // from login session
             var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
 
+            string temp = "", log = "";
+
             if (!ModelState.IsValid)
             {
                 ChiTietBNVM.StrUrl = strUrl;
@@ -58,8 +60,32 @@ namespace SaleDoanInbound.Controllers
             
             // ghi log
             ChiTietBNVM.ChiTietBN.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
+            // sotien --> BN
+            var bienNhan = await _unitOfWork.bienNhanRepository.GetByIdAsync(bienNhanId);
+            var st = bienNhan.SoTien + ChiTietBNVM.ChiTietBN.Amount;
+
+            if (bienNhan.SoTien != st)
+            {
+                temp += String.Format("- Số tiền thay đổi: {0:N0} -> {1:N0}, người thay đổi: {2}, vào lúc: {3} ", bienNhan.SoTien, st, user.Username, System.DateTime.Now.ToString());
+            }
+            bienNhan.SoTien = st;
+            // kiem tra thay doi
+            if (temp.Length > 0)
+            {
+
+                log = System.Environment.NewLine;
+                log += "=============";
+                log += System.Environment.NewLine;
+                log += temp;// + " -User cập nhật tour: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // username
+                bienNhan.LogFile = bienNhan.LogFile + log;
+                
+            }
+
+            // sotien --> BN
             try
             {
+                // cap nhat sotien trong BN
+                _unitOfWork.bienNhanRepository.Update(bienNhan);
 
                 _unitOfWork.chiTietBNRepository.Create(ChiTietBNVM.ChiTietBN);
                 await _unitOfWork.Complete();

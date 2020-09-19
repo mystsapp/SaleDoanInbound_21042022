@@ -159,11 +159,20 @@
                         @foreach (var item in Model.BienNhans)
                         {
 
-                            <tr class="cursor-pointer ">
+                            <tr class="cursor-pointer " data-huy="@item.HuyBN">
 
                                 <td>
                                     <div class="btn-group text-white" role="group">
-                                        <a class="btn btn-primary btn-sm" title="Cập nhật" asp-action="Edit" asp-controller="BienNhans" asp-route-id="@item.Id" asp-route-tourId="@Model.Tour.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
+                                        @if (item.HuyBN.HasValue == true)
+                                        {
+                                            <a class="btn btn-primary btn-sm disabled" title="Cập nhật"><i class="fas fa-edit"></i></a>
+
+                                        }
+                                        else
+                                        {
+                                            <a class="btn btn-primary btn-sm btnEditBN" title="Cập nhật" asp-action="Edit" asp-controller="BienNhans" asp-route-id="@item.Id" asp-route-tourId="@Model.Tour.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
+
+                                        }
                                         <a class="btn btn-success btn-sm" title="Chi tiết" asp-action="Details" asp-controller="BienNhans" asp-route-id="@item.Id" asp-route-tourId="@Model.Tour.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
                                         <form asp-action="Delete" asp-controller="BienNhans" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" method="post">
 
@@ -174,7 +183,16 @@
                                             </span>
 
                                             <span id="deleteSpan_@item.Id">
-                                                <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
+                                                @if (item.HuyBN.HasValue == true)
+                                                {
+                                                    <button type="button" class="btn btn-danger btn-sm disabled"><i class="fas fa-trash-alt"></i></button>
+
+                                                }
+                                                else
+                                                {
+                                                    <button type="button" class="btn btn-danger btn-sm btnHuy" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
+
+                                                }
                                             </span>
                                         </form>
                                     </div>
@@ -238,7 +256,15 @@
                     <thead>
                         <tr class="table-info">
                             <th>
-                                <a id="btnNewCTBienNhan" data-id="@Model.BienNhan.Id" asp-action="Create" asp-controller="ChiTietBNs" asp-route-bienNhanId="@Model.BienNhan.Id" asp-route-strUrl="@Model.StrUrl" class="btn btn-default btn-sm text-bold" title="Thêm CT invoice">New</a>
+                                @if (Model.BienNhan.HuyBN == true)
+                                {
+                                    <a class="btn btn-default btn-sm text-bold disabled" title="Thêm CT invoice">New</a>
+
+                                }
+                                else
+                                {
+                                    <a id="btnNewCTBienNhan" data-id="@Model.BienNhan.Id" asp-action="Create" asp-controller="ChiTietBNs" asp-route-bienNhanId="@Model.BienNhan.Id" asp-route-strUrl="@Model.StrUrl" class="btn btn-default btn-sm text-bold" title="Thêm CT invoice">New</a>
+                                }
                                 <a id="btnPrint" data-id="@Model.BienNhan.Id" asp-action="Print" asp-controller="ChiTietBNs" asp-route-bienNhanId="@Model.BienNhan.Id" asp-route-strUrl="@Model.StrUrl" class="btn btn-default btn-sm text-bold" title="Print">Print</a>
                             </th>
                             <th>@Html.DisplayNameFor(m => m.ChiTietBNs.FirstOrDefault().Descript)</th>
@@ -246,7 +272,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @if (Model.ChiTietBNs != null)
+                        @if (Model.ChiTietBNs != null && Model.BienNhan.HuyBN != true)
                         {
                             @foreach (var item in Model.ChiTietBNs)
                             {
@@ -267,6 +293,39 @@
 
                                                 <span id="deleteSpan_@item.Id">
                                                     <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
+                                                </span>
+                                            </form>
+                                        </div>
+                                    </td>
+
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Descript)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.Raw(item.Amount.ToString("N0"))</td>
+                                </tr>
+
+                            }
+
+                        }
+                        @if (Model.BienNhan.HuyBN == true)
+                        {
+                            @foreach (var item in Model.ChiTietBNs)
+                            {
+
+                                <tr class="cursor-pointer bg-secondary">
+
+                                    <td>
+                                        <div class="btn-group text-white" role="group">
+                                            <a class="btn btn-primary btn-sm disabled" title="Cập nhật" asp-action="Edit" asp-controller="ChiTietBNs" asp-route-bienNhanId="@Model.BienNhan.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
+                                            <a class="btn btn-success btn-sm" title="Chi tiết" asp-action="Details" asp-controller="ChiTietBNs" asp-route-bienNhanId="@Model.BienNhan.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
+                                            <form asp-action="Delete" asp-controller="ChiTietBNs" asp-route-id="@item.Id" asp-route-bienNhanId="@Model.BienNhan.Id" asp-route-strUrl="@Model.StrUrl" method="post">
+
+                                                <span id="confirmDeleteSpan_@item.Id" style="display: none">
+                                                    <span class="text-dark">Xóa?</span>
+                                                    <button type="submit" class="btn btn-danger">Yes</button>
+                                                    <button type="button" class="btn btn-primary" onclick="confirmDelete('@item.Id', false)">No</button>
+                                                </span>
+
+                                                <span id="deleteSpan_@item.Id">
+                                                    <button type="button" disabled class="btn btn-danger btn-sm" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
                                                 </span>
                                             </form>
                                         </div>

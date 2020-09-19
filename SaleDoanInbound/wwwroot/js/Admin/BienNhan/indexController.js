@@ -11,7 +11,7 @@
             if (huy === 'True') {
                 $(this).addClass('bg-secondary');
             }
-
+            
         });
 
         $('.tdVal').click(function () {

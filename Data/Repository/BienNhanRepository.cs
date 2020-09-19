@@ -122,7 +122,7 @@ namespace Data.Repository
             }
             // search date
 
-            return list;
+            return list.OrderByDescending(x => x.NgayTao);
 
         }
     }
