@@ -35,17 +35,17 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <div class="container-fluid">
-        <div class="row mb-2">
-            @*<div class="col-sm-6">
-                    <a class="btn btn-outline-info" asp-action="Create" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-plus"></i>&nbsp; Thêm Mới</a>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="/">Home</a></li>
-                        <li class="breadcrumb-item active">Danh sách tour</li>
-                    </ol>
-                </div>*@
-        </div>
+        @*<div class="row mb-2">
+               <div class="col-sm-6">
+                        <a class="btn btn-outline-info" asp-action="Create" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-plus"></i>&nbsp; Thêm Mới</a>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="/">Home</a></li>
+                            <li class="breadcrumb-item active">Danh sách tour</li>
+                        </ol>
+                    </div>
+            </div>*@
     </div><!-- /.container-fluid -->
 </section>
 
@@ -88,11 +88,13 @@
                             <input type="hidden" name="id" id="hidId" />
                             <input type="hidden" name="page" id="hidPage" />
 
-                            <div class="col-md-2 btn-group">
-                                <button type="submit" class="btn btn-primary form-control" id="btnSubmit">
-                                    <i class="fas fa-search"></i>
-                                </button>
-                                <a class="btn btn-outline-info" asp-action="Create" asp-route-strUrl="@Model.StrUrl" title="Thêm mới"><i class="fas fa-plus"></i></a>
+                            <div class="col-md-2">
+                                <div class=" btn-group">
+                                    <button type="submit" class="btn btn-primary form-control" id="btnSubmit">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                    <a class="btn btn-outline-info" asp-action="Create" asp-route-strUrl="@Model.StrUrl" title="Thêm mới"><i class="fas fa-plus"></i></a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -121,7 +123,7 @@
                         {
                             @foreach (var item in Model.TourDtos)
                             {
-                                
+
                                 <tr class="cursor-pointer " data-huy="@item.HuyTour">
 
                                     <td>
@@ -146,7 +148,7 @@
                                                 <span class="text-dark invoiceTrue">Hủy?</span>
                                                 <button type="button" class="btn btn-danger btnHuyTour" data-id="@item.Id" data-url="@Model.StrUrl">Yes</button>
                                                 <button type="button" class="btn btn-primary" onclick="confirmDelete('@item.Id', false)">No</button>
-                                                
+
                                             </span>
 
                                             <span id="deleteSpan_@item.Id">

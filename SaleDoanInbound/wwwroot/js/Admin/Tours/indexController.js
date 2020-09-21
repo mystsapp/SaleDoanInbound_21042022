@@ -49,7 +49,7 @@
             id = $(this).data('id');
             bootbox.confirm({
                 title: "Restore Confirm?",
-                message: "Bạn có muốn <b> khôi phục </b> User này không?",
+                message: "Bạn có muốn <b> khôi phục </b> Tour này không?",
                 buttons: {
                     cancel: {
                         label: '<i class="fa fa-times"></i> Cancel'

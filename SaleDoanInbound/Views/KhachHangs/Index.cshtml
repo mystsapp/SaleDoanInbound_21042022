@@ -13,7 +13,7 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <div class="container-fluid">
-        <div class="row mb-2">
+        @*<div class="row mb-2">
             <div class="col-sm-6">
                 <a class="btn btn-outline-info" asp-action="Create" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-plus"></i>&nbsp; Thêm Mới</a>
             </div>
@@ -23,7 +23,7 @@
                     <li class="breadcrumb-item active">Danh sách khách hàng</li>
                 </ol>
             </div>
-        </div>
+        </div>*@
     </div><!-- /.container-fluid -->
 </section>
 
@@ -64,12 +64,13 @@
 
                             <!-- click row and submit to index -->
                             @*<input type="hidden" name="id" id="hidId" />
-                                <input type="hidden" name="page" id="hidPage" />*@
+        <input type="hidden" name="page" id="hidPage" />*@
 
-                            <div class="col-md-2">
+                            <div class="col-md-2 btn-group">
                                 <button type="submit" class="btn btn-primary form-control" id="btnSubmit">
                                     <i class="fas fa-search"></i>
                                 </button>
+                                <a class="btn btn-outline-info" asp-action="Create" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-plus"></i></a>
                             </div>
                         </div>
                     </div>
@@ -107,16 +108,16 @@
                                     <div class="btn-group text-white" role="group">
                                         <a class="btn btn-primary btn-sm" title="Cập nhật" asp-action="Edit" asp-route-id="@item.CompanyId" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
                                         <a class="btn btn-success btn-sm" title="Chi tiết" asp-action="Details" asp-route-id="@item.CompanyId" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
-                                        <form asp-action="Delete" asp-route-id="item.Id" asp-route-strUrl="@Model.StrUrl" method="post">
+                                        <form asp-action="Delete" asp-route-id="@item.CompanyId" asp-route-strUrl="@Model.StrUrl" method="post">
 
-                                            <span id="confirmDeleteSpan_item.Id" style="display: none">
-                                                <span class="text-light">Xóa?</span>
+                                            <span id="confirmDeleteSpan_@item.CompanyId" style="display: none">
+                                                <span class="text-dark">Xóa?</span>
                                                 <button type="submit" class="btn btn-danger">Yes</button>
-                                                <a href="#" class="btn btn-primary" onclick="confirmDelete('@item.CompanyId', false)">No</a>
+                                                <button type="button" class="btn btn-primary" onclick="confirmDelete('@item.CompanyId', false)">No</button>
                                             </span>
 
-                                            <span id="deleteSpan_item.Id">
-                                                <a href="#" class="btn btn-danger btn-sm" onclick="confirmDelete('@item.CompanyId', true)"><i class="fas fa-trash-alt"></i></a>
+                                            <span id="deleteSpan_@item.CompanyId">
+                                                <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('@item.CompanyId', true)"><i class="fas fa-trash-alt"></i></button>
                                             </span>
                                         </form>
                                     </div>

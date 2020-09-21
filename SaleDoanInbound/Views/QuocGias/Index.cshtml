@@ -7,14 +7,15 @@
 
 @{
     ViewData["Title"] = "Nganh nghe";
+    int i = 1;
 }
 
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <div class="container-fluid">
-        <div class="row mb-2">
+        @*   <div class="row mb-2">
             <div class="col-sm-6">
-                @*<a class="btn btn-outline-info" asp-action="Create" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-plus"></i>&nbsp; Thêm Mới</a>*@
+                <a class="btn btn-outline-info" asp-action="Create" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-plus"></i>&nbsp; Thêm Mới</a>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -22,7 +23,7 @@
                     <li class="breadcrumb-item active">Danh sách quốc gia</li>
                 </ol>
             </div>
-        </div>
+        </div>*@
     </div><!-- /.container-fluid -->
 </section>
 
@@ -79,7 +80,7 @@
                 <table class="table mytable text-nowrap tblEMD" id="listAll">
                     <thead>
                         <tr class="table-info">
-                            <th>#</th>
+                            <th>STT</th>
                             <th>@Html.DisplayNameFor(m => m.Quocgias.FirstOrDefault().Code)</th>
                             <th>@Html.DisplayNameFor(m => m.Quocgias.FirstOrDefault().Nation)</th>
                             <th>@Html.DisplayNameFor(m => m.Quocgias.FirstOrDefault().Natione)</th>
@@ -93,31 +94,13 @@
 
                             <tr class="cursor-pointer ">
 
-                                <td>
-                                    <div class="btn-group text-white" role="group">
-                                        @*<a class="btn btn-primary btn-sm" title="Cập nhật" asp-action="Edit" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>*@
-                                        <a class="btn btn-success btn-sm" title="Chi tiết" asp-action="Details" asp-route-id="@item.Code" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
-                                        @*<form asp-action="Delete" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" method="post">
-
-                                            <span id="confirmDeleteSpan_@item.Id" style="display: none">
-                                                <span class="text-light">Xóa?</span>
-                                                <button type="submit" class="btn btn-danger">Yes</button>
-                                                <a href="#" class="btn btn-primary" onclick="confirmDelete('@item.Id', false)">No</a>
-                                            </span>
-
-                                            <span id="deleteSpan_@item.Id">
-                                                <a href="#" class="btn btn-danger btn-sm" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></a>
-                                            </span>
-                                        </form>*@
-                                    </div>
-                                </td>
-
+                                <td>@i</td>
                                 <td class="tdVal" data-id="@item.Code">@Html.DisplayFor(m => item.Code)</td>
                                 <td class="tdVal" data-id="@item.Code">@Html.DisplayFor(m => item.Nation)</td>
                                 <td class="tdVal" data-id="@item.Code">@Html.DisplayFor(m => item.Natione)</td>
                                 <td class="tdVal" data-id="@item.Code">@Html.DisplayFor(m => item.Telcode)</td>
                             </tr>
-
+                            i++;
                         }
                     </tbody>
 

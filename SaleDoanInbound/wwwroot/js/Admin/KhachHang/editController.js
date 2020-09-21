@@ -1,12 +1,12 @@
-﻿var createController = {
+﻿var editController = {
     init: function () {
-        createController.registerEvent();
+        editController.registerEvent();
     },
     registerEvent: function () {
 
         //$('.ddlQuocGia').off('change').on('change', function () {
         //    var optionValue = $('.ddlQuocGia').val();
-        //    createController.loadDdlThanhPhoByQuocGia(optionValue);
+        //    editController.loadDdlThanhPhoByQuocGia(optionValue);
         //});
 
     }
@@ -33,4 +33,4 @@
     //    });
     //}
 };
-createController.init();
+editController.init();

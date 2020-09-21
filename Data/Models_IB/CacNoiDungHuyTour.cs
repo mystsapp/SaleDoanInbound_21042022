@@ -25,5 +25,13 @@ namespace Data.Models_IB
         public string NguoiSua { get; set; }
 
         public DateTime NgaySua { get; set; }
+        
+        [DisplayName("Người xóa")]
+        [MaxLength(50), Column(TypeName = "varchar(50)")]
+        public string NguoiXoa { get; set; }
+
+        public DateTime? NgayXoa { get; set; }
+
+        public bool? Xoa { get; set; }
     }
 }

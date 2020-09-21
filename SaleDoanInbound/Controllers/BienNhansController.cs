@@ -127,6 +127,7 @@ namespace SaleDoanInbound.Controllers
             catch (Exception ex)
             {
                 SetAlert(ex.Message, "error");
+                ModelState.AddModelError("", ex.Message);
                 return View(BienNhanVM);
             }
 
@@ -231,6 +232,7 @@ namespace SaleDoanInbound.Controllers
                 catch (Exception ex)
                 {
                     SetAlert(ex.Message, "error");
+                    ModelState.AddModelError("", ex.Message);
                     return View(BienNhanVM);
                 }
             }
@@ -276,6 +278,7 @@ namespace SaleDoanInbound.Controllers
             catch (Exception ex)
             {
                 SetAlert(ex.Message, "error");
+                ModelState.AddModelError("", ex.Message);
                 return Redirect(BienNhanVM.StrUrl);
             }
         }
@@ -304,7 +307,14 @@ namespace SaleDoanInbound.Controllers
 
             // BN
             var bienNhan = await _unitOfWork.bienNhanRepository.GetByIdAsync(BienNhanVM.BienNhan.Id);
-            bienNhan.NgayHuy = BienNhanVM.BienNhan.NgayHuy;
+            if (BienNhanVM.BienNhan.NgayHuy.HasValue)
+            {
+                bienNhan.NgayHuy = BienNhanVM.BienNhan.NgayHuy;
+            }
+            else
+            {
+                bienNhan.NgayHuy = DateTime.Now;
+            }
             bienNhan.NDHuyBNId = BienNhanVM.BienNhan.NDHuyBNId;
             bienNhan.HuyBN = true;
 
@@ -346,6 +356,7 @@ namespace SaleDoanInbound.Controllers
             catch (Exception ex)
             {
                 SetAlert("Error: " + ex.Message, "error");
+                ModelState.AddModelError("", ex.Message);
                 return Redirect(BienNhanVM.StrUrl);
 
             }

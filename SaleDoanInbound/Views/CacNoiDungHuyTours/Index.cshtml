@@ -12,7 +12,7 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <div class="container-fluid">
-        <div class="row mb-2">
+        @*<div class="row mb-2">
             <div class="col-sm-6">
                 <a class="btn btn-outline-info" asp-action="Create" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-plus"></i>&nbsp; Thêm Mới</a>
             </div>
@@ -22,7 +22,7 @@
                     <li class="breadcrumb-item active">Danh sách nội dung hủy</li>
                 </ol>
             </div>
-        </div>
+        </div>*@
     </div><!-- /.container-fluid -->
 </section>
 
@@ -63,13 +63,18 @@
 
                             <!-- click row and submit to index -->
                             @*<input type="hidden" name="id" id="hidId" />
-                                <input type="hidden" name="page" id="hidPage" />*@
+        <input type="hidden" name="page" id="hidPage" />*@
 
-                            <div class="col-md-2">
-                                <button type="submit" class="btn btn-primary form-control" id="btnSubmit">
+                        <div class="col-md-2">
+                            <div class="btn-group btn-block">
+                                <button type="submit" class="btn btn-primary " id="btnSubmit">
                                     <i class="fas fa-search"></i>
                                 </button>
+                                <a class="btn btn-outline-info" asp-action="Create" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-plus"></i></a>
                             </div>
+
+                        </div>
+
                         </div>
                     </div>
                 </div>
@@ -88,7 +93,7 @@
                         @foreach (var item in Model.CacNoiDungHuyTours)
                         {
 
-                            <tr class="cursor-pointer ">
+                            <tr class="cursor-pointer " data-huy="@item.Xoa">
 
                                 <td>
                                     <div class="btn-group text-white" role="group">
@@ -97,16 +102,29 @@
                                         <form asp-action="Delete" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" method="post">
 
                                             <span id="confirmDeleteSpan_@item.Id" style="display: none">
-                                                <span class="text-light">Xóa?</span>
+                                                <span class="text-dark">Xóa?</span>
                                                 <button type="submit" class="btn btn-danger">Yes</button>
-                                                <a href="#" class="btn btn-primary" onclick="confirmDelete('@item.Id', false)">No</a>
+                                                <button type="button" class="btn btn-primary" onclick="confirmDelete('@item.Id', false)">No</button>
                                             </span>
 
                                             <span id="deleteSpan_@item.Id">
-                                                <a href="#" class="btn btn-danger btn-sm" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></a>
+                                                @if (item.Xoa == true)
+                                                {
+                                                    <button type="button" data-id="@item.Id" title="Khôi phục" class="btn btn-danger btn-sm btnKhoiPhucTour"><i class="fas fa-undo-alt"></i></button>
+                                                }
+                                                else
+                                                {
+                                                    <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
+                                                }
                                             </span>
                                         </form>
                                     </div>
+
+                                    <!-- hidden form khoiphuc-->
+                                    <form asp-action="KhoiPhuc" method="post" id="frmKhoiPhuc">
+                                        <input type="hidden" id="hidId" name="id" />
+                                        <input type="hidden" id="hidStrUrl" name="strUrl" value="@Model.StrUrl" />
+                                    </form>
                                 </td>
 
                                 <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.NoiDung)</td>
@@ -165,7 +183,8 @@
             });
         });
     </script>
-    @*<script src="~/js/Admin/NganhNghe/indexController.js"></script>*@
+
+    <script src="~/js/Admin/CacNoiDungHuyTour/indexController.js"></script>
 
     <script>
         function confirmDelete(uniqueId, isDeleteClicked) {

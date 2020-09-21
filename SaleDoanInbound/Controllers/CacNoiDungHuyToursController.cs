@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Data.Models_IB;
 using Data.Repository;
+using Data.Utilities;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using SaleDoanInbound.Models;
@@ -142,22 +144,80 @@ namespace SaleDoanInbound.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(long id, string strUrl)
         {
+            // from login session
+            var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
+
             var cacNoiDungHuyTour = _unitOfWork.cacNoiDungHuyTourRepository.GetById(id);
             if (cacNoiDungHuyTour == null)
                 return NotFound();
+
+            // search in tour
+            var tours = await _unitOfWork.tourRepository.FindAsync(x => x.NDHuyTourId == id);
+            if(tours.Count() != 0)
+            {
+                cacNoiDungHuyTour.NgayXoa = DateTime.Now;
+                cacNoiDungHuyTour.NguoiXoa = user.Username;
+                cacNoiDungHuyTour.Xoa = true;
+
+                try
+                {
+                    _unitOfWork.cacNoiDungHuyTourRepository.Update(cacNoiDungHuyTour);
+                    await _unitOfWork.Complete();
+                    SetAlert("Xóa thành công.", "success");
+                    return Redirect(strUrl);
+                }
+                catch (Exception ex)
+                {
+                    SetAlert(ex.Message, "error");
+                    return Redirect(strUrl);
+                }
+            }
+            // search in tour
+            else
+            {
+                try
+                {
+                    _unitOfWork.cacNoiDungHuyTourRepository.Delete(cacNoiDungHuyTour);
+                    await _unitOfWork.Complete();
+                    SetAlert("Xóa thành công.", "success");
+                    return Redirect(strUrl);
+                }
+                catch (Exception ex)
+                {
+                    SetAlert(ex.Message, "error");
+                    return Redirect(strUrl);
+                }
+            }
+            
+        }
+
+        //-----------KhoiPhuc------------
+
+        [HttpPost]
+        public async Task<IActionResult> KhoiPhuc(long id, string strUrl)
+        {
+            
+            // item
+            var cacNoiDungHuyTour = _unitOfWork.cacNoiDungHuyTourRepository.GetById(id);
+            cacNoiDungHuyTour.NgayXoa = null;
+            cacNoiDungHuyTour.NguoiXoa = "";
+            cacNoiDungHuyTour.Xoa = false;
+
             try
             {
-                _unitOfWork.cacNoiDungHuyTourRepository.Delete(cacNoiDungHuyTour);
+                _unitOfWork.cacNoiDungHuyTourRepository.Update(cacNoiDungHuyTour);
                 await _unitOfWork.Complete();
-                SetAlert("Xóa thành công.", "success");
+                SetAlert("Khôi phục thành công.", "success");
                 return Redirect(strUrl);
             }
             catch (Exception ex)
             {
-                SetAlert(ex.Message, "error");
+                SetAlert("Error: " + ex.Message, "error");
                 return Redirect(strUrl);
+
             }
         }
+        //-----------KhoiPhucTour------------
 
         public JsonResult IsStringNameAvailable(string TenCreate)
         {

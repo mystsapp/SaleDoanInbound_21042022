@@ -45,15 +45,15 @@ namespace SaleDoanInbound.Controllers
             return View(quocGiaVM);
         }
 
-        public async Task<IActionResult> Details(int? id, string strUrl)
+        public async Task<IActionResult> Details(string code, string strUrl)
         {
             quocGiaVM.StrUrl = strUrl;
 
-            if (id == null)
+            if (string.IsNullOrEmpty(code))
                 return NotFound();
 
-            var quocGia = await _unitOfWork.quocGiaRepository.GetByIdAsync(id);
-            quocGiaVM.Quocgia = quocGia;
+            var quocGia = await _unitOfWork.quocGiaRepository.FindAsync(x => x.Code == code);
+            quocGiaVM.Quocgia = quocGia.FirstOrDefault();
             if (quocGia == null)
                 return NotFound();
 

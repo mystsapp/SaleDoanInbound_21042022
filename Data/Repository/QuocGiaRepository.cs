@@ -31,7 +31,8 @@ namespace Data.Repository
             var list = GetAll().AsQueryable();
             if (!string.IsNullOrEmpty(searchString))
             {
-                list = list.Where(x => x.Nation.ToLower().Contains(searchString.ToLower()) ||
+                list = list.Where(x => x.Code.ToLower().Contains(searchString.ToLower()) ||
+                                       x.Nation.ToLower().Contains(searchString.ToLower()) ||
                                        x.Natione.ToLower().Contains(searchString.ToLower()) ||
                                        x.Telcode.ToLower().Contains(searchString.ToLower()));
             }

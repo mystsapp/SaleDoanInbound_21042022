@@ -2,7 +2,7 @@
 @model KhachHangViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edit";
 }
 
 
@@ -11,13 +11,13 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Thêm Mới</h1>
+                <h1>Cập nhật</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="/">Home</a></li>
                     <li class="breadcrumb-item"><a asp-route-strUrl="@Model.StrUrl" asp-action="DetailsRedirect">Danh Sách Khách Hàng</a></li>
-                    <li class="breadcrumb-item active">Thêm Mới Khách Hàng</li>
+                    <li class="breadcrumb-item active">Cập nhật khách hàng</li>
                 </ol>
             </div>
         </div>
@@ -30,7 +30,7 @@
     <!-- Default box -->
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title"><i class="fas fa-file text-info"></i> Thêm Mới Khách Hàng</h3>
+            <h3 class="card-title"><i class="fas fa-file text-info"></i> Cập nhật khách hàng</h3>
 
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
@@ -48,14 +48,15 @@
                 <div class="p-4 border rounded">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                    <input type="hidden" asp-for="Company.CompanyId" value="123"/> <!-- because it required-->
+                    <input type="hidden" asp-for="Company.CompanyId" /> <!-- because it required-->
+                    <input type="hidden" asp-for="TenCreate" value="abc" /> <!-- because it required-->
 
                     <div class="form-group row">
 
                         <div class="col-md-6">
                             <label asp-for="Company.Name" class="control-label"></label>
-                            <input asp-for="TenCreate" class="form-control" />
-                            <span asp-validation-for="TenCreate" class="text-danger"></span>
+                            <input asp-for="Company.Name" class="form-control" />
+                            <span asp-validation-for="Company.Name" class="text-danger"></span>
                         </div>
 
                         <div class="col-md-6">
@@ -123,7 +124,7 @@
                             <input asp-for="Company.Msthue" class="form-control" />
                             <span asp-validation-for="Company.Msthue" class="text-danger"></span>
                         </div>
-                        
+
                         <div class="col-md-4">
                             <label asp-for="Company.Chinhanh" class="control-label"></label>
                             <select asp-for="Company.Chinhanh" class="form-control border-input" id="ddlChiNhanh"
@@ -160,5 +161,5 @@
                 });
             });
         </script>*@
-    <script src="~/js/Admin/KhachHang/createController.js"></script>
+    <script src="~/js/Admin/KhachHang/editController.js"></script>
 }
