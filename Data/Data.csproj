@@ -33,6 +33,12 @@
     <Compile Remove="Migrations\20200914082100_fixBNTbl1.Designer.cs" />
     <Compile Remove="Migrations\20200914082656_addBNCTBNTbl.cs" />
     <Compile Remove="Migrations\20200914082656_addBNCTBNTbl.Designer.cs" />
+    <Compile Remove="Migrations\20200922014749_fixTourLog.cs" />
+    <Compile Remove="Migrations\20200922014749_fixTourLog.Designer.cs" />
+    <Compile Remove="Migrations\20200922014938_fixTourLog.cs" />
+    <Compile Remove="Migrations\20200922014938_fixTourLog.Designer.cs" />
+    <Compile Remove="Migrations\20200922015103_fixTourLog.cs" />
+    <Compile Remove="Migrations\20200922015103_fixTourLog.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

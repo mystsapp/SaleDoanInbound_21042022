@@ -4,14 +4,16 @@ using Data.Models_IB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
     [DbContext(typeof(SaleDoanIBDbContext))]
-    partial class SaleDoanIBDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200922032520_fixInvoiceHuy")]
+    partial class fixInvoiceHuy
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -111,10 +113,10 @@ namespace Data.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<bool?>("DLHH")
+                    b.Property<bool>("DLHH")
                         .HasColumnType("bit");
 
-                    b.Property<bool?>("DS")
+                    b.Property<bool>("DS")
                         .HasColumnType("bit");
 
                     b.Property<string>("Descript")
@@ -818,7 +820,7 @@ namespace Data.Migrations
                         .HasColumnType("varchar(10)")
                         .HasMaxLength(10);
 
-                    b.Property<bool?>("HuyInvoice")
+                    b.Property<bool?>("HuyBN")
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("HuyVAT")
@@ -853,9 +855,6 @@ namespace Data.Migrations
                     b.Property<string>("MsThue")
                         .HasColumnType("varchar(16)")
                         .HasMaxLength(16);
-
-                    b.Property<long>("NDHuyBNId")
-                        .HasColumnType("bigint");
 
                     b.Property<DateTime?>("NgayHuy")
                         .HasColumnType("datetime2");

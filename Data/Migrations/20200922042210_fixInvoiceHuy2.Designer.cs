@@ -4,14 +4,16 @@ using Data.Models_IB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
     [DbContext(typeof(SaleDoanIBDbContext))]
-    partial class SaleDoanIBDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200922042210_fixInvoiceHuy2")]
+    partial class fixInvoiceHuy2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -111,10 +113,10 @@ namespace Data.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<bool?>("DLHH")
+                    b.Property<bool>("DLHH")
                         .HasColumnType("bit");
 
-                    b.Property<bool?>("DS")
+                    b.Property<bool>("DS")
                         .HasColumnType("bit");
 
                     b.Property<string>("Descript")

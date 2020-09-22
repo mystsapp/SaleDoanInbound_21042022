@@ -163,7 +163,7 @@
 
                                 <td>
                                     <div class="btn-group text-white" role="group">
-                                        @if (item.HuyBN.HasValue == true)
+                                        @if (item.HuyBN == true)
                                         {
                                             <a class="btn btn-primary btn-sm disabled" title="Cập nhật"><i class="fas fa-edit"></i></a>
 
@@ -183,7 +183,7 @@
                                             </span>
 
                                             <span id="deleteSpan_@item.Id">
-                                                @if (item.HuyBN.HasValue == true)
+                                                @if (item.HuyBN == true)
                                                 {
                                                     <button type="button" class="btn btn-danger btn-sm disabled"><i class="fas fa-trash-alt"></i></button>
 
@@ -258,12 +258,12 @@
                             <th>
                                 @if (Model.BienNhan.HuyBN == true)
                                 {
-                                    <a class="btn btn-default btn-sm text-bold disabled" title="Thêm CT invoice">New</a>
+                                    <a class="btn btn-default btn-sm text-bold disabled" title="Thêm CT biên nhận">New</a>
 
                                 }
                                 else
                                 {
-                                    <a id="btnNewCTBienNhan" data-id="@Model.BienNhan.Id" asp-action="Create" asp-controller="ChiTietBNs" asp-route-bienNhanId="@Model.BienNhan.Id" asp-route-strUrl="@Model.StrUrl" class="btn btn-default btn-sm text-bold" title="Thêm CT invoice">New</a>
+                                    <a id="btnNewCTBienNhan" data-id="@Model.BienNhan.Id" asp-action="Create" asp-controller="ChiTietBNs" asp-route-bienNhanId="@Model.BienNhan.Id" asp-route-strUrl="@Model.StrUrl" class="btn btn-default btn-sm text-bold" title="Thêm CT biên nhận">New</a>
                                 }
                                 <a id="btnPrint" data-id="@Model.BienNhan.Id" asp-action="Print" asp-controller="ChiTietBNs" asp-route-bienNhanId="@Model.BienNhan.Id" asp-route-strUrl="@Model.StrUrl" class="btn btn-default btn-sm text-bold" title="Print">Print</a>
                             </th>
@@ -338,6 +338,7 @@
                             }
 
                         }
+                        
                     </tbody>
 
                 </table>

@@ -119,8 +119,13 @@ namespace Data.Models_IB
 
         public DateTime Lock { get; set; }
 
+        [DisplayName("Mã KH")]
+        [MaxLength(5), Column(TypeName = "varchar(5)")]
+        [Required(ErrorMessage = "Mã KH không được trống")]
+        public string MaKH { get; set; } // company: qltour
+
         [DisplayName("Tên khách")]
-        [MaxLength(50), Column(TypeName = "nvarchar(50)")]
+        [MaxLength(100), Column(TypeName = "nvarchar(100)")]
         public string TenKhach { get; set; }
 
         [DisplayName("Ghi chú")]
@@ -129,5 +134,16 @@ namespace Data.Models_IB
 
         [Column(TypeName = "nvarchar(MAX)")]
         public string LogFile { get; set; }
+
+
+        [DisplayName("Ngày hủy")]
+        public DateTime? NgayHuy { get; set; }
+
+        [DisplayName("Hủy")]
+        public bool? HuyInvoice { get; set; }
+
+        [DisplayName("Nội dung hủy")]
+        public long NDHuyBNId { get; set; }
+
     }
 }

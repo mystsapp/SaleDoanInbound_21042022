@@ -9,6 +9,7 @@ namespace SaleDoanInbound.Models
     public class CTVATViewModel
     {
         public IEnumerable<CTVAT> CTVATs { get; set; }
+        public IEnumerable<ListViewModel> ListTrueFalse { get; set; }
         public CTVAT CTVAT { get; set; }
         public CTVAT CTInvoice { get; set; }
         public Invoice Invoice { get; set; }

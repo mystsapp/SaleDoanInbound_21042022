@@ -4,6 +4,16 @@
     },
 
     registerEvent: function () {
+        $.each($('.cursor-pointer'), function (i, item) {
+
+            var huy = $(item).data('huy');
+            //console.log(huy);
+            if (huy === 'True') {
+                $(this).addClass('bg-secondary');
+            }
+
+        });
+
         $('.tdVal').click(function () {
             id = $(this).data('id');
             $('#hidId').val(id);
@@ -47,6 +57,22 @@
                 });
             }
         });
+
+
+        $('.btnHuyInvoice').off('click').on('click', function () {
+            id = $(this).data('id');
+            strUrl = $(this).data('url');
+
+            $.get('/Invoices/HuyInvoicePartial', { id: id, strUrl: strUrl }, function (response) {
+
+                console.log(response);
+                $('#huyInvoiceModal').modal('show');
+                $('.huyInvoicePartial').html(response);
+                $('#huyInvoiceModal').draggable();
+            });
+        });
+
+
     }
 };
 indexController.init();

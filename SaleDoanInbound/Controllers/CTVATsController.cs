@@ -55,7 +55,7 @@ namespace SaleDoanInbound.Controllers
             }
             CTVATVM.CTVAT.NgayTao = DateTime.Now;
             CTVATVM.CTVAT.NguoiTao = user.Username;
-            
+
             if (string.IsNullOrEmpty(CTVATVM.CTVAT.Descript))
             {
                 CTVATVM.CTVAT.Descript = "";
@@ -70,7 +70,7 @@ namespace SaleDoanInbound.Controllers
             CTVATVM.CTVAT.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
             try
             {
-                
+
                 _unitOfWork.cTVATRepository.Create(CTVATVM.CTVAT);
                 await _unitOfWork.Complete();
                 SetAlert("Thêm mới thành công.", "success");
@@ -157,7 +157,7 @@ namespace SaleDoanInbound.Controllers
                 {
                     temp += String.Format("- VAT thay đổi: {0}->{1}", t.VAT, CTVATVM.CTVAT.VAT);
                 }
-                
+
                 // loai tien, ty gia mac dinh: vnd, 1
                 #endregion
                 // kiem tra thay doi
@@ -204,7 +204,7 @@ namespace SaleDoanInbound.Controllers
                 return NotFound();
 
             var cTVAT = _unitOfWork.cTVATRepository.GetById(id);
-            
+
             if (cTVAT == null)
                 return NotFound();
 
@@ -235,7 +235,7 @@ namespace SaleDoanInbound.Controllers
                 return Redirect(CTVATVM.StrUrl);
             }
         }
-#endregion
+        #endregion
 
         // CTInvoice
         #region  CTInvoice
@@ -244,12 +244,15 @@ namespace SaleDoanInbound.Controllers
             CTVATVM.StrUrl = strUrl;
             CTVATVM.Invoice = await _unitOfWork.invoiceRepository.GetByIdAsync(invoiceId);
             CTVATVM.CTInvoice.InvoiceId = CTVATVM.Invoice.Id;
+            CTVATVM.ListTrueFalse = ListTrueFalse();
+            //CTVATVM.CTInvoice.DS = false;
+            //CTVATVM.CTInvoice.DLHH = false;
             return View(CTVATVM);
         }
 
         [HttpPost, ActionName("CreateCTInvoice")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateCTInvoicePost(string invoiceId, string strUrl)
+        public async Task<IActionResult> CreateCTInvoicePost(string invoiceId, string strUrl, string r1)
         {
             // from login session
             var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
@@ -279,7 +282,7 @@ namespace SaleDoanInbound.Controllers
             CTVATVM.CTInvoice.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
             try
             {
-                
+
                 _unitOfWork.cTVATRepository.Create(CTVATVM.CTInvoice);
                 await _unitOfWork.Complete();
                 SetAlert("Thêm mới thành công.", "success");
@@ -329,7 +332,7 @@ namespace SaleDoanInbound.Controllers
             {
                 CTVATVM.CTInvoice.NgaySua = DateTime.Now;
                 CTVATVM.CTInvoice.NguoiSua = user.Username;
-                
+
                 // kiem tra thay doi : trong getbyid() va ngoai view
                 #region log file
                 //var t = _unitOfWork.tourRepository.GetById(id);
@@ -384,7 +387,7 @@ namespace SaleDoanInbound.Controllers
                 {
                     temp += String.Format("- DLHH thay đổi: {0}->{1}", t.VAT, CTVATVM.CTInvoice.DLHH);
                 }
-                
+
                 // loai tien, ty gia mac dinh: vnd, 1
                 #endregion
                 // kiem tra thay doi
@@ -431,7 +434,7 @@ namespace SaleDoanInbound.Controllers
                 return NotFound();
 
             var cTInvoice = _unitOfWork.cTVATRepository.GetById(id);
-            
+
             if (cTInvoice == null)
                 return NotFound();
 
@@ -468,5 +471,14 @@ namespace SaleDoanInbound.Controllers
         }
         #endregion
         // CTInvoice
+
+        private IEnumerable<ListViewModel> ListTrueFalse()
+        {
+            return new List<ListViewModel>
+            {
+                new ListViewModel(){id = 1, Name = "aa"},
+                new ListViewModel(){id = 2, Name = "bb"}
+            };
+        }
     }
 }

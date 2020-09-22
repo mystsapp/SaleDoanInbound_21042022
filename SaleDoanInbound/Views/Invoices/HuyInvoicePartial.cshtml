@@ -1,0 +1,105 @@
+﻿@model InvoiceViewModel
+
+@{
+    ViewData["Title"] = "HuyInvoicePartial";
+}
+
+
+<form id="frmHuyInvoicePartial" asp-action="HuyInvoice" method="post" autocomplete="off">
+
+    <input type="hidden" asp-for="Invoice.Id" />
+    <input type="hidden" asp-for="StrUrl" />
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="form-group row">
+
+        <div class="col-md-3">
+            <label asp-for="Invoice.HuyInvoice" class="control-label"></label>
+            <input type="text" asp-for="Invoice.HuyInvoice" class="form-control maskInput" id="txtNgayHuyInvoice" />
+            <span asp-validation-for="Invoice.HuyInvoice" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-9">
+            <label asp-for="Invoice.NDHuyBNId" class="control-label"></label>
+            <select asp-for="Invoice.NDHuyBNId" class="form-control select2"
+                    asp-items="@(new SelectList(Model.CacNoiDungHuyTours, "Id", "NoiDung"))" id="ddlNDHuyInvoice">
+            </select>
+            <span asp-validation-for="Invoice.NDHuyBNId" class="text-danger"></span>
+        </div>
+
+        @*<div class="col-md-6">
+                <label asp-for="BienNhan.GhiChu" class="control-label"></label>
+                <input asp-for="BienNhan.GhiChu" class="form-control " />
+                <span asp-validation-for="BienNhan.GhiChu" class="text-danger"></span>
+            </div>*@
+
+    </div>
+    <div class="modal-footer ">
+        <button type="button" class="btn btn-outline-dark" data-dismiss="modal"><i class="fas fa-power-off"></i></button>
+        <button type="submit" class="btn btn-outline-primary"><i class="fas fa-save"></i></button>
+        <a class="btn btn-outline-primary" title="Danh sách nguyên nhân" asp-controller="CacNoiDungHuyTours" asp-action="Index"><i class="fas fa-list"></i></a>
+    </div>
+</form>
+<!-- /.modal-content -->
+
+
+<script src="~/lib/AdminLTE-3.0.5/plugins/jquery.maskedinput/jquery.maskedinput.min.js"></script>
+<script>
+    $(function () {
+        $(".maskInput").mask("99/99/9999");
+
+    });
+
+</script>
+
+<!-- Validation -->
+<script>
+
+    $('#frmHuyInvoicePartial').validate({
+        //rules: {
+        //    email: {
+        //        required: true,
+        //        email: true,
+        //    },
+        //    NgayDen: {
+        //        required: true
+        //    },
+        //    chuDeBienNhan1: {
+        //        required: true
+        //    },
+        //},
+        //messages: {
+        //    email: {
+        //        required: "Please enter a email address",
+        //        email: "Please enter a vaild email address"
+        //    },
+        //    NgayDen: {
+        //        required: "Please provide a date"
+        //    },
+        //    chuDeBienNhan1: "Please enter value"
+        //},
+        errorElement: 'span',
+        errorPlacement: function (error, element) {
+            // add error text
+
+            //error.addClass('invalid-feedback').removeClass('error');
+            //element.closest('.chuDeBienNhanGroup').append(error);
+        },
+        highlight: function (element, errorClass, validClass) {
+            $(element).addClass('is-invalid');
+        },
+        unhighlight: function (element, errorClass, validClass) {
+            $(element).removeClass('is-invalid');
+        }
+    });
+
+    $('#txtNgayHuyInvoice').rules('add', {
+        required: true,
+        messages: {
+            // required: "Ngày đến không được để trống"
+        }
+    });
+
+</script>
+

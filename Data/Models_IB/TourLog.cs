@@ -7,11 +7,11 @@ namespace Data.Models_IB
 {
     public class TourLog
     {
+        
         public decimal Id { get; set; }
 
         [DisplayName("Tour")]
-        [Column(TypeName = "decimal(18,0)")]
-        public decimal IdTour { get; set; }
+        public long IdTour { get; set; }
 
         //[ForeignKey("IdTour")]
         //public virtual Tour Tour { get; set; }

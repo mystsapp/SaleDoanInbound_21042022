@@ -1139,14 +1139,14 @@ namespace SaleDoanInbound.Controllers
         //-----------HD------------
 
         //-----------HuyTour------------
-        public IActionResult HuyTourPartial(long id, string strUrl)
+        public async Task<IActionResult> HuyTourPartial(long id, string strUrl)
         {
             if (id == 0)
                 return NotFound();
 
             TourVM.StrUrl = strUrl;
             TourVM.Tour = _unitOfWork.tourRepository.GetById(id);
-            TourVM.CacNoiDungHuyTours = _unitOfWork.cacNoiDungHuyTourRepository.GetAll();
+            TourVM.CacNoiDungHuyTours = await _unitOfWork.cacNoiDungHuyTourRepository.FindAsync(x => x.Xoa == false);
 
             return PartialView(TourVM);
         }

@@ -284,7 +284,7 @@ namespace SaleDoanInbound.Controllers
         }
 
 
-        //-----------HuyTour------------
+        //-----------HuyBN------------
         public async Task<IActionResult> HuyBNPartial(string id, string strUrl)
         {
             if (string.IsNullOrEmpty(id))
@@ -292,7 +292,7 @@ namespace SaleDoanInbound.Controllers
 
             BienNhanVM.StrUrl = strUrl;
             BienNhanVM.BienNhan = await _unitOfWork.bienNhanRepository.GetByIdAsync(id);
-            BienNhanVM.CacNoiDungHuyTours = _unitOfWork.cacNoiDungHuyTourRepository.GetAll();
+            BienNhanVM.CacNoiDungHuyTours = await _unitOfWork.cacNoiDungHuyTourRepository.FindAsync(x => x.Xoa == false);
 
             return PartialView(BienNhanVM);
         }
@@ -361,6 +361,6 @@ namespace SaleDoanInbound.Controllers
 
             }
         }
-        //-----------HuyTour------------
+        //-----------HuyBN------------
     }
 }

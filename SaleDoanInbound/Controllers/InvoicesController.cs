@@ -49,7 +49,7 @@ namespace SaleDoanInbound.Controllers
             //    }
             //}
 
-            InvoiceVM.Invoices = _unitOfWork.invoiceRepository.ListInvoice(searchString, tourId);
+            InvoiceVM.Invoices = _unitOfWork.invoiceRepository.ListInvoice(searchString, tourId).OrderByDescending(x => x.Date);
 
             // invoice click
             if (!string.IsNullOrEmpty(id))
@@ -64,24 +64,29 @@ namespace SaleDoanInbound.Controllers
             return View(InvoiceVM);
         }
 
-        public IActionResult Create(long tourId, /*string tabActive,*/ string strUrl)
+        public async Task<IActionResult> Create(long tourId, /*string tabActive,*/ string strUrl)
         {
             InvoiceVM.StrUrl = strUrl;// + "&tabActive=" + tabActive; // for redirect tab
 
             InvoiceVM.Tour = _unitOfWork.tourRepository.GetById(tourId);
             InvoiceVM.Invoice.Arr = InvoiceVM.Tour.NgayDen;
             InvoiceVM.Invoice.Dep = InvoiceVM.Tour.NgayDi;
-            InvoiceVM.Invoice.Pax = InvoiceVM.Tour.SoKhachTT;
+            InvoiceVM.Invoice.Pax = (InvoiceVM.Tour.SoKhachTT == 0)? InvoiceVM.Tour.SoKhachDK: InvoiceVM.Tour.SoKhachTT;
+            InvoiceVM.Invoice.HopDong = InvoiceVM.Tour.SoHopDong;
+            InvoiceVM.Invoice.MaKH = InvoiceVM.Tour.MaKH;
+            InvoiceVM.Invoice.TenKhach = InvoiceVM.Tour.TenKH;
+            InvoiceVM.Invoice.Ref = "";
             InvoiceVM.Invoice.TourId = InvoiceVM.Tour.Id;
 
             InvoiceVM.LoaiIVs = _unitOfWork.loaiIVRepository.GetAll();
+            InvoiceVM.Invoices = await _unitOfWork.invoiceRepository.FindAsync(x => x.TourId == tourId);
 
             return View(InvoiceVM);
         }
 
         [HttpPost, ActionName("Create")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreatePost(string strUrl)
+        public async Task<IActionResult> CreatePost(long tourId, string strUrl)
         {
             // from login session
             var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
@@ -102,7 +107,8 @@ namespace SaleDoanInbound.Controllers
             var invoice = _unitOfWork.invoiceRepository.GetAll().OrderByDescending(x => x.Id).FirstOrDefault();
             if (invoice == null)
             {
-                InvoiceVM.Invoice.Id = GetNextId.NextID("", currentYear.ToString());
+                var id = GetNextId.NextID("", "");
+                InvoiceVM.Invoice.Id = id + currentYear.ToString();
             }
             else
             {
@@ -110,12 +116,14 @@ namespace SaleDoanInbound.Controllers
                 // cung nam
                 if (oldYear == currentYear.ToString())
                 {
-                    InvoiceVM.Invoice.Id = GetNextId.NextID(invoice.Id, currentYear.ToString());
+                    var id = GetNextId.NextID(invoice.Id, "");
+                    InvoiceVM.Invoice.Id = id + currentYear.ToString();
                 }
                 else
                 {
                     // sang nam khac' chay lai tu dau
-                    InvoiceVM.Invoice.Id = GetNextId.NextID("", currentYear.ToString());
+                    var id = GetNextId.NextID("", "");
+                    InvoiceVM.Invoice.Id = id + currentYear.ToString();
                 }
 
             }
@@ -134,6 +142,24 @@ namespace SaleDoanInbound.Controllers
             catch (Exception ex)
             {
                 SetAlert(ex.Message, "error");
+                ModelState.AddModelError("", ex.Message);
+                ////
+                InvoiceVM.StrUrl = strUrl;// + "&tabActive=" + tabActive; // for redirect tab
+
+                InvoiceVM.Tour = _unitOfWork.tourRepository.GetById(tourId);
+                InvoiceVM.Invoice.Arr = InvoiceVM.Tour.NgayDen;
+                InvoiceVM.Invoice.Dep = InvoiceVM.Tour.NgayDi;
+                InvoiceVM.Invoice.Pax = (InvoiceVM.Tour.SoKhachTT == 0) ? InvoiceVM.Tour.SoKhachDK : InvoiceVM.Tour.SoKhachTT;
+                InvoiceVM.Invoice.HopDong = InvoiceVM.Tour.SoHopDong;
+                InvoiceVM.Invoice.MaKH = InvoiceVM.Tour.MaKH;
+                InvoiceVM.Invoice.TenKhach = InvoiceVM.Tour.TenKH;
+                InvoiceVM.Invoice.Ref = "";
+                InvoiceVM.Invoice.TourId = InvoiceVM.Tour.Id;
+
+                InvoiceVM.LoaiIVs = _unitOfWork.loaiIVRepository.GetAll();
+                InvoiceVM.Invoices = await _unitOfWork.invoiceRepository.FindAsync(x => x.TourId == tourId);
+                ////
+
                 return View(InvoiceVM);
             }
 
@@ -153,6 +179,7 @@ namespace SaleDoanInbound.Controllers
 
             //}
             InvoiceVM.Tour = _unitOfWork.tourRepository.GetById(tourId);
+            InvoiceVM.Invoices = await _unitOfWork.invoiceRepository.FindAsync(x => x.TourId == tourId);
 
             if (string.IsNullOrEmpty(id))
                 return NotFound();
@@ -346,6 +373,85 @@ namespace SaleDoanInbound.Controllers
             }
         }
 
+
+        //-----------HuyInvoice------------
+        public async Task<IActionResult> HuyInvoicePartial(string id, string strUrl)
+        {
+            if (string.IsNullOrEmpty(id))
+                return NotFound();
+
+            InvoiceVM.StrUrl = strUrl;
+            InvoiceVM.Invoice = await _unitOfWork.invoiceRepository.GetByIdAsync(id);
+            InvoiceVM.CacNoiDungHuyTours = await _unitOfWork.cacNoiDungHuyTourRepository.FindAsync(x => x.Xoa == false);
+
+            return PartialView(InvoiceVM);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> HuyInvoice()
+        {
+            // from login session
+            var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
+
+            string temp = "", log;
+
+            // BN
+            var invoice = await _unitOfWork.invoiceRepository.GetByIdAsync(InvoiceVM.Invoice.Id);
+            if (InvoiceVM.Invoice.NgayHuy.HasValue)
+            {
+                invoice.NgayHuy = InvoiceVM.Invoice.NgayHuy;
+            }
+            else
+            {
+                invoice.NgayHuy = DateTime.Now;
+            }
+            invoice.NDHuyBNId = InvoiceVM.Invoice.NDHuyBNId;
+            invoice.HuyInvoice = true;
+
+            // kiem tra thay doi
+
+            if (InvoiceVM.Invoice.NDHuyBNId > 0)
+            {
+                var cacNoiDungHuyTour = _unitOfWork.cacNoiDungHuyTourRepository.GetById(InvoiceVM.Invoice.NDHuyBNId);
+                temp += String.Format("- Nội dung huy: {0}", cacNoiDungHuyTour.NoiDung);
+            }
+
+            //if (!string.IsNullOrEmpty(BienNhanVM.BienNhan.GhiChu))
+            //{
+            //    temp += String.Format("- Ghi chú: {0}", BienNhanVM.BienNhan.GhiChu);
+            //}
+
+            if (InvoiceVM.Invoice.NgayHuy.HasValue)
+            {
+                temp += String.Format("- Ngày hủy: {0:dd/MM/yyyy} - Người hủy: {1}", InvoiceVM.Invoice.NgayHuy, user.Username); // username
+            }
+
+            if (temp.Length > 0)
+            {
+
+                log = System.Environment.NewLine;
+                log += "=============";
+                log += System.Environment.NewLine;
+                log += temp;
+                invoice.LogFile = invoice.LogFile + log;
+            }
+
+            try
+            {
+                _unitOfWork.invoiceRepository.Update(invoice);
+                await _unitOfWork.Complete();
+                SetAlert("Hủy thành công.", "success");
+                return Redirect(InvoiceVM.StrUrl);
+            }
+            catch (Exception ex)
+            {
+                SetAlert("Error: " + ex.Message, "error");
+                ModelState.AddModelError("", ex.Message);
+                return Redirect(InvoiceVM.StrUrl);
+
+            }
+        }
+        //-----------HuyInvoice------------
 
         //public JsonResult IsStringNameAvailable(string TenCreate)
         //{

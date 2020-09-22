@@ -16,6 +16,7 @@ namespace SaleDoanInbound.Models
         public CTVAT CTInvoice { get; set; }
         public IEnumerable<CTVAT> CTInvoices { get; set; }
         public IEnumerable<LoaiIV> LoaiIVs { get; set; }
+        public IEnumerable<CacNoiDungHuyTour> CacNoiDungHuyTours { get; set; }
         public IEnumerable<Ngoaite> Ngoaites { get; set; } // qltour
         public Invoice Invoice { get; set; }
         public TourIB TourIB { get; set; }
