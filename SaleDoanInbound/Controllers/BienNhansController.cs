@@ -28,7 +28,7 @@ namespace SaleDoanInbound.Controllers
                 CacNoiDungHuyTours = _unitOfWork.cacNoiDungHuyTourRepository.GetAll()
             };
         }
-        public async Task<IActionResult> Index(long tourId, string id = null, string searchString = null, string searchFromDate = null, string searchToDate = null)
+        public async Task<IActionResult> Index(long tourId, long id = 0, string searchString = null, string searchFromDate = null, string searchToDate = null)
         {
             BienNhanVM.StrUrl = UriHelper.GetDisplayUrl(Request);
             BienNhanVM.Tour = _unitOfWork.tourRepository.GetById(tourId);
@@ -52,9 +52,9 @@ namespace SaleDoanInbound.Controllers
             BienNhanVM.BienNhans = _unitOfWork.bienNhanRepository.ListBienNhan(searchString, tourId, searchFromDate, searchToDate);
 
             // click BienNhan row
-            if (!string.IsNullOrEmpty(id))
+            if (id != 0)
             {
-                BienNhanVM.BienNhan = await _unitOfWork.bienNhanRepository.GetByIdAsync(id);
+                BienNhanVM.BienNhan = _unitOfWork.bienNhanRepository.GetById(id);
                 BienNhanVM.ChiTietBNs = await _unitOfWork.chiTietBNRepository.FindAsync(x => x.BienNhanId == id);
             }
             return View(BienNhanVM);
@@ -87,28 +87,29 @@ namespace SaleDoanInbound.Controllers
             BienNhanVM.BienNhan.NgayBN = DateTime.Now;
             BienNhanVM.BienNhan.NgayTao = DateTime.Now;
             BienNhanVM.BienNhan.NguoiTao = user.Username;
-
-            // next id (so bien nhan)
+            BienNhanVM.BienNhan.DienThoai = BienNhanVM.BienNhan.DienThoai ?? "";
+            
+            // next SoBN (so bien nhan)
             var currentYear = DateTime.Now.Year;
             var subfix = "IB" + currentYear.ToString();
             var bienNhan = _unitOfWork.bienNhanRepository.GetAll().OrderByDescending(x => x.Id).FirstOrDefault();
             if (bienNhan == null)
             {
-                BienNhanVM.BienNhan.Id = GetNextId.NextID("", "") + subfix;
+                BienNhanVM.BienNhan.SoBN = GetNextId.NextID("", "") + subfix;
             }
             else
             {
-                var oldYear = bienNhan.Id.Substring(8, 4);
+                var oldYear = bienNhan.SoBN.Substring(8, 4);
                 // cung nam
                 if (oldYear == currentYear.ToString())
                 {
-                    var oldId = bienNhan.Id.Substring(0, 6);
-                    BienNhanVM.BienNhan.Id = GetNextId.NextID(oldId, "") + subfix;
+                    var oldSoBN = bienNhan.SoBN.Substring(0, 6);
+                    BienNhanVM.BienNhan.SoBN = GetNextId.NextID(oldSoBN, "") + subfix;
                 }
                 else
                 {
                     // sang nam khac' chay lai tu dau
-                    BienNhanVM.BienNhan.Id = GetNextId.NextID("", "") + subfix;
+                    BienNhanVM.BienNhan.SoBN = GetNextId.NextID("", "") + subfix;
                 }
 
             }
@@ -152,7 +153,7 @@ namespace SaleDoanInbound.Controllers
 
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditPost(string id/*, string strUrl*/)
+        public async Task<IActionResult> EditPost(long id/*, string strUrl*/)
         {
             // from login session
             var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
@@ -285,13 +286,13 @@ namespace SaleDoanInbound.Controllers
 
 
         //-----------HuyBN------------
-        public async Task<IActionResult> HuyBNPartial(string id, string strUrl)
+        public async Task<IActionResult> HuyBNPartial(long id, string strUrl)
         {
-            if (string.IsNullOrEmpty(id))
+            if (id == 0)
                 return NotFound();
 
             BienNhanVM.StrUrl = strUrl;
-            BienNhanVM.BienNhan = await _unitOfWork.bienNhanRepository.GetByIdAsync(id);
+            BienNhanVM.BienNhan = _unitOfWork.bienNhanRepository.GetById(id);
             BienNhanVM.CacNoiDungHuyTours = await _unitOfWork.cacNoiDungHuyTourRepository.FindAsync(x => x.Xoa == false);
 
             return PartialView(BienNhanVM);
@@ -306,7 +307,7 @@ namespace SaleDoanInbound.Controllers
             string temp = "", log;
 
             // BN
-            var bienNhan = await _unitOfWork.bienNhanRepository.GetByIdAsync(BienNhanVM.BienNhan.Id);
+            var bienNhan = _unitOfWork.bienNhanRepository.GetById(BienNhanVM.BienNhan.Id);
             if (BienNhanVM.BienNhan.NgayHuy.HasValue)
             {
                 bienNhan.NgayHuy = BienNhanVM.BienNhan.NgayHuy;

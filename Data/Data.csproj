@@ -39,6 +39,8 @@
     <Compile Remove="Migrations\20200922014938_fixTourLog.Designer.cs" />
     <Compile Remove="Migrations\20200922015103_fixTourLog.cs" />
     <Compile Remove="Migrations\20200922015103_fixTourLog.Designer.cs" />
+    <Compile Remove="Migrations\20200923085309_fixBNId.cs" />
+    <Compile Remove="Migrations\20200923085309_fixBNId.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

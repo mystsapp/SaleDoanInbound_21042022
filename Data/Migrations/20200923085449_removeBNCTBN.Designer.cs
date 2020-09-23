@@ -4,107 +4,22 @@ using Data.Models_IB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
     [DbContext(typeof(SaleDoanIBDbContext))]
-    partial class SaleDoanIBDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200923085449_removeBNCTBN")]
+    partial class removeBNCTBN
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("Data.Models_IB.BienNhan", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("DiaChi")
-                        .HasColumnType("nvarchar(150)")
-                        .HasMaxLength(150);
-
-                    b.Property<string>("DienThoai")
-                        .HasColumnType("varchar(20)")
-                        .HasMaxLength(20);
-
-                    b.Property<string>("GhiChu")
-                        .HasColumnType("nvarchar(150)")
-                        .HasMaxLength(150);
-
-                    b.Property<bool?>("HuyBN")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("KhachLe")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LoaiTien")
-                        .IsRequired()
-                        .HasColumnType("varchar(3)")
-                        .HasMaxLength(3);
-
-                    b.Property<string>("LogFile")
-                        .HasColumnType("nvarchar(MAX)");
-
-                    b.Property<long>("NDHuyBNId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("NgayBN")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("NgayHuy")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("NgaySua")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("NgayTao")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("NguoiSua")
-                        .HasColumnType("varchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("NguoiTao")
-                        .HasColumnType("varchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("NoiDung")
-                        .HasColumnType("nvarchar(300)")
-                        .HasMaxLength(300);
-
-                    b.Property<int>("SK")
-                        .HasColumnType("int");
-
-                    b.Property<string>("SoBN")
-                        .HasColumnType("varchar(12)")
-                        .HasMaxLength(12);
-
-                    b.Property<decimal>("SoTien")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("TenKhach")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<long>("TourId")
-                        .HasColumnType("bigint");
-
-                    b.Property<decimal>("TyGia")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TourId");
-
-                    b.ToTable("BienNhans");
-                });
 
             modelBuilder.Entity("Data.Models_IB.CTVAT", b =>
                 {
@@ -286,58 +201,6 @@ namespace Data.Migrations
                     b.HasIndex("IdPhanKhuCN");
 
                     b.ToTable("ChiNhanh");
-                });
-
-            modelBuilder.Entity("Data.Models_IB.ChiTietBN", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<long>("BienNhanId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Descript")
-                        .HasColumnType("nvarchar(250)")
-                        .HasMaxLength(250);
-
-                    b.Property<string>("GhiChu")
-                        .HasColumnType("nvarchar(150)")
-                        .HasMaxLength(150);
-
-                    b.Property<string>("HTTT")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("LogFile")
-                        .HasColumnType("nvarchar(MAX)");
-
-                    b.Property<DateTime>("NgaySua")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("NgayTao")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("NguoiSua")
-                        .HasColumnType("varchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("NguoiTao")
-                        .HasColumnType("varchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<decimal>("SoTienCT")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BienNhanId");
-
-                    b.ToTable("ChiTietBNs");
                 });
 
             modelBuilder.Entity("Data.Models_IB.DMDaiLy", b =>
@@ -2015,15 +1878,6 @@ namespace Data.Migrations
                     b.ToTable("VeMayBays");
                 });
 
-            modelBuilder.Entity("Data.Models_IB.BienNhan", b =>
-                {
-                    b.HasOne("Data.Models_IB.Tour", "Tour")
-                        .WithMany()
-                        .HasForeignKey("TourId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Data.Models_IB.CTVAT", b =>
                 {
                     b.HasOne("Data.Models_IB.Invoice", "Invoice")
@@ -2036,15 +1890,6 @@ namespace Data.Migrations
                     b.HasOne("Data.Models_IB.PhanKhuCN", "PhanKhuCN")
                         .WithMany()
                         .HasForeignKey("IdPhanKhuCN")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Data.Models_IB.ChiTietBN", b =>
-                {
-                    b.HasOne("Data.Models_IB.BienNhan", "BienNhan")
-                        .WithMany()
-                        .HasForeignKey("BienNhanId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

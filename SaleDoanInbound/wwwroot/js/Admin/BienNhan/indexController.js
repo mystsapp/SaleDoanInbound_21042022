@@ -37,7 +37,7 @@
 
         $('#btnNewCTBienNhan').off('click').on('click', function (e) {
             bienNhanId = $(this).data('id');
-            if (bienNhanId === '') {
+            if (bienNhanId === 0) {
                 e.preventDefault();
                 bootbox.alert({
                     title: "Information",

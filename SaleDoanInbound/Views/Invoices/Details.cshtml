@@ -146,8 +146,17 @@
 
                     <div class="form-group row">
                         <div class="form-group">
-                            <a class="btn btn-primary" title="Cập nhật" asp-action="Edit" asp-route-id="@Model.Invoice.Id" asp-route-tourId="@Model.Tour.Id" asp-route-tabActive="custom-tabs-four-invoice" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
+                            @if (Model.Invoice.HuyInvoice == true)
+                            {
+                                <button disabled class="btn btn-primary" title="Cập nhật"><i class="fas fa-edit"></i></button>
+                            }
+                            else
+                            {
+                                <a class="btn btn-primary" title="Cập nhật" asp-action="Edit" asp-route-id="@Model.Invoice.Id" asp-route-tourId="@Model.Tour.Id" asp-route-tabActive="custom-tabs-four-invoice" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
+                            }
                             <a class="btn btn-success" asp-controller="KhachHangs" asp-route-strUrl="@Model.StrUrl" asp-action="DetailsRedirect"><i class="fas fa-backward"></i></a>
+                            <a class="btn btn-outline-primary" title="Danh sách nguyên nhân" asp-controller="CacNoiDungHuyTours" asp-action="Index"><i class="fas fa-list"></i></a>
+
                         </div>
                     </div>
                 </div>

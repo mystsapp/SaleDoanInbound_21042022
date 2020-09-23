@@ -109,40 +109,8 @@
                 <table class="table mytable text-nowrap tblEMD" id="listAll">
                     <thead>
                         <tr class="table-info">
-                            <th>
-                                <div class="btn-group">
-                                    <a asp-action="Create" asp-controller="BienNhans" asp-route-tourId="@Model.Tour.Id" asp-route-strUrl="@Model.StrUrl" asp-route-tabActive="custom-tabs-four-biennhan" class="btn btn-default btn-sm text-bold" title="Thêm 1 biên nhận">New</a>
-                                    <button type="button" class="btn btn-default btn-sm text-bold" data-toggle="modal" data-target="#modal-default">Find</button>
-                                    <!-- Bien Nhan Find-->
-                                    <div class="modal fade" id="modal-default" style="display: none;" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <form asp-action="ChiTietBNFind" asp-controller="ChiTietBNs" asp-route-strUrl="@Model.StrUrl" asp-route-tabActive="custom-tabs-four-biennhan" method="get">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h4 class="modal-title">Default Modal</h4>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">×</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <div class="form-group">
-                                                            <input name="chiTietBNSearchString" class="form-control" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer justify-content-between">
-                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i></button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                            <!-- /.modal-content -->
-                                        </div>
-                                        <!-- /.modal-dialog -->
-                                    </div>
-                                    <!-- Bien Nhan Find-->
-                                </div>
-                            </th>
-                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().Id)</th> <!-- so bien nhan-->
+                            <th>#</th>
+                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().SoBN)</th> <!-- so bien nhan-->
                             <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().NgayBN)</th>
                             <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().TenKhach)</th>
                             <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().DienThoai)</th>
@@ -198,7 +166,7 @@
                                     </div>
                                 </td>
 
-                                <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Id)</td>
+                                <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.SoBN)</td>
                                 <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayBN.ToString("dd/MM/yyyy"))</td>
                                 <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.TenKhach)</td>
                                 <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.DienThoai)</td>
@@ -231,9 +199,9 @@
     <!-- Default box -->
     <div class="card">
         <div class="card-header">
-            @if (Model.BienNhan.Id != null)
+            @if (Model.BienNhan.SoBN != null)
             {
-                <h3 class="card-title">Danh sách chi tiết biên nhận - <b>@Model.BienNhan.Id</b></h3>
+                <h3 class="card-title">Danh sách chi tiết biên nhận - <b>@Model.BienNhan.SoBN</b></h3>
             }
             else
             {

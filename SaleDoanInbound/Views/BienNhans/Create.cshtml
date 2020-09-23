@@ -87,7 +87,7 @@
                         <div class="col-md-3">
                             <label asp-for="BienNhan.LoaiTien" class="control-label"></label>
                             <select asp-for="BienNhan.LoaiTien" class="form-control " id="ddlLoaiTien"
-                                    asp-items="@(new SelectList(Model.Ngoaites, "MaNt", "TenNt"))">
+                                    asp-items="@(new SelectList(Model.Ngoaites, "MaNt", "MaNt"))">
                                 <!-- ngoaite: qltour-->
                             </select>
                             <span asp-validation-for="BienNhan.LoaiTien" class="text-danger"></span>

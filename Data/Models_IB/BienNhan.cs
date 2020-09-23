@@ -7,9 +7,10 @@ namespace Data.Models_IB
 {
     public class BienNhan
     {
+        public long Id { get; set; }
         [DisplayName("Số biên nhận")]
         [MaxLength(12, ErrorMessage = "Chiều dài tối đa 12 ký tự"), Column(TypeName = "varchar(12)")]
-        public string Id { get; set; } // biennhan in Mr.Son db
+        public string SoBN { get; set; } // biennhan in Mr.Son db
 
         [DisplayName("Tour")]
         [Required(ErrorMessage = "Trường này không được để trống")]

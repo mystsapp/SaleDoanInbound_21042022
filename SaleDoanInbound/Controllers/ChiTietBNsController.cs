@@ -25,17 +25,17 @@ namespace SaleDoanInbound.Controllers
             };
         }
 
-        public async Task<IActionResult> Create(string bienNhanId, string strUrl)
+        public IActionResult Create(long bienNhanId, string strUrl)
         {
             ChiTietBNVM.StrUrl = strUrl;
-            ChiTietBNVM.BienNhan = await _unitOfWork.bienNhanRepository.GetByIdAsync(bienNhanId);
+            ChiTietBNVM.BienNhan = _unitOfWork.bienNhanRepository.GetById(bienNhanId);
             ChiTietBNVM.ChiTietBN.BienNhanId = ChiTietBNVM.BienNhan.Id;
             return View(ChiTietBNVM);
         }
 
         [HttpPost, ActionName("Create")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreatePost(string bienNhanId, string strUrl)
+        public async Task<IActionResult> CreatePost(long bienNhanId, string strUrl)
         {
             // from login session
             var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
@@ -45,7 +45,7 @@ namespace SaleDoanInbound.Controllers
             if (!ModelState.IsValid)
             {
                 ChiTietBNVM.StrUrl = strUrl;
-                ChiTietBNVM.BienNhan = await _unitOfWork.bienNhanRepository.GetByIdAsync(bienNhanId);
+                ChiTietBNVM.BienNhan = _unitOfWork.bienNhanRepository.GetById(bienNhanId);
                 ChiTietBNVM.ChiTietBN.BienNhanId = ChiTietBNVM.BienNhan.Id;
                 return View(ChiTietBNVM);
             }
@@ -61,7 +61,7 @@ namespace SaleDoanInbound.Controllers
             // ghi log
             ChiTietBNVM.ChiTietBN.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
             // sotien --> BN
-            var bienNhan = await _unitOfWork.bienNhanRepository.GetByIdAsync(bienNhanId);
+            var bienNhan = _unitOfWork.bienNhanRepository.GetById(bienNhanId);
             var st = bienNhan.SoTien + ChiTietBNVM.ChiTietBN.Amount;
 
             if (bienNhan.SoTien != st)
@@ -96,17 +96,17 @@ namespace SaleDoanInbound.Controllers
             {
                 SetAlert(ex.Message, "error");
                 ChiTietBNVM.StrUrl = strUrl;
-                ChiTietBNVM.BienNhan = await _unitOfWork.bienNhanRepository.GetByIdAsync(bienNhanId);
+                ChiTietBNVM.BienNhan = _unitOfWork.bienNhanRepository.GetById(bienNhanId);
                 ChiTietBNVM.ChiTietBN.BienNhanId = ChiTietBNVM.BienNhan.Id;
                 return View(ChiTietBNVM);
             }
 
         }
 
-        public async Task<IActionResult> Edit(long id, string bienNhanId/*, string tabActive*/, string strUrl)
+        public IActionResult Edit(long id, long bienNhanId/*, string tabActive*/, string strUrl)
         {
             ChiTietBNVM.StrUrl = strUrl;// + "&tabActive=" + tabActive; // for redirect tab
-            ChiTietBNVM.BienNhan = await _unitOfWork.bienNhanRepository.GetByIdAsync(bienNhanId);
+            ChiTietBNVM.BienNhan = _unitOfWork.bienNhanRepository.GetById(bienNhanId);
             ChiTietBNVM.ChiTietBN.BienNhanId = bienNhanId;
 
             if (id == 0)
@@ -122,7 +122,7 @@ namespace SaleDoanInbound.Controllers
 
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditPost(long id, string bienNhanId, string strUrl)
+        public async Task<IActionResult> EditPost(long id, long bienNhanId, string strUrl)
         {
             // from login session
             var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
@@ -174,14 +174,14 @@ namespace SaleDoanInbound.Controllers
                 {
                     SetAlert(ex.Message, "error");
                     ChiTietBNVM.StrUrl = strUrl;// + "&tabActive=" + tabActive; // for redirect tab
-                    ChiTietBNVM.BienNhan = await _unitOfWork.bienNhanRepository.GetByIdAsync(bienNhanId);
+                    ChiTietBNVM.BienNhan = _unitOfWork.bienNhanRepository.GetById(bienNhanId);
                     ChiTietBNVM.ChiTietBN.BienNhanId = bienNhanId;
                     return View(ChiTietBNVM);
                 }
             }
             // for not valid
             ChiTietBNVM.StrUrl = strUrl;// + "&tabActive=" + tabActive; // for redirect tab
-            ChiTietBNVM.BienNhan = await _unitOfWork.bienNhanRepository.GetByIdAsync(bienNhanId);
+            ChiTietBNVM.BienNhan = _unitOfWork.bienNhanRepository.GetById(bienNhanId);
             ChiTietBNVM.ChiTietBN.BienNhanId = bienNhanId;
             return View(ChiTietBNVM);
         }

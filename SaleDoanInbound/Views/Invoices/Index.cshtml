@@ -394,11 +394,18 @@
                             <th>
                                 @if (Model.Invoice.HuyInvoice == true)
                                 {
-                                    <a class="btn btn-default btn-sm text-bold disabled" title="Thêm CT biên nhận">New</a>
+                                    <a class="btn btn-default btn-sm text-bold disabled" title="Thêm CT invoice">New</a>
+                                    <a class="btn btn-default btn-sm text-bold disabled" title="Copy CT invoice">Copy</a>
                                 }
                                 else
                                 {
-                                    <a asp-action="CreateCTVAT" data-id="@Model.Invoice.Id" id="btnNewCTVAT" asp-controller="CTVATs" asp-route-invoiceId="@Model.Invoice.Id" asp-route-strUrl="@Model.StrUrl" class="btn btn-outline-info btn-sm text-bold" title="Thêm CTVAT"><i class="fas fa-plus"></i></a>
+
+                                    <a class="btn btn-default btn-sm text-bold " asp-action="CreateCTVAT" data-id="@Model.Invoice.Id" id="btnNewCTVAT" asp-controller="CTVATs" asp-route-invoiceId="@Model.Invoice.Id" asp-route-strUrl="@Model.StrUrl" title="Thêm CTVAT">New</a>
+                                    <button class="btn btn-default btn-sm text-bold " data-id="@Model.Invoice.Id" id="btnCopyCTVAT" title="Copy CTVAT">Copy</button>
+
+                                    <form id="frmCopyCTVAT" asp-action="CopyCTInvoice_DS_To_CTVAT" asp-controller="CTVATs" method="post" asp-route-invoiceId="@Model.Invoice.Id" asp-route-strUrl="@Model.StrUrl">
+                                    </form>
+
                                 }
 
                             </th>

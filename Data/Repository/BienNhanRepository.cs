@@ -32,6 +32,7 @@ namespace Data.Repository
                     GhiChu = item.GhiChu,
                     HuyBN = item.HuyBN,
                     Id = item.Id,
+                    SoBN = item.SoBN,
                     KhachLe = item.KhachLe,
                     LoaiTien = item.LoaiTien,
                     LogFile = item.LogFile,
@@ -54,8 +55,9 @@ namespace Data.Repository
             }
             if (!string.IsNullOrEmpty(searchString))
             {
-                list = list.Where(x => x.Id.ToLower().Contains(searchString.ToLower()) ||
+                list = list.Where(x => x.SoBN.ToLower().Contains(searchString.ToLower()) ||
                                        x.TenKhach.ToLower().Contains(searchString.ToLower()) ||
+                                       x.DienThoai.ToLower().Contains(searchString.ToLower()) ||
                                        x.Sgtcode.ToLower().Contains(searchString.ToLower())).ToList();
             }
 

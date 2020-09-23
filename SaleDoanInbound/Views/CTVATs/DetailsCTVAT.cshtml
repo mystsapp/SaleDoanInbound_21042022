@@ -111,7 +111,16 @@
 
                     <div class="form-group row">
                         <div class="form-group">
-                            <a class="btn btn-primary" title="Cập nhật" asp-action="EditCTVAT" asp-route-invoiceId="@Model.Invoice.Id" asp-route-id="@Model.CTVAT.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
+                            @if (Model.Invoice.HuyInvoice == true)
+                            {
+                                <a class="btn btn-primary disabled" title="Cập nhật" ><i class="fas fa-edit"></i></a>
+
+                            }
+                            else
+                            {
+                                <a class="btn btn-primary" title="Cập nhật" asp-action="EditCTVAT" asp-route-invoiceId="@Model.Invoice.Id" asp-route-id="@Model.CTVAT.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
+
+                            }
                             <a class="btn btn-success" asp-controller="KhachHangs" asp-route-strUrl="@Model.StrUrl" asp-action="DetailsRedirect"><i class="fas fa-backward"></i></a>
                         </div>
                     </div>

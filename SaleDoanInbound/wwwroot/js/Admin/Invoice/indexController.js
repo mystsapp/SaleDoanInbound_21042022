@@ -57,6 +57,20 @@
                 });
             }
         });
+        $('#btnCopyCTVAT').off('click').on('click', function (e) {
+            invoiceId = $(this).data('id');
+            if (invoiceId === '') {
+                e.preventDefault();
+                bootbox.alert({
+                    title: "Information",
+                    size: "small",
+                    message: "Bạn chưa chọn invoice nào!"
+                });
+            }
+            else {
+                $('#frmCopyCTVAT').submit();
+            }
+        });
 
 
         $('.btnHuyInvoice').off('click').on('click', function () {

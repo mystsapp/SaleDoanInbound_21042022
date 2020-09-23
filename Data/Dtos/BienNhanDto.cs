@@ -8,8 +8,10 @@ namespace Data.Dtos
 {
     public class BienNhanDto
     {
+        public long Id { get; set; }
+
         [DisplayName("Số biên nhận")]
-        public string Id { get; set; } // biennhan in Mr.Son db
+        public string SoBN { get; set; } // biennhan in Mr.Son db
 
         [DisplayName("Tour")]
         public long TourId { get; set; }// relation --> foreignkey to tourIB
