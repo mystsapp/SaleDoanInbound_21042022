@@ -61,10 +61,10 @@ namespace Data.Models_IB
         public string TenKhoanMuc { get; set; }
 
         [DisplayName("DS")]
-        public bool? DS { get; set; }
+        public bool DS { get; set; }
 
         [DisplayName("DLHH")]
-        public bool? DLHH { get; set; }
+        public bool DLHH { get; set; }
 
 
         [DisplayName("Ngày tạo")]

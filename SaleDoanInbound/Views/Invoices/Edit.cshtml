@@ -57,7 +57,7 @@
 
                     <div class="form-group row">
 
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <label asp-for="Invoice.Replace" class="control-label"></label>
                             <select asp-for="Invoice.Replace" class="form-control"
                                     asp-items="@(new SelectList(Model.Invoices, "Id", "Id"))">
@@ -89,13 +89,62 @@
 
                     <div class="form-group row">
 
-                        <div class="col-md-6">
+                        <div class="col-md-3">
+                            <label asp-for="Invoice.Arr" class="control-label"></label>
+                            <input type="text" asp-for="Invoice.Arr" class="form-control maskInput" />
+                            <span asp-validation-for="Invoice.Arr" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label asp-for="Invoice.Dep" class="control-label"></label>
+                            <input type="text" asp-for="Invoice.Dep" class="form-control maskInput" />
+                            <span asp-validation-for="Invoice.Dep" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label asp-for="Invoice.Pax" class="control-label"></label>
+                            <input type="text" asp-for="Invoice.Pax" class="form-control numbers" />
+                            <span asp-validation-for="Invoice.Pax" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-2 ">
+                            <label asp-for="Invoice.Currency" class="control-label"></label>
+                            <select asp-for="Invoice.Currency" class="form-control " id="ddlLoaiTien"
+                                    asp-items="@(new SelectList(Model.Ngoaites, "MaNt", "TenNt"))">
+                                <!-- ngoaite: qltour-->
+                            </select>
+                            <span asp-validation-for="Invoice.Currency" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label asp-for="Invoice.Rate" class="control-label"></label>
+                            <input asp-for="Invoice.Rate" class="form-control numbers" id="txtTyGia" />
+                            <span asp-validation-for="Invoice.Rate" class="text-danger"></span>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-md-3">
+                            <label asp-for="Invoice.MOFP" class="control-label"></label>
+                            <input asp-for="Invoice.MOFP" class="form-control " />
+                            <span asp-validation-for="Invoice.MOFP" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label asp-for="Invoice.DOFP" class="control-label"></label>
+                            <input type="text" value="" asp-for="Invoice.DOFP" class="form-control maskInput" />
+                            <span asp-validation-for="Invoice.DOFP" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-3">
                             <label asp-for="Invoice.Ref" class="control-label"></label>
                             <input asp-for="Invoice.Ref" class="form-control " />
                             <span asp-validation-for="Invoice.Ref" class="text-danger"></span>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <label asp-for="Invoice.HopDong" class="control-label"></label>
                             <input asp-for="Invoice.HopDong" class="form-control " />
                             <span asp-validation-for="Invoice.HopDong" class="text-danger"></span>

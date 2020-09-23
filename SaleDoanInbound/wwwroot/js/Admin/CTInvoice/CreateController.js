@@ -20,7 +20,13 @@ var createController = {
                 return addCommas(value);
             });
         });
+        $('#ckDS').change(function () {
+            $('#ckDLHH').prop('checked', false);
+        });
 
+        $('#ckDLHH').change(function () {
+            $('#ckDS').prop('checked', false);
+        });
     }
     
 };

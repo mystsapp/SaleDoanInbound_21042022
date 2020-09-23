@@ -76,6 +76,7 @@ namespace SaleDoanInbound.Controllers
             InvoiceVM.Invoice.MaKH = InvoiceVM.Tour.MaKH;
             InvoiceVM.Invoice.TenKhach = InvoiceVM.Tour.TenKH;
             InvoiceVM.Invoice.Ref = "";
+            InvoiceVM.Invoice.MOFP = "TM/CK";
             InvoiceVM.Invoice.TourId = InvoiceVM.Tour.Id;
 
             InvoiceVM.LoaiIVs = _unitOfWork.loaiIVRepository.GetAll();
@@ -112,12 +113,12 @@ namespace SaleDoanInbound.Controllers
             }
             else
             {
-                var oldYear = invoice.Id.Substring(0, 4);
+                var oldYear = invoice.Id.Substring(6, 4);
                 // cung nam
                 if (oldYear == currentYear.ToString())
                 {
-                    var id = GetNextId.NextID(invoice.Id, "");
-                    InvoiceVM.Invoice.Id = id + currentYear.ToString();
+                    var oldId = invoice.Id.Substring(0, 6);                        
+                    InvoiceVM.Invoice.Id = GetNextId.NextID(oldId, "") + currentYear.ToString();
                 }
                 else
                 {
@@ -210,6 +211,7 @@ namespace SaleDoanInbound.Controllers
             {
                 InvoiceVM.Invoice.NgaySua = DateTime.Now;
                 InvoiceVM.Invoice.NguoiSua = user.Username;
+
                 if (string.IsNullOrEmpty(InvoiceVM.Invoice.Replace))
                 {
                     InvoiceVM.Invoice.Replace = "";
