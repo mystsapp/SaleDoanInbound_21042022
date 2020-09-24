@@ -1,21 +1,29 @@
 ﻿using Data.Dtos;
 using Data.Interfaces;
 using Data.Models_IB;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Data.Repository
 {
     public interface IBienNhanRepository : IRepository<BienNhan>
     {
         IEnumerable<BienNhanDto> ListBienNhan(string searchString, long tourId, string searchFromDate, string searchToDate);
+        Task<BienNhan> GetByIdIncludeOneAsync(long id);
     }
     public class BienNhanRepository : Repository<BienNhan>, IBienNhanRepository
     {
         public BienNhanRepository(SaleDoanIBDbContext context) : base(context)
         {
+        }
+
+        public async System.Threading.Tasks.Task<BienNhan> GetByIdIncludeOneAsync(long id)
+        {
+            return await _context.BienNhans.Include(x => x.Tour).FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public IEnumerable<BienNhanDto> ListBienNhan(string searchString, long tourId, string searchFromDate, string searchToDate)

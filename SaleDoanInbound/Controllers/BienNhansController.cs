@@ -374,7 +374,7 @@ namespace SaleDoanInbound.Controllers
                 return NotFound();
 
             BienNhanVM.StrUrl = strUrl;
-            BienNhanVM.BienNhan = _unitOfWork.bienNhanRepository.GetById(id);
+            BienNhanVM.BienNhan = await _unitOfWork.bienNhanRepository.GetByIdIncludeOneAsync(id);
             BienNhanVM.ChiTietBNs = await _unitOfWork.chiTietBNRepository.FindAsync(x => x.BienNhanId == id);
 
             return PartialView(BienNhanVM);

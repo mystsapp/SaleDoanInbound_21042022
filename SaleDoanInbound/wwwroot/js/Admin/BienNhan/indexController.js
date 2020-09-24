@@ -66,9 +66,9 @@
             $.get('/BienNhans/PrintBNPartial', { id: id, strUrl: strUrl }, function (response) {
 
                 console.log(response);
-                $('#huyBNModal').modal('show');
-                $('.huyBNPartial').html(response);
-                $('#huyBNModal').draggable();
+                $('#PrintBNPartial').modal('show');
+                $('.printBN').html(response);
+                //$('#huyBNModal').draggable();
             });
         });
 

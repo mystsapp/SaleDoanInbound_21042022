@@ -25,6 +25,28 @@
     <!-- /.modal-dialog -->
 </div>
 <!-- huy tour modal-->
+<!-- print BN modal-->
+<div class="modal fade" id="PrintBNPartial" aria-hidden="true" style="display: none;">
+
+    <div class="modal-dialog modal-xl">
+
+        <div class="modal-content ">
+            <div class="modal-header bg-secondary">
+                <h4 class="modal-title">Biên nhận</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body printBN" style="max-height: 400px !important; overflow-y:auto">
+
+            </div>
+
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- print BN modal-->
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <div class="container-fluid">
@@ -141,7 +163,7 @@
                                             <a class="text-primary btnEditBN" title="Cập nhật" asp-action="Edit" asp-controller="BienNhans" asp-route-id="@item.Id" asp-route-tourId="@Model.Tour.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
                                             <span class="text-dark"> | </span>
                                         }
-                                        <a data-id="@Model.BienNhan.Id" data-strUrl="@Model.StrUrl" class="text-cyan border-0 bg-transparent btnPrintBN" title="Print"><i class="fas fa-print"></i></a>
+                                        <a data-id="@item.Id" data-strUrl="@Model.StrUrl" class="text-warning border-0 bg-transparent btnPrintBN" title="Print"><i class="fas fa-print"></i></a>
                                         <span class="text-dark"> | </span>
                                         <a class="text-success" title="Chi tiết" asp-action="Details" asp-controller="BienNhans" asp-route-id="@item.Id" asp-route-tourId="@Model.Tour.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
                                         <span class="text-dark"> | </span>
@@ -402,8 +424,8 @@
             color: white;
         }
         /*.spanXoa:hover {
-            color: white;
-        }*/
+                color: white;
+            }*/
         .hoverClass {
             background-color: #3E5C9A;
         }
