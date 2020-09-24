@@ -47,14 +47,9 @@
 
                     <div class="form-group row">
 
-                        <div class="col-md-3">
-                            <label asp-for="BienNhan.Id" class="control-label"></label>
-                            <input asp-for="BienNhan.Id" class="form-control " readonly />
-                        </div>
-
-                        <div class="col-md-3">
-                            <label asp-for="BienNhan.Tour.Sgtcode" class="control-label"></label>
-                            <input asp-for="BienNhan.Tour.Sgtcode" class="form-control " readonly />
+                        <div class="col-md-6">
+                            <label asp-for="BienNhan.SoBN" class="control-label"></label>
+                            <input asp-for="BienNhan.SoBN" class="form-control " readonly />
                         </div>
 
                         <div class="col-md-3">
@@ -71,24 +66,28 @@
 
                     <div class="form-group row">
 
-                        <div class="col-md-3">
-                            <label asp-for="BienNhan.NgayBN" class="control-label"></label>
-                            <input type="text" asp-for="BienNhan.NgayBN" class="form-control maskInput" readonly />
+                        <div class="col-md-2">
+                            <label asp-for="BienNhan.MaKH" class="control-label"></label>
+                            <input asp-for="BienNhan.MaKH" class="form-control " readonly />
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-10">
                             <label asp-for="BienNhan.TenKhach" class="control-label"></label>
                             <input asp-for="BienNhan.TenKhach" class="form-control " readonly />
                         </div>
 
-                        <div class="col-md-1">
-                            <label asp-for="BienNhan.SK" class="control-label"></label>
-                            <input type="text" asp-for="BienNhan.SK" class="form-control numbers" readonly />
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-md-2">
+                            <label asp-for="BienNhan.DienThoai" class="control-label"></label>
+                            <input readonly asp-for="BienNhan.DienThoai" class="form-control " />
                         </div>
 
-                        <div class="col-md-5">
-                            <label asp-for="BienNhan.GhiChu" class="control-label"></label>
-                            <input asp-for="BienNhan.GhiChu" class="form-control" readonly />
+                        <div class="col-md-10">
+                            <label asp-for="BienNhan.DiaChi" class="control-label"></label>
+                            <input readonly asp-for="BienNhan.DiaChi" class="form-control " />
                         </div>
 
                     </div>
@@ -105,16 +104,30 @@
                             <input asp-for="BienNhan.TyGia" class="form-control numbers" readonly />
                         </div>
 
-                        <div class="col-md-2">
+                        @*<div class="col-md-2">
                             <label asp-for="BienNhan.KhachLe" class="control-label"></label>
                             <br />
                             <input type="checkbox" asp-for="BienNhan.KhachLe" id="todoCheck1" disabled>
 
-                        </div>
+                        </div>*@
 
-                        <div class="col-md-6">
+                        <div class="col-md-8">
                             <label asp-for="BienNhan.NDHuyBNId" class="control-label"></label>
                             <input class="form-control" value="@ViewBag.NDHuy" readonly />
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-md-2">
+                            <label asp-for="BienNhan.SK" class="control-label"></label>
+                            <input type="text" asp-for="BienNhan.SK" class="form-control numbers" readonly />
+                        </div>
+
+                        <div class="col-md-10">
+                            <label asp-for="BienNhan.GhiChu" class="control-label"></label>
+                            <input asp-for="BienNhan.GhiChu" class="form-control" readonly />
                         </div>
 
                     </div>

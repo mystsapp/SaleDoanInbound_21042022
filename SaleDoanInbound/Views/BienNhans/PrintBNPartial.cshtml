@@ -1,0 +1,290 @@
+﻿@model BienNhanViewModel
+
+@{
+    ViewData["Title"] = "In biên nhận";
+}
+<style>
+    .tablesotien, .tablesotien td {
+        border-color: black;
+    }
+
+        .tablesotien > thead > tr > th,
+        .tablesotien > tbody > tr > th,
+        .tablesotien > tfoot > tr > th,
+        .tablesotien > thead > tr > td,
+        .tablesotien > tbody > tr > td,
+        .tablesotien > tfoot > tr > td {
+            border: 0.5px solid #000000;
+        }
+</style>
+<script src="~/Asset/js/XK/BiennhanhdControl.js"></script>
+
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <form id="frmIn" asp-action="ExportPdf" asp-route-id="@Model.BienNhan.Id" method="post">
+            @{
+                if (Model.BienNhan != null)
+                {
+                    <div class="modal-header bg-gray">
+                        <a href="#" class="close" data-dismiss="modal">&times;</a>
+                        <h3>BIÊN NHẬN: @Model.BienNhan.SoBN</h3>
+                    </div>
+                    <div class="modal-body" style="max-height: 400px !important; overflow-y:auto">
+                        <table class="table table-bordered">
+                            <tr>
+                                <td>SAIGONTOURIST TRAVEL SERVICE CO., LTD</td>
+                                <td>SAIGONTOURIST TRAVEL SERVICE CO., LTD</td>
+                                <td>SAIGONTOURIST TRAVEL SERVICE CO., LTD</td>
+                            </tr>
+                            <tr>
+                                <td>45 LE THANH TON St, Dist.1, HCMC, VIETNAM</td>
+                                <td>45 LE THANH TON St, Dist.1, HCMC, VIETNAM</td>
+                                <td>45 LE THANH TON St, Dist.1, HCMC, VIETNAM</td>
+                            </tr>
+                            <tr>
+                                <td>Acc. Number (Foreign Currency): 007.1.37.008721.3</td>
+                                <td>Acc. Number (Foreign Currency): 007.1.37.008721.3</td>
+                                <td>Acc. Number (Foreign Currency): 007.1.37.008721.3</td>
+                            </tr>
+                            <tr>
+                                <td>Acc. Number (Local Currency): 007.1.00.001075.3</td>
+                                <td>Acc. Number (Local Currency): 007.1.00.001075.3</td>
+                                <td>Acc. Number (Local Currency): 007.1.00.001075.3</td>
+                            </tr>
+                            <tr>
+                                <td>Telephone: 84 8 38298914</td>
+                                <td>Telephone: 84 8 38298914</td>
+                                <td>Telephone: 84 8 38298914</td>
+                            </tr>
+                            <tr>
+                                <td>Fax: (84-8) 38110365</td>
+                                <td>Fax: (84-8) 38110365</td>
+                                <td>Fax: (84-8) 38110365</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td><b><i>BIÊN NHẬN (RECEIPT)</i></b> Liên 1: lưu</td>
+                                <td><b><i>BIÊN NHẬN (RECEIPT)</i></b> Liên 2: khách hàng</td>
+                                <td><b><i>BIÊN NHẬN (RECEIPT)</i></b> Liên 3: lưu</td>
+                            </tr>
+                            <tr>
+                                <td>Ngày: @Html.Raw(Model.bienhanhd.ngaylap.HasValue ? Model.bienhanhd.ngaylap.Value.ToString("dd/MM/yyyy") : " / /  ") Số: @Model.bienhanhd.sobiennhan</td>
+                                <td>Ngày: @Html.Raw(Model.bienhanhd.ngaylap.HasValue ? Model.bienhanhd.ngaylap.Value.ToString("dd/MM/yyyy") : " / /  ") Số: @Model.bienhanhd.sobiennhan</td>
+                                <td>Ngày: @Html.Raw(Model.bienhanhd.ngaylap.HasValue ? Model.bienhanhd.ngaylap.Value.ToString("dd/MM/yyyy") : " / /  ") Số: @Model.bienhanhd.sobiennhan</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Họ tên (Name): <b>@Model.bienhanhd.nguoidong</b></td>
+                                <td>Họ tên (Name): <b>@Model.bienhanhd.nguoidong</b></td>
+                                <td>Họ tên (Name): <b>@Model.bienhanhd.nguoidong</b></td>
+                            </tr>
+                            <tr>
+                                <td>Số hợp đồng: @Model.bienhanhd.sohopdong</td>
+                                <td>Số hợp đồng: @Model.bienhanhd.sohopdong</td>
+                                <td>Số hợp đồng: @Model.bienhanhd.sohopdong</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <table class="tablesotien table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    Diễn giải (Description)
+                                                </th>
+                                                <th>
+                                                    Số tiền (Amount)
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>@Model.bienhanhd.ghichu</td>
+                                                <td>@Html.Raw(String.Format("{0:#,##0}", Model.bienhanhd.sotien))</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Tổng cộng(Total)</td>
+                                                <td>@Html.Raw(String.Format("{0:#,##0}", Model.bienhanhd.sotien))</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                                <td>
+                                    <table class="tablesotien table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    Diễn giải (Description)
+                                                </th>
+                                                <th>
+                                                    Số tiền (Amount)
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>@Model.bienhanhd.ghichu</td>
+                                                <td>@Html.Raw(String.Format("{0:#,##0}", Model.bienhanhd.sotien))</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Tổng cộng(Total)</td>
+                                                <td>@Html.Raw(String.Format("{0:#,##0}", Model.bienhanhd.sotien))</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                                <td>
+                                    <table class="tablesotien table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    Diễn giải (Description)
+                                                </th>
+                                                <th>
+                                                    Số tiền (Amount)
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>@Model.bienhanhd.ghichu</td>
+                                                <td>@Html.Raw(String.Format("{0:#,##0}", Model.bienhanhd.sotien))</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Tổng cộng(Total)</td>
+                                                <td>@Html.Raw(String.Format("{0:#,##0}", Model.bienhanhd.sotien))</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Số tiền bằng chữ( Amount in words): <b>@Model.tienbangchu</b></td>
+                                <td>Số tiền bằng chữ( Amount in words): <b>@Model.tienbangchu</b></td>
+                                <td>Số tiền bằng chữ( Amount in words): <b>@Model.tienbangchu</b></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Ghi chú(Note): @Model.bienhanhd.ghichu</td>
+                                <td>Ghi chú(Note): @Model.bienhanhd.ghichu</td>
+                                <td>Ghi chú(Note): @Model.bienhanhd.ghichu</td>
+                            </tr>
+                            <tr>
+                                <td>-Xin vui lòng xuất trình biên nhận này khi thanh toán</td>
+                                <td>-Xin vui lòng xuất trình biên nhận này khi thanh toán</td>
+                                <td>-Xin vui lòng xuất trình biên nhận này khi thanh toán</td>
+                            </tr>
+                            <tr>
+                                <td>-Please present this receipt when settling the bill</td>
+                                <td>-Please present this receipt when settling the bill</td>
+                                <td>-Please present this receipt when settling the bill</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <td>
+                                                    Khách hàng Client's signature
+                                                </td>
+                                                <td>
+                                                    Thu ngân Cashier
+                                                </td>
+                                                <td>Người lập Issuer </td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td> <b>@Model.bienhanhd.nguoitao</b></td>
+                                            </tr>
+                                        </thead>
+
+                                    </table>
+                                </td>
+                                <td>
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <td>
+                                                    Khách hàng Client's signature
+                                                </td>
+                                                <td>
+                                                    Thu ngân Cashier
+                                                </td>
+                                                <td>
+                                                    Người lập Issuer
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td><b>@Model.bienhanhd.nguoitao</b></td>
+                                            </tr>
+                                        </thead>
+
+                                    </table>
+                                </td>
+                                <td>
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <td>
+                                                    Khách hàng Client's signature
+                                                </td>
+                                                <td>
+                                                    Thu ngân Cashier
+                                                </td>
+                                                <td>
+                                                    Người lập Issuer
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td> <b>@Model.bienhanhd.nguoitao</b></td>
+                                            </tr>
+                                        </thead>
+
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+
+
+
+                    </div>
+
+                }
+                else
+                {
+                    <div class="modal-header bg-gray">
+                        <a href="#" class="close" data-dismiss="modal">&times;</a>
+                        <h3>BIÊN NHẬN: </h3>
+                    </div>
+                }
+            }
+
+            <div class="modal-footer">
+                <input type="submit" id="btnInnnn" value="In" class="btn btn-primary" />
+
+                <button type="reset" class="btn btn-default" data-dismiss="modal">Đóng</button>
+            </div>
+        </form>
+    </div>
+</div>

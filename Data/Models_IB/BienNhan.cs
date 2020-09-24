@@ -23,8 +23,14 @@ namespace Data.Models_IB
         [Required(ErrorMessage = "Ngày không được để trống")]
         public DateTime NgayBN { get; set; }
 
+
+        [DisplayName("Mã KH")]
+        [MaxLength(5), Column(TypeName = "varchar(5)")]
+        [Required(ErrorMessage = "Mã KH không được trống")]
+        public string MaKH { get; set; } // company: qltour
+
         [DisplayName("Tên khách hàng")]
-        [MaxLength(50), Column(TypeName = "nvarchar(50)")]
+        [MaxLength(150), Column(TypeName = "nvarchar(150)")]
         public string TenKhach { get; set; }
 
         public int SK { get; set; }
@@ -86,5 +92,6 @@ namespace Data.Models_IB
 
         [Column(TypeName = "nvarchar(MAX)")]
         public string LogFile { get; set; }
+
     }
 }

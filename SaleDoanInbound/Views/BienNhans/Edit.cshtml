@@ -52,25 +52,59 @@
                     <input asp-for="BienNhan.NgayBN" type="hidden" />
                     <input asp-for="BienNhan.NguoiTao" type="hidden" />
                     <input asp-for="BienNhan.SK" type="hidden" />
+                    <input asp-for="BienNhan.SoBN" type="hidden" />
                     <input asp-for="StrUrl" type="hidden" value="@Model.StrUrl" />
 
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
+                    @*<div class="form-group row">
+
+                        <div class="col-md-12">
+                            <label asp-for="BienNhan.SoBN" class="control-label"></label>
+                            <input asp-for="BienNhan.SoBN" class="form-control " readonly />
+                            <span asp-validation-for="BienNhan.SoBN" class="text-danger"></span>
+                        </div>
+
+                    </div>*@
+
                     <div class="form-group row">
 
-                        <div class="col-md-3">
+                        <div class="col-md-2">
+                            <label asp-for="BienNhan.MaKH" class="control-label"></label>
+                            <input asp-for="BienNhan.MaKH" class="form-control " readonly />
+                            <span asp-validation-for="BienNhan.MaKH" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label asp-for="BienNhan.SoBN" class="control-label"></label>
+                            <input asp-for="BienNhan.SoBN" class="form-control " readonly />
+                            <span asp-validation-for="BienNhan.SoBN" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-8">
                             <label asp-for="BienNhan.TenKhach" class="control-label"></label>
                             <input asp-for="BienNhan.TenKhach" class="form-control " />
                             <span asp-validation-for="BienNhan.TenKhach" class="text-danger"></span>
+
                         </div>
 
-                        <div class="col-md-3">
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-md-2">
                             <label asp-for="BienNhan.DienThoai" class="control-label"></label>
                             <input asp-for="BienNhan.DienThoai" class="form-control " />
                             <span asp-validation-for="BienNhan.DienThoai" class="text-danger"></span>
                         </div>
+                        
+                        <div class="col-md-2">
+                            <label asp-for="BienNhan.SK" class="control-label"></label>
+                            <input asp-for="BienNhan.SK" class="form-control " readonly/>
+                            <span asp-validation-for="BienNhan.SK" class="text-danger"></span>
+                        </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-8">
                             <label asp-for="BienNhan.DiaChi" class="control-label"></label>
                             <input asp-for="BienNhan.DiaChi" class="form-control " />
                             <span asp-validation-for="BienNhan.DiaChi" class="text-danger"></span>
@@ -78,34 +112,34 @@
 
                     </div>
 
+                    @*<div class="form-group row">
+
+            <div class="col-md-12">
+                <label asp-for="BienNhan.NoiDung" class="control-label"></label>
+                <input asp-for="BienNhan.NoiDung" class="form-control " />
+                <span asp-validation-for="BienNhan.NoiDung" class="text-danger"></span>
+            </div>
+
+        </div>*@
+
                     <div class="form-group row">
 
-                        <div class="col-md-12">
-                            <label asp-for="BienNhan.NoiDung" class="control-label"></label>
-                            <input asp-for="BienNhan.NoiDung" class="form-control " />
-                            <span asp-validation-for="BienNhan.NoiDung" class="text-danger"></span>
-                        </div>
-
-                    </div>
-
-                    <div class="form-group row">
-
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <label asp-for="BienNhan.LoaiTien" class="control-label"></label>
                             <select asp-for="BienNhan.LoaiTien" class="form-control " id="ddlLoaiTien"
-                                    asp-items="@(new SelectList(Model.Ngoaites, "MaNt", "TenNt"))">
+                                    asp-items="@(new SelectList(Model.Ngoaites, "MaNt", "MaNt"))">
                                 <!-- ngoaite: qltour-->
                             </select>
                             <span asp-validation-for="BienNhan.LoaiTien" class="text-danger"></span>
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <label asp-for="BienNhan.TyGia" class="control-label"></label>
                             <input asp-for="BienNhan.TyGia" class="form-control numbers" />
                             <span asp-validation-for="BienNhan.TyGia" class="text-danger"></span>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-8">
                             <label asp-for="BienNhan.GhiChu" class="control-label"></label>
                             <input asp-for="BienNhan.GhiChu" class="form-control" />
                             <span asp-validation-for="BienNhan.GhiChu" class="text-danger"></span>

@@ -68,6 +68,8 @@ namespace SaleDoanInbound.Controllers
             BienNhanVM.BienNhan.SK = (BienNhanVM.Tour.SoKhachTT == 0) ? BienNhanVM.Tour.SoKhachDK : BienNhanVM.Tour.SoKhachTT;
             BienNhanVM.BienNhan.LoaiTien = BienNhanVM.Tour.LoaiTien;
             BienNhanVM.BienNhan.TyGia = BienNhanVM.Tour.TyGia.Value;
+            BienNhanVM.BienNhan.MaKH = BienNhanVM.Tour.MaKH;
+            BienNhanVM.BienNhan.TenKhach = BienNhanVM.Tour.TenKH;
             return View(BienNhanVM);
         }
 
@@ -88,31 +90,32 @@ namespace SaleDoanInbound.Controllers
             BienNhanVM.BienNhan.NgayTao = DateTime.Now;
             BienNhanVM.BienNhan.NguoiTao = user.Username;
             BienNhanVM.BienNhan.DienThoai = BienNhanVM.BienNhan.DienThoai ?? "";
-            
-            // next SoBN (so bien nhan)
-            var currentYear = DateTime.Now.Year;
-            var subfix = "IB" + currentYear.ToString();
-            var bienNhan = _unitOfWork.bienNhanRepository.GetAll().OrderByDescending(x => x.Id).FirstOrDefault();
-            if (bienNhan == null)
-            {
-                BienNhanVM.BienNhan.SoBN = GetNextId.NextID("", "") + subfix;
-            }
-            else
-            {
-                var oldYear = bienNhan.SoBN.Substring(8, 4);
-                // cung nam
-                if (oldYear == currentYear.ToString())
-                {
-                    var oldSoBN = bienNhan.SoBN.Substring(0, 6);
-                    BienNhanVM.BienNhan.SoBN = GetNextId.NextID(oldSoBN, "") + subfix;
-                }
-                else
-                {
-                    // sang nam khac' chay lai tu dau
-                    BienNhanVM.BienNhan.SoBN = GetNextId.NextID("", "") + subfix;
-                }
+            BienNhanVM.BienNhan.SoBN = "";
 
-            }
+            // next SoBN (so bien nhan)
+            //var currentYear = DateTime.Now.Year;
+            //var subfix = "IB" + currentYear.ToString();
+            //var bienNhan = _unitOfWork.bienNhanRepository.GetAll().OrderByDescending(x => x.Id).FirstOrDefault();
+            //if (bienNhan == null)
+            //{
+            //    BienNhanVM.BienNhan.SoBN = GetNextId.NextID("", "") + subfix;
+            //}
+            //else
+            //{
+            //    var oldYear = bienNhan.SoBN.Substring(8, 4);
+            //    // cung nam
+            //    if (oldYear == currentYear.ToString())
+            //    {
+            //        var oldSoBN = bienNhan.SoBN.Substring(0, 6);
+            //        BienNhanVM.BienNhan.SoBN = GetNextId.NextID(oldSoBN, "") + subfix;
+            //    }
+            //    else
+            //    {
+            //        // sang nam khac' chay lai tu dau
+            //        BienNhanVM.BienNhan.SoBN = GetNextId.NextID("", "") + subfix;
+            //    }
+
+            //}
 
             // next id (so bien nhan)
 
@@ -134,16 +137,16 @@ namespace SaleDoanInbound.Controllers
 
         }
 
-        public async Task<IActionResult> Edit(string id, long tourId, /*string tabActive, */string strUrl)
+        public IActionResult Edit(long id, long tourId, /*string tabActive, */string strUrl)
         {
             BienNhanVM.StrUrl = strUrl;// + "&tabActive=" + tabActive; // for redirect tab
             BienNhanVM.Tour = _unitOfWork.tourRepository.GetById(tourId);
             //BienNhanVM.BienNhan.TourIBId = tourIBId;
 
-            if (string.IsNullOrEmpty(id))
+            if (id == 0)
                 return NotFound();
 
-            BienNhanVM.BienNhan = await _unitOfWork.bienNhanRepository.GetByIdAsync(id);
+            BienNhanVM.BienNhan = _unitOfWork.bienNhanRepository.GetById(id);
 
             if (BienNhanVM.BienNhan == null)
                 return NotFound();
@@ -172,7 +175,7 @@ namespace SaleDoanInbound.Controllers
                 #region log file
                 //var t = _unitOfWork.tourRepository.GetById(id);
                 var t = _unitOfWork.bienNhanRepository.GetByIdAsNoTracking(x => x.Id == id);
-                if (t.NgayBN != BienNhanVM.BienNhan.NgayBN)
+                if (t.NgayBN.ToShortDateString() != BienNhanVM.BienNhan.NgayBN.ToShortTimeString())
                 {
                     temp += String.Format("- Ngày BN thay đổi: {0:dd/MM/yyyy}->{1:dd/MM/yyyy}", t.NgayBN, BienNhanVM.BienNhan.NgayBN);
                 }
@@ -241,15 +244,15 @@ namespace SaleDoanInbound.Controllers
             return View(BienNhanVM);
         }
 
-        public async Task<IActionResult> Details(string id, long tourId/*, string tabActive*/, string strUrl)
+        public IActionResult Details(long id, long tourId/*, string tabActive*/, string strUrl)
         {
             BienNhanVM.StrUrl = strUrl;// + "&tabActive=" + tabActive; // for redirect tab
             BienNhanVM.Tour = _unitOfWork.tourRepository.GetById(tourId);
 
-            if (string.IsNullOrEmpty(id))
+            if (id == 0)
                 return NotFound();
 
-            var bienNhan = await _unitOfWork.bienNhanRepository.GetByIdAsync(id);
+            var bienNhan = _unitOfWork.bienNhanRepository.GetById(id);
 
             if (bienNhan == null)
                 return NotFound();
@@ -262,11 +265,11 @@ namespace SaleDoanInbound.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id, string strUrl/*, string tabActive*/)
+        public async Task<IActionResult> DeleteConfirmed(long id, string strUrl/*, string tabActive*/)
         {
             BienNhanVM.StrUrl = strUrl;// + "&tabActive=" + tabActive; // for redirect tab
 
-            var bienNhan = await _unitOfWork.bienNhanRepository.GetByIdAsync(id);
+            var bienNhan = _unitOfWork.bienNhanRepository.GetById(id);
             if (bienNhan == null)
                 return NotFound();
             try
@@ -363,5 +366,19 @@ namespace SaleDoanInbound.Controllers
             }
         }
         //-----------HuyBN------------
+
+        //----------- Print BN partial ------------
+        public async Task<IActionResult> PrintBNPartial(long id, string strUrl)
+        {
+            if (id == 0)
+                return NotFound();
+
+            BienNhanVM.StrUrl = strUrl;
+            BienNhanVM.BienNhan = _unitOfWork.bienNhanRepository.GetById(id);
+            BienNhanVM.ChiTietBNs = await _unitOfWork.chiTietBNRepository.FindAsync(x => x.BienNhanId == id);
+
+            return PartialView(BienNhanVM);
+        }
+        //----------- Print BN partial ------------
     }
 }

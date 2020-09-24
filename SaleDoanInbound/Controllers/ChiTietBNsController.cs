@@ -144,12 +144,40 @@ namespace SaleDoanInbound.Controllers
                 {
                     temp += String.Format("- Descript thay đổi: {0}->{1}", t.Descript, ChiTietBNVM.ChiTietBN.Descript);
                 }
-                
+
+                var bienNhan = new BienNhan();
+                // neu' sotien trong CTBN thay doi --> cap nhat st trong BN
                 if (t.Amount != ChiTietBNVM.ChiTietBN.Amount)
                 {
                     temp += String.Format("- Tổng tiền thay đổi: {0:N0}->{1:N0}", t.Amount, ChiTietBNVM.ChiTietBN.Amount);
+                    // sotien --> BN
+                    bienNhan = _unitOfWork.bienNhanRepository.GetById(bienNhanId);
+                    var st = (bienNhan.SoTien - t.Amount) + ChiTietBNVM.ChiTietBN.Amount;
+                    string tempBN = "", logBN = "";
+
+                    if (bienNhan.SoTien != st)
+                    {
+                        tempBN += String.Format("- Số tiền thay đổi: {0:N0} -> {1:N0}, người thay đổi: {2}, vào lúc: {3} ", bienNhan.SoTien, st, user.Username, System.DateTime.Now.ToString());
+                    }
+                    bienNhan.SoTien = st;
+                    // kiem tra thay doi
+                    if (tempBN.Length > 0)
+                    {
+
+                        logBN = System.Environment.NewLine;
+                        logBN += "=============";
+                        logBN += System.Environment.NewLine;
+                        logBN += tempBN;// + " -User cập nhật tour: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // username
+                        bienNhan.LogFile = bienNhan.LogFile + logBN;
+
+                    }
+
+                    // sotien --> BN
+
                 }
-                
+
+                // neu' sotien trong CTBN thay doi
+
                 #endregion
                 // kiem tra thay doi
                 if (temp.Length > 0)
@@ -165,6 +193,11 @@ namespace SaleDoanInbound.Controllers
 
                 try
                 {
+                    if(bienNhan != null)
+                    {
+                        _unitOfWork.bienNhanRepository.Update(bienNhan);
+                    }
+                    
                     _unitOfWork.chiTietBNRepository.Update(ChiTietBNVM.ChiTietBN);
                     await _unitOfWork.Complete();
                     SetAlert("Cập nhật thành công", "success");
@@ -186,10 +219,10 @@ namespace SaleDoanInbound.Controllers
             return View(ChiTietBNVM);
         }
 
-        public async Task<IActionResult> Details(long id, string bienNhanId/*, string tabActive*/, string strUrl)
+        public IActionResult Details(long id, long bienNhanId/*, string tabActive*/, string strUrl)
         {
             ChiTietBNVM.StrUrl = strUrl;// + "&tabActive=" + tabActive; // for redirect tab
-            ChiTietBNVM.BienNhan = await _unitOfWork.bienNhanRepository.GetByIdAsync(bienNhanId);
+            ChiTietBNVM.BienNhan = _unitOfWork.bienNhanRepository.GetById(bienNhanId);
 
             if (id == 0)
                 return NotFound();

@@ -53,6 +53,18 @@
             
             $.get('/BienNhans/HuyBNPartial', { id: id, strUrl: strUrl }, function (response) {
 
+                $('#huyBNModal').modal('show');
+                $('.huyBNPartial').html(response);
+                $('#huyBNModal').draggable();
+            });
+        });
+        
+        $('.btnPrintBN').off('click').on('click', function () {
+            id = $(this).data('id');
+            strUrl = $(this).data('url');
+            
+            $.get('/BienNhans/PrintBNPartial', { id: id, strUrl: strUrl }, function (response) {
+
                 console.log(response);
                 $('#huyBNModal').modal('show');
                 $('.huyBNPartial').html(response);
