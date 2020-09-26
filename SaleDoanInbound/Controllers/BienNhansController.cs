@@ -8,6 +8,8 @@ using SaleDoanInbound.Models;
 using Data.Utilities;
 using Microsoft.AspNetCore.Http.Extensions;
 using Data.Models_IB;
+using Rotativa.AspNetCore;
+using Rotativa.AspNetCore.Options;
 
 namespace SaleDoanInbound.Controllers
 {
@@ -378,6 +380,27 @@ namespace SaleDoanInbound.Controllers
             BienNhanVM.ChiTietBNs = await _unitOfWork.chiTietBNRepository.FindAsync(x => x.BienNhanId == id);
 
             return PartialView(BienNhanVM);
+        }
+
+        public async Task<IActionResult> ExportPdf(long id)
+        {
+            if (id == 0)
+                return NotFound();
+
+            BienNhanVM.BienNhan = await _unitOfWork.bienNhanRepository.GetByIdIncludeOneAsync(id);
+            BienNhanVM.ChiTietBNs = await _unitOfWork.chiTietBNRepository.FindAsync(x => x.BienNhanId == id);
+
+            var pdf = new ViewAsPdf
+            {
+                FileName = "BienNhan_" + BienNhanVM.BienNhan.SoBN + "_" + DateTime.Now.ToString("dd/MM/yyyy") + ".pdf",
+                PageSize = Rotativa.AspNetCore.Options.Size.A4,
+                PageOrientation = Rotativa.AspNetCore.Options.Orientation.Landscape,
+                IsGrayScale = true,
+                PageMargins = new Margins { Bottom = 5, Left = 5, Right = 5, Top = 5 },
+                Model = BienNhanVM
+            };
+
+            return pdf;
         }
         //----------- Print BN partial ------------
     }
