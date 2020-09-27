@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http.Extensions;
 using Data.Models_IB;
 using Rotativa.AspNetCore;
 using Rotativa.AspNetCore.Options;
+using NumToWords;
 
 namespace SaleDoanInbound.Controllers
 {
@@ -372,6 +373,10 @@ namespace SaleDoanInbound.Controllers
         //----------- Print BN partial ------------
         public async Task<IActionResult> PrintBNPartial(long id, string strUrl)
         {
+
+            // from login session
+            var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
+
             if (id == 0)
                 return NotFound();
 
@@ -379,16 +384,88 @@ namespace SaleDoanInbound.Controllers
             BienNhanVM.BienNhan = await _unitOfWork.bienNhanRepository.GetByIdIncludeOneAsync(id);
             BienNhanVM.ChiTietBNs = await _unitOfWork.chiTietBNRepository.FindAsync(x => x.BienNhanId == id);
 
+            ///// Currency to money
+            string s = SoSangChu.DoiSoSangChu(BienNhanVM.BienNhan.SoTien.ToString().Split('.')[0]);
+            string c = AmountToWords.changeCurrencyToWords(BienNhanVM.BienNhan.SoTien.ToString().ToLower());
+            //string t = String.IsNullOrEmpty(loaitien) ? "" : " Exchange rate USD/VND";
+            BienNhanVM.SoTienBangChu = char.ToUpper(s[0]) + s.Substring(1) + " đồng";// + " / " + char.ToUpper(c[0]) + c.Substring(1).ToLower() + "vnd";
+
+            BienNhanVM.BienNhan.NguoiTao = user.HoTen;
             return PartialView(BienNhanVM);
+        }
+        public async Task<IActionResult> GetDetailBN(long id)
+        {
+            if (id == 0)
+                return NotFound();
+
+            var bienNhan = await _unitOfWork.bienNhanRepository.GetByIdIncludeOneAsync(id);
+            if (string.IsNullOrEmpty(bienNhan.SoBN))
+            {
+                return Json(new
+                {
+                    status = false
+                });
+            }
+
+            return Json(new
+            {
+                status = true,
+                data = bienNhan
+            });
         }
 
         public async Task<IActionResult> ExportPdf(long id)
         {
+
+            // from login session
+            var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
+
             if (id == 0)
                 return NotFound();
 
             BienNhanVM.BienNhan = await _unitOfWork.bienNhanRepository.GetByIdIncludeOneAsync(id);
             BienNhanVM.ChiTietBNs = await _unitOfWork.chiTietBNRepository.FindAsync(x => x.BienNhanId == id);
+
+            //next SoBN(so bien nhan)
+            if (string.IsNullOrEmpty(BienNhanVM.BienNhan.SoBN))
+            {
+                var currentYear = DateTime.Now.Year;
+                var subfix = "IB" + currentYear.ToString();
+                var bienNhan = _unitOfWork.bienNhanRepository.Find(x => !string.IsNullOrEmpty(x.SoBN)).OrderByDescending(x => x.SoBN).FirstOrDefault();
+                if (bienNhan == null)
+                {
+                    BienNhanVM.BienNhan.SoBN = GetNextId.NextID("", "") + subfix;
+                }
+                else
+                {
+                    var oldYear = bienNhan.SoBN.Substring(8, 4);
+                    // cung nam
+                    if (oldYear == currentYear.ToString())
+                    {
+                        var oldSoBN = bienNhan.SoBN.Substring(0, 6);
+                        BienNhanVM.BienNhan.SoBN = GetNextId.NextID(oldSoBN, "") + subfix;
+                    }
+                    else
+                    {
+                        // sang nam khac' chay lai tu dau
+                        BienNhanVM.BienNhan.SoBN = GetNextId.NextID("", "") + subfix;
+                    }
+
+                }
+                _unitOfWork.bienNhanRepository.Update(BienNhanVM.BienNhan);
+                await _unitOfWork.Complete();
+
+            }
+
+            //next id(so bien nhan)
+
+            ///// Currency to money
+            string s = SoSangChu.DoiSoSangChu(BienNhanVM.BienNhan.SoTien.ToString().Split('.')[0]);
+            string c = AmountToWords.changeCurrencyToWords(BienNhanVM.BienNhan.SoTien.ToString().ToLower());
+            //string t = String.IsNullOrEmpty(loaitien) ? "" : " Exchange rate USD/VND";
+            BienNhanVM.SoTienBangChu = char.ToUpper(s[0]) + s.Substring(1) + " đồng";// + " / " + char.ToUpper(c[0]) + c.Substring(1).ToLower() + "vnd";
+
+            BienNhanVM.BienNhan.NguoiTao = user.HoTen;
 
             var pdf = new ViewAsPdf
             {

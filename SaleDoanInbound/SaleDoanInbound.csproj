@@ -22,4 +22,10 @@
     <Folder Include="wwwroot\excelfolder\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="NumToWords">
+      <HintPath>bin\Debug\netcoreapp3.1\NumToWords.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

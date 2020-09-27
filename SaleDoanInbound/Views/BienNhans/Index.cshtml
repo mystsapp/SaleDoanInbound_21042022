@@ -29,8 +29,8 @@
 <div class="modal fade" id="PrintBNPartial" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Extra Large Modal</h4>
+            <div class="modal-header bg-secondary">
+                <h4 class="modal-title ">Biên nhận <span id="spanSoBN"></span></h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -39,7 +39,8 @@
                 
             </div>
             <div class="modal-footer justify-content-between">
-                <form id="frmPrintBN" asp-action="ExportPdf" asp-route-id="@Model.BienNhan.Id" method="post">
+                <form id="frmPrintBN" asp-action="ExportPdf" method="post">
+                    <input type="hidden" name="id" id="hidBienNhanIdForPdfPrint" />
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">Print</button>
                 </form>
@@ -178,6 +179,7 @@
                                             <a class="text-primary btnEditBN" title="Cập nhật" asp-action="Edit" asp-controller="BienNhans" asp-route-id="@item.Id" asp-route-tourId="@Model.Tour.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
                                             <span class="text-dark"> | </span>
                                         }
+                                        <!-- Print Pdf -->
                                         <a data-id="@item.Id" data-strUrl="@Model.StrUrl" class="text-warning border-0 bg-transparent btnPrintBN" title="Print"><i class="fas fa-print"></i></a>
 
                                         <span class="text-dark"> | </span>
@@ -205,7 +207,7 @@
                                     </div>
                                 </td>
 
-                                <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.SoBN)</td>
+                                <td class="tdVal tdSoBN" data-id="@item.Id">@Html.DisplayFor(m => item.SoBN)</td>
                                 <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayBN.ToString("dd/MM/yyyy"))</td>
                                 <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.TenKhach)</td>
                                 <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.DienThoai)</td>

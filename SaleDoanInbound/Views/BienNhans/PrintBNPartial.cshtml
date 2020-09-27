@@ -1,6 +1,78 @@
 ﻿@model BienNhanViewModel
 
+    <style>
+            .invoicetable {
+                clear: both;
+                border: 1px solid darkgray;
+                border-collapse: collapse;
+                margin: auto;
+                width: 100%;
+            }
 
+            .invoicecell {
+                background-color: white;
+                color: black;
+                border: 1px solid darkgray;
+                padding: 5px;
+            }
+
+            body {
+                margin: 0px;
+                font-family: 'Segoe UI', Arial;
+            }
+
+            .invoice-head {
+                clear: both;
+                display: block;
+                padding: 10px;
+                margin-bottom: 40px;
+            }
+
+            .invoice-title {
+                background-color: navy;
+                color: white;
+                font-size: 20px;
+                padding: 10px;
+                width: 100%;
+            }
+
+            .invoice-to {
+                float: left;
+            }
+
+            .invoice-details {
+                float: right;
+            }
+
+            td, th {
+                padding: 10px;
+            }
+
+            .tdHead {
+                padding: 2px;
+            }
+            /*th {
+            background-color: navy;
+            color: white;
+        }*/
+
+            /*td, th {
+            border: 1px solid darkgray;
+            padding: 5px;
+        }*/
+
+            .numeric-cell {
+                text-align: right;
+                border: 1px solid darkgray;
+                padding: 5px;
+            }
+
+            .clearfix::after {
+                content: "";
+                clear: both;
+                display: table;
+            }
+    </style>
 
 @{
     if (Model != null)
@@ -8,34 +80,34 @@
 
         <table class="table table-bordered">
             <tr>
-                <td>SAIGONTOURIST TRAVEL SERVICE CO., LTD</td>
-                <td>SAIGONTOURIST TRAVEL SERVICE CO., LTD</td>
-                <td>SAIGONTOURIST TRAVEL SERVICE CO., LTD</td>
+                <td class="tdHead">SAIGONTOURIST TRAVEL SERVICE CO., LTD</td>
+                <td class="tdHead">SAIGONTOURIST TRAVEL SERVICE CO., LTD</td>
+                <td class="tdHead">SAIGONTOURIST TRAVEL SERVICE CO., LTD</td>
             </tr>
             <tr>
-                <td>45 LE THANH TON St, Dist.1, HCMC, VIETNAM</td>
-                <td>45 LE THANH TON St, Dist.1, HCMC, VIETNAM</td>
-                <td>45 LE THANH TON St, Dist.1, HCMC, VIETNAM</td>
+                <td class="tdHead">45 LE THANH TON St, Dist.1, HCMC, VIETNAM</td>
+                <td class="tdHead">45 LE THANH TON St, Dist.1, HCMC, VIETNAM</td>
+                <td class="tdHead">45 LE THANH TON St, Dist.1, HCMC, VIETNAM</td>
             </tr>
             <tr>
-                <td>Acc. Number (Foreign Currency): 007.1.37.008721.3</td>
-                <td>Acc. Number (Foreign Currency): 007.1.37.008721.3</td>
-                <td>Acc. Number (Foreign Currency): 007.1.37.008721.3</td>
+                <td class="tdHead">Acc. Number (Foreign Currency): 007.1.37.008721.3</td>
+                <td class="tdHead">Acc. Number (Foreign Currency): 007.1.37.008721.3</td>
+                <td class="tdHead">Acc. Number (Foreign Currency): 007.1.37.008721.3</td>
             </tr>
             <tr>
-                <td>Acc. Number (Local Currency): 007.1.00.001075.3</td>
-                <td>Acc. Number (Local Currency): 007.1.00.001075.3</td>
-                <td>Acc. Number (Local Currency): 007.1.00.001075.3</td>
+                <td class="tdHead">Acc. Number (Local Currency): 007.1.00.001075.3</td>
+                <td class="tdHead">Acc. Number (Local Currency): 007.1.00.001075.3</td>
+                <td class="tdHead">Acc. Number (Local Currency): 007.1.00.001075.3</td>
             </tr>
             <tr>
-                <td>Telephone: 84 8 38298914</td>
-                <td>Telephone: 84 8 38298914</td>
-                <td>Telephone: 84 8 38298914</td>
+                <td class="tdHead">Telephone: 84 8 38298914</td>
+                <td class="tdHead">Telephone: 84 8 38298914</td>
+                <td class="tdHead">Telephone: 84 8 38298914</td>
             </tr>
-            <tr>
-                <td>Fax: (84-8) 38110365</td>
-                <td>Fax: (84-8) 38110365</td>
-                <td>Fax: (84-8) 38110365</td>
+            <tr>    
+                <td class="tdHead">Fax: (84-8) 38110365</td>
+                <td class="tdHead">Fax: (84-8) 38110365</td>
+                <td class="tdHead">Fax: (84-8) 38110365</td>
             </tr>
             <tr>
                 <td></td>
@@ -81,14 +153,18 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach (var item in Model.ChiTietBNs)
+                            {
+                                <tr>
+                                    <td class="invoicecell">@item.Descript</td>
+                                    <td class="numeric-cell">@item.Amount.ToString("N0") VND</td>
+                                </tr>
+                            }
                             <tr>
-                                <td>@Model.BienNhan.GhiChu</td>
-                                <td>@Html.Raw(String.Format("{0:#,##0}", Model.BienNhan.SoTien))</td>
+                                <td class="invoicecell">Tổng tiền(Total) </td>
+                                <td class="numeric-cell">@Model.BienNhan.SoTien.ToString("N0") VND</td>
                             </tr>
-                            <tr>
-                                <td>Tổng cộng(Total)</td>
-                                <td>@Html.Raw(String.Format("{0:#,##0}", Model.BienNhan.SoTien))</td>
-                            </tr>
+
                         </tbody>
                     </table>
                 </td>
@@ -105,14 +181,18 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach (var item in Model.ChiTietBNs)
+                            {
+                                <tr>
+                                    <td class="invoicecell">@item.Descript</td>
+                                    <td class="numeric-cell">@item.Amount.ToString("N0") VND</td>
+                                </tr>
+                            }
                             <tr>
-                                <td>@Model.BienNhan.GhiChu</td>
-                                <td>@Html.Raw(String.Format("{0:#,##0}", Model.BienNhan.SoTien))</td>
+                                <td class="invoicecell">Tổng tiền(Total) </td>
+                                <td class="numeric-cell">@Model.BienNhan.SoTien.ToString("N0") VND</td>
                             </tr>
-                            <tr>
-                                <td>Tổng cộng(Total)</td>
-                                <td>@Html.Raw(String.Format("{0:#,##0}", Model.BienNhan.SoTien))</td>
-                            </tr>
+
                         </tbody>
                     </table>
                 </td>
@@ -129,14 +209,18 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach (var item in Model.ChiTietBNs)
+                            {
+                                <tr>
+                                    <td class="invoicecell">@item.Descript</td>
+                                    <td class="numeric-cell">@item.Amount.ToString("N0") VND</td>
+                                </tr>
+                            }
                             <tr>
-                                <td>@Model.BienNhan.GhiChu</td>
-                                <td>@Html.Raw(String.Format("{0:#,##0}", Model.BienNhan.SoTien))</td>
+                                <td class="invoicecell">Tổng tiền(Total) </td>
+                                <td class="numeric-cell">@Model.BienNhan.SoTien.ToString("N0") VND</td>
                             </tr>
-                            <tr>
-                                <td>Tổng cộng(Total)</td>
-                                <td>@Html.Raw(String.Format("{0:#,##0}", Model.BienNhan.SoTien))</td>
-                            </tr>
+
                         </tbody>
                     </table>
                 </td>
@@ -147,9 +231,9 @@
                 <td></td>
             </tr>
             <tr>
-                <td>Số tiền bằng chữ( Amount in words): <b>@*@Model.tienbangchu*@</b></td>
-                <td>Số tiền bằng chữ( Amount in words): <b>@*@Model.tienbangchu*@</b></td>
-                <td>Số tiền bằng chữ( Amount in words): <b>@*@Model.tienbangchu*@</b></td>
+                <td>Số tiền bằng chữ( Amount in words): <b>@Model.SoTienBangChu</b></td>
+                <td>Số tiền bằng chữ( Amount in words): <b>@Model.SoTienBangChu</b></td>
+                <td>Số tiền bằng chữ( Amount in words): <b>@Model.SoTienBangChu</b></td>
             </tr>
             <tr>
                 <td></td>
@@ -252,11 +336,11 @@
     }
 }
 
-<div class="modal-footer ">
+@*<div class="modal-footer ">
     <button type="button" class="btn btn-outline-dark" data-dismiss="modal"><i class="fas fa-power-off"></i></button>
     <button type="submit" class="btn btn-outline-primary"><i class="fas fa-save"></i></button>
     <a class="btn btn-outline-primary" title="Danh sách nguyên nhân" asp-controller="CacNoiDungHuyTours" asp-action="Index"><i class="fas fa-list"></i></a>
-</div>
+</div>*@
 
 @*<style>
         .tablesotien, .tablesotien td {

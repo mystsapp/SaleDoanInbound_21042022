@@ -11,7 +11,7 @@
             if (huy === 'True') {
                 $(this).addClass('bg-secondary');
             }
-            
+
         });
 
         $('.tdVal').click(function () {
@@ -28,7 +28,7 @@
             //    dataType: 'json',
             //    type: 'GET',
             //    success: function (response) {
-                    
+
             //    }
             //});
 
@@ -50,7 +50,7 @@
         $('.btnHuyBN').off('click').on('click', function () {
             id = $(this).data('id');
             strUrl = $(this).data('url');
-            
+
             $.get('/BienNhans/HuyBNPartial', { id: id, strUrl: strUrl }, function (response) {
 
                 $('#huyBNModal').modal('show');
@@ -58,18 +58,40 @@
                 $('#huyBNModal').draggable();
             });
         });
-        
-        $('.btnPrintBN').off('click').on('click', function () {
-            id = $(this).data('id');
-            strUrl = $(this).data('url');
+
+        $('.btnPrintBN').off('click').on('click', function (e) {
+            e.preventDefault();
+            var id = $(this).data('id');
             
+            strUrl = $(this).data('url');
+
+            $('#hidBienNhanIdForPdfPrint').val(id);
+
+
             $.get('/BienNhans/PrintBNPartial', { id: id, strUrl: strUrl }, function (response) {
 
-                console.log(response);
+                //console.log(response);
                 $('#PrintBNPartial').modal('show');
                 $('.printBN').html(response);
                 //$('#huyBNModal').draggable();
             });
+
+            //$.ajax({
+            //    url: '/BienNhans/GetDetailBN',
+            //    data: {
+            //        id: id
+            //    },
+            //    dataType: 'json',
+            //    type: 'GET',
+            //    success: function (response) {
+            //        console.log(response.data.soBN);
+            //        if (response.status) {
+            //            $('#spanSoBN').val(response.data.soBN);
+            //        }
+
+            //    }
+            //});
+
         });
 
 

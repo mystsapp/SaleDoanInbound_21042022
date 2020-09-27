@@ -49,6 +49,10 @@
     td, th {
         padding: 10px;
     }
+
+    .tdHead {
+        padding: 2px;
+    }
     /*th {
         background-color: navy;
         color: white;
@@ -73,34 +77,34 @@
 </style>
 <table>
     <tr>
-        <td>SAIGONTOURIST TRAVEL SERVICE CO., LTD</td>
-        <td>SAIGONTOURIST TRAVEL SERVICE CO., LTD</td>
-        <td>SAIGONTOURIST TRAVEL SERVICE CO., LTD</td>
+        <td class="tdHead">SAIGONTOURIST TRAVEL SERVICE CO., LTD</td>
+        <td class="tdHead">SAIGONTOURIST TRAVEL SERVICE CO., LTD</td>
+        <td class="tdHead">SAIGONTOURIST TRAVEL SERVICE CO., LTD</td>
     </tr>
     <tr>
-        <td>45 LE THANH TON St, Dist.1, HCMC, VIETNAM</td>
-        <td>45 LE THANH TON St, Dist.1, HCMC, VIETNAM</td>
-        <td>45 LE THANH TON St, Dist.1, HCMC, VIETNAM</td>
+        <td class="tdHead">45 LE THANH TON St, Dist.1, HCMC, VIETNAM</td>
+        <td class="tdHead">45 LE THANH TON St, Dist.1, HCMC, VIETNAM</td>
+        <td class="tdHead">45 LE THANH TON St, Dist.1, HCMC, VIETNAM</td>
     </tr>
     <tr>
-        <td>Acc. Number (Foreign Currency): 007.1.37.008721.3</td>
-        <td>Acc. Number (Foreign Currency): 007.1.37.008721.3</td>
-        <td>Acc. Number (Foreign Currency): 007.1.37.008721.3</td>
+        <td class="tdHead">Acc. Number (Foreign Currency): 007.1.37.008721.3</td>
+        <td class="tdHead">Acc. Number (Foreign Currency): 007.1.37.008721.3</td>
+        <td class="tdHead">Acc. Number (Foreign Currency): 007.1.37.008721.3</td>
     </tr>
     <tr>
-        <td>Acc. Number (Local Currency): 007.1.00.001075.3</td>
-        <td>Acc. Number (Local Currency): 007.1.00.001075.3</td>
-        <td>Acc. Number (Local Currency): 007.1.00.001075.3</td>
+        <td class="tdHead">Acc. Number (Local Currency): 007.1.00.001075.3</td>
+        <td class="tdHead">Acc. Number (Local Currency): 007.1.00.001075.3</td>
+        <td class="tdHead">Acc. Number (Local Currency): 007.1.00.001075.3</td>
     </tr>
     <tr>
-        <td>Telephone: 84 8 38298914</td>
-        <td>Telephone: 84 8 38298914</td>
-        <td>Telephone: 84 8 38298914</td>
+        <td class="tdHead">Telephone: 84 8 38298914</td>
+        <td class="tdHead">Telephone: 84 8 38298914</td>
+        <td class="tdHead">Telephone: 84 8 38298914</td>
     </tr>
     <tr>
-        <td>Fax: (84-8) 38110365</td>
-        <td>Fax: (84-8) 38110365</td>
-        <td>Fax: (84-8) 38110365</td>
+        <td class="tdHead">Fax: (84-8) 38110365</td>
+        <td class="tdHead">Fax: (84-8) 38110365</td>
+        <td class="tdHead">Fax: (84-8) 38110365</td>
     </tr>
     <tr>
         <td></td>
@@ -146,14 +150,26 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach (var item in Model.ChiTietBNs)
+                    {
+                        <tr>
+                            <td class="invoicecell">@item.Descript</td>
+                            <td class="numeric-cell">@item.Amount.ToString("N0") VND</td>
+                        </tr>
+                    }
                     <tr>
-                        <td class="invoicecell">@Model.BienNhan.GhiChu</td>
-                        <td class="numeric-cell">@Html.Raw(String.Format("{0:#,##0}", Model.BienNhan.SoTien)) Đ</td>
+                        <td class="invoicecell">Tổng tiền(Total) </td>
+                        <td class="numeric-cell">@Model.BienNhan.SoTien.ToString("N0") VND</td>
                     </tr>
-                    <tr>
-                        <td class="invoicecell">Tổng cộng(Total)</td>
-                        <td class="numeric-cell">@Html.Raw(String.Format("{0:#,##0}", Model.BienNhan.SoTien)) Đ</td>
-                    </tr>
+
+                    @*<tr>
+                            <td class="invoicecell">@Model.BienNhan.GhiChu</td>
+                            <td class="numeric-cell">@Html.Raw(String.Format("{0:#,##0}", Model.BienNhan.SoTien)) Đ</td>
+                        </tr>
+                        <tr>
+                            <td class="invoicecell">Tổng cộng(Total)</td>
+                            <td class="numeric-cell">@Html.Raw(String.Format("{0:#,##0}", Model.BienNhan.SoTien)) Đ</td>
+                        </tr>*@
                 </tbody>
             </table>
         </td>
@@ -170,14 +186,26 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach (var item in Model.ChiTietBNs)
+                    {
+                        <tr>
+                            <td class="invoicecell">@item.Descript</td>
+                            <td class="numeric-cell">@item.Amount.ToString("N0") VND</td>
+                        </tr>
+                    }
                     <tr>
-                        <td class="invoicecell">@Model.BienNhan.GhiChu</td>
-                        <td class="numeric-cell">@Html.Raw(String.Format("{0:#,##0}", Model.BienNhan.SoTien)) Đ</td>
+                        <td class="invoicecell">Tổng tiền(Total) </td>
+                        <td class="numeric-cell">@Model.BienNhan.SoTien.ToString("N0") VND</td>
                     </tr>
-                    <tr>
-                        <td class="invoicecell">Tổng cộng(Total)</td>
-                        <td class="numeric-cell">@Html.Raw(String.Format("{0:#,##0}", Model.BienNhan.SoTien)) Đ</td>
-                    </tr>
+
+                    @*<tr>
+                            <td class="invoicecell">@Model.BienNhan.GhiChu</td>
+                            <td class="numeric-cell">@Html.Raw(String.Format("{0:#,##0}", Model.BienNhan.SoTien)) Đ</td>
+                        </tr>
+                        <tr>
+                            <td class="invoicecell">Tổng cộng(Total)</td>
+                            <td class="numeric-cell">@Html.Raw(String.Format("{0:#,##0}", Model.BienNhan.SoTien)) Đ</td>
+                        </tr>*@
                 </tbody>
             </table>
         </td>
@@ -194,14 +222,26 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach (var item in Model.ChiTietBNs)
+                    {
+                        <tr>
+                            <td class="invoicecell">@item.Descript</td>
+                            <td class="numeric-cell">@item.Amount.ToString("N0") VND</td>
+                        </tr>
+                    }
                     <tr>
-                        <td class="invoicecell">@Model.BienNhan.GhiChu</td>
-                        <td class="numeric-cell">@Html.Raw(String.Format("{0:#,##0}", Model.BienNhan.SoTien)) Đ</td>
+                        <td class="invoicecell">Tổng tiền(Total) </td>
+                        <td class="numeric-cell">@Model.BienNhan.SoTien.ToString("N0") VND</td>
                     </tr>
-                    <tr>
-                        <td class="invoicecell">Tổng cộng(Total)</td>
-                        <td class="numeric-cell">@Html.Raw(String.Format("{0:#,##0}", Model.BienNhan.SoTien)) Đ</td>
-                    </tr>
+
+                    @*<tr>
+                            <td class="invoicecell">@Model.BienNhan.GhiChu</td>
+                            <td class="numeric-cell">@Html.Raw(String.Format("{0:#,##0}", Model.BienNhan.SoTien)) Đ</td>
+                        </tr>
+                        <tr>
+                            <td class="invoicecell">Tổng cộng(Total)</td>
+                            <td class="numeric-cell">@Html.Raw(String.Format("{0:#,##0}", Model.BienNhan.SoTien)) Đ</td>
+                        </tr>*@
                 </tbody>
             </table>
         </td>
@@ -212,9 +252,9 @@
         <td></td>
     </tr>
     <tr>
-        <td>Số tiền bằng chữ( Amount in words): <b>chua co'</b></td>
-        <td>Số tiền bằng chữ( Amount in words): <b>chua co'</b></td>
-        <td>Số tiền bằng chữ( Amount in words): <b>chua co'</b></td>
+        <td>Số tiền bằng chữ( Amount in words): <b>@Model.SoTienBangChu</b></td>
+        <td>Số tiền bằng chữ( Amount in words): <b>@Model.SoTienBangChu</b></td>
+        <td>Số tiền bằng chữ( Amount in words): <b>@Model.SoTienBangChu</b></td>
     </tr>
     <tr>
         <td></td>
