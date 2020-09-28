@@ -3,10 +3,20 @@
     Layout = null;
 }
 <style>
+    table {
+        font-size: 14px;
+    }
+
     .invoicetable {
         clear: both;
         border: 1px solid darkgray;
         border-collapse: collapse;
+        margin: auto;
+        width: 100%;
+    }
+
+    .invoicetable1 {
+        clear: both;
         margin: auto;
         width: 100%;
     }
@@ -16,6 +26,12 @@
         color: black;
         border: 1px solid darkgray;
         padding: 5px;
+        width: 80%;
+    }
+
+    .invoicecell1 {
+        text-align: left;
+        padding: 2px;
     }
 
     body {
@@ -53,6 +69,7 @@
     .tdHead {
         padding: 2px;
     }
+
     /*th {
         background-color: navy;
         color: white;
@@ -67,6 +84,12 @@
         text-align: right;
         border: 1px solid darkgray;
         padding: 5px;
+        width: 20%;
+    }
+
+    .numeric-cell1 {
+        text-align: right;
+        padding: 2px;
     }
 
     .clearfix::after {
@@ -106,35 +129,146 @@
         <td class="tdHead">Fax: (84-8) 38110365</td>
         <td class="tdHead">Fax: (84-8) 38110365</td>
     </tr>
+    @*<tr>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>*@
     <tr>
-        <td></td>
-        <td></td>
-        <td></td>
+        @*<td><b><i>BIÊN NHẬN (RECEIPT)</i></b> Liên 1: lưu</td>
+            <td><b><i>BIÊN NHẬN (RECEIPT)</i></b> Liên 2: khách hàng</td>
+            <td><b><i>BIÊN NHẬN (RECEIPT)</i></b> Liên 3: lưu</td>*@
+        <td>
+            <table class="invoicetable1">
+                <tbody>
+
+                    <tr>
+                        <td class="tdHead invoicecell1"><b><i>BIÊN NHẬN (RECEIPT)</i></b></td>
+                        <td class="tdHead numeric-cell1">Liên 2: khách hàng</td>
+                    </tr>
+                    <tr>
+                        <td class="tdHead invoicecell1">Ngày: @Html.Raw(Model.BienNhan.NgayBN.ToString("dd/MM/yyyy"))</td>
+                        <td class="tdHead numeric-cell1"><b>Số: @Model.BienNhan.SoBN</b></td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td>
+            <table class="invoicetable1">
+                <tbody>
+
+                    <tr>
+                        <td class="tdHead invoicecell1"><b><i>BIÊN NHẬN (RECEIPT)</i></b></td>
+                        <td class="tdHead numeric-cell1">Liên 2: khách hàng</td>
+                    </tr>
+                    <tr>
+                        <td class="tdHead invoicecell1">Ngày: @Html.Raw(Model.BienNhan.NgayBN.ToString("dd/MM/yyyy"))</td>
+                        <td class="tdHead numeric-cell1"><b>Số: @Model.BienNhan.SoBN</b></td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td>
+            <table class="invoicetable1">
+                <tbody>
+
+                    <tr>
+                        <td class="tdHead invoicecell1"><b><i>BIÊN NHẬN (RECEIPT)</i></b></td>
+                        <td class="tdHead numeric-cell1">Liên 2: khách hàng</td>
+                    </tr>
+                    <tr>
+                        <td class="tdHead invoicecell1">Ngày: @Html.Raw(Model.BienNhan.NgayBN.ToString("dd/MM/yyyy"))</td>
+                        <td class="tdHead numeric-cell1"><b>Số: @Model.BienNhan.SoBN</b></td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    @*<tr>
+            <td>Ngày: @Html.Raw(Model.BienNhan.NgayBN.ToString("dd/MM/yyyy")) Số: @Model.BienNhan.SoBN</td>
+            <td>Ngày: @Html.Raw(Model.BienNhan.NgayBN.ToString("dd/MM/yyyy")) Số: @Model.BienNhan.SoBN</td>
+            <td>Ngày: @Html.Raw(Model.BienNhan.NgayBN.ToString("dd/MM/yyyy")) Số: @Model.BienNhan.SoBN</td>
+        </tr>*@
+    @*<tr>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>*@
+    <tr>
+        <td class="tdHead">Đơn vị (company): <b>@Model.BienNhan.Tour.TenKH</b></td>
+        <td class="tdHead">Đơn vị (company): <b>@Model.BienNhan.Tour.TenKH</b></td>
+        <td class="tdHead">Đơn vị (company): <b>@Model.BienNhan.Tour.TenKH</b></td>
     </tr>
     <tr>
-        <td><b><i>BIÊN NHẬN (RECEIPT)</i></b> Liên 1: lưu</td>
-        <td><b><i>BIÊN NHẬN (RECEIPT)</i></b> Liên 2: khách hàng</td>
-        <td><b><i>BIÊN NHẬN (RECEIPT)</i></b> Liên 3: lưu</td>
+        <td class="tdHead">Địa chỉ (Address): <b>@Model.BienNhan.DiaChi</b></td>
+        <td class="tdHead">Địa chỉ (Address): <b>@Model.BienNhan.DiaChi</b></td>
+        <td class="tdHead">Địa chỉ (Address): <b>@Model.BienNhan.DiaChi</b></td>
     </tr>
     <tr>
-        <td>Ngày: @Html.Raw(Model.BienNhan.NgayBN.ToString("dd/MM/yyyy")) Số: @Model.BienNhan.SoBN</td>
-        <td>Ngày: @Html.Raw(Model.BienNhan.NgayBN.ToString("dd/MM/yyyy")) Số: @Model.BienNhan.SoBN</td>
-        <td>Ngày: @Html.Raw(Model.BienNhan.NgayBN.ToString("dd/MM/yyyy")) Số: @Model.BienNhan.SoBN</td>
+        <td class="tdHead">Họ tên (Name): <b>@Model.BienNhan.TenKhach</b></td>
+        <td class="tdHead">Họ tên (Name): <b>@Model.BienNhan.TenKhach</b></td>
+        <td class="tdHead">Họ tên (Name): <b>@Model.BienNhan.TenKhach</b></td>
     </tr>
     <tr>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td class="tdHead">Số hợp đồng: @Model.BienNhan.Tour.SoHopDong</td>
+        <td class="tdHead">Số hợp đồng: @Model.BienNhan.Tour.SoHopDong</td>
+        <td class="tdHead">Số hợp đồng: @Model.BienNhan.Tour.SoHopDong</td>
     </tr>
     <tr>
-        <td>Họ tên (Name): <b>@Model.BienNhan.TenKhach</b></td>
-        <td>Họ tên (Name): <b>@Model.BienNhan.TenKhach</b></td>
-        <td>Họ tên (Name): <b>@Model.BienNhan.TenKhach</b></td>
-    </tr>
-    <tr>
-        <td>Số hợp đồng: @Model.BienNhan.Tour.SoHopDong</td>
-        <td>Số hợp đồng: @Model.BienNhan.Tour.SoHopDong</td>
-        <td>Số hợp đồng: @Model.BienNhan.Tour.SoHopDong</td>
+        <td>
+            <table class="invoicetable1">
+                <tbody>
+
+                    <tr>
+                        <td class="invoicecell1">Đoàn (group): @Model.BienNhan.Tour.Sgtcode</td>
+                        <td class="numeric-cell1">Số khách (Pax): @Model.BienNhan.SK</td>
+                    </tr>
+
+                    <tr>
+                        <td class="invoicecell1">Loại tiền (Currency): @Model.BienNhan.LoaiTien</td>
+                        <td class="numeric-cell1">Tỷ giá (Rate): @Model.BienNhan.TyGia</td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+        </td>
+        <td>
+            <table class="invoicetable1">
+                <tbody>
+
+                    <tr>
+                        <td class="invoicecell1">Đoàn (group): @Model.BienNhan.Tour.Sgtcode</td>
+                        <td class="numeric-cell1">Số khách (Pax): @Model.BienNhan.SK</td>
+                    </tr>
+
+                    <tr>
+                        <td class="invoicecell1">Loại tiền (Currency): @Model.BienNhan.LoaiTien</td>
+                        <td class="numeric-cell1">Tỷ giá (Rate): @Model.BienNhan.TyGia</td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+        </td>
+        <td>
+            <table class="invoicetable1">
+                <tbody>
+
+                    <tr>
+                        <td class="invoicecell1">Đoàn (group): @Model.BienNhan.Tour.Sgtcode</td>
+                        <td class="numeric-cell1">Số khách (Pax): @Model.BienNhan.SK</td>
+                    </tr>
+
+                    <tr>
+                        <td class="invoicecell1">Loại tiền (Currency): @Model.BienNhan.LoaiTien</td>
+                        <td class="numeric-cell1">Tỷ giá (Rate): @Model.BienNhan.TyGia</td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+        </td>
     </tr>
     <tr>
         <td>
@@ -154,22 +288,14 @@
                     {
                         <tr>
                             <td class="invoicecell">@item.Descript</td>
-                            <td class="numeric-cell">@item.Amount.ToString("N0") VND</td>
+                            <td class="numeric-cell">@item.Amount.ToString("N0") </td>
                         </tr>
                     }
                     <tr>
                         <td class="invoicecell">Tổng tiền(Total) </td>
-                        <td class="numeric-cell">@Model.BienNhan.SoTien.ToString("N0") VND</td>
+                        <td class="numeric-cell">@Model.BienNhan.SoTien.ToString("N0") </td>
                     </tr>
 
-                    @*<tr>
-                            <td class="invoicecell">@Model.BienNhan.GhiChu</td>
-                            <td class="numeric-cell">@Html.Raw(String.Format("{0:#,##0}", Model.BienNhan.SoTien)) Đ</td>
-                        </tr>
-                        <tr>
-                            <td class="invoicecell">Tổng cộng(Total)</td>
-                            <td class="numeric-cell">@Html.Raw(String.Format("{0:#,##0}", Model.BienNhan.SoTien)) Đ</td>
-                        </tr>*@
                 </tbody>
             </table>
         </td>
@@ -190,22 +316,14 @@
                     {
                         <tr>
                             <td class="invoicecell">@item.Descript</td>
-                            <td class="numeric-cell">@item.Amount.ToString("N0") VND</td>
+                            <td class="numeric-cell">@item.Amount.ToString("N0") </td>
                         </tr>
                     }
                     <tr>
                         <td class="invoicecell">Tổng tiền(Total) </td>
-                        <td class="numeric-cell">@Model.BienNhan.SoTien.ToString("N0") VND</td>
+                        <td class="numeric-cell">@Model.BienNhan.SoTien.ToString("N0") </td>
                     </tr>
 
-                    @*<tr>
-                            <td class="invoicecell">@Model.BienNhan.GhiChu</td>
-                            <td class="numeric-cell">@Html.Raw(String.Format("{0:#,##0}", Model.BienNhan.SoTien)) Đ</td>
-                        </tr>
-                        <tr>
-                            <td class="invoicecell">Tổng cộng(Total)</td>
-                            <td class="numeric-cell">@Html.Raw(String.Format("{0:#,##0}", Model.BienNhan.SoTien)) Đ</td>
-                        </tr>*@
                 </tbody>
             </table>
         </td>
@@ -226,55 +344,47 @@
                     {
                         <tr>
                             <td class="invoicecell">@item.Descript</td>
-                            <td class="numeric-cell">@item.Amount.ToString("N0") VND</td>
+                            <td class="numeric-cell">@item.Amount.ToString("N0") </td>
                         </tr>
                     }
                     <tr>
                         <td class="invoicecell">Tổng tiền(Total) </td>
-                        <td class="numeric-cell">@Model.BienNhan.SoTien.ToString("N0") VND</td>
+                        <td class="numeric-cell">@Model.BienNhan.SoTien.ToString("N0") </td>
                     </tr>
 
-                    @*<tr>
-                            <td class="invoicecell">@Model.BienNhan.GhiChu</td>
-                            <td class="numeric-cell">@Html.Raw(String.Format("{0:#,##0}", Model.BienNhan.SoTien)) Đ</td>
-                        </tr>
-                        <tr>
-                            <td class="invoicecell">Tổng cộng(Total)</td>
-                            <td class="numeric-cell">@Html.Raw(String.Format("{0:#,##0}", Model.BienNhan.SoTien)) Đ</td>
-                        </tr>*@
                 </tbody>
             </table>
         </td>
     </tr>
+    @*<tr>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>*@
     <tr>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td class="tdHead">Số tiền bằng chữ( Amount in words): <b>@Model.SoTienBangChu</b></td>
+        <td class="tdHead">Số tiền bằng chữ( Amount in words): <b>@Model.SoTienBangChu</b></td>
+        <td class="tdHead">Số tiền bằng chữ( Amount in words): <b>@Model.SoTienBangChu</b></td>
+    </tr>
+    @*<tr>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>*@
+    <tr>
+        <td class="tdHead">Ghi chú(Note): @Model.BienNhan.GhiChu</td>
+        <td class="tdHead">Ghi chú(Note): @Model.BienNhan.GhiChu</td>
+        <td class="tdHead">Ghi chú(Note): @Model.BienNhan.GhiChu</td>
     </tr>
     <tr>
-        <td>Số tiền bằng chữ( Amount in words): <b>@Model.SoTienBangChu</b></td>
-        <td>Số tiền bằng chữ( Amount in words): <b>@Model.SoTienBangChu</b></td>
-        <td>Số tiền bằng chữ( Amount in words): <b>@Model.SoTienBangChu</b></td>
+        <td class="tdHead">-Xin vui lòng xuất trình biên nhận này khi thanh toán</td>
+        <td class="tdHead">-Xin vui lòng xuất trình biên nhận này khi thanh toán</td>
+        <td class="tdHead">-Xin vui lòng xuất trình biên nhận này khi thanh toán</td>
     </tr>
     <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>Ghi chú(Note): @Model.BienNhan.GhiChu</td>
-        <td>Ghi chú(Note): @Model.BienNhan.GhiChu</td>
-        <td>Ghi chú(Note): @Model.BienNhan.GhiChu</td>
-    </tr>
-    <tr>
-        <td>-Xin vui lòng xuất trình biên nhận này khi thanh toán</td>
-        <td>-Xin vui lòng xuất trình biên nhận này khi thanh toán</td>
-        <td>-Xin vui lòng xuất trình biên nhận này khi thanh toán</td>
-    </tr>
-    <tr>
-        <td>-Please present this receipt when settling the bill</td>
-        <td>-Please present this receipt when settling the bill</td>
-        <td>-Please present this receipt when settling the bill</td>
+        <td class="tdHead">-Please present this receipt when settling the bill</td>
+        <td class="tdHead">-Please present this receipt when settling the bill</td>
+        <td class="tdHead">-Please present this receipt when settling the bill</td>
     </tr>
     <tr>
         <td>
@@ -292,7 +402,22 @@
                     <tr>
                         <td></td>
                         <td></td>
-                        <td> <b>@Model.BienNhan.NguoiTao</b></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>@Model.BienNhan.NguoiTao</td>
                     </tr>
                 </thead>
 
@@ -315,7 +440,22 @@
                     <tr>
                         <td></td>
                         <td></td>
-                        <td><b>@Model.BienNhan.NguoiTao</b></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>@Model.BienNhan.NguoiTao</td>
                     </tr>
                 </thead>
 
@@ -338,7 +478,26 @@
                     <tr>
                         <td></td>
                         <td></td>
-                        <td> <b>@Model.BienNhan.NguoiTao</b></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>
+
+                            @Model.BienNhan.NguoiTao
+
+                        </td>
                     </tr>
                 </thead>
 

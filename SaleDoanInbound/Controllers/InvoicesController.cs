@@ -455,6 +455,13 @@ namespace SaleDoanInbound.Controllers
         }
         //-----------HuyInvoice------------
 
+        //-----------PrintInvoice------------
+        public IActionResult InvoicePdf()
+        {
+            return View();
+        }
+        //-----------PrintInvoice------------
+
         //public JsonResult IsStringNameAvailable(string TenCreate)
         //{
         //    var boolName = _unitOfWork.dMNganhNgheRepository.Find(x => x.TenNganhNghe.Trim().ToLower() == TenCreate.Trim().ToLower()).FirstOrDefault();

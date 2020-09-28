@@ -133,30 +133,36 @@
                                     <div class="btn-group text-white" role="group">
                                         @if (item.HuyInvoice == true)
                                         {
-                                            <a class="btn btn-primary btn-sm disabled" title="Cập nhật"><i class="fas fa-edit"></i></a>
+                                            <a class="disabled" title="Cập nhật"><i class="fas fa-edit"></i></a>
+                                            <span class="text-dark"> | </span>
                                         }
                                         else
                                         {
-                                            <a class="btn btn-primary btn-sm" title="Cập nhật" asp-action="Edit" asp-route-tourId="@Model.Tour.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
+                                            <a class="text-primary" title="Cập nhật" asp-action="Edit" asp-route-tourId="@Model.Tour.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
+                                            <span class="text-dark"> | </span>
                                         }
-                                        <a class="btn btn-success btn-sm" title="Chi tiết" asp-action="Details" asp-route-tourId="@Model.Tour.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
+                                        <!--print invoice-->
+                                        <a data-id="@item.Id" data-strUrl="@Model.StrUrl" class="text-warning border-0 bg-transparent btnPrintInvoice" title="Print"><i class="fas fa-print"></i></a>
+                                        <span class="text-dark"> | </span>
+                                        <a class="text-success" title="Chi tiết" asp-action="Details" asp-route-tourId="@Model.Tour.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
+                                        <span class="text-dark"> | </span>
                                         <form asp-action="Delete" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" method="post">
 
                                             <span id="confirmDeleteSpan_@item.Id" style="display: none">
                                                 <span class="text-dark">Hủy?</span>
-                                                <button type="button" data-id="@item.Id" data-url="@Model.StrUrl" class="btn btn-danger btnHuyInvoice">Yes</button>
-                                                <button type="button" class="btn btn-primary" onclick="confirmDelete('@item.Id', false)">No</button>
+                                                <button type="button" data-id="@item.Id" data-url="@Model.StrUrl" class="btn btn-danger btn-xs btnHuyInvoice">Yes</button>
+                                                <button type="button" class="btn btn-primary btn-xs" onclick="confirmDelete('@item.Id', false)">No</button>
                                             </span>
 
                                             <span id="deleteSpan_@item.Id">
                                                 @if (item.HuyInvoice == true)
                                                 {
-                                                    <button type="button" class="btn btn-danger btn-sm disabled"><i class="fas fa-trash-alt"></i></button>
+                                                    <button type="button" class="text-danger border-0 bg-transparent disabled"><i class="fas fa-trash-alt"></i></button>
 
                                                 }
                                                 else
                                                 {
-                                                    <button type="button" class="btn btn-danger btn-sm btnHuy" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
+                                                    <button type="button" class="text-danger border-0 bg-transparent btnHuy" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
 
                                                 }
                                             </span>
