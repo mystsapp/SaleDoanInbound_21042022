@@ -142,7 +142,7 @@
                                             <span class="text-dark"> | </span>
                                         }
                                         <!--print invoice-->
-                                        <a data-id="@item.Id" data-strUrl="@Model.StrUrl" class="text-warning border-0 bg-transparent btnPrintInvoice" title="Print"><i class="fas fa-print"></i></a>
+                                        <a asp-action="InvoicePdfViewer" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" class="text-warning btnPrintInvoice" title="Print"><i class="fas fa-print"></i></a>
                                         <span class="text-dark"> | </span>
                                         <a class="text-success" title="Chi tiết" asp-action="Details" asp-route-tourId="@Model.Tour.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
                                         <span class="text-dark"> | </span>

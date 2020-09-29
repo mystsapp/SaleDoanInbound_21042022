@@ -75,7 +75,7 @@ namespace SaleDoanInbound.Controllers
             InvoiceVM.Invoice.HopDong = InvoiceVM.Tour.SoHopDong;
             InvoiceVM.Invoice.MaKH = InvoiceVM.Tour.MaKH;
             InvoiceVM.Invoice.TenKhach = InvoiceVM.Tour.TenKH;
-            InvoiceVM.Invoice.Ref = "";
+            InvoiceVM.Invoice.Ref = InvoiceVM.Tour.NguoiKyHopDong; // ref
             InvoiceVM.Invoice.MOFP = "TM/CK";
             InvoiceVM.Invoice.TourId = InvoiceVM.Tour.Id;
 
@@ -456,9 +456,20 @@ namespace SaleDoanInbound.Controllers
         //-----------HuyInvoice------------
 
         //-----------PrintInvoice------------
-        public IActionResult InvoicePdf()
+        public async Task<IActionResult> InvoicePdfViewer(string id, string strUrl)
         {
-            return View();
+            var invoices = await _unitOfWork.invoiceRepository.GetAllIncludeOneAsync(x => x.Tour);
+            InvoiceVM.Invoice = invoices.Where(x => x.Id == id).FirstOrDefault();
+            InvoiceVM.CTInvoices = await _unitOfWork.cTVATRepository.FindAsync(x => x.InvoiceId == id && x.TiengAnh);
+            return View(InvoiceVM);
+        }
+        
+        public async Task<IActionResult> InvoicePdfPrint(string id, string strUrl)
+        {
+            var invoices = await _unitOfWork.invoiceRepository.GetAllIncludeOneAsync(x => x.Tour);
+            InvoiceVM.Invoice = invoices.Where(x => x.Id == id).FirstOrDefault();
+            InvoiceVM.CTInvoices = await _unitOfWork.cTVATRepository.FindAsync(x => x.InvoiceId == id && x.TiengAnh);
+            return View(InvoiceVM);
         }
         //-----------PrintInvoice------------
 
