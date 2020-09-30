@@ -66,32 +66,32 @@
                     <div class="row invoice-info">
                         <div class="col-sm-4 invoice-col">
                             @*From
-                                <address>
-                                    <strong>Admin, Inc.</strong><br>
-                                    795 Folsom Ave, Suite 600<br>
-                                    San Francisco, CA 94107<br>
-                                    Phone: (804) 123-5432<br>
-                                    Email: info@almasaeedstudio.com
-                                </address>*@
+                <address>
+                    <strong>Admin, Inc.</strong><br>
+                    795 Folsom Ave, Suite 600<br>
+                    San Francisco, CA 94107<br>
+                    Phone: (804) 123-5432<br>
+                    Email: info@almasaeedstudio.com
+                </address>*@
                         </div>
                         <!-- /.col -->
                         <div class="col-sm-4 invoice-col">
                             @*To
-                                <address>*@
+                <address>*@
                             <h1><strong>INVOICE</strong></h1><br>
                             @*795 Folsom Ave, Suite 600<br>
-                                San Francisco, CA 94107<br>
-                                Phone: (555) 539-1037<br>
-                                Email: john.doe@example.com
-                                                        </address>*@
+                San Francisco, CA 94107<br>
+                Phone: (555) 539-1037<br>
+                Email: john.doe@example.com
+                                        </address>*@
                         </div>
                         <!-- /.col -->
                         <div class="col-sm-4 invoice-col">
                             @*<b>Invoice #007612</b><br>
-                                <br>*@
-                            <b>NO:</b> 4F3S8J<br>
-                            <b>Date:</b> @Model.Invoice.Date<br>
-                            <b>Code:</b> 968-34567
+                <br>*@
+                            <b>NO:</b> @Model.Invoice.Id<br>
+                            <b>Date:</b> @Model.Invoice.Date.ToString("dd/MM/yyyy")<br>
+                            <b>Code:</b> @Model.Invoice.Tour.Sgtcode
                         </div>
                         <!-- /.col -->
                     </div>
@@ -117,47 +117,46 @@
                                 </thead>
                                 <tbody>
                                     @*<tr>
-                                            <td>@Model.Invoice.Pax</td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>*@
+                            <td>@Model.Invoice.Pax</td>
+                            <td></td>
+                            <td></td>
+                        </tr>*@
                                     @foreach (var item in Model.CTInvoices)
                                     {
                                         <tr>
                                             @if (i == 1)
                                             {
                                                 @*<td>@Model.Invoice.Pax</td>*@
-                                                <td class="invoicecell text-center" rowspan="@Model.CTInvoices.Count()">@Model.Invoice.Pax</td>
+                                                <td class="invoicecell text-center" rowspan="@Model.CTInvoices.Count()">@Model.Invoice.Pax PAX</td>
                                             }
                                             @*else
-                                            {
-                                                <td></td>
-                                            }*@
+                                {
+                                    <td></td>
+                                }*@
                                             <td class="invoicecell ">@item.Descript</td>
                                             <td class="invoicecell text-center">@item.Amount.ToString("N0")</td>
 
                                         </tr>
                                         i++;
                                     }
-                                <tr class="text-bold">
-                                    <td class="invoicecell text-center">TOTAL </td>
-                                    <td></td>
-                                    <td class="invoicecell text-center" >@Model.CTInvoices.Sum(x => x.Amount).ToString("N0")</td>
-                                </tr>
+                                    <tr class="text-bold">
+                                        <td class="invoicecell text-center">TOTAL </td>
+                                        <td></td>
+                                        <td class="invoicecell text-center">@Model.CTInvoices.Sum(x => x.Amount).ToString("N0")</td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
                         <!-- /.col -->
                     </div>
                     <!-- /.row -->
+                    <!-- accepted payments column -->
+                    IN WORDS : <strong>@Model.SoTienBangChu.ToUpper()</strong>
+                    <!-- /.col -->
 
-                    <div class="row">
-                        <!-- accepted payments column -->
-                        IN WORDS : Chua lam.
-                        <!-- /.col -->
-                    </div>
                     <br />
-                    PLEASE ASK YOUR BANK TO REMIT BY TELEGRAPHIC TRANSFER TO JOINT STOCK COMMERCIAL BANK FOR FOREIGN TRADE OF VIET NAM, HOCHIMINH CITY BRANCH  ( 05 ME LINH SQUARE, BEN THANH WARD, 1ST DISTRICT, HCM CITY. PHONE (+84-8) 38297245, FAX : (+84-8) 38297228)  SWIFT CODE: BFTVVNVX007  IN FAVOUR OF SAIGONTOURIST TRAVEL SERVICE Co., LTD. ACC NO.  0071370087213        AND PLEASE SEND US A COPY OF YOUR BANK TRANSFER FOR OUR REFERENCE.
+                    <br />
+                    PLEASE ASK YOUR BANK TO REMIT BY TELEGRAPHIC TRANSFER TO JOINT STOCK COMMERCIAL BANK FOR FOREIGN TRADE OF VIET NAM, HOCHIMINH CITY BRANCH  ( 05 ME LINH SQUARE, BEN THANH WARD, 1ST DISTRICT, HCM CITY. PHONE (+84-8) 38297245, FAX : (+84-8) 38297228) <b> SWIFT CODE: BFTVVNVX007 </b> IN FAVOUR OF SAIGONTOURIST TRAVEL SERVICE Co., LTD. ACC NO. <b> 0071370087213 </b>      AND PLEASE SEND US A COPY OF YOUR BANK TRANSFER FOR OUR REFERENCE.
                     <br />
                     <!-- /.row -->
                     <div class="row">
@@ -176,12 +175,12 @@
                         <div class="col-12">
                             <a asp-action="InvoicePdfPrint" asp-route-id="@Model.Invoice.Id" asp-route-strUrl="@Model.StrUrl" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
                             @*<button type="button" class="btn btn-success float-right">
-                                    <i class="far fa-credit-card"></i> Submit
-                                    Payment
-                                </button>
-                                <button type="button" class="btn btn-primary float-right" style="margin-right: 5px;">
-                                    <i class="fas fa-download"></i> Generate PDF
-                                </button>*@
+                    <i class="far fa-credit-card"></i> Submit
+                    Payment
+                </button>
+                <button type="button" class="btn btn-primary float-right" style="margin-right: 5px;">
+                    <i class="fas fa-download"></i> Generate PDF
+                </button>*@
                         </div>
                     </div>
                 </div>

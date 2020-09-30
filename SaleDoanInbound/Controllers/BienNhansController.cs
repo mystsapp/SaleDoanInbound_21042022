@@ -28,11 +28,13 @@ namespace SaleDoanInbound.Controllers
                 BienNhan = new Data.Models_IB.BienNhan(),
                 Tour = new Data.Models_IB.Tour(),
                 Ngoaites = _unitOfWork.ngoaiTeRepository.GetAll(),
-                CacNoiDungHuyTours = _unitOfWork.cacNoiDungHuyTourRepository.GetAll()
+                CacNoiDungHuyTours = _unitOfWork.cacNoiDungHuyTourRepository.GetAll(),
+                ChiTietBNPrint = new ListViewModel()
             };
         }
         public async Task<IActionResult> Index(long tourId, long id = 0, string searchString = null, string searchFromDate = null, string searchToDate = null)
         {
+            
             BienNhanVM.StrUrl = UriHelper.GetDisplayUrl(Request);
             BienNhanVM.Tour = _unitOfWork.tourRepository.GetById(tourId);
             ViewBag.searchString = searchString;
@@ -390,6 +392,23 @@ namespace SaleDoanInbound.Controllers
             //string t = String.IsNullOrEmpty(loaitien) ? "" : " Exchange rate USD/VND";
             BienNhanVM.SoTienBangChu = char.ToUpper(s[0]) + s.Substring(1) + " đồng";// + " / " + char.ToUpper(c[0]) + c.Substring(1).ToLower() + "vnd";
 
+            // ChiTietBNPrint
+            BienNhanVM.ChiTietBNPrint = new ListViewModel();
+            foreach (var item in BienNhanVM.ChiTietBNs)
+            {
+                if (string.IsNullOrEmpty(item.Descript))
+                {
+                    BienNhanVM.ChiTietBNPrint.DienGiais += "" + "<br />";
+                }
+                else
+                {
+                    BienNhanVM.ChiTietBNPrint.DienGiais += "- " + "<b>" + item.Descript + "</b>" + "<br>";
+                }
+                BienNhanVM.ChiTietBNPrint.SoTiens += "<b>" + item.Amount.ToString("N0") + "</b>" + "<br />";
+
+            }
+            // ChiTietBNPrint
+
             BienNhanVM.BienNhan.NguoiTao = user.HoTen;
             return PartialView(BienNhanVM);
         }
@@ -426,6 +445,23 @@ namespace SaleDoanInbound.Controllers
             BienNhanVM.BienNhan = await _unitOfWork.bienNhanRepository.GetByIdIncludeOneAsync(id);
             BienNhanVM.ChiTietBNs = await _unitOfWork.chiTietBNRepository.FindAsync(x => x.BienNhanId == id);
 
+            // ChiTietBNPrint
+            BienNhanVM.ChiTietBNPrint = new ListViewModel();
+            foreach (var item in BienNhanVM.ChiTietBNs)
+            {
+                if (string.IsNullOrEmpty(item.Descript))
+                {
+                    BienNhanVM.ChiTietBNPrint.DienGiais += "" + "<br />";
+                }
+                else
+                {
+                    BienNhanVM.ChiTietBNPrint.DienGiais += "- " + "<b>" + item.Descript + "</b>" + "<br>";
+                }
+                BienNhanVM.ChiTietBNPrint.SoTiens += "<b>" + item.Amount.ToString("N0") + "</b>" + "<br />";
+
+            }
+            // ChiTietBNPrint
+
             //next SoBN(so bien nhan)
             if (string.IsNullOrEmpty(BienNhanVM.BienNhan.SoBN))
             {
@@ -453,6 +489,7 @@ namespace SaleDoanInbound.Controllers
 
                 }
                 _unitOfWork.bienNhanRepository.Update(BienNhanVM.BienNhan);
+
                 await _unitOfWork.Complete();
 
             }

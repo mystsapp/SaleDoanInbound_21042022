@@ -22,5 +22,6 @@ namespace SaleDoanInbound.Models
         public TourIB TourIB { get; set; }
         public Tour Tour { get; set; }
         public string StrUrl { get; set; }
+        public string SoTienBangChu { get; set; }
     }
 }

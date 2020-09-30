@@ -110,9 +110,9 @@
                                 <div class="col-sm-4 invoice-col">
                                     @*<b>Invoice #007612</b><br>
                                         <br>*@
-                                    <b>NO:</b> 4F3S8J<br>
-                                    <b>Date:</b> @Model.Invoice.Date<br>
-                                    <b>Code:</b> 968-34567
+                                    <b>NO:</b> @Model.Invoice.Id<br>
+                                    <b>Date:</b> @Model.Invoice.Date.ToString("dd/MM/yyyy")<br>
+                                    <b>Code:</b> @Model.Invoice.Tour.Sgtcode
                                 </div>
                                 <!-- /.col -->
                             </div>
@@ -148,7 +148,7 @@
                                                     @if (i == 1)
                                                     {
                                                         @*<td>@Model.Invoice.Pax</td>*@
-                                                        <td class="invoicecell text-center" rowspan="@Model.CTInvoices.Count()">@Model.Invoice.Pax</td>
+                                                        <td class="invoicecell text-center" rowspan="@Model.CTInvoices.Count()">@Model.Invoice.Pax PAX</td>
                                                     }
                                                     @*else
                                                         {
@@ -171,14 +171,13 @@
                                 <!-- /.col -->
                             </div>
                             <!-- /.row -->
+                            <!-- accepted payments column -->
+                            IN WORDS : <strong>@Model.SoTienBangChu.ToUpper()</strong>
+                            <!-- /.col -->
 
-                            <div class="row">
-                                <!-- accepted payments column -->
-                                IN WORDS : Chua lam.
-                                <!-- /.col -->
-                            </div>
                             <br />
-                            PLEASE ASK YOUR BANK TO REMIT BY TELEGRAPHIC TRANSFER TO JOINT STOCK COMMERCIAL BANK FOR FOREIGN TRADE OF VIET NAM, HOCHIMINH CITY BRANCH  ( 05 ME LINH SQUARE, BEN THANH WARD, 1ST DISTRICT, HCM CITY. PHONE (+84-8) 38297245, FAX : (+84-8) 38297228)  SWIFT CODE: BFTVVNVX007  IN FAVOUR OF SAIGONTOURIST TRAVEL SERVICE Co., LTD. ACC NO.  0071370087213        AND PLEASE SEND US A COPY OF YOUR BANK TRANSFER FOR OUR REFERENCE.
+                            <br />
+                            PLEASE ASK YOUR BANK TO REMIT BY TELEGRAPHIC TRANSFER TO JOINT STOCK COMMERCIAL BANK FOR FOREIGN TRADE OF VIET NAM, HOCHIMINH CITY BRANCH  ( 05 ME LINH SQUARE, BEN THANH WARD, 1ST DISTRICT, HCM CITY. PHONE (+84-8) 38297245, FAX : (+84-8) 38297228) <b> SWIFT CODE: BFTVVNVX007 </b> IN FAVOUR OF SAIGONTOURIST TRAVEL SERVICE Co., LTD. ACC NO. <b> 0071370087213 </b>      AND PLEASE SEND US A COPY OF YOUR BANK TRANSFER FOR OUR REFERENCE.
                             <br />
                             <!-- /.row -->
                             <div class="row">
@@ -194,11 +193,11 @@
                             </div>
                             <!-- this row will not appear when printing -->
                             @*<div class="row no-print">
-                                <div class="col-12">
-                                    <a href="invoice-print.html" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
-                                  
-                                </div>
-                            </div>*@
+                                    <div class="col-12">
+                                        <a href="invoice-print.html" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
+
+                                    </div>
+                                </div>*@
                         </div>
                         <!-- /.invoice -->
                     </div><!-- /.col -->

@@ -9,5 +9,7 @@ namespace SaleDoanInbound.Models
     {
         public int id { get; set; }
         public string Name { get; set; }
+        public string DienGiais { get; set; }
+        public string SoTiens { get; set; }
     }
 }

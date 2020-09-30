@@ -284,16 +284,20 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in Model.ChiTietBNs)
-                    {
-                        <tr>
-                            <td class="invoicecell">@item.Descript</td>
-                            <td class="numeric-cell">@item.Amount.ToString("N0") </td>
-                        </tr>
-                    }
+                    @*@foreach (var item in Model.ChiTietBNs)
+        {
+            <tr>
+                <td class="invoicecell">@item.Descript</td>
+                <td class="numeric-cell">@item.Amount.ToString("N0") </td>
+            </tr>
+        }*@
                     <tr>
-                        <td class="invoicecell">Tổng tiền(Total) </td>
-                        <td class="numeric-cell">@Model.BienNhan.SoTien.ToString("N0") </td>
+                        <td class="invoicecell">@Html.Raw(Model.ChiTietBNPrint.DienGiais)</td>
+                        <td class="numeric-cell">@Html.Raw(Model.ChiTietBNPrint.SoTiens) </td>
+                    </tr>
+                    <tr>
+                        <td class="invoicecell"><b>Tổng tiền(Total)</b> </td>
+                        <td class="numeric-cell"><b>@Model.BienNhan.SoTien.ToString("N0")</b> </td>
                     </tr>
 
                 </tbody>
@@ -312,16 +316,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in Model.ChiTietBNs)
-                    {
-                        <tr>
-                            <td class="invoicecell">@item.Descript</td>
-                            <td class="numeric-cell">@item.Amount.ToString("N0") </td>
-                        </tr>
-                    }
                     <tr>
-                        <td class="invoicecell">Tổng tiền(Total) </td>
-                        <td class="numeric-cell">@Model.BienNhan.SoTien.ToString("N0") </td>
+                        <td class="invoicecell">@Html.Raw(Model.ChiTietBNPrint.DienGiais)</td>
+                        <td class="numeric-cell">@Html.Raw(Model.ChiTietBNPrint.SoTiens) </td>
+                    </tr>
+                    <tr>
+                        <td class="invoicecell"><b>Tổng tiền(Total)</b> </td>
+                        <td class="numeric-cell"><b>@Model.BienNhan.SoTien.ToString("N0")</b> </td>
                     </tr>
 
                 </tbody>
@@ -340,16 +341,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in Model.ChiTietBNs)
-                    {
-                        <tr>
-                            <td class="invoicecell">@item.Descript</td>
-                            <td class="numeric-cell">@item.Amount.ToString("N0") </td>
-                        </tr>
-                    }
                     <tr>
-                        <td class="invoicecell">Tổng tiền(Total) </td>
-                        <td class="numeric-cell">@Model.BienNhan.SoTien.ToString("N0") </td>
+                        <td class="invoicecell align-top">@Html.Raw(Model.ChiTietBNPrint.DienGiais)</td>
+                        <td class="numeric-cell align-top">@Html.Raw(Model.ChiTietBNPrint.SoTiens) </td>
+                    </tr>
+                    <tr>
+                        <td class="invoicecell"><b>Tổng tiền(Total)</b> </td>
+                        <td class="numeric-cell"><b>@Model.BienNhan.SoTien.ToString("N0")</b> </td>
                     </tr>
 
                 </tbody>

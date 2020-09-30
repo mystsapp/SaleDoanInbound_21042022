@@ -1,6 +1,83 @@
 ﻿@model BienNhanViewModel
-
 @*<style>
+        .invoicetable {
+            clear: both;
+            border: 1px solid darkgray;
+            border-collapse: collapse;
+            margin: auto;
+            width: 100%;
+        }
+
+        .invoicecell {
+            background-color: white;
+            color: black;
+            border: 1px solid darkgray;
+            padding: 5px;
+        }
+
+        body {
+            margin: 0px;
+            font-family: 'Segoe UI', Arial;
+        }
+
+        .invoice-head {
+            clear: both;
+            display: block;
+            padding: 10px;
+            margin-bottom: 40px;
+        }
+
+        .invoice-title {
+            background-color: navy;
+            color: white;
+            font-size: 20px;
+            padding: 10px;
+            width: 100%;
+        }
+
+        .invoice-to {
+            float: left;
+        }
+
+        .invoice-details {
+            float: right;
+        }
+
+        td, th {
+            padding: 10px;
+        }
+
+        .tdHead {
+            padding: 2px;
+        }
+        /*th {
+                background-color: navy;
+                color: white;
+            }*/
+
+        /*td, th {
+                border: 1px solid darkgray;
+                padding: 5px;
+            }*/
+
+        .numeric-cell {
+            text-align: right;
+            border: 1px solid darkgray;
+            padding: 5px;
+        }
+
+        .clearfix::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+    </style>*@
+
+<style>
+    table {
+        font-size: 14px;
+    }
+
     .invoicetable {
         clear: both;
         border: 1px solid darkgray;
@@ -72,85 +149,7 @@
         clear: both;
         display: table;
     }
-</style>*@
-
-    <style>
-            table {
-                font-size: 14px;
-            }
-
-            .invoicetable {
-                clear: both;
-                border: 1px solid darkgray;
-                border-collapse: collapse;
-                margin: auto;
-                width: 100%;
-            }
-
-            .invoicecell {
-                background-color: white;
-                color: black;
-                border: 1px solid darkgray;
-                padding: 5px;
-            }
-
-            body {
-                margin: 0px;
-                font-family: 'Segoe UI', Arial;
-            }
-
-            .invoice-head {
-                clear: both;
-                display: block;
-                padding: 10px;
-                margin-bottom: 40px;
-            }
-
-            .invoice-title {
-                background-color: navy;
-                color: white;
-                font-size: 20px;
-                padding: 10px;
-                width: 100%;
-            }
-
-            .invoice-to {
-                float: left;
-            }
-
-            .invoice-details {
-                float: right;
-            }
-
-            td, th {
-                padding: 10px;
-            }
-
-            .tdHead {
-                padding: 2px;
-            }
-            /*th {
-            background-color: navy;
-            color: white;
-        }*/
-
-            /*td, th {
-            border: 1px solid darkgray;
-            padding: 5px;
-        }*/
-
-            .numeric-cell {
-                text-align: right;
-                border: 1px solid darkgray;
-                padding: 5px;
-            }
-
-            .clearfix::after {
-                content: "";
-                clear: both;
-                display: table;
-            }
-    </style>
+</style>
 
 @{
     if (Model != null)
@@ -230,16 +229,21 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var item in Model.ChiTietBNs)
-                            {
-                                <tr>
-                                    <td class="invoicecell">@item.Descript</td>
-                                    <td class="numeric-cell">@item.Amount.ToString("N0") VND</td>
-                                </tr>
-                            }
+                            @*@foreach (var item in Model.ChiTietBNs)
+                                {
+                                   <tr>
+                                            <td class="invoicecell" style="border-bottom:1px solid #ffffff;">@item.Descript</td>
+                                            <td class="numeric-cell" style="border-bottom:1px solid #ffffff;">@item.Amount.ToString("N0") VND</td>
+                                        </tr>
+
+                                                    }*@
                             <tr>
-                                <td class="invoicecell">Tổng tiền(Total) </td>
-                                <td class="numeric-cell">@Model.BienNhan.SoTien.ToString("N0") VND</td>
+                                <td class="invoicecell">@Html.Raw(Model.ChiTietBNPrint.DienGiais)</td>
+                                <td class="numeric-cell">@Html.Raw(Model.ChiTietBNPrint.SoTiens) </td>
+                            </tr>
+                            <tr>
+                                <td class="invoicecell"><b>Tổng tiền(Total)</b> </td>
+                                <td class="numeric-cell"><b>@Model.BienNhan.SoTien.ToString("N0")</b> </td>
                             </tr>
 
                             @*<tr>
@@ -266,26 +270,23 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var item in Model.ChiTietBNs)
-                            {
-                                <tr>
-                                    <td class="invoicecell">@item.Descript</td>
-                                    <td class="numeric-cell">@item.Amount.ToString("N0") VND</td>
-                                </tr>
-                            }
                             <tr>
-                                <td class="invoicecell">Tổng tiền(Total) </td>
-                                <td class="numeric-cell">@Model.BienNhan.SoTien.ToString("N0") VND</td>
+                                <td class="invoicecell">@Html.Raw(Model.ChiTietBNPrint.DienGiais)</td>
+                                <td class="numeric-cell">@Html.Raw(Model.ChiTietBNPrint.SoTiens) </td>
+                            </tr>
+                            <tr>
+                                <td class="invoicecell"><b>Tổng tiền(Total)</b> </td>
+                                <td class="numeric-cell"><b>@Model.BienNhan.SoTien.ToString("N0")</b> </td>
                             </tr>
 
                             @*<tr>
-                                    <td class="invoicecell">@Model.BienNhan.GhiChu</td>
-                                    <td class="numeric-cell">@Html.Raw(String.Format("{0:#,##0}", Model.BienNhan.SoTien)) Đ</td>
-                                </tr>
-                                <tr>
-                                    <td class="invoicecell">Tổng cộng(Total)</td>
-                                    <td class="numeric-cell">@Html.Raw(String.Format("{0:#,##0}", Model.BienNhan.SoTien)) Đ</td>
-                                </tr>*@
+            <td class="invoicecell">@Model.BienNhan.GhiChu</td>
+            <td class="numeric-cell">@Html.Raw(String.Format("{0:#,##0}", Model.BienNhan.SoTien)) Đ</td>
+        </tr>
+        <tr>
+            <td class="invoicecell">Tổng cộng(Total)</td>
+            <td class="numeric-cell">@Html.Raw(String.Format("{0:#,##0}", Model.BienNhan.SoTien)) Đ</td>
+        </tr>*@
                         </tbody>
                     </table>
                 </td>
@@ -302,26 +303,23 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var item in Model.ChiTietBNs)
-                            {
-                                <tr>
-                                    <td class="invoicecell">@item.Descript</td>
-                                    <td class="numeric-cell">@item.Amount.ToString("N0") VND</td>
-                                </tr>
-                            }
                             <tr>
-                                <td class="invoicecell">Tổng tiền(Total) </td>
-                                <td class="numeric-cell">@Model.BienNhan.SoTien.ToString("N0") VND</td>
+                                <td class="invoicecell align-top">@Html.Raw(Model.ChiTietBNPrint.DienGiais)</td>
+                                <td class="numeric-cell align-top">@Html.Raw(Model.ChiTietBNPrint.SoTiens) </td>
+                            </tr>
+                            <tr>
+                                <td class="invoicecell"><b>Tổng tiền(Total)</b> </td>
+                                <td class="numeric-cell"><b>@Model.BienNhan.SoTien.ToString("N0")</b> </td>
                             </tr>
 
                             @*<tr>
-                                    <td class="invoicecell">@Model.BienNhan.GhiChu</td>
-                                    <td class="numeric-cell">@Html.Raw(String.Format("{0:#,##0}", Model.BienNhan.SoTien)) Đ</td>
-                                </tr>
-                                <tr>
-                                    <td class="invoicecell">Tổng cộng(Total)</td>
-                                    <td class="numeric-cell">@Html.Raw(String.Format("{0:#,##0}", Model.BienNhan.SoTien)) Đ</td>
-                                </tr>*@
+            <td class="invoicecell">@Model.BienNhan.GhiChu</td>
+            <td class="numeric-cell">@Html.Raw(String.Format("{0:#,##0}", Model.BienNhan.SoTien)) Đ</td>
+        </tr>
+        <tr>
+            <td class="invoicecell">Tổng cộng(Total)</td>
+            <td class="numeric-cell">@Html.Raw(String.Format("{0:#,##0}", Model.BienNhan.SoTien)) Đ</td>
+        </tr>*@
                         </tbody>
                     </table>
                 </td>

@@ -20,5 +20,7 @@ namespace SaleDoanInbound.Models
         public string StrUrl { get; set; }
         public string SoTienBangChu { get; set; }
 
+        public ListViewModel ChiTietBNPrint { get; set; }
+
     }
 }

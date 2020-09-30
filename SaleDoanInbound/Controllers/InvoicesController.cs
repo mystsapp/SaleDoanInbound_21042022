@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using SaleDoanInbound.Models;
 using Data.Utilities;
 using Data.Models_IB;
+using NumToWords;
 
 namespace SaleDoanInbound.Controllers
 {
@@ -461,6 +462,14 @@ namespace SaleDoanInbound.Controllers
             var invoices = await _unitOfWork.invoiceRepository.GetAllIncludeOneAsync(x => x.Tour);
             InvoiceVM.Invoice = invoices.Where(x => x.Id == id).FirstOrDefault();
             InvoiceVM.CTInvoices = await _unitOfWork.cTVATRepository.FindAsync(x => x.InvoiceId == id && x.TiengAnh);
+
+            ///// Currency to money
+            var tongTien = InvoiceVM.CTInvoices.Sum(x => x.Amount);
+            string s = SoSangChu.DoiSoSangChu(tongTien.ToString().Split('.')[0]);
+            string c = AmountToWords.changeCurrencyToWords(tongTien.ToString().ToLower());
+            //string t = String.IsNullOrEmpty(loaitien) ? "" : " Exchange rate USD/VND";
+            InvoiceVM.SoTienBangChu = char.ToUpper(c[0]) + c.Substring(1).ToLower() + " " + InvoiceVM.Invoice.Currency;
+
             return View(InvoiceVM);
         }
         
@@ -469,6 +478,14 @@ namespace SaleDoanInbound.Controllers
             var invoices = await _unitOfWork.invoiceRepository.GetAllIncludeOneAsync(x => x.Tour);
             InvoiceVM.Invoice = invoices.Where(x => x.Id == id).FirstOrDefault();
             InvoiceVM.CTInvoices = await _unitOfWork.cTVATRepository.FindAsync(x => x.InvoiceId == id && x.TiengAnh);
+
+            ///// Currency to money
+            var tongTien = InvoiceVM.CTInvoices.Sum(x => x.Amount);
+            string s = SoSangChu.DoiSoSangChu(tongTien.ToString().Split('.')[0]);
+            string c = AmountToWords.changeCurrencyToWords(tongTien.ToString().ToLower());
+            //string t = String.IsNullOrEmpty(loaitien) ? "" : " Exchange rate USD/VND";
+            InvoiceVM.SoTienBangChu = char.ToUpper(c[0]) + c.Substring(1).ToLower() + " " + InvoiceVM.Invoice.Currency;
+
             return View(InvoiceVM);
         }
         //-----------PrintInvoice------------
