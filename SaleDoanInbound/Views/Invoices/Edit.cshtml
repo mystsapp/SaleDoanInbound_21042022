@@ -69,7 +69,9 @@
                         <div class="col-md-1">
                             <label asp-for="Invoice.Type" class="control-label"></label>
                             <select asp-for="Invoice.Type" class="form-control" id="ddlLoaiIV"
-                                    asp-items="@(new SelectList(Model.LoaiIVs, "Id", "Id"))"></select>
+                                    asp-items="@(new SelectList(Model.LoaiIVs, "Id", "Id"))">
+                                <option value="">-- None --</option>
+                            </select>
                             <span asp-validation-for="Invoice.Type" class="text-danger"></span>
                         </div>
 

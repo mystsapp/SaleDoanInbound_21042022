@@ -243,12 +243,12 @@
 
                                 @if (Model.Invoice.HuyInvoice == true)
                                 {
-                                    <a class="btn btn-default btn-sm text-bold disabled" title="Thêm CT invoice">New</a>
+                                    <a class="btn btn-default btn-sm text-bold disabled btn-block" title="Thêm CT invoice">New</a>
 
                                 }
                                 else
                                 {
-                                    <a id="btnNewCTInvoice" data-id="@Model.Invoice.Id" asp-action="CreateCTInvoice" asp-controller="CTVATs" asp-route-invoiceId="@Model.Invoice.Id" asp-route-strUrl="@Model.StrUrl" class="btn btn-outline-info btn-sm text-bold" title="Thêm CT invoice"><i class="fas fa-plus"></i></a>
+                                    <a id="btnNewCTInvoice" data-id="@Model.Invoice.Id" asp-action="CreateCTInvoice" asp-controller="CTVATs" asp-route-invoiceId="@Model.Invoice.Id" asp-route-strUrl="@Model.StrUrl" class="btn btn-outline-info btn-sm text-bold btn-block" title="Thêm CT invoice"><i class="fas fa-plus"></i></a>
                                 }
                             </th>
                             <th>@Html.DisplayNameFor(m => m.CTInvoices.FirstOrDefault().Descript)</th>
@@ -400,13 +400,13 @@
                             <th>
                                 @if (Model.Invoice.HuyInvoice == true)
                                 {
-                                    <a class="btn btn-default btn-sm text-bold disabled" title="Thêm CT invoice">New</a>
+                                    @*<a class="btn btn-default btn-sm text-bold disabled" title="Thêm CT invoice">New</a>*@
                                     <a class="btn btn-default btn-sm text-bold disabled" title="Copy CT invoice">Copy</a>
                                 }
                                 else
                                 {
 
-                                    <a class="btn btn-default btn-sm text-bold " asp-action="CreateCTVAT" data-id="@Model.Invoice.Id" id="btnNewCTVAT" asp-controller="CTVATs" asp-route-invoiceId="@Model.Invoice.Id" asp-route-strUrl="@Model.StrUrl" title="Thêm CTVAT">New</a>
+                                    @*<a class="btn btn-default btn-sm text-bold " asp-action="CreateCTVAT" data-id="@Model.Invoice.Id" id="btnNewCTVAT" asp-controller="CTVATs" asp-route-invoiceId="@Model.Invoice.Id" asp-route-strUrl="@Model.StrUrl" title="Thêm CTVAT">New</a>*@
                                     <button class="btn btn-default btn-sm text-bold " data-id="@Model.Invoice.Id" id="btnCopyCTVAT" title="Copy CTVAT">Copy</button>
 
                                     <form id="frmCopyCTVAT" asp-action="CopyCTInvoice_DS_To_CTVAT" asp-controller="CTVATs" method="post" asp-route-invoiceId="@Model.Invoice.Id" asp-route-strUrl="@Model.StrUrl">

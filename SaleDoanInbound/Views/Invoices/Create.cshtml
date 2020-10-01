@@ -56,7 +56,9 @@
                         <div class="col-md-3">
                             <label asp-for="Invoice.Replace" class="control-label"></label>
                             <select asp-for="Invoice.Replace" class="form-control"
-                                    asp-items="@(new SelectList(Model.Invoices, "Id", "Id"))"></select>
+                                    asp-items="@(new SelectList(Model.Invoices, "Id", "Id"))">
+                                <option value="">-- None --</option>
+                            </select>
                             <span asp-validation-for="Invoice.Replace" class="text-danger"></span>
                         </div>
 

@@ -57,7 +57,7 @@ namespace SaleDoanInbound.Controllers
             {
                 InvoiceVM.Invoice = await _unitOfWork.invoiceRepository.GetByIdAsync(id);
                 InvoiceVM.CTVATs = await _unitOfWork.cTVATRepository.FindIncludeOneAsync(x => x.Invoice, y => y.InvoiceId == id && !y.TiengAnh);
-                InvoiceVM.CTInvoices = await _unitOfWork.cTVATRepository.FindIncludeOneAsync(x => x.Invoice, y => y.InvoiceId == id && y.TiengAnh);
+                InvoiceVM.CTInvoices = await _unitOfWork.cTVATRepository.FindIncludeOneAsync(x => x.Invoice, y => y.InvoiceId == id /*&& y.TiengAnh*/);
             }
 
             // invoice click
@@ -79,6 +79,9 @@ namespace SaleDoanInbound.Controllers
             InvoiceVM.Invoice.Ref = InvoiceVM.Tour.NguoiKyHopDong; // ref
             InvoiceVM.Invoice.MOFP = "TM/CK";
             InvoiceVM.Invoice.TourId = InvoiceVM.Tour.Id;
+            
+            InvoiceVM.Invoice.Currency = InvoiceVM.Tour.LoaiTien;
+            InvoiceVM.Invoice.Rate = InvoiceVM.Tour.TyGia.Value;
 
             InvoiceVM.LoaiIVs = _unitOfWork.loaiIVRepository.GetAll();
             InvoiceVM.Invoices = await _unitOfWork.invoiceRepository.FindAsync(x => x.TourId == tourId);
@@ -133,6 +136,20 @@ namespace SaleDoanInbound.Controllers
             #endregion
             ///
             // ghi log
+
+            if (string.IsNullOrEmpty(InvoiceVM.Invoice.Replace))
+            {
+                InvoiceVM.Invoice.Replace = "";
+            }
+            if (string.IsNullOrEmpty(InvoiceVM.Invoice.Ref))
+            {
+                InvoiceVM.Invoice.Ref = "";
+            }
+            if (string.IsNullOrEmpty(InvoiceVM.Invoice.HopDong))
+            {
+                InvoiceVM.Invoice.HopDong = "";
+            }
+
             InvoiceVM.Invoice.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
             try
             {
