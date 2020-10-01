@@ -59,8 +59,9 @@
         });
         $('#btnCopyCTVAT').off('click').on('click', function (e) {
             invoiceId = $(this).data('id');
+
             if (invoiceId === '') {
-                e.preventDefault();
+                
                 bootbox.alert({
                     title: "Information",
                     size: "small",
@@ -68,8 +69,32 @@
                 });
             }
             else {
+
+                // check CTInvoice xem co ton tai trong CTVAT chua
+                //$.ajax({
+                //    url: '/CTVATs/CheckExist',
+                //    data: {
+                //        invoiceId: invoiceId
+                //    },
+                //    dataType: 'json',
+                //    type: 'GET',
+                //    success: function (response) {
+                //        if (response) {
+                //            bootbox.alert({
+                //                title: "Information",
+                //                size: "small",
+                //                message: "Đã tồn tại 1 item nào đó!"
+                //            });
+                //            window.location.reload();
+                //        }
+                //        console.log(response);
+                //    }
+                //});
+            // check CTInvoice xem co ton tai trong CTVAT chua
+
                 $('#frmCopyCTVAT').submit();
             }
+
         });
 
 

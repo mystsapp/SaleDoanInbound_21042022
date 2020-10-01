@@ -22,11 +22,15 @@ var createController = {
         });
         $('#ckDS').change(function () {
             $('#ckDLHH').prop('checked', false);
+            
+
         });
 
         $('#ckDLHH').change(function () {
             $('#ckDS').prop('checked', false);
+            
         });
+        
     }
     
 };

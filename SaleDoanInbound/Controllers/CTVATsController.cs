@@ -246,13 +246,24 @@ namespace SaleDoanInbound.Controllers
             CTVATVM.StrUrl = strUrl;
             CTVATVM.Invoice = await _unitOfWork.invoiceRepository.GetByIdAsync(invoiceId);
             //find CTinvoice co DS (doanh so) == true
-            var CTInvoices = await _unitOfWork.cTVATRepository.FindAsync(x => x.InvoiceId == invoiceId && x.TiengAnh && x.DS);
+            var CTInvoices = await _unitOfWork.cTVATRepository.FindAsync(x => x.InvoiceId == invoiceId && x.DS);
             // gang CTVAT
-            CTVATVM.CTVATs = CTInvoices;
-            foreach (var item in CTVATVM.CTVATs)
+            var cTVATs = await _unitOfWork.cTVATRepository.FindAsync(x => x.InvoiceId == invoiceId && !x.TiengAnh);
+            foreach (var item in CTInvoices)
             {
+                foreach (var item1 in cTVATs)
+                {
+                    if (item.Descript == item1.Descript && item.Quantity == item1.Quantity &&
+                                           item.Unit == item1.Unit && item.UnitPrice == item1.UnitPrice &&
+                                           item.Percent == item1.Percent && item.Amount == item1.Amount &&
+                                           item.ServiceFee == item1.ServiceFee && item.VAT == item1.VAT)
+                    {
+                        SetAlert(item.Descript + "đã tồn tại.", "error");
+                        return Redirect(strUrl);
+                    }
+                }
                 item.TiengAnh = false;
-                
+
                 // ghi log
                 item.LogFile = "-User copy: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString() + " copy từ CTInvoice " + item.Id.ToString(); // user.Username
                 item.Id = 0;
@@ -274,7 +285,36 @@ namespace SaleDoanInbound.Controllers
         }
 
         #endregion
+        public async Task<IActionResult> CheckExist(string invoiceId)
+        {
+            // tim nhung CTInvoice xem co1 trong CTVAT chua
+            var CTInvoices = await _unitOfWork.cTVATRepository.FindAsync(x => x.InvoiceId == invoiceId && x.DS);
+            // gang CTVAT
+            var cTVATs = await _unitOfWork.cTVATRepository.FindAsync(x => x.InvoiceId == invoiceId && !x.TiengAnh);
+            foreach (var item in CTInvoices)
+            {
+                foreach (var item1 in cTVATs)
+                {
+                    if (item.Descript == item1.Descript && item.Quantity == item1.Quantity &&
+                                           item.Unit == item1.Unit && item.UnitPrice == item1.UnitPrice &&
+                                           item.Percent == item1.Percent && item.Amount == item1.Amount &&
+                                           item.ServiceFee == item1.ServiceFee && item.VAT == item1.VAT)
+                    {
 
+                        return Json(new
+                        {
+                            status = true
+                        });
+                    }
+                }
+
+            }
+            return Json(new
+            {
+                status = false
+            });
+
+        }
         // CTInvoice
         #region  CTInvoice
         public async Task<IActionResult> CreateCTInvoice(string invoiceId, string strUrl)
@@ -300,6 +340,14 @@ namespace SaleDoanInbound.Controllers
                 CTVATVM.StrUrl = strUrl;
                 CTVATVM.Invoice = await _unitOfWork.invoiceRepository.GetByIdAsync(invoiceId);
                 CTVATVM.CTInvoice.InvoiceId = CTVATVM.Invoice.Id;
+                return View(CTVATVM);
+            }
+            if (CTVATVM.CTInvoice.DLHH == false && CTVATVM.CTInvoice.DS == false)
+            {
+                CTVATVM.StrUrl = strUrl;
+                CTVATVM.Invoice = await _unitOfWork.invoiceRepository.GetByIdAsync(invoiceId);
+                CTVATVM.CTInvoice.InvoiceId = CTVATVM.Invoice.Id;
+                ModelState.AddModelError("", "Ds Or DLHH ?");
                 return View(CTVATVM);
             }
             CTVATVM.CTInvoice.NgayTao = DateTime.Now;
@@ -438,6 +486,15 @@ namespace SaleDoanInbound.Controllers
                     log += temp + " -User cập nhật tour: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // username
                     t.LogFile = t.LogFile + log;
                     CTVATVM.CTInvoice.LogFile = t.LogFile;
+                }
+
+                if (CTVATVM.CTInvoice.DLHH == false && CTVATVM.CTInvoice.DS == false)
+                {
+                    CTVATVM.StrUrl = strUrl;
+                    CTVATVM.Invoice = await _unitOfWork.invoiceRepository.GetByIdAsync(invoiceId);
+                    CTVATVM.CTInvoice.InvoiceId = CTVATVM.Invoice.Id;
+                    ModelState.AddModelError("", "Ds Or DLHH ?");
+                    return View(CTVATVM);
                 }
 
                 try
