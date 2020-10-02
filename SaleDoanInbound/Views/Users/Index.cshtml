@@ -6,13 +6,13 @@
 
 
 @{
-    ViewData["Title"] = "Nganh nghe";
+    ViewData["Title"] = "Users";
 }
 
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <div class="container-fluid">
-        <div class="row mb-2">
+        @*<div class="row mb-2">
             <div class="col-sm-6">
                 <a class="btn btn-outline-info" asp-action="Create" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-plus"></i>&nbsp; Thêm Mới</a>
             </div>
@@ -22,7 +22,7 @@
                     <li class="breadcrumb-item active">Danh sách user</li>
                 </ol>
             </div>
-        </div>
+        </div>*@
     </div><!-- /.container-fluid -->
 </section>
 
@@ -65,11 +65,14 @@
                             @*<input type="hidden" name="id" id="hidId" />
                                 <input type="hidden" name="page" id="hidPage" />*@
 
-                            <div class="col-md-2 btn-group">
-                                <button type="submit" class="btn btn-primary form-control" id="btnSubmit">
-                                    <i class="fas fa-search"></i>
-                                </button>
-                                <a class="btn btn-outline-info" asp-action="Create" asp-route-strUrl="@Model.StrUrl" title="Thêm mới"><i class="fas fa-plus"></i></a>
+                            <div class="col-md-2">
+                                
+                                <div class="btn-group btn-block">
+                                    <button type="submit" class="btn btn-primary" id="btnSubmit">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                    <a class="btn btn-outline-info" asp-action="Create" asp-route-strUrl="@Model.StrUrl" title="Thêm mới"><i class="fas fa-plus"></i></a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -105,11 +108,11 @@
                                             <span id="confirmDeleteSpan_@item.Id" style="display: none">
                                                 <span class="text-dark">Xóa?</span>
                                                 <button type="submit" class="btn btn-danger">Yes</button>
-                                                <a href="#" class="btn btn-primary" onclick="confirmDelete('@item.Id', false)">No</a>
+                                                <button type="button" class="btn btn-primary" onclick="confirmDelete('@item.Id', false)">No</button>
                                             </span>
 
                                             <span id="deleteSpan_@item.Id">
-                                                <a href="#" class="btn btn-danger btn-sm" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></a>
+                                                <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
                                             </span>
                                         </form>
                                     </div>
@@ -212,7 +215,7 @@
             box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
         }
 
-        .tblEMD .cursor-pointer:hover {
+        #listAll .cursor-pointer:hover {
             background-color: #3E5C9A;
             cursor: pointer;
         }

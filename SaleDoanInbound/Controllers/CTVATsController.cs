@@ -246,22 +246,10 @@ namespace SaleDoanInbound.Controllers
             CTVATVM.StrUrl = strUrl;
             CTVATVM.Invoice = await _unitOfWork.invoiceRepository.GetByIdAsync(invoiceId);
             //find CTinvoice co DS (doanh so) == true
-            var CTInvoices = await _unitOfWork.cTVATRepository.FindAsync(x => x.InvoiceId == invoiceId && x.DS);
-            // gang CTVAT
-            var cTVATs = await _unitOfWork.cTVATRepository.FindAsync(x => x.InvoiceId == invoiceId && !x.TiengAnh);
+            var CTInvoices = await _unitOfWork.cTVATRepository.FindAsync(x => x.InvoiceId == invoiceId && x.DS && x.TiengAnh);
+            
             foreach (var item in CTInvoices)
             {
-                foreach (var item1 in cTVATs)
-                {
-                    if (item.Descript == item1.Descript && item.Quantity == item1.Quantity &&
-                                           item.Unit == item1.Unit && item.UnitPrice == item1.UnitPrice &&
-                                           item.Percent == item1.Percent && item.Amount == item1.Amount &&
-                                           item.ServiceFee == item1.ServiceFee && item.VAT == item1.VAT)
-                    {
-                        SetAlert(item.Descript + "đã tồn tại.", "error");
-                        return Redirect(strUrl);
-                    }
-                }
                 item.TiengAnh = false;
 
                 // ghi log

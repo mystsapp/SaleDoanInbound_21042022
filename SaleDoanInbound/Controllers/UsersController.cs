@@ -74,7 +74,11 @@ namespace SaleDoanInbound.Controllers
             UserVM.User.Password = MaHoaSHA1.EncodeSHA1(UserVM.User.Password); // ma hoa password
             UserVM.User.NgayTao = DateTime.Now;
             UserVM.User.NguoiTao = user.Username;
-
+            
+            UserVM.User.HoTen = string.IsNullOrEmpty(UserVM.User.HoTen) ? "" : UserVM.User.HoTen;
+            UserVM.User.MaCN = string.IsNullOrEmpty(UserVM.User.MaCN) ? "" : UserVM.User.MaCN;
+            UserVM.User.Email = string.IsNullOrEmpty(UserVM.User.Email) ? "" : UserVM.User.Email;
+            UserVM.User.DienThoai = string.IsNullOrEmpty(UserVM.User.DienThoai) ? "" : UserVM.User.DienThoai;
             try
             {
 
@@ -254,7 +258,7 @@ namespace SaleDoanInbound.Controllers
                 return NotFound();
 
             //        delete qltaikhoan.dbo.ApplicationUser where username = (select username from deleted)
-            var applicationUserQLTaiKhoan = await _unitOfWork.applicationUserQLTaiKhoanRepository.GetByIdAsync(user.Username);
+            var applicationUserQLTaiKhoan = await _unitOfWork.applicationUserQLTaiKhoanRepository.GetByIdTwoKeyAsync(user.Username, "015");
             if (applicationUserQLTaiKhoan != null)
             {
                 _unitOfWork.applicationUserQLTaiKhoanRepository.Delete(applicationUserQLTaiKhoan);
@@ -278,9 +282,10 @@ namespace SaleDoanInbound.Controllers
 
         private List<Data.Models_QLT.Phongban> PhongBan()
         {
-            return _unitOfWork.phongBanRepository.GetAll()
-                                                 .Where(x => !string.IsNullOrEmpty(x.Macode))
-                                                 .ToList();
+            //return _unitOfWork.phongBanRepository.GetAll()
+            //                                     .Where(x => !string.IsNullOrEmpty(x.Macode))
+            //                                     .ToList();
+            return _unitOfWork.phongBanRepository.GetAll().ToList();
         }
 
         public JsonResult IsStringNameAvailable(string TenCreate)

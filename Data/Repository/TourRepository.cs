@@ -13,7 +13,7 @@ namespace Data.Repository
 {
     public interface ITourRepository : IRepository<Tour>
     {
-        IPagedList<TourDto> ListTour(string searchString, IEnumerable<Company> companies, IEnumerable<Tourkind> loaiTours, IEnumerable<Dmchinhanh> chiNhanhs, IEnumerable<CacNoiDungHuyTour> cacNoiDungHuyTours, int? page);
+        IPagedList<TourDto> ListTour(string searchString, IEnumerable<Company> companies, IEnumerable<Tourkind> loaiTours, IEnumerable<Dmchinhanh> chiNhanhs, IEnumerable<CacNoiDungHuyTour> cacNoiDungHuyTours, int? page, string searchFromDate, string searchToDate);
     }
     public class TourRepository : Repository<Tour>, ITourRepository
     {
@@ -21,7 +21,7 @@ namespace Data.Repository
         {
         }
 
-        public IPagedList<TourDto> ListTour(string searchString, IEnumerable<Company> companies, IEnumerable<Tourkind> loaiTours, IEnumerable<Dmchinhanh> chiNhanhs, IEnumerable<CacNoiDungHuyTour> cacNoiDungHuyTours, int? page)
+        public IPagedList<TourDto> ListTour(string searchString, IEnumerable<Company> companies, IEnumerable<Tourkind> loaiTours, IEnumerable<Dmchinhanh> chiNhanhs, IEnumerable<CacNoiDungHuyTour> cacNoiDungHuyTours, int? page, string searchFromDate, string searchToDate)
         {
             // return a 404 if user browses to before the first page
             if (page.HasValue && page < 1)
@@ -129,6 +129,67 @@ namespace Data.Repository
             }
             list = list.OrderByDescending(x => x.NgayTao).ToList();
             var count = list.Count();
+
+            // search date
+            DateTime fromDate, toDate;
+            if (!string.IsNullOrEmpty(searchFromDate) && !string.IsNullOrEmpty(searchToDate))
+            {
+
+                try
+                {
+                    fromDate = DateTime.Parse(searchFromDate);
+                    toDate = DateTime.Parse(searchToDate);
+
+                    if (fromDate > toDate)
+                    {
+                        return null;
+                    }
+                    list = list.Where(x => x.NgayTao >= fromDate &&
+                                       x.NgayTao < toDate.AddDays(1)).ToList();
+                }
+                catch (Exception)
+                {
+
+                    return null;
+                }
+
+
+                //list.Where(x => x.NgayTao >= fromDate && x.NgayTao < (toDate.AddDays(1))/*.ToPagedList(page, pageSize)*/;
+
+
+
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(searchFromDate))
+                {
+                    try
+                    {
+                        fromDate = DateTime.Parse(searchFromDate);
+                        list = list.Where(x => x.NgayTao >= fromDate).ToList();
+                    }
+                    catch (Exception)
+                    {
+                        return null;
+                    }
+
+                }
+                if (!string.IsNullOrEmpty(searchToDate))
+                {
+                    try
+                    {
+                        toDate = DateTime.Parse(searchToDate);
+                        list = list.Where(x => x.NgayTao < toDate.AddDays(1)).ToList();
+
+                    }
+                    catch (Exception)
+                    {
+                        return null;
+                    }
+
+                }
+            }
+            // search date
 
             // page the list
             const int pageSize = 10;

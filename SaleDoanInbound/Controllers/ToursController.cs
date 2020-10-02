@@ -49,7 +49,7 @@ namespace SaleDoanInbound.Controllers
                 TourDto = new TourDto()
             };
         }
-        public async Task<IActionResult> Index(long id = 0, string searchString = null, string invoiceId = null, string tabActive = null, int page = 1)
+        public async Task<IActionResult> Index(long id = 0, string searchString = null, int page = 1, string searchFromDate = null, string searchToDate = null)
         {
             TourVM.StrUrl = UriHelper.GetDisplayUrl(Request);
 
@@ -64,6 +64,8 @@ namespace SaleDoanInbound.Controllers
             //}
 
             ViewBag.searchString = searchString;
+            ViewBag.searchFromDate = searchFromDate;
+            ViewBag.searchToDate = searchToDate;
 
             // for delete
             //if (id != 0)
@@ -83,7 +85,7 @@ namespace SaleDoanInbound.Controllers
             var chiNhanhs = TourVM.Dmchinhanhs;
             var cacNoiDungHuyTours = _unitOfWork.cacNoiDungHuyTourRepository.GetAll();
 
-            TourVM.TourDtos = _unitOfWork.tourRepository.ListTour(searchString, companies, loaiTours, chiNhanhs, cacNoiDungHuyTours, page);
+            TourVM.TourDtos = _unitOfWork.tourRepository.ListTour(searchString, companies, loaiTours, chiNhanhs, cacNoiDungHuyTours, page, searchFromDate, searchToDate);
 
             //--> click vao tour
             var tour = _unitOfWork.tourRepository.GetById(id);
