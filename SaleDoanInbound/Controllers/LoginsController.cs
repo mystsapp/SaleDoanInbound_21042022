@@ -40,24 +40,24 @@ namespace SaleDoanInbound.Controllers
                 var usersIB = _unitOfWork.userRepository.GetAll();
 
                 var result = (from a in applications
-                             join au in applicationUsers on a.Mact equals au.Mact
-                             join u in users on au.Username equals u.Username
-                             join u1 in usersIB on u.Username equals u1.Username
-                             where au.Mact == "015" && u.Username.ToLower() == model.Username.ToLower()
-                             select new LoginModel()
-                             {
-                                 Username = u.Username,
-                                 Mact = a.Mact,
-                                 Password = u1.Password,
-                                 Hoten = u.Hoten,
-                                 Dienthoai = u.Dienthoai,
-                                 Email = u.Email,
-                                 Macn = u1.MaCN,
-                                 RoleId = u1.RoleId,
-                                 Trangthai = u.Trangthai,
-                                 Doimk = u.Doimk,
-                                 Ngaydoimk = u.Ngaydoimk
-                             }).FirstOrDefault();
+                              join au in applicationUsers on a.Mact equals au.Mact
+                              join u in users on au.Username equals u.Username
+                              join u1 in usersIB on u.Username equals u1.Username
+                              where au.Mact == "015" && u.Username.ToLower() == model.Username.ToLower()
+                              select new LoginModel()
+                              {
+                                  Username = u.Username,
+                                  Mact = a.Mact,
+                                  Password = u1.Password,
+                                  Hoten = u.Hoten,
+                                  Dienthoai = u.Dienthoai,
+                                  Email = u.Email,
+                                  Macn = u1.MaCN,
+                                  RoleId = u1.RoleId,
+                                  Trangthai = u.Trangthai,
+                                  Doimk = u.Doimk,
+                                  Ngaydoimk = u.Ngaydoimk
+                              }).FirstOrDefault();
                 // login
 
                 if (result == null)
@@ -118,14 +118,16 @@ namespace SaleDoanInbound.Controllers
                         //    return View("changepass");
                         //}
 
-                        if (result.Doimk == true)
-                        {
-                            return View("changepass");
-                        }
-                        else
-                        {
-                            return RedirectToAction("Index", "Home");
-                        }
+                        //if (result.Doimk == true)
+                        //{
+                        //    return View("changepass");
+                        //}
+                        //else
+                        //{
+                        //    return RedirectToAction("Index", "Home");
+                        //}
+
+                        return RedirectToAction("Index", "Home");
                     }
                 }
             }
@@ -135,7 +137,7 @@ namespace SaleDoanInbound.Controllers
         public IActionResult changepass(string strUrl)
         {
             var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
-            
+
             changepassModel changpassmodel = new changepassModel
             {
                 Username = user.Username,
