@@ -126,7 +126,10 @@ namespace SaleDoanInbound.Controllers
         {
             // from session
             var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
-
+            if (user.Role.RoleName == "KeToans")
+            {
+                return View("~/Views/Shared/AccessDenied.cshtml");
+            }
             TourVM.StrUrl = strUrl;
             TourVM.Tour.SoHopDong = "";
             ViewBag.chiNhanhTaoId = _unitOfWork.dmChiNhanhRepository.Find(x => x.Macn == user.MaCN).FirstOrDefault().Id;
@@ -248,21 +251,32 @@ namespace SaleDoanInbound.Controllers
 
         public async Task<IActionResult> Edit(long id, string strUrl)
         {
-
-            // from login session
+            // from session
             var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
+            if (user.Role.RoleName == "KeToans")
+            {
+                return View("~/Views/Shared/AccessDenied.cshtml");
+            }
+
             ViewBag.chiNhanhTaoId = _unitOfWork.dmChiNhanhRepository.Find(x => x.Macn == user.MaCN).FirstOrDefault().Id; // for compare
 
             TourVM.StrUrl = strUrl;
             if (id == 0)
-                return NotFound();
-
+            {
+                ViewBag.ErrorMessage = "Tour này không tồn tại.";
+                return View("~/Views/Shared/NotFound.cshtml");
+            }
+            
             TourVM.Tour = await _unitOfWork.tourRepository.GetByLongIdAsync(id);
             //TourVM.InvoicesInTour = await _unitOfWork.invoiceRepository.FindAsync(x => x.TourId == id);
             ViewBag.maCn = _unitOfWork.dmChiNhanhRepository.GetById(TourVM.Tour.ChiNhanhDHId).Macn; // for view
 
             if (TourVM.Tour == null)
-                return NotFound();
+            {
+                ViewBag.ErrorMessage = "Tour này không tồn tại.";
+                return View("~/Views/Shared/NotFound.cshtml");
+            }
+
 
             // gang qua hid tuyentq
             TourVM.Tour.TuyenTQ = TourVM.Tour.TuyenTQ.Replace('-', ',');
@@ -288,7 +302,10 @@ namespace SaleDoanInbound.Controllers
             string temp = "", log = "";
 
             if (id != TourVM.Tour.Id)
-                return NotFound();
+            {
+                ViewBag.ErrorMessage = "Tour này không tồn tại.";
+                return View("~/Views/Shared/NotFound.cshtml");
+            }
 
             if (ModelState.IsValid)
             {
@@ -546,7 +563,10 @@ namespace SaleDoanInbound.Controllers
             TourVM.StrUrl = strUrl;
 
             if (id == 0)
-                return NotFound();
+            {
+                ViewBag.ErrorMessage = "Tour này không tồn tại.";
+                return View("~/Views/Shared/NotFound.cshtml");
+            }
 
             var tour = _unitOfWork.tourRepository.GetById(id);
 

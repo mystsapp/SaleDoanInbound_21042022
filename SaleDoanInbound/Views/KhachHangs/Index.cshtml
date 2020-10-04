@@ -66,12 +66,15 @@
                             @*<input type="hidden" name="id" id="hidId" />
         <input type="hidden" name="page" id="hidPage" />*@
 
-                            <div class="col-md-2 btn-group">
-                                <button type="submit" class="btn btn-primary form-control" id="btnSubmit">
+                        <div class="col-md-2">
+                           
+                            <div class="btn-group btn-block">
+                                <button type="submit" class="btn btn-primary " id="btnSubmit">
                                     <i class="fas fa-search"></i>
                                 </button>
-                                <a class="btn btn-outline-info" asp-action="Create" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-plus"></i></a>
+                                <a class="btn btn-outline-info" asp-action="Create" asp-route-strUrl="@Model.StrUrl" title="Thêm mới"><i class="fas fa-plus"></i></a>
                             </div>
+                        </div>
                         </div>
                     </div>
                 </div>

@@ -89,7 +89,7 @@ namespace SaleDoanInbound.Controllers
                         HttpContext.Session.SetString("userId", user.SingleOrDefault().Id.ToString());
                         //HttpContext.Session.SetString("dienthoai", String.IsNullOrEmpty(result.Dienthoai) ? "" : result.Dienthoai);
                         //HttpContext.Session.SetString("macode", result.Macode);
-                        //HttpContext.Session.SetString("roleId", string.IsNullOrEmpty(result.RoleId) ? "" : result.RoleId);
+                        //HttpContext.Session.SetString("userRole", user.FirstOrDefault().Role.RoleName);
                         //HttpContext.Session.SetString("Newtour", user.Newtour.ToString());
                         //HttpContext.Session.SetString("Dongtour", user.Dongtour.ToString());
                         //HttpContext.Session.SetString("Danhmuc", user.Catalogue.ToString());
