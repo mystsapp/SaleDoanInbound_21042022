@@ -89,7 +89,7 @@ namespace Data.Dtos
         public string DaiLy { get; set; }
 
         [DisplayName("Trạng thái")]
-        public bool TrangThai { get; set; }
+        public string TrangThai { get; set; }
 
         public DateTime NgaySua { get; set; }
 

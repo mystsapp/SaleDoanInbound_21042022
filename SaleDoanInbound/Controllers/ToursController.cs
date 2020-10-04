@@ -183,6 +183,12 @@ namespace SaleDoanInbound.Controllers
                 TourVM.Tour.SoHopDong = "";
             }
             TourVM.Tour.NguoiTao = user.Username;
+            TourVM.Tour.TrangThai = "0";//mac dinh la moi tao
+
+            if (TourVM.Tour.NgayDamPhan != null)
+            {
+                TourVM.Tour.TrangThai = "1";
+            }
 
             // create sgtcode
             var companies = await _unitOfWork.khachHangRepository.FindAsync(x => x.CompanyId == TourVM.Tour.MaKH); // find company by MaKH(companyId)
@@ -313,6 +319,22 @@ namespace SaleDoanInbound.Controllers
                 TourVM.Tour.NguoiSua = user.Username;
 
                 TourVM.Tour.TuyenTQ = TourVM.Tour.TuyenTQ.Replace(',', '-');
+
+                if (TourVM.Tour.NgayDamPhan != null)
+                {
+                    TourVM.Tour.TrangThai = "1";
+                }
+
+
+                if (TourVM.Tour.NgayKyHopDong != null)
+                {
+                    TourVM.Tour.TrangThai = "2";
+                }
+
+                if (TourVM.Tour.NgayThanhLyHD != null)
+                {
+                    TourVM.Tour.TrangThai = "3";
+                }
 
                 // kiem tra thay doi : trong getbyid() va ngoai view
                 #region log file
@@ -1187,6 +1209,7 @@ namespace SaleDoanInbound.Controllers
             tour.NDHuyTourId = TourVM.Tour.NDHuyTourId;
             tour.GhiChu = TourVM.Tour.GhiChu;
             tour.HuyTour = true;
+            tour.TrangThai = "4";
 
             // tourinf - qltour
             var tourInfo = await _unitOfWork.tourInfRepository.GetByIdAsync(tour.Sgtcode);
@@ -1254,6 +1277,27 @@ namespace SaleDoanInbound.Controllers
             tour.NDHuyTourId = 0;
             tour.GhiChu = "";
             tour.HuyTour = false;
+
+            if (tour.NgayDamPhan != null)
+            {
+                tour.TrangThai = "1";
+            }
+
+
+            if (tour.NgayKyHopDong != null)
+            {
+                tour.TrangThai = "2";
+            }
+
+            if (tour.NgayThanhLyHD != null)
+            {
+                tour.TrangThai = "3";
+            }
+
+            else
+            {
+                tour.TrangThai = "0";
+            }
 
             // tourinf - qltour
             var tourInfo = await _unitOfWork.tourInfRepository.GetByIdAsync(tour.Sgtcode);

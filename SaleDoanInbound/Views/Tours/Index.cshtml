@@ -130,6 +130,7 @@
                             <th>@Html.DisplayNameFor(m => m.TourDtos.FirstOrDefault().HuyTour)</th>
                             <th>@Html.DisplayNameFor(m => m.TourDtos.FirstOrDefault().NguoiTao)</th>
                             <th>@Html.DisplayNameFor(m => m.TourDtos.FirstOrDefault().NgayTao)</th>
+                            <th>@Html.DisplayNameFor(m => m.TourDtos.FirstOrDefault().TrangThai)</th>
 
                         </tr>
                     </thead>
@@ -196,6 +197,25 @@
                                     </td>
 
                                     @*<td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayTao)</td>*@
+                                    @switch (item.TrangThai)
+                                    {
+
+                                        case "0":
+                                            <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
+                                            break;
+                                        case "1":
+                                            <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
+                                            break;
+                                        case "2":
+                                            <td class="tdVal bg-yellow" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
+                                            break;
+                                        case "3":
+                                            <td class="tdVal " style="background-color: chartreuse" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
+                                            break;
+                                        case "4":
+                                            <td class="tdVal bg-red" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
+                                            break;
+                                    }
                                     <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
                                     <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.SoHopDong)</td>
                                     <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.ChuDeTour)</td>
@@ -205,6 +225,27 @@
                                     <td class="tdVal" data-id="@item.Id">@*@Html.DisplayFor(m => item.HuyTour)*@</td>
                                     <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.NguoiTao)</td>
                                     <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayTao.ToString("dd/MM/yyyy"))</td>
+                                    <td class="tdVal" data-id="@item.Id">
+                                        @switch (item.TrangThai)
+                                        {
+
+                                            case "0":
+                                                <span>Mới tạo</span>
+                                                break;
+                                            case "1":
+                                                <span>Mới đàm phán</span>
+                                                break;
+                                            case "2":
+                                                <span>Đã ký hợp đồng</span>
+                                                break;
+                                            case "3":
+                                                <span> Đã thanh lý hợp đồng</span>
+                                                break;
+                                            case "4":
+                                                <span>Giao dịch chưa thành công</span>
+                                                break;
+                                        }
+                                    </td>
                                 </tr>
 
                                 @* } *@
@@ -220,11 +261,11 @@
             @if (Model.TourDtos != null)
             {
                 @Html.PagedListPager((IPagedList)Model.TourDtos, page => Url.Action("Index", new
-           {
-               page = page,
-               option = Context.Request.Query["option"],
-               searchString = @ViewBag.searchString
-           }),
+                {
+                    page = page,
+                    option = Context.Request.Query["option"],
+                    searchString = @ViewBag.searchString
+                }),
                     PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new PagedListRenderOptions
                     {
                         LiElementClasses = new string[] { "page-item" },

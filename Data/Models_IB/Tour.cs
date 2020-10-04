@@ -101,7 +101,8 @@ namespace Data.Models_IB
         public string DaiLy { get; set; }
 
         [DisplayName("Trạng thái")]
-        public bool TrangThai { get; set; }
+        [MaxLength(1), Column(TypeName = "varchar(1)")]
+        public string TrangThai { get; set; }
 
         public DateTime NgaySua { get; set; }
 
