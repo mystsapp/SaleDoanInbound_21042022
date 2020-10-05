@@ -20,18 +20,50 @@ var createController = {
                 return addCommas(value);
             });
         });
+
+        $('#txtQuantity').off('blur').on('blur', function () {
+            createController.amountFunction();
+        });
+
+        $('#txtUnitPrice').off('blur').on('blur', function () {
+            createController.amountFunction();
+        });
+
         $('#ckDS').change(function () {
             $('#ckDLHH').prop('checked', false);
-            
+
 
         });
 
         $('#ckDLHH').change(function () {
             $('#ckDS').prop('checked', false);
-            
+
         });
-        
+
+    },
+    amountFunction: function () {
+        quantity = $('#txtQuantity').val();
+        unitPrice = $('#txtUnitPrice').val();
+
+        $.ajax({
+            url: '/CTVATs/GetAount',
+            data: {
+                quantity: quantity,
+                unitPrice: unitPrice
+            },
+            dataType: 'json',
+            type: 'GET',
+            success: function (response) {
+                console.log(response);
+                if (response.status) {
+                    amount = numeral(response.data).format('0,0');
+                    $('#txtAmount').val(amount);
+                }
+
+            }
+        });
+
     }
-    
+
 };
 createController.init();

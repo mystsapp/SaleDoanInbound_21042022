@@ -116,7 +116,7 @@
             </form>
             <br />
             <div style="overflow-x:auto; overflow-y:auto; height: 300px">
-                <table class="table mytable text-nowrap tblTour" id="listAll">
+                <table class="table mytable text-nowrap tblTour" id="listTour">
                     <thead>
                         <tr class="table-info">
                             <th>#</th>
@@ -1216,14 +1216,14 @@
             //    dateFormat: 'dd/mm/yy'
             //});
 
-            $('#listAll').DataTable({
-                "paging": false,
-                "lengthChange": true,
-                "searching": false,
-                "ordering": true,
-                "info": true,
-                "autoWidth": false,
-            });
+            //$('#listTour').DataTable({
+            //    "paging": false,
+            //    "lengthChange": true,
+            //    "searching": false,
+            //    "ordering": true,
+            //    "info": true,
+            //    "autoWidth": false,
+            //});
         });
     </script>
     <script src="~/js/Admin/Tours/indexController.js"></script>
@@ -1260,7 +1260,7 @@
 
 
     <style>
-        #listAll {
+        #listTour {
             box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
         }
 

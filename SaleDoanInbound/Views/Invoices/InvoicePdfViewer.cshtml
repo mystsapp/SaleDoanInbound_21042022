@@ -20,6 +20,7 @@
         color: black;
         border: 1px solid darkgray;
         /*padding: 5px;*/
+        
     }
 
 </style>
@@ -116,31 +117,24 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @*<tr>
-                            <td>@Model.Invoice.Pax</td>
-                            <td></td>
-                            <td></td>
-                        </tr>*@
+                                    
                                     @foreach (var item in Model.CTInvoices)
                                     {
                                         <tr>
                                             @if (i == 1)
                                             {
-                                                @*<td>@Model.Invoice.Pax</td>*@
-                                                <td class="invoicecell text-center" rowspan="@Model.CTInvoices.Count()">@Model.Invoice.Pax PAX</td>
+                                                
+                                                <td class="invoicecell text-center" width="15%" rowspan="@Model.CTInvoices.Count()">@Model.Invoice.Pax PAX</td>
                                             }
-                                            @*else
-                                {
-                                    <td></td>
-                                }*@
-                                            <td class="invoicecell ">@item.Descript</td>
-                                            <td class="invoicecell text-center">@item.Amount.ToString("N0")</td>
+                                            
+                                            <td class="invoicecell " width="70%">@item.Invoice.Currency @item.UnitPrice * @item.Quantity @item.Descript</td>
+                                            <td class="invoicecell text-center" width="15%">@item.Amount.ToString("N0")</td>
 
                                         </tr>
                                         i++;
                                     }
                                     <tr class="text-bold">
-                                        <td class="invoicecell text-center">TOTAL </td>
+                                        <td class="invoicecell text-center" >TOTAL </td>
                                         <td></td>
                                         <td class="invoicecell text-center">@Model.CTInvoices.Sum(x => x.Amount).ToString("N0")</td>
                                     </tr>

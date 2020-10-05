@@ -22,6 +22,7 @@ namespace Data.Models_IB
         public string Descript { get; set; }
 
         [DisplayName("Số lượng")]
+        [Required(ErrorMessage = "(*)")]
         public int Quantity { get; set; }
 
         [DisplayName("Đơn vị tính")]
@@ -31,6 +32,7 @@ namespace Data.Models_IB
 
         [DisplayName("Đơn giá")]
         [Column(TypeName = "decimal(18,2)")]
+        [Required(ErrorMessage = "(*)")]
         public decimal UnitPrice { get; set; }
 
         [DisplayName("Số tiền")]

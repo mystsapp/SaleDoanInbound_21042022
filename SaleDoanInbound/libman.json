@@ -25,6 +25,10 @@
     {
       "library": "bootbox.js@5.4.0",
       "destination": "wwwroot/lib/AdminLTE-3.0.5/plugins/bootbox.js/"
+    },
+    {
+      "library": "numeral.js@2.0.6",
+      "destination": "wwwroot/lib/numeral.js/"
     }
   ]
 }

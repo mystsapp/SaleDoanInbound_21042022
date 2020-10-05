@@ -247,7 +247,7 @@ namespace SaleDoanInbound.Controllers
             CTVATVM.Invoice = await _unitOfWork.invoiceRepository.GetByIdAsync(invoiceId);
             //find CTinvoice co DS (doanh so) == true
             var CTInvoices = await _unitOfWork.cTVATRepository.FindAsync(x => x.InvoiceId == invoiceId && x.DS && x.TiengAnh);
-            
+
             foreach (var item in CTInvoices)
             {
                 item.TiengAnh = false;
@@ -310,7 +310,10 @@ namespace SaleDoanInbound.Controllers
             CTVATVM.StrUrl = strUrl;
             CTVATVM.Invoice = await _unitOfWork.invoiceRepository.GetByIdAsync(invoiceId);
             CTVATVM.CTInvoice.InvoiceId = CTVATVM.Invoice.Id;
-            CTVATVM.ListTrueFalse = ListTrueFalse();
+            CTVATVM.CTInvoice.Percent = 100;
+            CTVATVM.CTInvoice.ServiceFee = 3;
+            CTVATVM.CTInvoice.VAT = 10;
+            //CTVATVM.ListTrueFalse = ListTrueFalse();
             //CTVATVM.CTInvoice.DS = false;
             //CTVATVM.CTInvoice.DLHH = false;
             return View(CTVATVM);
@@ -554,6 +557,22 @@ namespace SaleDoanInbound.Controllers
         }
         #endregion
         // CTInvoice
+
+        public JsonResult GetAount(decimal quantity, decimal unitPrice)
+        {
+            if (quantity != 0 && unitPrice != 0)
+            {
+                return Json(new
+                {
+                    status = true,
+                    data = quantity * unitPrice
+                });
+            }
+            return Json(new
+            {
+                status = false
+            });
+        }
 
         private IEnumerable<ListViewModel> ListTrueFalse()
         {

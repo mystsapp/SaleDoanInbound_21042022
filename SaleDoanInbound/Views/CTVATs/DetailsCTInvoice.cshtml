@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Details";
+    var huy = Model.Invoice.HuyInvoice;
 }
 
 <!-- Content Header (Page header) -->
@@ -113,12 +114,12 @@
 
                     <div class="col-md-3">
                         <label asp-for="CTInvoice.Muc" class="control-label"></label>
-                        <input asp-for="CTInvoice.Muc" class="form-control" readonly/>
+                        <input asp-for="CTInvoice.Muc" class="form-control" readonly />
                     </div>
 
                     <div class="col-md-3">
                         <label asp-for="CTInvoice.TenKhoanMuc" class="control-label"></label>
-                        <input asp-for="CTInvoice.TenKhoanMuc" class="form-control" readonly/>
+                        <input asp-for="CTInvoice.TenKhoanMuc" class="form-control" readonly />
                     </div>
 
                     <div class="col-md-3">
@@ -137,12 +138,20 @@
 
                 <div class="form-group row">
                     <div class="form-group">
-                        <a class="btn btn-primary" title="Cập nhật" asp-action="EditCTInvoice" asp-route-invoiceId="@Model.Invoice.Id" asp-route-id="@Model.CTInvoice.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
+                        @if (Model.Invoice.HuyInvoice == true)
+                        {
+                            <button disabled class="btn btn-primary" title="Cập nhật"><i class="fas fa-edit"></i></button>
+                        }
+                        else
+                        {
+                            <a class="btn btn-primary" title="Cập nhật" asp-action="EditCTInvoice" asp-route-invoiceId="@Model.Invoice.Id" asp-route-id="@Model.CTInvoice.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
+                        }
+
                         <a class="btn btn-success" asp-controller="KhachHangs" asp-route-strUrl="@Model.StrUrl" asp-action="DetailsRedirect"><i class="fas fa-backward"></i></a>
                     </div>
                 </div>
             </div>
-            
+
         </div>
         <!-- /.card-body -->
 

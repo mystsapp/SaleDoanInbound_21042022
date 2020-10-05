@@ -42,7 +42,7 @@
         </div>
         <div class="card-body">
 
-            <form method="post" autocomplete="off">
+            <form method="post" autocomplete="off" id="frmCTInvoiceCreate">
                 <div class="p-4 border rounded">
 
                     <input asp-for="CTInvoice.InvoiceId" type="hidden" /> <!-- this field is required - foreignkey to invoice-->
@@ -59,7 +59,7 @@
 
                         <div class="col-md-2">
                             <label asp-for="CTInvoice.Quantity" class="control-label"></label>
-                            <input type="text" asp-for="CTInvoice.Quantity" class="form-control numbers" />
+                            <input type="text" asp-for="CTInvoice.Quantity" class="form-control numbers" id="txtQuantity" />
                             <span asp-validation-for="CTInvoice.Quantity" class="text-danger"></span>
                         </div>
 
@@ -71,7 +71,7 @@
 
                         <div class="col-md-2">
                             <label asp-for="CTInvoice.UnitPrice" class="control-label"></label>
-                            <input asp-for="CTInvoice.UnitPrice" class="form-control numbers" />
+                            <input asp-for="CTInvoice.UnitPrice" class="form-control numbers" id="txtUnitPrice" />
                             <span asp-validation-for="CTInvoice.UnitPrice" class="text-danger"></span>
                         </div>
 
@@ -87,7 +87,7 @@
 
                         <div class="col-md-3">
                             <label asp-for="CTInvoice.Amount" class="control-label"></label>
-                            <input asp-for="CTInvoice.Amount" class="form-control numbers" />
+                            <input asp-for="CTInvoice.Amount" class="form-control numbers" id="txtAmount" />
                             <span asp-validation-for="CTInvoice.Amount" class="text-danger"></span>
                         </div>
 
@@ -123,7 +123,7 @@
                             <label asp-for="CTInvoice.DS" class="control-label"></label>
                             <br />
                             <div class="icheck-primary d-inline ">
-                                <input type="checkbox" asp-for="CTInvoice.DS" id="ckDS" >
+                                <input type="checkbox" asp-for="CTInvoice.DS" id="ckDS">
                                 <label for="ckDS"></label>
                             </div>
                             <span asp-validation-for="CTInvoice.DS" class="text-danger"></span>
@@ -169,11 +169,69 @@
                 });
             });
         </script>*@
+
+    <!-- Validation -->
+    <script>
+
+        $('#frmCTInvoiceCreate').validate({
+            //rules: {
+            //    email: {
+            //        required: true,
+            //        email: true,
+            //    },
+            //    NgayDen: {
+            //        required: true
+            //    },
+            //    chuDetour1: {
+            //        required: true
+            //    },
+            //},
+            //messages: {
+            //    email: {
+            //        required: "Please enter a email address",
+            //        email: "Please enter a vaild email address"
+            //    },
+            //    NgayDen: {
+            //        required: "Please provide a date"
+            //    },
+            //    chuDetour1: "Please enter value"
+            //},
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+                // add error text
+
+                //error.addClass('invalid-feedback').removeClass('error');
+                //element.closest('.chuDeTourGroup').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            }
+        });
+
+        $('#txtQuantity').rules('add', {
+            required: true,
+            messages: {
+                // required: "Ngày đến không được để trống"
+            }
+        });
+
+        $('#txtUnitPrice').rules('add', {
+            required: true,
+            messages: {
+                // required: "Ngày đến không được để trống"
+            }
+        });
+
+    </script>
+
     <script>
         $(function () {
             $('.select2').select2()
         });
-        
+
     </script>
 
     <script src="~/js/Admin/CTInvoice/createController.js"></script>
