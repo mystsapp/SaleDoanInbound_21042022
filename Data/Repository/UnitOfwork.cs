@@ -26,6 +26,7 @@ namespace Data.Repository
         IUserRepository userRepository { get; }
         IRoleRepository roleRepository { get; }
         ILoaiIVRepository loaiIVRepository { get; }
+        IPhanKhuCNRepository phanKhuCNRepository { get; }
 
         // qltour
         IThanhPhoForTuyenTQRepository thanhPhoForTuyenTQRepository { get; }
@@ -86,6 +87,7 @@ namespace Data.Repository
             roleRepository = new RoleRepository(_context);
             dSKhachHangRepository = new DSKhachHangRepository(_context);
             loaiIVRepository = new LoaiIVRepository(_context);
+            phanKhuCNRepository = new PhanKhuCNRepository(_context);
 
             // qltour
             thanhPhoForTuyenTQRepository = new ThanhPhoForTuyenTQRepository(_qltaikhoanContext);
@@ -162,6 +164,7 @@ namespace Data.Repository
 
         public IDSKhachHangRepository dSKhachHangRepository { get; }
         public ILoaiIVRepository loaiIVRepository { get; }
+        public IPhanKhuCNRepository phanKhuCNRepository { get; }
 
         // qltour
         public IThanhPhoForTuyenTQRepository thanhPhoForTuyenTQRepository { get; }
@@ -187,7 +190,6 @@ namespace Data.Repository
 
         public IApplicationQLTaiKhoanRepository applicationQLTaiKhoanRepository { get; }
 
-        
 
         public async Task<int> Complete()
         {

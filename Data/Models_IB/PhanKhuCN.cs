@@ -13,6 +13,11 @@ namespace Data.Models_IB
         [MaxLength(50), Column(TypeName = "nvarchar(50)")]
         public string TenKhuCN { get; set; }
 
+        [DisplayName("Chi nhánh")]
+        [MaxLength(250), Column(TypeName = "nvarchar(250)")]
+        [Required(ErrorMessage = "Chi nhánh không được trống")]
+        public string ChiNhanhs { get; set; }
+
         [DisplayName("Người tạo")]
         [MaxLength(50), Column(TypeName = "varchar(50)")]
         public string NguoiTao { get; set; }
