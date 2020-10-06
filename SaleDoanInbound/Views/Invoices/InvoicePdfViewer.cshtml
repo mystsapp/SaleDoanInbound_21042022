@@ -117,24 +117,30 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    
-                                    @foreach (var item in Model.CTInvoices)
-                                    {
-                                        <tr>
-                                            @if (i == 1)
-                                            {
-                                                
-                                                <td class="invoicecell text-center" width="15%" rowspan="@Model.CTInvoices.Count()">@Model.Invoice.Pax PAX</td>
-                                            }
-                                            
-                                            <td class="invoicecell " width="70%">@item.Invoice.Currency @item.UnitPrice * @item.Quantity @item.Descript</td>
-                                            <td class="invoicecell text-center" width="15%">@item.Amount.ToString("N0")</td>
 
-                                        </tr>
-                                        i++;
-                                    }
+                                    @*@foreach (var item in Model.CTInvoices)
+        {
+            <tr>
+                @if (i == 1)
+                {
+
+                    <td class="invoicecell text-center" width="15%" rowspan="@Model.CTInvoices.Count()">@Model.Invoice.Pax PAX</td>
+                }
+
+                <td class="invoicecell " width="70%">@item.Invoice.Currency @item.UnitPrice * @item.Quantity @item.Descript</td>
+                <td class="invoicecell text-center" width="15%">@item.Amount.ToString("N0")</td>
+
+            </tr>
+            i++;
+        }*@
+                                    <tr>
+                                        <td class="invoicecell text-center" width="15%" >@Model.Invoice.Pax PAX</td>
+                                        <td class="invoicecell " width="70%">@Html.Raw(Model.InvoicePrint.DienGiais)</td>
+                                        <td class="invoicecell text-center" width="15%">@Html.Raw(Model.InvoicePrint.SoTiens)</td>
+                                    </tr>
+
                                     <tr class="text-bold">
-                                        <td class="invoicecell text-center" >TOTAL </td>
+                                        <td class="invoicecell text-center">TOTAL </td>
                                         <td></td>
                                         <td class="invoicecell text-center">@Model.CTInvoices.Sum(x => x.Amount).ToString("N0")</td>
                                     </tr>

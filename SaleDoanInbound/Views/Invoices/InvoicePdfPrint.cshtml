@@ -138,28 +138,32 @@
                                         </thead>
                                         <tbody>
                                             @*<tr>
-                                                    <td>@Model.Invoice.Pax</td>
-                                                    <td></td>
-                                                    <td></td>
-                                                </tr>*@
-                                            @foreach (var item in Model.CTInvoices)
-                                            {
-                                                <tr>
-                                                    @if (i == 1)
-                                                    {
-                                                        @*<td>@Model.Invoice.Pax</td>*@
-                                                        <td class="invoicecell text-center" rowspan="@Model.CTInvoices.Count()">@Model.Invoice.Pax PAX</td>
-                                                    }
-                                                    @*else
-                                                        {
-                                                            <td></td>
-                                                        }*@
-                                                    <td class="invoicecell ">@item.Descript</td>
-                                                    <td class="invoicecell text-center">@item.Amount.ToString("N0")</td>
+            <td>@Model.Invoice.Pax</td>
+            <td></td>
+            <td></td>
+        </tr>*@
+                                            @*@foreach (var item in Model.CTInvoices)
+        {
+            <tr>
+                @if (i == 1)
+                {
 
-                                                </tr>
-                                                i++;
-                                            }
+                    <td class="invoicecell text-center" rowspan="@Model.CTInvoices.Count()">@Model.Invoice.Pax PAX</td>
+                }
+
+                <td class="invoicecell ">@item.Descript</td>
+                <td class="invoicecell text-center">@item.Amount.ToString("N0")</td>
+
+            </tr>
+            i++;
+        }*@
+
+                                            <tr>
+                                                <td class="invoicecell text-center" width="15%">@Model.Invoice.Pax PAX</td>
+                                                <td class="invoicecell " width="70%">@Html.Raw(Model.InvoicePrint.DienGiais)</td>
+                                                <td class="invoicecell text-center" width="15%">@Html.Raw(Model.InvoicePrint.SoTiens)</td>
+                                            </tr>
+
                                             <tr class="text-bold">
                                                 <td class="invoicecell text-center">TOTAL </td>
                                                 <td></td>

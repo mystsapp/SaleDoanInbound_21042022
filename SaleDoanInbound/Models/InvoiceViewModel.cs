@@ -23,5 +23,7 @@ namespace SaleDoanInbound.Models
         public Tour Tour { get; set; }
         public string StrUrl { get; set; }
         public string SoTienBangChu { get; set; }
+
+        public ListViewModel InvoicePrint { get; set; }
     }
 }

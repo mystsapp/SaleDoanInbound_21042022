@@ -9,6 +9,7 @@ using SaleDoanInbound.Models;
 using Data.Utilities;
 using Data.Models_IB;
 using NumToWords;
+using Microsoft.AspNetCore.Razor.Language;
 
 namespace SaleDoanInbound.Controllers
 {
@@ -487,6 +488,23 @@ namespace SaleDoanInbound.Controllers
             //string t = String.IsNullOrEmpty(loaitien) ? "" : " Exchange rate USD/VND";
             InvoiceVM.SoTienBangChu = char.ToUpper(c[0]) + c.Substring(1).ToLower() + " " + InvoiceVM.Invoice.Currency;
 
+            // InvoicePrint
+            InvoiceVM.InvoicePrint = new ListViewModel();
+            foreach (var item in InvoiceVM.CTInvoices)
+            {
+                if (string.IsNullOrEmpty(item.Descript))
+                {
+                    InvoiceVM.InvoicePrint.DienGiais += "" + "<br />";
+                }
+                else
+                {
+                    InvoiceVM.InvoicePrint.DienGiais += "- " + item.Invoice.Currency + " " + item.UnitPrice.ToString("N0") + " * " + item.Quantity + " " + item.Descript + "<br>";
+                }
+                InvoiceVM.InvoicePrint.SoTiens += item.Amount.ToString("N0") + "<br />";
+
+            }
+            // InvoicePrint
+
             return View(InvoiceVM);
         }
         
@@ -502,6 +520,23 @@ namespace SaleDoanInbound.Controllers
             string c = AmountToWords.changeCurrencyToWords(tongTien.ToString().ToLower());
             //string t = String.IsNullOrEmpty(loaitien) ? "" : " Exchange rate USD/VND";
             InvoiceVM.SoTienBangChu = char.ToUpper(c[0]) + c.Substring(1).ToLower() + " " + InvoiceVM.Invoice.Currency;
+
+            // InvoicePrint
+            InvoiceVM.InvoicePrint = new ListViewModel();
+            foreach (var item in InvoiceVM.CTInvoices)
+            {
+                if (string.IsNullOrEmpty(item.Descript))
+                {
+                    InvoiceVM.InvoicePrint.DienGiais += "" + "<br />";
+                }
+                else
+                {
+                    InvoiceVM.InvoicePrint.DienGiais += "- " + item.Invoice.Currency + " " + item.UnitPrice.ToString("N0") + " * " + item.Quantity + " " + item.Descript + "<br>";
+                }
+                InvoiceVM.InvoicePrint.SoTiens += item.Amount.ToString("N0") + "<br />";
+
+            }
+            // InvoicePrint
 
             return View(InvoiceVM);
         }
