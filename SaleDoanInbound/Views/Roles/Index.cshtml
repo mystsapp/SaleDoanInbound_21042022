@@ -1,8 +1,8 @@
-﻿@model PhanKhuCNViewModel
-@{
-    ViewData["Title"] = "Index";
-}
+﻿@model RoleViewModel
 
+@{
+    ViewData["Title"] = "Roles";
+}
 
 <!-- Content Header (Page header) -->
 <section class="content-header">
@@ -27,7 +27,7 @@
     <!-- Default box -->
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Phân khu chi nhanh</h3>
+            <h3 class="card-title">Danh sách Roles</h3>
 
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
@@ -77,48 +77,48 @@
                     <thead>
                         <tr class="table-info">
                             <th>#</th>
-                            <th>@Html.DisplayNameFor(m => m.PhanKhuCNs.FirstOrDefault().Role.RoleName)</th>
-                            <th>@Html.DisplayNameFor(m => m.PhanKhuCNs.FirstOrDefault().ChiNhanhs)</th>
+                            <th>@Html.DisplayNameFor(m => m.Roles.FirstOrDefault().RoleName)</th>
+                            <th>@Html.DisplayNameFor(m => m.Roles.FirstOrDefault().Description)</th>
 
                         </tr>
                     </thead>
                     <tbody>
-                        @if (Model.PhanKhuCNs != null)
+                        @if (Model.Roles != null)
                         {
-                            @foreach (var item in Model.PhanKhuCNs)
+                            @foreach (var item in Model.Roles)
                             {
 
                                 <tr class="cursor-pointer ">
 
                                     <td>
                                         <div class="btn-group text-white" role="group">
-                                            <a class="btn btn-primary btn-sm" title="Cập nhật" asp-action="Edit" asp-route-id="@item.RoleId" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
-                                            @*<a class="btn btn-success btn-sm" title="Chi tiết" asp-action="Details" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>*@
-                                            <form asp-action="Delete" asp-route-id="@item.RoleId" asp-route-strUrl="@Model.StrUrl" method="post">
+                                            <a class="btn btn-primary btn-sm" title="Cập nhật" asp-action="Edit" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
+                                            <a class="btn btn-success btn-sm" title="Chi tiết" asp-action="Details" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
+                                            <form asp-action="Delete" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" method="post">
 
-                                                <span id="confirmDeleteSpan_@item.RoleId" style="display: none">
+                                                <span id="confirmDeleteSpan_@item.Id" style="display: none">
                                                     <span class="text-dark">Xóa?</span>
                                                     <button type="submit" class="btn btn-danger">Yes</button>
-                                                    <button type="button" class="btn btn-primary" onclick="confirmDelete('@item.RoleId', false)">No</button>
+                                                    <button type="button" class="btn btn-primary" onclick="confirmDelete('@item.Id', false)">No</button>
                                                 </span>
 
-                                                <span id="deleteSpan_@item.RoleId">
-                                                    <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('@item.RoleId', true)"><i class="fas fa-trash-alt"></i></button>
+                                                <span id="deleteSpan_@item.Id">
+                                                    <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
                                                 </span>
                                             </form>
                                         </div>
                                     </td>
 
-                                    <td class="tdVal" data-id="@item.RoleId">@Html.DisplayFor(m => item.Role.RoleName)</td>
-                                    <td class="tdVal" data-id="@item.RoleId">@Html.DisplayFor(m => item.ChiNhanhs)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.RoleName)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Description)</td>
                                 </tr>
 
                             }
                         }
-                        @*else
+                        else
                         {
                             <span class="text-bold">Chưa có dữ liệu.</span>
-                        }*@
+                        }
 
                     </tbody>
 

@@ -125,17 +125,17 @@ namespace SaleDoanInbound.Controllers
                 }
                 // kiem tra ton tai user trong applicationuser qltk
 
-                if (qltkUserExist != null && qltkApplicationUser != null)
-                {
-                    SetAlert("User này đã tồn tại trên QLTK và trên ứng dụng này", "warning");
-                    UserVM = new UserViewModel()
-                    {
-                        User = new Data.Models_IB.User(),
-                        Dmchinhanhs = _unitOfWork.dmChiNhanhRepository.GetAll(),
-                        Roles = _unitOfWork.roleRepository.GetAll()
-                    };
-                    return View(UserVM);
-                }
+                //if (qltkUserExist != null && qltkApplicationUser != null)
+                //{
+                //    SetAlert("User này đã tồn tại trên QLTK và trên ứng dụng này", "warning");
+                //    UserVM = new UserViewModel()
+                //    {
+                //        User = new Data.Models_IB.User(),
+                //        Dmchinhanhs = _unitOfWork.dmChiNhanhRepository.GetAll(),
+                //        Roles = _unitOfWork.roleRepository.GetAll()
+                //    };
+                //    return View(UserVM);
+                //}
                 _unitOfWork.userRepository.Create(UserVM.User);
                 await _unitOfWork.Complete();
                 SetAlert("Thêm mới thành công.", "success");

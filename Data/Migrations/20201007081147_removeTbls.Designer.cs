@@ -4,14 +4,16 @@ using Data.Models_IB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
     [DbContext(typeof(SaleDoanIBDbContext))]
-    partial class SaleDoanIBDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201007081147_removeTbls")]
+    partial class removeTbls
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -230,6 +232,69 @@ namespace Data.Migrations
                     b.ToTable("CacNoiDungHuyTours");
                 });
 
+            modelBuilder.Entity("Data.Models_IB.ChiNhanh", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("DiaChi")
+                        .HasColumnType("nvarchar(250)")
+                        .HasMaxLength(250);
+
+                    b.Property<string>("DienThoai")
+                        .HasColumnType("varchar(20)")
+                        .HasMaxLength(20);
+
+                    b.Property<string>("Fax")
+                        .HasColumnType("varchar(20)")
+                        .HasMaxLength(20);
+
+                    b.Property<int>("IdPhanKhuCN")
+                        .HasColumnType("int");
+
+                    b.Property<string>("MaCN")
+                        .IsRequired()
+                        .HasColumnType("varchar(5)")
+                        .HasMaxLength(5);
+
+                    b.Property<int>("MaSoThue")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("NgaySua")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("NgayTao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("NguoiSua")
+                        .HasColumnType("varchar(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("NguoiTao")
+                        .HasColumnType("varchar(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("TenCN")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(200)")
+                        .HasMaxLength(200);
+
+                    b.Property<string>("ThanhPho")
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<bool>("TrangThai")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdPhanKhuCN");
+
+                    b.ToTable("ChiNhanh");
+                });
+
             modelBuilder.Entity("Data.Models_IB.ChiTietBN", b =>
                 {
                     b.Property<long>("Id")
@@ -280,6 +345,57 @@ namespace Data.Migrations
                     b.HasIndex("BienNhanId");
 
                     b.ToTable("ChiTietBNs");
+                });
+
+            modelBuilder.Entity("Data.Models_IB.DMDaiLy", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("DiaChi")
+                        .HasColumnType("nvarchar(250)")
+                        .HasMaxLength(250);
+
+                    b.Property<string>("DienThoai")
+                        .HasColumnType("varchar(15)")
+                        .HasMaxLength(15);
+
+                    b.Property<string>("Fax")
+                        .HasColumnType("varchar(15)")
+                        .HasMaxLength(15);
+
+                    b.Property<int>("IdChiNhanh")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("NgaySua")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("NgayTao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("NguoiSua")
+                        .HasColumnType("varchar(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("NguoiTao")
+                        .HasColumnType("varchar(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("TenDaiLy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<bool>("TrangThai")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdChiNhanh");
+
+                    b.ToTable("DMDaiLies");
                 });
 
             modelBuilder.Entity("Data.Models_IB.DMHoaHong", b =>
@@ -922,8 +1038,10 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Data.Models_IB.PhanKhuCN", b =>
                 {
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("ChiNhanhs")
                         .IsRequired()
@@ -944,9 +1062,9 @@ namespace Data.Migrations
                         .HasColumnType("varchar(50)")
                         .HasMaxLength(50);
 
-                    b.HasKey("RoleId");
+                    b.HasKey("Id");
 
-                    b.ToTable("PhanKhuCNs");
+                    b.ToTable("PhanKhuCN");
                 });
 
             modelBuilder.Entity("Data.Models_IB.Role", b =>
@@ -1630,11 +1748,29 @@ namespace Data.Migrations
                         .HasForeignKey("InvoiceId");
                 });
 
+            modelBuilder.Entity("Data.Models_IB.ChiNhanh", b =>
+                {
+                    b.HasOne("Data.Models_IB.PhanKhuCN", "PhanKhuCN")
+                        .WithMany()
+                        .HasForeignKey("IdPhanKhuCN")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Data.Models_IB.ChiTietBN", b =>
                 {
                     b.HasOne("Data.Models_IB.BienNhan", "BienNhan")
                         .WithMany()
                         .HasForeignKey("BienNhanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Data.Models_IB.DMDaiLy", b =>
+                {
+                    b.HasOne("Data.Models_IB.ChiNhanh", "ChiNhanh")
+                        .WithMany()
+                        .HasForeignKey("IdChiNhanh")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -1689,15 +1825,6 @@ namespace Data.Migrations
                     b.HasOne("Data.Models_IB.Tour", "Tour")
                         .WithMany()
                         .HasForeignKey("TourId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Data.Models_IB.PhanKhuCN", b =>
-                {
-                    b.HasOne("Data.Models_IB.Role", "Role")
-                        .WithMany()
-                        .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

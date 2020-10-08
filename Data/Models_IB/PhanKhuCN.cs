@@ -7,11 +7,19 @@ namespace Data.Models_IB
 {
     public class PhanKhuCN
     {
-        public int Id { get; set; }
+        //[Key]
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        //public int Id { get; set; }
+
+        ////[DisplayName("Tên phân khu")]
+        ////[MaxLength(50), Column(TypeName = "nvarchar(50)")]
+        ////public string TenKhuCN { get; set; }
 
         [DisplayName("Tên phân khu")]
-        [MaxLength(50), Column(TypeName = "nvarchar(50)")]
-        public string TenKhuCN { get; set; }
+        [Key, ForeignKey("Role")]
+        public int RoleId { get; set; }
+
+        public virtual Role Role { get; set; }
 
         [DisplayName("Chi nhánh")]
         [MaxLength(250), Column(TypeName = "nvarchar(250)")]

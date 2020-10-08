@@ -13,6 +13,6 @@ namespace SaleDoanInbound.Models
         public string TuNgay { get; set; }
         public string DenNgay { get; set; }
         public IEnumerable<Dmchinhanh> Dmchinhanhs { get; set; }
-        public IEnumerable<TourDto> TourDtos { get; set; }
+        public IEnumerable<TourBaoCaoDto> TourBaoCaoDtos { get; set; }
     }
 }

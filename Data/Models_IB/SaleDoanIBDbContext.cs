@@ -18,7 +18,7 @@ namespace Data.Models_IB
         //public DbSet<ChiNhanh> ChiNhanhs { get; set; }
         public DbSet<DatCoc> DatCocs { get; set; }
         public DbSet<DatCocLog> DatCocLogs { get; set; }
-        public DbSet<DMDaiLy> DMDaiLies { get; set; }
+        //public DbSet<DMDaiLy> DMDaiLies { get; set; }
         public DbSet<DMHoaHong> DMHoaHongs { get; set; }
         //public DbSet<DMKhachHang> DMKhachHangs { get; set; }
         public DbSet<DMKhachTour> DMKhachTours { get; set; }
@@ -34,11 +34,11 @@ namespace Data.Models_IB
         public DbSet<RoomingListD> RoomingListDs { get; set; }
         public DbSet<ThongTinTour> ThongTinTours { get; set; }
         public DbSet<Tour> Tours { get; set; }
-        public DbSet<TourLog> TourLogs { get; set; }
+        //public DbSet<TourLog> TourLogs { get; set; }
         public DbSet<TourTMP> TourTMPs { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<LoginModel> LoginModels { get; set; }
-        public DbSet<UsrKhuCN> UsrKhuCNs { get; set; }
+        //public DbSet<UsrKhuCN> UsrKhuCNs { get; set; }
         public DbSet<VeMayBay> VeMayBays { get; set; }
         public DbSet<KhachHang> KhachHangs { get; set; }
         public DbSet<LoaiIV> LoaiIVs { get; set; }
@@ -50,6 +50,11 @@ namespace Data.Models_IB
         public DbSet<BienNhan> BienNhans { get; set; }
         public DbSet<ChiTietBN> ChiTietBNs { get; set; }
 
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    modelBuilder.Entity<PhanKhuCN>()
+        //        .HasKey(e => new { e.Id, e.RoleId });
+        //}
 
     }
 }

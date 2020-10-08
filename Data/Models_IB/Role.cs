@@ -10,6 +10,7 @@ namespace Data.Models_IB
 
         [DisplayName("Role name")]
         [MaxLength(50), Column(TypeName = "nvarchar(50)")]
+        [Required(ErrorMessage = "*")]
         public string RoleName { get; set; }
 
         [DisplayName("Miêu tả")]

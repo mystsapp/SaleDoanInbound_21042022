@@ -41,6 +41,28 @@
     <Compile Remove="Migrations\20200922015103_fixTourLog.Designer.cs" />
     <Compile Remove="Migrations\20200923085309_fixBNId.cs" />
     <Compile Remove="Migrations\20200923085309_fixBNId.Designer.cs" />
+    <Compile Remove="Migrations\20201007075653_removePhanKhuCN.cs" />
+    <Compile Remove="Migrations\20201007075653_removePhanKhuCN.Designer.cs" />
+    <Compile Remove="Migrations\20201007080111_reAddPhanKhuCN.cs" />
+    <Compile Remove="Migrations\20201007080111_reAddPhanKhuCN.Designer.cs" />
+    <Compile Remove="Migrations\20201007080420_reAddPhanKhuCN.cs" />
+    <Compile Remove="Migrations\20201007080420_reAddPhanKhuCN.Designer.cs" />
+    <Compile Remove="Migrations\20201007080706_removeTbls.cs" />
+    <Compile Remove="Migrations\20201007080706_removeTbls.Designer.cs" />
+    <Compile Remove="Migrations\20201007081516_removeTbls1.cs" />
+    <Compile Remove="Migrations\20201007081516_removeTbls1.Designer.cs" />
+    <Compile Remove="Migrations\20201007081741_addPhanKhuCN.cs" />
+    <Compile Remove="Migrations\20201007081741_addPhanKhuCN.Designer.cs" />
+    <Compile Remove="Migrations\20201007081923_remove1.cs" />
+    <Compile Remove="Migrations\20201007081923_remove1.Designer.cs" />
+    <Compile Remove="Migrations\20201007082034_remove1.cs" />
+    <Compile Remove="Migrations\20201007082034_remove1.Designer.cs" />
+    <Compile Remove="Migrations\20201007082322_remove2.cs" />
+    <Compile Remove="Migrations\20201007082322_remove2.Designer.cs" />
+    <Compile Remove="Migrations\20201007084201_addIdentity.cs" />
+    <Compile Remove="Migrations\20201007084201_addIdentity.Designer.cs" />
+    <Compile Remove="Migrations\20201007084312_remove3.cs" />
+    <Compile Remove="Migrations\20201007084312_remove3.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

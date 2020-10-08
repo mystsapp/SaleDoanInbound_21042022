@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Data.Models_QLTaiKhoan;
 using Data.Models_QLT;
+using Data.Services;
 
 namespace SaleDoanInbound
 {
@@ -84,6 +85,10 @@ namespace SaleDoanInbound
             services.AddTransient<IBienNhanRepository, BienNhanRepository>();
             services.AddTransient<IChiTietBNRepository, ChiTietBNRepository>();
             services.AddTransient<IUnitOfWork, UnitOfwork>();
+
+            // services layer
+            services.AddTransient<IBaoCaoService, BaoCaoService>();
+            // services layer
 
             services.AddSession(options =>
             {
