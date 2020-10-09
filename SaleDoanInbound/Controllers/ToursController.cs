@@ -51,6 +51,9 @@ namespace SaleDoanInbound.Controllers
         }
         public async Task<IActionResult> Index(long id = 0, string searchString = null, int page = 1, string searchFromDate = null, string searchToDate = null)
         {
+            // from session
+            var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
+
             TourVM.StrUrl = UriHelper.GetDisplayUrl(Request);
 
             //if (!string.IsNullOrEmpty(TourVM.StrUrl))
@@ -84,9 +87,29 @@ namespace SaleDoanInbound.Controllers
             var loaiTours = TourVM.Tourkinds;
             var chiNhanhs = TourVM.Dmchinhanhs;
             var cacNoiDungHuyTours = _unitOfWork.cacNoiDungHuyTourRepository.GetAll();
-
-            TourVM.TourDtos = _unitOfWork.tourRepository.ListTour(searchString, companies, loaiTours, chiNhanhs, cacNoiDungHuyTours, page, searchFromDate, searchToDate);
-
+            List<string> listRoleChiNhanh = new List<string>();
+            if(user.Role.RoleName != "Admins")
+            {
+                if(user.Role.RoleName == "Users")
+                {
+                    listRoleChiNhanh.Add(user.MaCN);
+                }
+                else
+                {
+                    // add chinhanhs in PhanKhuCN
+                    var phanKhuCN = await _unitOfWork.phanKhuCNRepository.GetByIdAsync(user.RoleId);
+                    listRoleChiNhanh.AddRange(phanKhuCN.ChiNhanhs.Split(','));
+                }
+            }
+            else
+            {
+                foreach(var item in chiNhanhs)
+                {
+                    listRoleChiNhanh.Add(item.Macn);
+                }
+            }
+            TourVM.TourDtos = _unitOfWork.tourRepository.ListTour(searchString, companies, loaiTours, chiNhanhs, cacNoiDungHuyTours, page, searchFromDate, searchToDate, listRoleChiNhanh);
+            
             //--> click vao tour
             var tour = _unitOfWork.tourRepository.GetById(id);
             if (tour != null)
@@ -172,6 +195,47 @@ namespace SaleDoanInbound.Controllers
                 return View(TourVM);
             }
 
+            // kiem tra tungay > denngay
+            if (TourVM.Tour.NgayDen > TourVM.Tour.NgayDi)
+            {
+                TourVM = new TourViewModel()
+                {
+                    Tour = new Data.Models_IB.Tour(),
+                    Thanhphos = _unitOfWork.thanhPhoForTuyenTQRepository.GetAll(),
+                    Companies = _unitOfWork.khachHangRepository.GetAll(),
+                    Tourkinds = _unitOfWork.tourKindRepository.GetAll(),
+                    Dmchinhanhs = _unitOfWork.dmChiNhanhRepository.GetAll(),
+                    LoaiKhachs = LoaiKhach(),
+                    listPhongMacode = new List<Data.Models_QLT.Phongban>(),
+                    listPhongDH = new List<Phongban>(),
+                    Ngoaites = _unitOfWork.ngoaiTeRepository.GetAll(),
+                    NguonTours = NguonTour(),
+                    StrUrl = strUrl
+                };
+                ModelState.AddModelError("", "Ngày bắt đầu không được lớn hơn ngày kết thúc");
+                return View(TourVM);
+            }
+            // kiem tra tungay > denngay
+
+            // kiem tra trang thai
+            TourVM.Tour.TrangThai = "0";//mac dinh la moi tao
+
+            if (TourVM.Tour.NgayDamPhan != null)
+            {
+                TourVM.Tour.TrangThai = "1";
+            }
+
+            if (TourVM.Tour.NgayKyHopDong != null)
+            {
+                TourVM.Tour.TrangThai = "2";
+            }
+
+            if (TourVM.Tour.NgayThanhLyHD != null)
+            {
+                TourVM.Tour.TrangThai = "3";
+            }
+            // kiem tra trang thai
+
             //TourVM.Tour = new Data.Models_IB.Tour();
             TourVM.Tour.TuyenTQ = TourVM.Tour.TuyenTQ.Replace(',', '-');
 
@@ -183,12 +247,6 @@ namespace SaleDoanInbound.Controllers
                 TourVM.Tour.SoHopDong = "";
             }
             TourVM.Tour.NguoiTao = user.Username;
-            TourVM.Tour.TrangThai = "0";//mac dinh la moi tao
-
-            if (TourVM.Tour.NgayDamPhan != null)
-            {
-                TourVM.Tour.TrangThai = "1";
-            }
 
             // create sgtcode
             var companies = await _unitOfWork.khachHangRepository.FindAsync(x => x.CompanyId == TourVM.Tour.MaKH); // find company by MaKH(companyId)
@@ -320,6 +378,7 @@ namespace SaleDoanInbound.Controllers
 
                 TourVM.Tour.TuyenTQ = TourVM.Tour.TuyenTQ.Replace(',', '-');
 
+                // kiem tra trang thai
                 if (TourVM.Tour.NgayDamPhan != null)
                 {
                     TourVM.Tour.TrangThai = "1";
@@ -335,6 +394,7 @@ namespace SaleDoanInbound.Controllers
                 {
                     TourVM.Tour.TrangThai = "3";
                 }
+                // kiem tra trang thai
 
                 // kiem tra thay doi : trong getbyid() va ngoai view
                 #region log file

@@ -86,24 +86,25 @@
                             @*<th>#</th>*@
                             @*<th>#</th>*@
                             <th>STT</th>
-                            <th>@Html.DisplayNameFor(m => m.TourDtos.FirstOrDefault().Sgtcode)</th>
-                            <th>@Html.DisplayNameFor(m => m.TourDtos.FirstOrDefault().CompanyName)</th>
-                            <th>@Html.DisplayNameFor(m => m.TourDtos.FirstOrDefault().NgayDen)</th>
-                            <th>@Html.DisplayNameFor(m => m.TourDtos.FirstOrDefault().NgayDi)</th>
-                            <th>@Html.DisplayNameFor(m => m.TourDtos.FirstOrDefault().ChuDeTour)</th>
-                            <th>@Html.DisplayNameFor(m => m.TourDtos.FirstOrDefault().TuyenTQ)</th>
-                            <th>@Html.DisplayNameFor(m => m.TourDtos.FirstOrDefault().SoKhachDK)</th>
-                            <th>@Html.DisplayNameFor(m => m.TourDtos.FirstOrDefault().DoanhThuDK)</th>
-                            <th>@Html.DisplayNameFor(m => m.TourDtos.FirstOrDefault().SoKhachTT)</th>
-                            <th>@Html.DisplayNameFor(m => m.TourDtos.FirstOrDefault().DoanhThuTT)</th>
+                            <th>@Html.DisplayNameFor(m => m.TourBaoCaoDtos.FirstOrDefault().Sgtcode)</th>
+                            <th>@Html.DisplayNameFor(m => m.TourBaoCaoDtos.FirstOrDefault().CompanyName)</th>
+                            <th>@Html.DisplayNameFor(m => m.TourBaoCaoDtos.FirstOrDefault().NgayDen)</th>
+                            <th>@Html.DisplayNameFor(m => m.TourBaoCaoDtos.FirstOrDefault().NgayDi)</th>
+                            <th>@Html.DisplayNameFor(m => m.TourBaoCaoDtos.FirstOrDefault().ChuDeTour)</th>
+                            <th>@Html.DisplayNameFor(m => m.TourBaoCaoDtos.FirstOrDefault().TuyenTQ)</th>
+                            <th>@Html.DisplayNameFor(m => m.TourBaoCaoDtos.FirstOrDefault().SoKhachDK)</th>
+                            <th>@Html.DisplayNameFor(m => m.TourBaoCaoDtos.FirstOrDefault().DoanhThuDK)</th>
+                            <th>@Html.DisplayNameFor(m => m.TourBaoCaoDtos.FirstOrDefault().SoKhachTT)</th>
+                            <th>@Html.DisplayNameFor(m => m.TourBaoCaoDtos.FirstOrDefault().DoanhThuTT)</th>
                             <th>Sales</th>
+                            <th>@Html.DisplayNameFor(m => m.TourBaoCaoDtos.FirstOrDefault().NgayTao)</th>
 
                         </tr>
                     </thead>
                     <tbody>
-                        @if (Model.TourDtos != null)
+                        @if (Model.TourBaoCaoDtos != null)
                         {
-                            @foreach (var item in Model.TourDtos)
+                            @foreach (var item in Model.TourBaoCaoDtos)
                             {
 
                                 <tr class="cursor-pointer " data-huy="@item.HuyTour">
@@ -127,7 +128,6 @@
                                             <td class="tdVal bg-red" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
                                             break;
                                     }
-                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
                                     <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.CompanyName)</td>
                                     <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayDen.ToString("dd/MM/yyyy"))</td>
                                     <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayDi.ToString("dd/MM/yyyy"))</td>
@@ -137,9 +137,10 @@
                                     <td class="tdVal" data-id="@item.Id">@Html.Raw(item.DoanhThuDK.ToString("N0"))</td>
                                     <td class="tdVal" data-id="@item.Id">@Html.Raw(item.SoKhachTT.ToString("N0"))</td>
                                     <td class="tdVal" data-id="@item.Id">@Html.Raw(item.DoanhThuTT.ToString("N0"))</td>
-
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.NguoiTao)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayTao.ToString("dd/MM/yyyy"))</td>
                                 </tr>
-
+                                i++;
                             }
                         }
 

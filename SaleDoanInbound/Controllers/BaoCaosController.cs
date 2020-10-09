@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Data.Dtos;
 using Data.Models_IB;
 using Data.Models_QLT;
 using Data.Repository;
@@ -64,6 +65,75 @@ namespace SaleDoanInbound.Controllers
             }
             else
             {
+                BaoCaoVM.TourBaoCaoDtos = _baoCaoService.DoanhSoTheoSale(searchFromDate, searchToDate, BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList());
+                ///////////////////////////////// group by ////////////////////////////////////////////
+                List<ChiTietHdViewModel> chiTietHdViewModels = new List<ChiTietHdViewModel>();
+                foreach (var item in d)
+                {
+                    chiTietHdViewModels.Add(new ChiTietHdViewModel
+                    {
+                        HoTen = item.HoaDon.NhanVien.HoTen,
+                        VPName = item.HoaDon.VanPhong.Name,
+                        KVName = item.HoaDon.NhanVien.KhuVuc.Name,
+                        NgayTao = item.HoaDon.NgayTao,
+                        TenMon = item.ThucDon.TenMon,
+                        SoLuong = item.SoLuong,
+                        DonGia = item.DonGia,
+                        ThanhTien = item.SoLuong * item.DonGia,
+                        TC = 0,
+                        TenBan = item.HoaDon.Ban.TenBan,
+                        NoiLamViec = item.ThucDon.LoaiThucDon.NoiLamViec
+                    });
+                }
+
+                List<TourBaoCaoDto> tourBaoCaoDtos = new List<TourBaoCaoDto>()
+                {
+
+                }
+
+                //With Query Syntax
+
+                List<ChiTietHDGroupByResultViewModel> results1 = (
+                    from p in chiTietHdViewModels
+                    group p by p.NoiLamViec into g
+                    select new ChiTietHDGroupByResultViewModel()
+                    {
+                        NoiLamViec = g.Key,
+                        ChiTietHdViewModels = g.ToList()
+                    }
+                    ).ToList();
+
+                ////////////// tinh TC /////////////////////
+
+                foreach (var item in results1)
+                {
+                    decimal? tongCong = 0;
+                    foreach (var item1 in item.ChiTietHdViewModels)
+                    {
+                        tongCong += item1.ThanhTien;
+                    }
+
+                    foreach (var item1 in item.ChiTietHdViewModels)
+                    {
+                        item1.TC = tongCong;
+                    }
+
+                }
+
+                ////////////// tinh TC /////////////////////
+
+                //foreach (var item in results1)
+                //{
+                //    System.Diagnostics.Debug.WriteLine(item.NoiLamViec);
+                //    foreach (var car in item.ChiTietHdViewModels)
+                //    {
+                //        System.Diagnostics.Debug.WriteLine(car.TenMon);
+                //    }
+                //}
+
+                //System.Diagnostics.Debug.WriteLine("-----------");
+
+                //////////////////////////// group by/////////////////////////////////////////////////
 
             }
 

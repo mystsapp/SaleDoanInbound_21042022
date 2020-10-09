@@ -49,7 +49,7 @@
 
                     <input type="hidden" value="@ViewBag.chiNhanhTaoId" id="hidChiNhanhTaoId" />
 
-                    <div asp-validation-summary="None" class="text-danger"></div>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                     <div class="form-group row">
 
@@ -184,7 +184,7 @@
                         <div class="col-md-3 ">
                             <label asp-for="Tour.LoaiTien" class="control-label"></label>
                             <select asp-for="Tour.LoaiTien" class="form-control " id="ddlLoaiTien"
-                                    asp-items="@(new SelectList(Model.Ngoaites, "MaNt", "TenNt"))">
+                                    asp-items="@(new SelectList(Model.Ngoaites, "MaNt", "MaNt"))">
                                 <!-- ngoaite: qltour-->
                             </select>
                             <span asp-validation-for="Tour.LoaiTien" class="text-danger"></span>
@@ -229,7 +229,7 @@
 
                         <div class="col-md-2">
                             <label asp-for="Tour.DienThoai" class="control-label"></label>
-                            <input asp-for="Tour.DienThoai" class="form-control" id="txtDienThoai" />
+                            <input asp-for="Tour.DienThoai" class="form-control" />
                             <span asp-validation-for="Tour.DienThoai" class="text-danger"></span>
                         </div>
 

@@ -56,7 +56,7 @@
 
                     <input type="hidden" value="@ViewBag.chiNhanhTaoId" id="hidChiNhanhTaoId" />
 
-                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group row">
 
                         @if (ViewBag.chiNhanhTaoId == Model.Tour.ChiNhanhDHId)
@@ -114,13 +114,13 @@
 
                         <div class="col-md-3 chuDeTourGroup">
                             <label asp-for="Tour.NgayDen" class="control-label"></label>
-                            <input type="text" asp-for="Tour.NgayDen" class="form-control maskInput" id="txtNgayDen" />
+                            <input type="text" asp-for="Tour.NgayDen" class="form-control maskInput" id="txtNgayDen" asp-format="{0:dd/MM/yyyy}"/>
                             <span asp-validation-for="Tour.NgayDen" class="text-danger"></span>
                         </div>
 
                         <div class="col-md-3">
                             <label asp-for="Tour.NgayDi" class="control-label"></label>
-                            <input type="text" asp-for="Tour.NgayDi" class="form-control maskInput" id="txtNgayDi" />
+                            <input type="text" asp-for="Tour.NgayDi" class="form-control maskInput" id="txtNgayDi" asp-format="{0:dd/MM/yyyy}"/>
                             <span asp-validation-for="Tour.NgayDi" class="text-danger"></span>
                         </div>
 
@@ -202,7 +202,7 @@
                         <div class="col-md-3 chuDeTourGroup">
                             <label asp-for="Tour.LoaiTien" class="control-label"></label>
                             <select asp-for="Tour.LoaiTien" class="form-control " id="ddlLoaiTien"
-                                    asp-items="@(new SelectList(Model.Ngoaites, "MaNt", "TenNt"))">
+                                    asp-items="@(new SelectList(Model.Ngoaites, "MaNt", "MaNt"))">
                                 <!-- ngoaite: qltour-->
                             </select>
                             <span asp-validation-for="Tour.LoaiTien" class="text-danger"></span>
@@ -210,7 +210,7 @@
 
                         <div class="col-md-2 ">
                             <label asp-for="Tour.TyGia" class="control-label"></label>
-                            <input type="text" asp-for="Tour.TyGia" class="form-control numbers" asp-format="{0:0,0}" id="txtTyGia" />
+                            <input type="text" asp-for="Tour.TyGia" class="form-control numbers" id="txtTyGia" />
                             <span asp-validation-for="Tour.TyGia" class="text-danger"></span>
                         </div>
 
@@ -229,15 +229,16 @@
 
                         <div class="col-md-2">
                             <label asp-for="Tour.MaKH" class="control-label"></label>
-                            <select asp-for="Tour.MaKH" class="form-control select2" id="ddlMaKh"
+                            @*<select asp-for="Tour.MaKH" class="form-control select2" id="ddlMaKh"
                                     asp-items="@(new SelectList(Model.Companies, "CompanyId", "CompanyId"))">
-                            </select>
+                            </select>*@
+                            <input class="form-control" asp-for="Tour.MaKH" readonly />
                             <span asp-validation-for="Tour.MaKH" class="text-danger"></span>
                         </div>
 
                         <div class="col-md-10">
                             <label asp-for="Tour.TenKH" class="control-label"></label>
-                            <input asp-for="Tour.TenKH" class="form-control" id="txtTenKH" />
+                            <input asp-for="Tour.TenKH" class="form-control" id="txtTenKH" readonly/>
                             <span asp-validation-for="Tour.TenKH" class="text-danger"></span>
                         </div>
 
@@ -247,13 +248,13 @@
 
                         <div class="col-md-2">
                             <label asp-for="Tour.DienThoai" class="control-label"></label>
-                            <input asp-for="Tour.DienThoai" class="form-control" id="txtDienThoai" />
+                            <input asp-for="Tour.DienThoai" class="form-control" id="txtDienThoai" readonly/>
                             <span asp-validation-for="Tour.DienThoai" class="text-danger"></span>
                         </div>
 
                         <div class="col-md-10">
                             <label asp-for="Tour.DiaChi" class="control-label"></label>
-                            <input asp-for="Tour.DiaChi" class="form-control" id="txtDiaChi" />
+                            <input asp-for="Tour.DiaChi" class="form-control" id="txtDiaChi" readonly/>
                             <span asp-validation-for="Tour.DiaChi" class="text-danger"></span>
                         </div>
 
@@ -263,19 +264,19 @@
 
                         <div class="col-md-2">
                             <label asp-for="Tour.Fax" class="control-label"></label>
-                            <input asp-for="Tour.Fax" class="form-control" id="txtFax" />
+                            <input asp-for="Tour.Fax" class="form-control" id="txtFax" readonly/>
                             <span asp-validation-for="Tour.Fax" class="text-danger"></span>
                         </div>
 
                         <div class="col-md-4">
                             <label asp-for="Tour.Email" class="control-label"></label>
-                            <input asp-for="Tour.Email" class="form-control" id="txtEmail" />
+                            <input asp-for="Tour.Email" class="form-control" id="txtEmail" readonly/>
                             <span asp-validation-for="Tour.Email" class="text-danger"></span>
                         </div>
 
                         <div class="col-md-3">
                             <label asp-for="Tour.NgayDamPhan" class="control-label"></label>
-                            <input type="text" asp-for="Tour.NgayDamPhan" class="form-control maskInput" />
+                            <input type="text" asp-for="Tour.NgayDamPhan" class="form-control maskInput" asp-format="{0:dd/MM/yyyy}"/>
                             <span asp-validation-for="Tour.NgayDamPhan" class="text-danger"></span>
                         </div>
 

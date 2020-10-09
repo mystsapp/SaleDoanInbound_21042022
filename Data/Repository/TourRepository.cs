@@ -13,7 +13,7 @@ namespace Data.Repository
 {
     public interface ITourRepository : IRepository<Tour>
     {
-        IPagedList<TourDto> ListTour(string searchString, IEnumerable<Company> companies, IEnumerable<Tourkind> loaiTours, IEnumerable<Dmchinhanh> chiNhanhs, IEnumerable<CacNoiDungHuyTour> cacNoiDungHuyTours, int? page, string searchFromDate, string searchToDate);
+        IPagedList<TourDto> ListTour(string searchString, IEnumerable<Company> companies, IEnumerable<Tourkind> loaiTours, IEnumerable<Dmchinhanh> chiNhanhs, IEnumerable<CacNoiDungHuyTour> cacNoiDungHuyTours, int? page, string searchFromDate, string searchToDate, List<string> listRoleChiNhanh);
     }
     public class TourRepository : Repository<Tour>, ITourRepository
     {
@@ -21,7 +21,7 @@ namespace Data.Repository
         {
         }
 
-        public IPagedList<TourDto> ListTour(string searchString, IEnumerable<Company> companies, IEnumerable<Tourkind> loaiTours, IEnumerable<Dmchinhanh> chiNhanhs, IEnumerable<CacNoiDungHuyTour> cacNoiDungHuyTours, int? page, string searchFromDate, string searchToDate)
+        public IPagedList<TourDto> ListTour(string searchString, IEnumerable<Company> companies, IEnumerable<Tourkind> loaiTours, IEnumerable<Dmchinhanh> chiNhanhs, IEnumerable<CacNoiDungHuyTour> cacNoiDungHuyTours, int? page, string searchFromDate, string searchToDate, List<string> listRoleChiNhanh)
         {
             // return a 404 if user browses to before the first page
             if (page.HasValue && page < 1)
@@ -190,6 +190,13 @@ namespace Data.Repository
                 }
             }
             // search date
+
+            // List<string> listRoleChiNhanh --> chi lay nhung tour thuộc phanKhuCN cua minh
+            if(listRoleChiNhanh.Count > 0)
+            {
+                list = list.Where(item1 => listRoleChiNhanh.Any(item2 => item1.MaCNTao == item2)).ToList();
+            }
+            // List<string> listRoleChiNhanh --> chi lay nhung tour thuộc phanKhuCN cua minh
 
             // page the list
             const int pageSize = 10;
