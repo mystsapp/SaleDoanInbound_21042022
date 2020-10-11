@@ -83,21 +83,35 @@ namespace SaleDoanInbound.Controllers
 
                 foreach (var item in results1)
                 {
-                    //decimal? tongCong = 0;
-                    // chua thanh ly hop dong
-                    var chuaThanhLyHopDong = item.TourBaoCaoDtos.Where(x => string.IsNullOrEmpty(x.NgayThanhLyHD.ToString())).Sum(x => (x.DoanhThuTT == 0) ? x.DoanhThuDK : x.DoanhThuTT);
-                    // da thanh ly hop dong
-                    var daThanhLyHopDong = item.TourBaoCaoDtos.Where(x => x.NgayThanhLyHD.ToString() != null).Sum(x => (x.DoanhThuTT == 0) ? x.DoanhThuDK : x.DoanhThuTT);
-                    // tong cong theo tung sale
-                    var tongCongTheoTungSale = chuaThanhLyHopDong + daThanhLyHopDong;
+                    ////decimal? tongCong = 0;
+                    //// chua thanh ly hop dong
+                    //var chuaThanhLyHopDong = item.TourBaoCaoDtos.Where(x => string.IsNullOrEmpty(x.NgayThanhLyHD.ToString())).Sum(x => (x.DoanhThuTT == 0) ? x.DoanhThuDK : x.DoanhThuTT);
+                    //// da thanh ly hop dong
+                    //var daThanhLyHopDong = item.TourBaoCaoDtos.Where(x => !string.IsNullOrEmpty(x.NgayThanhLyHD.ToString())).Sum(x => (x.DoanhThuTT == 0) ? x.DoanhThuDK : x.DoanhThuTT);
+                    //// tong cong theo tung sale
+                    //var tongCongTheoTungSale = chuaThanhLyHopDong + daThanhLyHopDong;
                     // sokhach
                     var soKhach = item.TourBaoCaoDtos.Sum(x => (x.SoKhachTT == 0) ? x.SoKhachDK : x.SoKhachTT);
 
+                    decimal chuaThanhLyHopDong = 0, daThanhLyHopDong = 0;
+                    foreach (var itemDto in item.TourBaoCaoDtos)
+                    {
+                        var ngayThanhLyHD = itemDto.NgayThanhLyHD.ToString("dd/MM/yyyy");
+                        if (ngayThanhLyHD == "01/01/0001")
+                        {
+                            chuaThanhLyHopDong += (itemDto.DoanhThuTT == 0) ? itemDto.DoanhThuDK : itemDto.DoanhThuTT;
+                        }
+                        else
+                        {
+                            daThanhLyHopDong += (itemDto.DoanhThuTT == 0) ? itemDto.DoanhThuDK : itemDto.DoanhThuTT;
+                        }
+                    }
+                    
                     foreach (var item1 in item.TourBaoCaoDtos)
                     {
                         item1.ChuaThanhLyHopDong = chuaThanhLyHopDong;
                         item1.DaThanhLyHopDong = daThanhLyHopDong;
-                        item1.TongCongTheoTungSale = tongCongTheoTungSale;
+                        item1.TongCongTheoTungSale = chuaThanhLyHopDong + daThanhLyHopDong;
                         item1.TongSoKhachTheoSale = soKhach;
                     }
 
