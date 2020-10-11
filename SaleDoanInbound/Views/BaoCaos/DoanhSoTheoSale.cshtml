@@ -104,44 +104,113 @@
                     <tbody>
                         @if (Model.TourBaoCaoDtos != null)
                         {
-                            @foreach (var item in Model.TourBaoCaoDtos)
+                            @foreach (var vm in Model.TourBaoCaoDtosGroupByNguoiTaos)
                             {
+                                foreach (var item in vm.TourBaoCaoDtos)
+                                {
 
-                                <tr class="cursor-pointer " data-huy="@item.HuyTour">
-                                    <td>@i</td>
-                                    @switch (item.TrangThai)
-                                    {
+                                    <tr class="cursor-pointer ">
+                                        <td>@i</td>
+                                        @switch (item.TrangThai)
+                                        {
 
-                                        case "0":
-                                            <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
-                                            break;
-                                        case "1":
-                                            <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
-                                            break;
-                                        case "2":
-                                            <td class="tdVal bg-yellow" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
-                                            break;
-                                        case "3":
-                                            <td class="tdVal " style="background-color: chartreuse" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
-                                            break;
-                                        case "4":
-                                            <td class="tdVal bg-red" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
-                                            break;
-                                    }
-                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.CompanyName)</td>
-                                    <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayDen.ToString("dd/MM/yyyy"))</td>
-                                    <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayDi.ToString("dd/MM/yyyy"))</td>
-                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.ChuDeTour)</td>
-                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.TuyenTQ)</td>
-                                    <td class="tdVal" data-id="@item.Id">@Html.Raw(item.SoKhachDK.ToString("N0"))</td>
-                                    <td class="tdVal" data-id="@item.Id">@Html.Raw(item.DoanhThuDK.ToString("N0"))</td>
-                                    <td class="tdVal" data-id="@item.Id">@Html.Raw(item.SoKhachTT.ToString("N0"))</td>
-                                    <td class="tdVal" data-id="@item.Id">@Html.Raw(item.DoanhThuTT.ToString("N0"))</td>
-                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.NguoiTao)</td>
-                                    <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayTao.ToString("dd/MM/yyyy"))</td>
+                                            case "0":
+                                                <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
+                                                break;
+                                            case "1":
+                                                <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
+                                                break;
+                                            case "2":
+                                                <td class="tdVal bg-yellow" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
+                                                break;
+                                            case "3":
+                                                <td class="tdVal " style="background-color: chartreuse" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
+                                                break;
+                                            case "4":
+                                                <td class="tdVal bg-red" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
+                                                break;
+                                        }
+                                        <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.CompanyName)</td>
+                                        <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayDen.ToString("dd/MM/yyyy"))</td>
+                                        <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayDi.ToString("dd/MM/yyyy"))</td>
+                                        <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.ChuDeTour)</td>
+                                        <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.TuyenTQ)</td>
+                                        <td class="tdVal" data-id="@item.Id">@Html.Raw(item.SoKhachDK.ToString("N0"))</td>
+                                        <td class="tdVal" data-id="@item.Id">@Html.Raw(item.DoanhThuDK.ToString("N0"))</td>
+                                        <td class="tdVal" data-id="@item.Id">@Html.Raw(item.SoKhachTT.ToString("N0"))</td>
+                                        <td class="tdVal" data-id="@item.Id">@Html.Raw(item.DoanhThuTT.ToString("N0"))</td>
+                                        <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.NguoiTao)</td>
+                                        <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayTao.ToString("dd/MM/yyyy"))</td>
+
+                                    </tr>
+
+                                    i++;
+
+                                }
+                                <tr class="cursor-pointer text-bold">
+                                    <td></td>
+                                    <td>Tổng Cộng</td>
+                                    <td>CHƯA THANH LÝ HỢP ĐỒNG</td>
+                                    <td>@Html.Raw(vm.TourBaoCaoDtos.FirstOrDefault().ChuaThanhLyHopDong.ToString("N0"))</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
                                 </tr>
-                                i++;
+                                <tr class="cursor-pointer text-bold">
+                                    <td></td>
+                                    <td></td>
+                                    <td>ĐÃ THANH LÝ HỢP ĐỒNG</td>
+                                    <td>@Html.Raw(vm.TourBaoCaoDtos.FirstOrDefault().DaThanhLyHopDong.ToString("N0"))</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr class="cursor-pointer text-bold">
+                                    <td></td>
+                                    <td></td>
+                                    <td>TỔNG CỘNG THEO TỪNG SALE</td>
+                                    <td>@Html.Raw(vm.TourBaoCaoDtos.FirstOrDefault().TongSoKhachTheoSale.ToString("N0"))</td>
+                                    <td>@Html.Raw(vm.TourBaoCaoDtos.FirstOrDefault().DaThanhLyHopDong.ToString("N0"))</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+
                             }
+                            <tr class="cursor-pointer text-bold">
+                                <td></td>
+                                <td>Tổng Cộng</td>
+                                <td></td>
+                                <td>@Html.Raw(Model.TongSK.ToString("N0"))</td>
+                                <td>@Html.Raw(Model.TongCong.Value.ToString("N0"))</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+
                         }
 
                     </tbody>
@@ -170,13 +239,13 @@
                 "paging": true,
                 "lengthChange": true,
                 "searching": true,
-                "ordering": true,
-                "info": true,
+                "ordering": false,
+                "info": false,
                 "autoWidth": true,
             });
         });
     </script>
-    <script src="~/js/Admin/DoanhSoTheoSale/doanhSoTheoSaleController.js"></script>
+    @*<script src="~/js/Admin/DoanhSoTheoSale/doanhSoTheoSaleController.js"></script>*@
 
     <style>
         #listDoanhSoTheoSale {

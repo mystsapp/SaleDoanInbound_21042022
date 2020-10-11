@@ -55,7 +55,7 @@ namespace SaleDoanInbound.Controllers
                 {
                     var phanKhuCNs = await _unitOfWork.phanKhuCNRepository.FindIncludeOneAsync(x => x.Role, y => y.RoleId == user.RoleId);
                     List<string> maCns = new List<string>();
-                    foreach(var item in phanKhuCNs)
+                    foreach (var item in phanKhuCNs)
                     {
                         maCns.AddRange(item.ChiNhanhs.Split(',').ToList());
                     }
@@ -67,59 +67,56 @@ namespace SaleDoanInbound.Controllers
             {
                 BaoCaoVM.TourBaoCaoDtos = _baoCaoService.DoanhSoTheoSale(searchFromDate, searchToDate, BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList());
                 ///////////////////////////////// group by ////////////////////////////////////////////
-                List<ChiTietHdViewModel> chiTietHdViewModels = new List<ChiTietHdViewModel>();
-                foreach (var item in d)
-                {
-                    chiTietHdViewModels.Add(new ChiTietHdViewModel
-                    {
-                        HoTen = item.HoaDon.NhanVien.HoTen,
-                        VPName = item.HoaDon.VanPhong.Name,
-                        KVName = item.HoaDon.NhanVien.KhuVuc.Name,
-                        NgayTao = item.HoaDon.NgayTao,
-                        TenMon = item.ThucDon.TenMon,
-                        SoLuong = item.SoLuong,
-                        DonGia = item.DonGia,
-                        ThanhTien = item.SoLuong * item.DonGia,
-                        TC = 0,
-                        TenBan = item.HoaDon.Ban.TenBan,
-                        NoiLamViec = item.ThucDon.LoaiThucDon.NoiLamViec
-                    });
-                }
-
-                List<TourBaoCaoDto> tourBaoCaoDtos = new List<TourBaoCaoDto>()
-                {
-
-                }
 
                 //With Query Syntax
-
-                List<ChiTietHDGroupByResultViewModel> results1 = (
-                    from p in chiTietHdViewModels
-                    group p by p.NoiLamViec into g
-                    select new ChiTietHDGroupByResultViewModel()
+                var results1 = (
+                    from p in BaoCaoVM.TourBaoCaoDtos
+                    group p by p.NguoiTao into g
+                    select new TourBaoCaoDtosGroupByNguoiTaoViewModel()
                     {
-                        NoiLamViec = g.Key,
-                        ChiTietHdViewModels = g.ToList()
+                        NguoiTao = g.Key,
+                        TourBaoCaoDtos = g.ToList()
                     }
                     ).ToList();
-
+                BaoCaoVM.TourBaoCaoDtosGroupByNguoiTaos = results1;
                 ////////////// tinh TC /////////////////////
 
                 foreach (var item in results1)
                 {
-                    decimal? tongCong = 0;
-                    foreach (var item1 in item.ChiTietHdViewModels)
+                    //decimal? tongCong = 0;
+                    // chua thanh ly hop dong
+                    var chuaThanhLyHopDong = item.TourBaoCaoDtos.Where(x => string.IsNullOrEmpty(x.NgayThanhLyHD.ToString())).Sum(x => (x.DoanhThuTT == 0) ? x.DoanhThuDK : x.DoanhThuTT);
+                    // da thanh ly hop dong
+                    var daThanhLyHopDong = item.TourBaoCaoDtos.Where(x => x.NgayThanhLyHD.ToString() != null).Sum(x => (x.DoanhThuTT == 0) ? x.DoanhThuDK : x.DoanhThuTT);
+                    // tong cong theo tung sale
+                    var tongCongTheoTungSale = chuaThanhLyHopDong + daThanhLyHopDong;
+                    // sokhach
+                    var soKhach = item.TourBaoCaoDtos.Sum(x => (x.SoKhachTT == 0) ? x.SoKhachDK : x.SoKhachTT);
+
+                    foreach (var item1 in item.TourBaoCaoDtos)
                     {
-                        tongCong += item1.ThanhTien;
+                        item1.ChuaThanhLyHopDong = chuaThanhLyHopDong;
+                        item1.DaThanhLyHopDong = daThanhLyHopDong;
+                        item1.TongCongTheoTungSale = tongCongTheoTungSale;
+                        item1.TongSoKhachTheoSale = soKhach;
                     }
 
-                    foreach (var item1 in item.ChiTietHdViewModels)
-                    {
-                        item1.TC = tongCong;
-                    }
+                    //foreach (var item1 in item.ChiTietHdViewModels)
+                    //{
+                    //    item1.TC = tongCong;
+                    //}
 
                 }
 
+                decimal? tongCong = 0;
+                int tongCongSK = 0;
+                foreach (var item in results1)
+                {
+                    tongCong += item.TourBaoCaoDtos.FirstOrDefault().ChuaThanhLyHopDong + item.TourBaoCaoDtos.FirstOrDefault().DaThanhLyHopDong;
+                    tongCongSK += item.TourBaoCaoDtos.FirstOrDefault().TongSoKhachTheoSale;
+                }
+                BaoCaoVM.TongCong = tongCong;
+                BaoCaoVM.TongSK = tongCongSK;
                 ////////////// tinh TC /////////////////////
 
                 //foreach (var item in results1)

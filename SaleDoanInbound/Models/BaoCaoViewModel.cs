@@ -14,5 +14,8 @@ namespace SaleDoanInbound.Models
         public string DenNgay { get; set; }
         public IEnumerable<Dmchinhanh> Dmchinhanhs { get; set; }
         public IEnumerable<TourBaoCaoDto> TourBaoCaoDtos { get; set; }
+        public IEnumerable<TourBaoCaoDtosGroupByNguoiTaoViewModel> TourBaoCaoDtosGroupByNguoiTaos { get; set; }
+        public decimal? TongCong { get; set; }
+        public int TongSK { get; set; }
     }
 }

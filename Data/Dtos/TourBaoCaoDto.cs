@@ -155,5 +155,11 @@ namespace Data.Dtos
         public string LogFile { get; set; }
 
         public int Invoices { get; set; }
+
+        // DoanhSoTheoSale
+        public decimal ChuaThanhLyHopDong { get; set; }
+        public decimal DaThanhLyHopDong { get; set; }
+        public decimal TongCongTheoTungSale { get; set; }
+        public int TongSoKhachTheoSale { get; set; }
     }
 }
