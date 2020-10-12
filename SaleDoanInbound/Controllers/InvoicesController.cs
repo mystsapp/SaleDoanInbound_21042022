@@ -498,7 +498,7 @@ namespace SaleDoanInbound.Controllers
                 }
                 else
                 {
-                    InvoiceVM.InvoicePrint.DienGiais += "- " + item.Invoice.Currency + " " + item.UnitPrice.ToString("N0") + " * " + item.Quantity + " " + item.Descript + "<br>";
+                    InvoiceVM.InvoicePrint.DienGiais += "- " + item.Invoice.Currency + " " + item.UnitPrice.ToString("N0") + " * " + item.Quantity + item.Unit + " " + item.Descript + "<br>";
                 }
                 InvoiceVM.InvoicePrint.SoTiens += item.Amount.ToString("N0") + "<br />";
 
@@ -531,7 +531,8 @@ namespace SaleDoanInbound.Controllers
                 }
                 else
                 {
-                    InvoiceVM.InvoicePrint.DienGiais += "- " + item.Invoice.Currency + " " + item.UnitPrice.ToString("N0") + " * " + item.Quantity + " " + item.Descript + "<br>";
+                    // loaitien + " " + dongia + " * " + soluong + DVT + " " + descript
+                    InvoiceVM.InvoicePrint.DienGiais += "- " + item.Invoice.Currency + " " + item.UnitPrice.ToString("N0") + " * " + item.Quantity + item.Unit + " " + item.Descript + "<br>";
                 }
                 InvoiceVM.InvoicePrint.SoTiens += item.Amount.ToString("N0") + "<br />";
 

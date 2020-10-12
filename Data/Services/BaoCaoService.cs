@@ -124,7 +124,7 @@ namespace Data.Services
                 //list = list.Where(x => x.MaCNTao == macn).ToList();
                 list = list.Where(item1 => MaCNs.Any(item2 => item1.MaCNTao == item2)).ToList();
             }
-            list = list.OrderByDescending(x => x.NgayTao).ToList();
+            list = list.Where(x => x.HuyTour != true).OrderByDescending(x => x.NgayTao).ToList();
             var count = list.Count();
 
             // search date
