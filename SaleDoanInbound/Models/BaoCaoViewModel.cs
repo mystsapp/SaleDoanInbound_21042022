@@ -17,5 +17,8 @@ namespace SaleDoanInbound.Models
         public IEnumerable<TourBaoCaoDtosGroupByNguoiTaoViewModel> TourBaoCaoDtosGroupByNguoiTaos { get; set; }
         public decimal? TongCong { get; set; }
         public int TongSK { get; set; }
+
+        public ThangNamViewModel ThangNamViewModel { get; set; }
+        public IEnumerable<ListViewModel> Thangs { get; set; }
     }
 }

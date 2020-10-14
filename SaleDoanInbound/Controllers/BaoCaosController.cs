@@ -13,6 +13,7 @@ using Data.Services;
 using Data.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using OfficeOpenXml;
+using OfficeOpenXml.Drawing.Chart;
 using OfficeOpenXml.Style;
 using SaleDoanInbound.Models;
 
@@ -31,14 +32,25 @@ namespace SaleDoanInbound.Controllers
             _baoCaoService = baoCaoService;
             BaoCaoVM = new BaoCaoViewModel()
             {
-                Dmchinhanhs = _unitOfWork.dmChiNhanhRepository.GetAll()
+                Dmchinhanhs = _unitOfWork.dmChiNhanhRepository.GetAll(),
+                Thangs = Thangs()
             };
         }
+
+        private IEnumerable<string> Thangs()
+        {
+            return new List<string>
+            {
+                "1", "2", "3","4", "5", "6","7", "8", "9","10", "11", "12"
+            };
+        }
+
         public IActionResult Index()
         {
             return View();
         }
 
+        #region
         public async Task<IActionResult> DoanhSoTheoSale(string searchFromDate = null, string searchToDate = null, string Macn = null)
         {
             // from session
@@ -379,7 +391,7 @@ namespace SaleDoanInbound.Controllers
                 return File(
                 fileContents: fileContents,
                 contentType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                fileDownloadName: "TheoNgayBay_" + System.DateTime.Now.ToString("dd/MM/yyyy HH:mm") + ".xlsx");
+                fileDownloadName: "DoanhSoTheoSale_" + System.DateTime.Now.ToString("dd/MM/yyyy HH:mm") + ".xlsx");
 
             }
             catch (Exception)
@@ -413,12 +425,12 @@ namespace SaleDoanInbound.Controllers
 
             xlSheet.Cells[1, 1].Value = "CÔNG TY DVLH SAIGONTOURIST";
             xlSheet.Cells[1, 1].Style.Font.SetFromFont(new Font("Times New Roman", 14, FontStyle.Bold));
-            xlSheet.Cells[1, 1, 1, 12].Merge = true;
+            xlSheet.Cells[1, 1, 1, 17].Merge = true;
 
             xlSheet.Cells[2, 1].Value = "BÁO CÁO DOANH SỐ THEO SALES";
             xlSheet.Cells[2, 1].Style.Font.SetFromFont(new Font("Times New Roman", 16, FontStyle.Bold));
-            xlSheet.Cells[2, 1, 2, 12].Merge = true;
-            setCenterAligment(2, 1, 2, 12, xlSheet);
+            xlSheet.Cells[2, 1, 2, 17].Merge = true;
+            setCenterAligment(2, 1, 2, 17, xlSheet);
             // dinh dang tu ngay den ngay
             if (string.IsNullOrEmpty(searchFromDate) && string.IsNullOrEmpty(searchToDate))
             {
@@ -436,9 +448,9 @@ namespace SaleDoanInbound.Controllers
                 fromTo = "Từ ngày: " + searchFromDate + " đến ngày: " + searchToDate;
             }
             xlSheet.Cells[3, 1].Value = fromTo;
-            xlSheet.Cells[3, 1, 3, 12].Merge = true;
+            xlSheet.Cells[3, 1, 3, 17].Merge = true;
             xlSheet.Cells[3, 1].Style.Font.SetFromFont(new Font("Times New Roman", 14, FontStyle.Bold));
-            setCenterAligment(3, 1, 3, 10, xlSheet);
+            setCenterAligment(3, 1, 3, 17, xlSheet);
 
             // Tạo header
             xlSheet.Cells[5, 1].Value = "Sale";
@@ -446,7 +458,7 @@ namespace SaleDoanInbound.Controllers
 
             xlSheet.Cells[5, 1, 5, 2].Style.Font.SetFromFont(new Font("Times New Roman", 12, FontStyle.Bold));
             setBorder(5, 1, 5, 2, xlSheet);
-            setCenterAligment(5, 1, 5, 12, xlSheet);
+            setCenterAligment(5, 1, 5, 2, xlSheet);
             // do du lieu tu table
             int dong = 6;
 
@@ -494,6 +506,8 @@ namespace SaleDoanInbound.Controllers
                 DoanhThuTT = x.Sum(x => x.DoanhThuTT)
             });
 
+            var iTotalRow1 = tourBaoCaoDtoCharts.Count();
+
             Color colFromHex = System.Drawing.ColorTranslator.FromHtml("#D3D3D3");// ColorTranslator.FromHtml("#D3D3D3");
             Color colorTotalRow = ColorTranslator.FromHtml("#66ccff");
             Color colorThanhLy = ColorTranslator.FromHtml("#7FFF00");
@@ -523,20 +537,47 @@ namespace SaleDoanInbound.Controllers
                 return RedirectToAction(nameof(DoanhSoTheoSale));
             }
 
-            // chart
+            #region "Chart"        
 
-            var lineChart = workSheetChart.Drawings.AddChart("lineChart", eChartType.ColumnClustered);
-            //workSheetChart.Cells["A1"].LoadFromDataTable(dt1, false);
+            // int iTotalRow1 = dt1.Rows.Count;
+            //if (tourBaoCaoDtoCharts != null)
+            //{
+            //    xlSheet.Cells[1, 1].LoadFromText("Sale");
+            //    DungChung.TrSetCellBorder(xlSheet, 1, 1, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Center, Color.Black, "Times New Roman", 12, FontStyle.Bold);
+
+            //    xlSheet.Cells[1, 2].LoadFromText("Doanh số");
+            //    DungChung.TrSetCellBorder(xlSheet, 1, 2, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Center, Color.Black, "Times New Roman", 12, FontStyle.Bold);
+
+            //    int iRowIndex1 = 2;
+            //    foreach (DataRow item in dt1.Rows)
+            //    {
+            //        //COT 5
+            //        xlSheet.Cells[iRowIndex1, 1].Value = item["tentheocn"].ToString();
+            //        DungChung.TrSetCellBorder(xlSheet, iRowIndex1, 1, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Left, Color.Black, "Times New Roman", 12, FontStyle.Regular);
+
+            //        //COT 6
+            //        xlSheet.Cells[iRowIndex1, 2].Value = Decimal.Parse(item["doanhthutt"].ToString() == "" ? "0" : @item["doanhthutt"].ToString());
+            //        xlSheet.Cells[iRowIndex1, 2].Style.Numberformat.Format = "#,##0";
+            //        DungChung.TrSetCellBorder(xlSheet, iRowIndex1, 2, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Right, Color.Black, "Times New Roman", 12, FontStyle.Regular);
+
+            //        iRowIndex1 = iRowIndex1 + 1;
+            //    }
+            //}
+
+            // chart
+            var lineChart = xlSheet.Drawings.AddChart("lineChart", eChartType.ColumnClustered);
+            //var lineChart = ExcelApp.Workbook.Worksheets.AddChart("lineChart", eChartType.ColumnClustered);
+            //xlSheet.Cells["A1"].LoadFromDataTable(dt1, false);
             //set the title
             lineChart.Title.Font.LatinFont = "Times New Roman";
             lineChart.Title.Font.Size = 16;
             lineChart.Title.Font.Bold = true;
-            lineChart.Title.Text = "Đoàn đi tour từ ngày " + d1.ToString("dd/MM/yyyy") + " đến ngày " + d2.ToString("dd/MM/yyyy");
+            lineChart.Title.Text = "Đoàn đi tour từ ngày " + fromTo;
             //create the ranges for the chart
-            iTotalRow1 = iTotalRow1 + 1;//+1 do bat dau tu row a2,b2
-            var rangeLabel = workSheetChart.Cells["A2:A" + iTotalRow1];
-            var range1 = workSheetChart.Cells["B2:B" + iTotalRow1];
-            //var range2 = workSheetChart.Cells["B3:K3"];
+            iTotalRow1 = iTotalRow1 + 6;//+1 do bat dau tu row a2,b2
+            var rangeLabel = xlSheet.Cells["A6:A" + iTotalRow1];
+            var range1 = xlSheet.Cells["B6:B" + iTotalRow1];
+            //var range2 = xlSheet.Cells["B3:K3"];
             //add the ranges to the chart
             var lineSerires = (ExcelBarChartSerie)lineChart.Series.Add(range1, rangeLabel);
             //lineChart.Series.Add(range2, rangeLabel);
@@ -545,7 +586,7 @@ namespace SaleDoanInbound.Controllers
             lineSerires.DataLabel.Font.Size = 13;
             //set the names of the legend
             lineChart.Series[0].Header = "Doanh số";
-            //lineChart.Series[1].Header = workSheetChart.Cells["A3"].Value.ToString();
+            //lineChart.Series[1].Header = xlSheet.Cells["A3"].Value.ToString();
             //position of the legend
             lineChart.Legend.Position = eLegendPosition.Right;
 
@@ -564,10 +605,10 @@ namespace SaleDoanInbound.Controllers
             }
 
             //add the chart at cell B6
-            lineChart.SetPosition(1, 0, 4, 0);
+            lineChart.SetPosition(4, 0, 4, 0);
 
-            workSheetChart.Cells.AutoFitColumns();
-#endregion
+            xlSheet.Cells.AutoFitColumns();
+            #endregion
 
 
             // chart
@@ -622,8 +663,6 @@ namespace SaleDoanInbound.Controllers
 
 
         }
-
-
 
         private void DoanhSoTheoSaleGroupbyNguoiTao()
         {
@@ -707,7 +746,55 @@ namespace SaleDoanInbound.Controllers
 
             //////////////////////////// group by/////////////////////////////////////////////////
         }
+        #endregion
 
+        #region
+        public async Task<IActionResult> DoanhSoTheoThang(string searchFromDate = null, string searchToDate = null, string Macn = null)
+        {
+            // from session
+            var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
+
+
+
+            //ViewBag.Macn = Macn;
+            //ViewBag.searchFromDate = searchFromDate;
+            //ViewBag.searchToDate = searchToDate;
+
+            //// moi load vao
+            //if (user.Role.RoleName != "Admins")
+            //{
+            //    if (user.Role.RoleName == "Users")
+            //    {
+            //        BaoCaoVM.Dmchinhanhs = new List<Dmchinhanh>() { new Dmchinhanh() { Macn = user.MaCN } };
+            //        BaoCaoVM.TourBaoCaoDtos = _baoCaoService.DoanhSoTheoSale(searchFromDate, searchToDate, BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList());
+            //        BaoCaoVM.TourBaoCaoDtos = BaoCaoVM.TourBaoCaoDtos.Where(x => x.NguoiTao == user.Username);
+            //        DoanhSoTheoSaleGroupbyNguoiTao();
+            //    }
+            //    else
+            //    {
+            //        var phanKhuCNs = await _unitOfWork.phanKhuCNRepository.FindIncludeOneAsync(x => x.Role, y => y.RoleId == user.RoleId);
+            //        List<string> maCns = new List<string>();
+            //        foreach (var item in phanKhuCNs)
+            //        {
+            //            maCns.AddRange(item.ChiNhanhs.Split(',').ToList());
+            //        }
+            //        //BaoCaoVM.Dmchinhanhs = _unitOfWork.dmChiNhanhRepository.Find(x => x.KhuVuc == user.Role.RoleName);
+            //        BaoCaoVM.Dmchinhanhs = BaoCaoVM.Dmchinhanhs.Where(item1 => maCns.Any(item2 => item1.Macn == item2));
+            //        BaoCaoVM.TourBaoCaoDtos = _baoCaoService.DoanhSoTheoSale(searchFromDate, searchToDate, BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList());
+            //        DoanhSoTheoSaleGroupbyNguoiTao();
+            //    }
+            //}
+            //else
+            //{
+            //    BaoCaoVM.TourBaoCaoDtos = _baoCaoService.DoanhSoTheoSale(searchFromDate, searchToDate, BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList());
+
+            //    DoanhSoTheoSaleGroupbyNguoiTao();
+
+            //}
+
+            return View(BaoCaoVM);
+        }
+        #endregion
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         private static void NumberFormat(int fromRow, int fromColumn, int toRow, int toColumn, ExcelWorksheet sheet)
