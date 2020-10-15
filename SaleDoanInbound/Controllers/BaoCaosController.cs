@@ -33,15 +33,27 @@ namespace SaleDoanInbound.Controllers
             BaoCaoVM = new BaoCaoViewModel()
             {
                 Dmchinhanhs = _unitOfWork.dmChiNhanhRepository.GetAll(),
-                Thangs = Thangs()
+                Thangs = Thangs(),
+                ThangNamViewModel = new ThangNamViewModel()
             };
         }
 
-        private IEnumerable<string> Thangs()
+        private IEnumerable<ListViewModel> Thangs()
         {
-            return new List<string>
+            return new List<ListViewModel>
             {
-                "1", "2", "3","4", "5", "6","7", "8", "9","10", "11", "12"
+                new ListViewModel(){Name = "1" },
+                new ListViewModel(){Name = "2" },
+                new ListViewModel(){Name = "3" },
+                new ListViewModel(){Name = "4" },
+                new ListViewModel(){Name = "5" },
+                new ListViewModel(){Name = "6" },
+                new ListViewModel(){Name = "7" },
+                new ListViewModel(){Name = "8" },
+                new ListViewModel(){Name = "9" },
+                new ListViewModel(){Name = "10" },
+                new ListViewModel(){Name = "11" },
+                new ListViewModel(){Name = "12" },
             };
         }
 
@@ -749,16 +761,62 @@ namespace SaleDoanInbound.Controllers
         #endregion
 
         #region
-        public async Task<IActionResult> DoanhSoTheoThang(string searchFromDate = null, string searchToDate = null, string Macn = null)
+        [HttpPost,ActionName("DoanhSoTheoThang")]
+        public IActionResult DoanhSoTheoThangPost()
         {
+
+            var nam2 = DateTime.Now.Year;
+            var nam1 = nam2 - 1;
+
+            // moi load vao
+            if (BaoCaoVM.ThangNamViewModel.Nam1 == 0)
+            {
+                BaoCaoVM.ThangNamViewModel.Nam1 = nam1;
+            }
+            if (BaoCaoVM.ThangNamViewModel.Nam2 == 0)
+            {
+                BaoCaoVM.ThangNamViewModel.Nam2 = nam2;
+            }
+            ViewBag.tuThang1 = BaoCaoVM.ThangNamViewModel.TuThang1;
+            ViewBag.denThang1 = BaoCaoVM.ThangNamViewModel.DenThang1;
+            ViewBag.nam1 = BaoCaoVM.ThangNamViewModel.Nam1;
+
+            ViewBag.tuThang2 = BaoCaoVM.ThangNamViewModel.TuThang2;
+            ViewBag.denThang2 = BaoCaoVM.ThangNamViewModel.DenThang2;
+            ViewBag.nam2 = BaoCaoVM.ThangNamViewModel.Nam2;
+
+            return View(BaoCaoVM);
+        }
+        public IActionResult DoanhSoTheoThang()
+        {
+            BaoCaoVM = new BaoCaoViewModel()
+            {
+                Dmchinhanhs = _unitOfWork.dmChiNhanhRepository.GetAll(),
+                Thangs = Thangs(),
+                ThangNamViewModel = new ThangNamViewModel()
+            };
             // from session
             var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
 
+            var nam2 = DateTime.Now.Year;
+            var nam1 = nam2 - 1;
+            
+            // moi load vao
+            if (BaoCaoVM.ThangNamViewModel.Nam1 == 0)
+            {
+                BaoCaoVM.ThangNamViewModel.Nam1 = nam1;
+            }
+            if (BaoCaoVM.ThangNamViewModel.Nam2 == 0)
+            {
+                BaoCaoVM.ThangNamViewModel.Nam2 = nam2;
+            }
+            ViewBag.tuThang1 = BaoCaoVM.ThangNamViewModel.TuThang1;
+            ViewBag.denThang1 = BaoCaoVM.ThangNamViewModel.DenThang1;
+            ViewBag.nam1 = BaoCaoVM.ThangNamViewModel.Nam1;
 
-
-            //ViewBag.Macn = Macn;
-            //ViewBag.searchFromDate = searchFromDate;
-            //ViewBag.searchToDate = searchToDate;
+            ViewBag.tuThang2 = BaoCaoVM.ThangNamViewModel.TuThang2;
+            ViewBag.denThang2 = BaoCaoVM.ThangNamViewModel.DenThang2;
+            ViewBag.nam2 = BaoCaoVM.ThangNamViewModel.Nam2;
 
             //// moi load vao
             //if (user.Role.RoleName != "Admins")
