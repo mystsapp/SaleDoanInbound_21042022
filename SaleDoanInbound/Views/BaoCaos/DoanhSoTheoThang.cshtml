@@ -44,43 +44,37 @@
             <form autocomplete="off">
                 <div class="p-2 border rounded" style="background-color: aliceblue;" id="search">
 
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
                     <div class="row">
-                        
+
                         <div class="col-md-3 rounded">
                             <br />
                             <label class="alert alert-info d-block">Năm trước</label>
                         </div>
 
                         <div class="col-md-2">
-                            <label asp-for="ThangNamViewModel.TuThang1" class="control-label"></label>
-                            <select class="form-control" asp-for="ThangNamViewModel.TuThang1"
+                            <label class="control-label">Từ tháng</label>
+                            <select class="form-control" name="tuThang1"
                                     asp-items="@(new SelectList(Model.Thangs, "Name", "Name", ViewBag.tuThang1))">
                             </select>
-                            <span asp-validation-for="ThangNamViewModel.TuThang1" class="text-danger"></span>
                         </div>
 
                         <div class="col-md-2">
-                            <label asp-for="ThangNamViewModel.DenThang1" class="control-label"></label>
-                            <select class="form-control" asp-for="ThangNamViewModel.DenThang1"
+                            <label class="control-label">Đến tháng</label>
+                            <select class="form-control" name="denThang1"
                                     asp-items="@(new SelectList(Model.Thangs, "Name", "Name", ViewBag.denThang1))">
                             </select>
-                            <span asp-validation-for="ThangNamViewModel.DenThang1" class="text-danger"></span>
                         </div>
 
                         <div class="col-md-2">
-                            <label asp-for="ThangNamViewModel.Nam1" class="control-label"></label>
-                            <input asp-for="ThangNamViewModel.Nam1" class="form-control " value="@ViewBag.nam1" />
-                            <span asp-validation-for="ThangNamViewModel.Nam1" class="text-danger"></span>
+                            <label class="control-label">Năm</label>
+                            <input type="number" class="form-control " name="nam1" value="@ViewBag.nam1" />
                         </div>
 
                         <div class="col-md-3">
-                            <label asp-for="ThangNamViewModel.MaCN" class="control-label"></label>
-                            <select class="form-control" asp-for="ThangNamViewModel.MaCN"
-                                    asp-items="@(new SelectList(Model.Dmchinhanhs, "Macn", "Macn", ViewBag.Macn))">
+                            <label class="control-label">Chi nhánh</label>
+                            <select class="form-control" name="chiNhanh"
+                                    asp-items="@(new SelectList(Model.Dmchinhanhs, "Macn", "Macn", ViewBag.chiNhanh))">
                             </select>
-
                         </div>
 
                     </div>
@@ -93,25 +87,22 @@
                         </div>
 
                         <div class="col-md-2">
-                            <label asp-for="ThangNamViewModel.TuThang2" class="control-label"></label>
-                            <select class="form-control" asp-for="ThangNamViewModel.TuThang2"
+                            <label class="control-label">Từ tháng</label>
+                            <select class="form-control" name="tuThang2"
                                     asp-items="@(new SelectList(Model.Thangs, "Name", "Name", ViewBag.tuThang2))">
                             </select>
-                            <span asp-validation-for="ThangNamViewModel.TuThang2" class="text-danger"></span>
                         </div>
 
                         <div class="col-md-2">
-                            <label asp-for="ThangNamViewModel.DenThang2" class="control-label"></label>
-                            <select class="form-control" asp-for="ThangNamViewModel.DenThang2"
+                            <label class="control-label">Đến tháng</label>
+                            <select class="form-control" name="denThang2"
                                     asp-items="@(new SelectList(Model.Thangs, "Name", "Name", ViewBag.denThang2))">
                             </select>
-                            <span asp-validation-for="ThangNamViewModel.DenThang2" class="text-danger"></span>
                         </div>
 
                         <div class="col-md-2">
-                            <label asp-for="ThangNamViewModel.Nam2" class="control-label"></label>
-                            <input asp-for="ThangNamViewModel.Nam2" class="form-control" value="@ViewBag.nam2" />
-                            <span asp-validation-for="ThangNamViewModel.Nam1" class="text-danger"></span>
+                            <label class="control-label">Năm</label>
+                            <input type="number" class="form-control" name="nam2" value="@ViewBag.nam2" />
                         </div>
 
                         <div class="col-md-3">
@@ -134,132 +125,50 @@
                             @*<th>#</th>*@
                             @*<th>#</th>*@
                             <th>STT</th>
-                            <th>@Html.DisplayNameFor(m => m.TourBaoCaoDtos.FirstOrDefault().Sgtcode)</th>
-                            <th>@Html.DisplayNameFor(m => m.TourBaoCaoDtos.FirstOrDefault().CompanyName)</th>
-                            <th>@Html.DisplayNameFor(m => m.TourBaoCaoDtos.FirstOrDefault().NgayDen)</th>
-                            <th>@Html.DisplayNameFor(m => m.TourBaoCaoDtos.FirstOrDefault().NgayDi)</th>
-                            <th>@Html.DisplayNameFor(m => m.TourBaoCaoDtos.FirstOrDefault().ChuDeTour)</th>
-                            <th>@Html.DisplayNameFor(m => m.TourBaoCaoDtos.FirstOrDefault().TuyenTQ)</th>
-                            <th>@Html.DisplayNameFor(m => m.TourBaoCaoDtos.FirstOrDefault().SoKhachDK)</th>
-                            <th>@Html.DisplayNameFor(m => m.TourBaoCaoDtos.FirstOrDefault().DoanhThuDK)</th>
-                            <th>@Html.DisplayNameFor(m => m.TourBaoCaoDtos.FirstOrDefault().SoKhachTT)</th>
-                            <th>@Html.DisplayNameFor(m => m.TourBaoCaoDtos.FirstOrDefault().DoanhThuTT)</th>
-                            <th>Sales</th>
-                            <th>@Html.DisplayNameFor(m => m.TourBaoCaoDtos.FirstOrDefault().NgayTao)</th>
+                            <th>Tháng</th>
+                            <th>Số khách năm @(" " + ViewBag.nam1) </th>
+                            <th>Doanh số @(" " + ViewBag.nam1) </th>
+                            <th>Doanh thu @(" " + ViewBag.nam1) </th>
+                            
+                            <th>Số khách năm @(" " + ViewBag.nam2) </th>
+                            <th>Doanh số @(" " + ViewBag.nam2) </th>
+                            <th>Doanh thu @(" " + ViewBag.nam2) </th>
 
+                            <th>Tỉ lệ SK</th>
+                            <th>Tỉ lệ DT</th>
+                            
                         </tr>
                     </thead>
                     <tbody>
-                        @*@if (Model.TourBaoCaoDtos != null)
+                        @if (Model.TourBaoCaoTheoThangs1 != null && Model.TourBaoCaoTheoThangs1 != null)
+                        {
+                            int i = 1;
+                            foreach (var item in Model.Thangs)
                             {
-                                @foreach (var vm in Model.TourBaoCaoDtosGroupByNguoiTaos)
-                                {
-                                    foreach (var item in vm.TourBaoCaoDtos)
-                                    {
 
-                                        <tr class="cursor-pointer ">
-                                            <td>@i</td>
-                                            @switch (item.TrangThai)
-                                            {
+                                <tr class="cursor-pointer ">
+                                    <td>@i</td>
+                                    <td>Tháng + @(" " + item.Name)</td>
+                                    
+                                    @*<td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.CompanyName)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayDen.ToString("dd/MM/yyyy"))</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayDi.ToString("dd/MM/yyyy"))</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.ChuDeTour)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.TuyenTQ)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.Raw(item.SoKhachDK.ToString("N0"))</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.Raw(item.DoanhThuDK.ToString("N0"))</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.Raw(item.SoKhachTT.ToString("N0"))</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.Raw(item.DoanhThuTT.ToString("N0"))</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.NguoiTao)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayTao.ToString("dd/MM/yyyy"))</td>*@
 
-                                                case "0":
-                                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
-                                                    break;
-                                                case "1":
-                                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
-                                                    break;
-                                                case "2":
-                                                    <td class="tdVal bg-yellow" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
-                                                    break;
-                                                case "3":
-                                                    <td class="tdVal " style="background-color: chartreuse" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
-                                                    break;
-                                                case "4":
-                                                    <td class="tdVal bg-red" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
-                                                    break;
-                                            }
-                                            <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.CompanyName)</td>
-                                            <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayDen.ToString("dd/MM/yyyy"))</td>
-                                            <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayDi.ToString("dd/MM/yyyy"))</td>
-                                            <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.ChuDeTour)</td>
-                                            <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.TuyenTQ)</td>
-                                            <td class="tdVal" data-id="@item.Id">@Html.Raw(item.SoKhachDK.ToString("N0"))</td>
-                                            <td class="tdVal" data-id="@item.Id">@Html.Raw(item.DoanhThuDK.ToString("N0"))</td>
-                                            <td class="tdVal" data-id="@item.Id">@Html.Raw(item.SoKhachTT.ToString("N0"))</td>
-                                            <td class="tdVal" data-id="@item.Id">@Html.Raw(item.DoanhThuTT.ToString("N0"))</td>
-                                            <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.NguoiTao)</td>
-                                            <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayTao.ToString("dd/MM/yyyy"))</td>
-
-                                        </tr>
-
-                                        i++;
-
-                                    }
-                                    <tr class="cursor-pointer text-bold">
-                                        <td></td>
-                                        <td>Tổng Cộng:</td>
-                                        <td>CHƯA THANH LÝ HỢP ĐỒNG:</td>
-                                        <td>@Html.Raw(vm.TourBaoCaoDtos.FirstOrDefault().ChuaThanhLyHopDong.ToString("N0"))</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                    <tr class="cursor-pointer text-bold">
-                                        <td></td>
-                                        <td></td>
-                                        <td>ĐÃ THANH LÝ HỢP ĐỒNG:</td>
-                                        <td>@Html.Raw(vm.TourBaoCaoDtos.FirstOrDefault().DaThanhLyHopDong.ToString("N0"))</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                    <tr class="cursor-pointer text-bold">
-                                        <td></td>
-                                        <td></td>
-                                        <td>TỔNG CỘNG THEO TỪNG SALE:</td>
-                                        <td>@Html.Raw(vm.TourBaoCaoDtos.FirstOrDefault().TongSoKhachTheoSale.ToString("N0"))</td>
-                                        <td>@Html.Raw(vm.TourBaoCaoDtos.FirstOrDefault().TongCongTheoTungSale.ToString("N0"))</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-
-                                }
-                                <tr class="cursor-pointer text-bold">
-                                    <td></td>
-                                    <td>Tổng Cộng:</td>
-                                    <td></td>
-                                    <td>@Html.Raw(Model.TongSK.ToString("N0"))</td>
-                                    <td>@Html.Raw(Model.TongCong.Value.ToString("N0"))</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
                                 </tr>
 
-                            }*@
+                                i++;
+
+                            }
+
+                        }
 
                     </tbody>
 
