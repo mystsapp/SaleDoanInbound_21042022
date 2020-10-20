@@ -2,8 +2,11 @@
 
 @{
     ViewData["Title"] = "DoanhSoTheoThang";
+    decimal doanhThu1Tong = 0;
+    decimal doanhThu2Tong = 0;
+    decimal tongSK1 = 0;
+    decimal tongSK2 = 0;
 }
-
 
 <!-- Content Header (Page header) -->
 <section class="content-header">
@@ -44,6 +47,8 @@
             <form autocomplete="off">
                 <div class="p-2 border rounded" style="background-color: aliceblue;" id="search">
 
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
                     <div class="row">
 
                         <div class="col-md-3 rounded">
@@ -76,7 +81,6 @@
                                     asp-items="@(new SelectList(Model.Dmchinhanhs, "Macn", "Macn", ViewBag.chiNhanh))">
                             </select>
                         </div>
-
                     </div>
 
                     <div class="row">
@@ -113,9 +117,7 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
-
             </form>
             <br />
             <div style="overflow-x:auto;">
@@ -126,61 +128,185 @@
                             @*<th>#</th>*@
                             <th>STT</th>
                             <th>Tháng</th>
+
                             <th>Số khách năm @(" " + ViewBag.nam1) </th>
                             <th>Doanh số @(" " + ViewBag.nam1) </th>
                             <th>Doanh thu @(" " + ViewBag.nam1) </th>
-                            
+
                             <th>Số khách năm @(" " + ViewBag.nam2) </th>
                             <th>Doanh số @(" " + ViewBag.nam2) </th>
                             <th>Doanh thu @(" " + ViewBag.nam2) </th>
 
                             <th>Tỉ lệ SK</th>
                             <th>Tỉ lệ DT</th>
-                            
                         </tr>
                     </thead>
                     <tbody>
-                        @if (Model.TourBaoCaoTheoThangs1 != null && Model.TourBaoCaoTheoThangs1 != null)
+                        @if (Model.TourBaoCaoTheoThangs1 != null && Model.TourBaoCaoTheoThangs2 != null)
                         {
-                            int i = 1;
-                            foreach (var item in Model.Thangs)
+                            var tourBaoCao1 = Model.TourBaoCaoTheoThangs1.OrderBy(x => int.Parse(x.Thang)).ToArray();
+                            var tourBaoCao2 = Model.TourBaoCaoTheoThangs2.OrderBy(x => int.Parse(x.Thang)).ToArray();
+
+                            for (int i = 0; i <= 11; i++)
                             {
 
                                 <tr class="cursor-pointer ">
-                                    <td>@i</td>
-                                    <td>Tháng + @(" " + item.Name)</td>
-                                    
-                                    @*<td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.CompanyName)</td>
-                                    <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayDen.ToString("dd/MM/yyyy"))</td>
-                                    <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayDi.ToString("dd/MM/yyyy"))</td>
-                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.ChuDeTour)</td>
-                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.TuyenTQ)</td>
-                                    <td class="tdVal" data-id="@item.Id">@Html.Raw(item.SoKhachDK.ToString("N0"))</td>
-                                    <td class="tdVal" data-id="@item.Id">@Html.Raw(item.DoanhThuDK.ToString("N0"))</td>
-                                    <td class="tdVal" data-id="@item.Id">@Html.Raw(item.SoKhachTT.ToString("N0"))</td>
-                                    <td class="tdVal" data-id="@item.Id">@Html.Raw(item.DoanhThuTT.ToString("N0"))</td>
-                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.NguoiTao)</td>
-                                    <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayTao.ToString("dd/MM/yyyy"))</td>*@
+                                    <td>@(i + 1)</td>
+                                    <td>Tháng @(" " + (i + 1))</td>
 
+                                    <!-- nam trước -->
+                                    <td class="tdVal">
+                                        @{
+                                            var sk1 = tourBaoCao1[i].SoKhach.ToString("N0");
+
+                                        }
+                                        @Html.DisplayFor(m => sk1)
+                                    </td>
+                                    <td class="tdVal">
+                                        @{
+                                            var doanhSo1 = tourBaoCao1[i].DoanhSo.ToString("N0");
+
+                                        }
+                                        @Html.DisplayFor(m => doanhSo1)
+                                    </td>
+                                    @*//Doanh thu = Doanh So / 1,1 = Doanh So / 11/10 =DS *10/11*@
+                                    @if (tourBaoCao1[i].DoanhSo == 0)
+                                    {
+                                        <td>0</td>
+                                    }
+                                    else
+                                    {
+
+                                        var doanhThu1 = (tourBaoCao1[i].DoanhSo * 10 / 11).ToString("N0");
+                                        doanhThu1Tong += decimal.Parse(doanhThu1);
+                                        <td class="tdVal">@(doanhThu1)</td>
+                                    }
+                                    <!-- nam trước -->
+                                    <!-- nam sau -->
+                                    <td class="tdVal">
+                                        @{
+                                            var sk2 = tourBaoCao2[i].SoKhach.ToString("N0");
+
+                                        }
+                                        @Html.DisplayFor(m => sk2)
+                                    </td>
+                                    <td class="tdVal">
+                                        @{
+                                            var doanhSo2 = tourBaoCao2[i].DoanhSo.ToString("N0");
+
+                                        }
+                                        @Html.DisplayFor(m => doanhSo2)
+                                    </td>
+                                    @*//Doanh thu = Doanh So / 1,1 = Doanh So / 11/10 =DS *10/11*@
+                                    @if (tourBaoCao2[i].DoanhSo == 0)
+                                    {
+                                        <td>0</td>
+                                    }
+                                    else
+                                    {
+                                        var doanhThu2 = (tourBaoCao2[i].DoanhSo * 10 / 11).ToString("N0");
+                                        doanhThu2Tong += decimal.Parse(doanhThu2);
+                                        <td class="tdVal">@(doanhThu2)</td>
+                                    }
+                                    <!-- nam sau -->
+                                    <!-- ty le -->
+                                    @{
+                                        decimal tyLeSK = 0, tyLeDT = 0;
+                                        // SK
+                                        if (int.Parse(sk1) > 0)
+                                        {
+                                            tyLeSK = int.Parse(sk2) / int.Parse(sk1) * 100;
+                                        }
+                                        else
+                                        {
+                                            tyLeSK = 0;
+                                        }
+                                        // DT
+                                        if (decimal.Parse(doanhSo1) > 0)
+                                        {
+                                            tyLeDT = decimal.Parse(doanhSo2) / decimal.Parse(doanhSo1) * 100;
+                                        }
+                                        else
+                                        {
+                                            tyLeDT = 0;
+                                        }
+                                        <td class="tdVal">@(tyLeSK)%</td>
+                                        <td class="tdVal">@(tyLeDT)%</td>
+                                    }
+                                    <!-- ty le -->
                                 </tr>
-
-                                i++;
 
                             }
 
                         }
+                        <tr>
+                            <td></td>
+                            <td><strong>Tổng Cộng:</strong></td>
+                            <td>
+                                @{
 
+                                    tongSK1 = Model.TourBaoCaoTheoThangs1.Sum(x => x.SoKhach);
+                                    <strong>@tongSK1.ToString("N0")</strong>
+                                }
+
+                            </td> <!-- tong SK1-->
+                            <td><strong>@Model.TourBaoCaoTheoThangs1.Sum(x => x.DoanhSo).ToString("N0")</strong></td> <!-- tong DS1-->
+                            <td><strong>@doanhThu1Tong.ToString("N0")</strong></td><!-- tong DT1-->
+
+                            <td>
+                                @{
+
+                                    tongSK2 = Model.TourBaoCaoTheoThangs2.Sum(x => x.SoKhach);
+                                    <strong>@tongSK2.ToString("N0")</strong>
+                                }
+
+                            </td>
+                            <td><strong>@Model.TourBaoCaoTheoThangs2.Sum(x => x.DoanhSo).ToString("N0")</strong></td>
+                            <td><strong>@doanhThu2Tong.ToString("N0")</strong></td>
+                            <td>
+                                <!--tyLeSKCuaTong = tongSK2 / tongSK1 * 100-->
+                                @{
+                                    decimal tyLeSKCuaTong = 0;
+
+                                    if (tongSK1 > 0)
+                                    {
+                                        tyLeSKCuaTong = tongSK2 / tongSK1 * 100;
+                                        <strong>@tyLeSKCuaTong.ToString("N0")%</strong>
+                                    }
+                                    else
+                                    {
+                                        <strong>0%</strong>
+                                    }
+
+                                }
+
+                            </td>
+                            <td>
+                                <!--tyLeDTCuaTong = doanhThu2Tong / doanhThu1Tong * 100-->
+                                @{
+                                    decimal tyLeDTCuaTong = 0;
+
+                                    if (doanhThu1Tong > 0)
+                                    {
+                                        tyLeDTCuaTong = doanhThu2Tong / doanhThu1Tong * 100;
+                                        <strong>@tyLeSKCuaTong.ToString("N0")%</strong>
+                                    }
+                                    else
+                                    {
+                                        <strong>0%</strong>
+                                    }
+
+                                }
+
+                            </td>
+                        </tr>
                     </tbody>
-
                 </table>
             </div>
-
         </div>
         <!-- /.card-body -->
-
     </div>
     <!-- /.card -->
-
 </section>
 <!-- /.content -->
 
@@ -192,14 +318,14 @@
             //    dateFormat: 'dd/mm/yy'
             //});
 
-            $('#listDoanhSoTheoSale').DataTable({
-                "paging": true,
-                "lengthChange": true,
-                "searching": true,
-                "ordering": false,
-                "info": false,
-                "autoWidth": true,
-            });
+            //$('#listDoanhSoTheoSale').DataTable({
+            //    "paging": true,
+            //    "lengthChange": true,
+            //    "searching": true,
+            //    "ordering": false,
+            //    "info": false,
+            //    "autoWidth": true,
+            //});
         });
     </script>
     @*<script src="~/js/Admin/DoanhSoTheoSale/doanhSoTheoSaleController.js"></script>*@
@@ -223,4 +349,3 @@
         }
     </style>
 }
-
