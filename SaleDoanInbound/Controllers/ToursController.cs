@@ -321,7 +321,12 @@ namespace SaleDoanInbound.Controllers
             {
                 return View("~/Views/Shared/AccessDenied.cshtml");
             }
-
+            var chiNhanhDHId = _unitOfWork.tourRepository.GetById(id).ChiNhanhDHId;
+            // user logon khac user DH
+            if(user.MaCN != TourVM.Dmchinhanhs.Where(x => x.Id == chiNhanhDHId).FirstOrDefault().Macn)
+            {
+                return RedirectToAction(nameof(Details), new { id, strUrl });
+            }
             ViewBag.chiNhanhTaoId = _unitOfWork.dmChiNhanhRepository.Find(x => x.Macn == user.MaCN).FirstOrDefault().Id; // for compare
 
             TourVM.StrUrl = strUrl;
