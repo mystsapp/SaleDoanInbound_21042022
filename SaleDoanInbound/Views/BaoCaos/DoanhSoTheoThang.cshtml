@@ -270,7 +270,7 @@
 
                                     if (tongSK1 > 0)
                                     {
-                                        tyLeSKCuaTong = tongSK2 / tongSK1 * 100;
+                                        tyLeSKCuaTong = Convert.ToDecimal(tongSK2) / Convert.ToDecimal(tongSK1) * 100;
                                         <strong>@tyLeSKCuaTong.ToString("N0")%</strong>
                                     }
                                     else
@@ -289,7 +289,7 @@
                                     if (doanhThu1Tong > 0)
                                     {
                                         tyLeDTCuaTong = doanhThu2Tong / doanhThu1Tong * 100;
-                                        <strong>@tyLeSKCuaTong.ToString("N0")%</strong>
+                                        <strong>@tyLeDTCuaTong.ToString("N0")%</strong>
                                     }
                                     else
                                     {
