@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using SaleDoanInbound.Models;
 using Data.Utilities;
+using Data.Dtos;
 
 namespace SaleDoanInbound.Controllers
 {
@@ -196,6 +197,87 @@ namespace SaleDoanInbound.Controllers
                 return Redirect(strUrl);
             }
         }
+
+
+        #region Publish khách hàng lên hoá đơn điện tử VNPT
+        public async Task<IActionResult> TaoKhachhang(string id)
+        {
+            //var company = await _unitOfWork.khachHangRepository.GetByIdAsync(id)
+            //if (string.IsNullOrEmpty(s.email))
+            //{
+            //    SetAlert("Vui lòng cập nhật email, sau đó hãy tạo khách hàng trên VNPT", "error");
+            //    return Redirect(HttpContext.Session.GetString("urlEditSupplier"));
+            //}
+            //string xmlCusData = "<Customers>";
+            //xmlCusData += "<Customer>";
+            //xmlCusData += "<Name>" + s.realname.Replace("&", "&amp;") + "</Name>";
+            //xmlCusData += "<Code>" + s.code.Trim() + HttpContext.Session.GetString("maviettat") + "</Code>";
+            //xmlCusData += "<TaxCode>" + s.taxcode + "</TaxCode>";
+            //xmlCusData += "<Address>" + s.address.Replace("&", "&amp;") + "</Address>";
+            //xmlCusData += "<BankAccountName></BankAccountName>";
+            //xmlCusData += "<BankName></BankName>";
+            //xmlCusData += "<BankNumber></BankNumber>";
+            //xmlCusData += "<Email>" + s.email + "</Email>";
+            //xmlCusData += "<Fax>" + s.fax + "</Fax>";
+            //xmlCusData += "<Phone>" + s.telephone + "</Phone>";
+            //xmlCusData += "<ContactPerson>" + s.contact + "</ContactPerson>";
+            //xmlCusData += "<RepresentPerson></RepresentPerson>";
+            //xmlCusData += "<CusType>1</CusType>";
+            //xmlCusData += "</Customer>";
+            //xmlCusData += "</Customers>";
+
+            //Customer customer = new Customer()
+            //{
+            //    Name = company.Name,
+            //    Code = company.CompanyId,
+            //    TaxCode = company.Msthue,
+            //    Address = company.Address,
+            //    BankAccountName = "",
+            //    BankName = "",
+            //    BankNumber = "",
+            //    Email = company.
+            //}
+
+            //var inv = new PublishService.PublishServiceSoapClient(PublishService.PublishServiceSoapClient.EndpointConfiguration.PublishServiceSoap);
+
+            //var dkhd = _dsdangkyhdRepository.listDangkyhoadon().Where(x => x.kyhieuhd == HttpContext.Session.GetString("kyhieuhd") && x.chinhanh == HttpContext.Session.GetString("maviettat")).SingleOrDefault();
+            //string sitehddt = dkhd.sitehddt.Trim() + "/PublishService.asmx";
+            //string usersite = dkhd.usersite;
+            //string passsite = dkhd.passsite;
+
+            //// Hàm add webservice động
+            //inv.ChannelFactory.Endpoint.Address = new EndpointAddress(sitehddt);
+
+            //Task<PublishService.UpdateCusResponse> ketqua = inv.UpdateCusAsync(xmlCusData, usersite, passsite, 0);// HttpContext.Session.GetString("masohd"), HttpContext.Session.GetString("kyhieuhd"), 0);
+
+            //var wait = await ketqua;
+            //int result = Convert.ToInt32(wait.Body.UpdateCusResult.ToString());
+            //if (result == -1)
+            //{
+            //    SetAlert("Tài khoản không có quyền", "error");
+            //}
+            //if (result == -2)
+            //{
+            //    SetAlert("Không thêm được khách hàng trên hoá đơn điện tử", "error");
+            //}
+            //if (result == -3)
+            //{
+            //    SetAlert("Dữ liệu không hợp lệ", "error");
+            //}
+            //if (result == -5)
+            //{
+            //    SetAlert("Khách hàng đã tồn tại", "error");
+            //}
+            //if (result > 0)
+            //{
+            //    SetAlert("Tạo / cập nhật thông tin khách hàng trên hoá đơn điện tử thành công", "success");
+            //}
+
+            //return Redirect(HttpContext.Session.GetString("urlEditSupplier"));
+            return View();
+        }
+        #endregion
+
 
         //[HttpGet]
         //public JsonResult GetThanhPhosByQuocGia(int idQuocGia)
