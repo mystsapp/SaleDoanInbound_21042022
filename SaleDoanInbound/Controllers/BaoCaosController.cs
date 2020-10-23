@@ -808,9 +808,10 @@ namespace SaleDoanInbound.Controllers
             {
                 if (user.Role.RoleName == "Users")
                 {
-                    //1
+                    BaoCaoVM.Dmchinhanhs = BaoCaoVM.Dmchinhanhs.Where(x => x.Macn == user.MaCN);
                     List<string> listMaCN = new List<string>();
                     listMaCN.Add(user.MaCN);
+                    //1
                     BaoCaoVM.TourBaoCaoTheoThangs1 = TourBaoCaoTheoThangViewModels(tuThang1, denThang1, nam1, listMaCN);
                     //1
 
@@ -820,16 +821,42 @@ namespace SaleDoanInbound.Controllers
                 }
                 else
                 {
-                    //var phanKhuCNs = await _unitOfWork.phanKhuCNRepository.FindIncludeOneAsync(x => x.Role, y => y.RoleId == user.RoleId);
-                    //List<string> maCns = new List<string>();
-                    //foreach (var item in phanKhuCNs)
-                    //{
-                    //    maCns.AddRange(item.ChiNhanhs.Split(',').ToList());
-                    //}
-                    ////BaoCaoVM.Dmchinhanhs = _unitOfWork.dmChiNhanhRepository.Find(x => x.KhuVuc == user.Role.RoleName);
-                    //BaoCaoVM.Dmchinhanhs = BaoCaoVM.Dmchinhanhs.Where(item1 => maCns.Any(item2 => item1.Macn == item2));
-                    //BaoCaoVM.TourBaoCaoDtos = _baoCaoService.DoanhSoTheoSale(searchFromDate, searchToDate, BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList());
-                    //DoanhSoTheoSaleGroupbyNguoiTao();
+                    
+                    if (!string.IsNullOrEmpty(chiNhanh))  // da chon chinhanh
+                    {
+                        List<string> listMaCN = new List<string>();
+                        listMaCN.Add(chiNhanh);
+
+                        //dmchinhanh theo role
+                        var listMaCNTheoRole = _unitOfWork.phanKhuCNRepository.GetById(user.RoleId).ChiNhanhs.Split(',').ToList();
+                        BaoCaoVM.Dmchinhanhs = BaoCaoVM.Dmchinhanhs.Where(item1 => listMaCNTheoRole.Any(item2 => item1.Macn == item2));
+                        BaoCaoVM.Dmchinhanhs = BaoCaoVM.Dmchinhanhs.Append(new Dmchinhanh() { Macn = "-- Select --" }).OrderBy(x => x.Macn);
+                        //dmchinhanh theo role
+
+                        //1                    
+                        BaoCaoVM.TourBaoCaoTheoThangs1 = TourBaoCaoTheoThangViewModels(tuThang1, denThang1, nam1, listMaCN);
+                        //1
+
+                        //2
+                        BaoCaoVM.TourBaoCaoTheoThangs2 = TourBaoCaoTheoThangViewModels(tuThang2, denThang2, nam2, listMaCN);
+                        //2
+
+                    }
+                    else // moi load vao
+                    {
+
+                        var listMaCN = _unitOfWork.phanKhuCNRepository.GetById(user.RoleId).ChiNhanhs.Split(',').ToList();
+                        BaoCaoVM.Dmchinhanhs = BaoCaoVM.Dmchinhanhs.Where(item1 => listMaCN.Any(item2 => item1.Macn == item2));
+                        BaoCaoVM.Dmchinhanhs = BaoCaoVM.Dmchinhanhs.Append(new Dmchinhanh() { Macn = "-- Select --" }).OrderBy(x => x.Macn);
+                        //1                    
+                        BaoCaoVM.TourBaoCaoTheoThangs1 = TourBaoCaoTheoThangViewModels(tuThang1, denThang1, nam1, listMaCN);
+                        //1
+
+                        //2
+                        BaoCaoVM.TourBaoCaoTheoThangs2 = TourBaoCaoTheoThangViewModels(tuThang2, denThang2, nam2, listMaCN);
+                        //2
+
+                    }
                 }
             }
             else
@@ -920,30 +947,8 @@ namespace SaleDoanInbound.Controllers
             {
                 if (user.Role.RoleName == "Users")
                 {
-                    //BaoCaoVM.Dmchinhanhs = new List<Dmchinhanh>() { new Dmchinhanh() { Macn = user.MaCN } };
-                    //BaoCaoVM.TourBaoCaoDtos = _baoCaoService.DoanhSoTheoThang(searchFromDate, searchToDate, BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList());
-                    //BaoCaoVM.TourBaoCaoDtos = BaoCaoVM.TourBaoCaoDtos.Where(x => x.NguoiTao == user.Username);
-                    //DoanhSoTheoSaleGroupbyNguoiTao();
-                }
-                else
-                {
-                    //var phanKhuCNs = await _unitOfWork.phanKhuCNRepository.FindIncludeOneAsync(x => x.Role, y => y.RoleId == user.RoleId);
-                    //List<string> maCns = new List<string>();
-                    //foreach (var item in phanKhuCNs)
-                    //{
-                    //    maCns.AddRange(item.ChiNhanhs.Split(',').ToList());
-                    //}
-                    ////BaoCaoVM.Dmchinhanhs = _unitOfWork.dmChiNhanhRepository.Find(x => x.KhuVuc == user.Role.RoleName);
-                    //BaoCaoVM.Dmchinhanhs = BaoCaoVM.Dmchinhanhs.Where(item1 => maCns.Any(item2 => item1.Macn == item2));
-                    //BaoCaoVM.TourBaoCaoDtos = _baoCaoService.DoanhSoTheoSale(searchFromDate, searchToDate, BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList());
-                    //DoanhSoTheoSaleGroupbyNguoiTao();
-                }
-            }
-            else
-            {
-                if (!string.IsNullOrEmpty(chiNhanh)) // moi load vao
-                {
-                    List<string> MaCNs = _unitOfWork.dmChiNhanhRepository.Find(x => x.Macn == chiNhanh).Select(x => x.Macn).ToList();
+                    List<string> MaCNs = new List<string>();
+                    MaCNs.Add(user.MaCN);
                     //1
                     BaoCaoVM.TourBaoCaoTheoThangs1 = TourBaoCaoTheoThangViewModels(tuThang1, denThang1, nam1, MaCNs);
                     //1
@@ -952,7 +957,55 @@ namespace SaleDoanInbound.Controllers
                     BaoCaoVM.TourBaoCaoTheoThangs2 = TourBaoCaoTheoThangViewModels(tuThang2, denThang2, nam2, MaCNs);
                     //2
                 }
-                else // da chon chinhanh
+                else
+                {
+                   
+                    // chon chi nhanh
+                    if (chiNhanh != "-- Select --")// da chon chinhanh
+                    {
+                        //List<string> MaCNs = _unitOfWork.dmChiNhanhRepository.Find(x => x.Macn == chiNhanh).Select(x => x.Macn).ToList();
+                        List<string> MaCNs = new List<string>();
+                        MaCNs.Add(chiNhanh);
+                        //1
+                        BaoCaoVM.TourBaoCaoTheoThangs1 = TourBaoCaoTheoThangViewModels(tuThang1, denThang1, nam1, MaCNs);
+                        //1
+
+                        //2
+                        BaoCaoVM.TourBaoCaoTheoThangs2 = TourBaoCaoTheoThangViewModels(tuThang2, denThang2, nam2, MaCNs);
+                        //2
+                    }
+                    else  // list chinhanh theo role
+                    {
+                        //1
+                        var listMaCN = _unitOfWork.phanKhuCNRepository.GetById(user.RoleId).ChiNhanhs.Split(',').ToList();
+
+                        BaoCaoVM.TourBaoCaoTheoThangs1 = TourBaoCaoTheoThangViewModels(tuThang1, denThang1, nam1, listMaCN);
+                        //1
+
+                        //2
+                        BaoCaoVM.TourBaoCaoTheoThangs2 = TourBaoCaoTheoThangViewModels(tuThang2, denThang2, nam2, listMaCN);
+                        //2
+
+                    }
+                    // chon chi nhanh
+                }
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(chiNhanh)) // da chon chinhanh
+                {
+                    //List<string> MaCNs = _unitOfWork.dmChiNhanhRepository.Find(x => x.Macn == chiNhanh).Select(x => x.Macn).ToList();
+                    List<string> MaCNs = new List<string>();
+                    MaCNs.Add(chiNhanh);
+                    //1
+                    BaoCaoVM.TourBaoCaoTheoThangs1 = TourBaoCaoTheoThangViewModels(tuThang1, denThang1, nam1, MaCNs);
+                    //1
+
+                    //2
+                    BaoCaoVM.TourBaoCaoTheoThangs2 = TourBaoCaoTheoThangViewModels(tuThang2, denThang2, nam2, MaCNs);
+                    //2
+                }
+                else  // moi load vao
                 {
                     //1
                     BaoCaoVM.TourBaoCaoTheoThangs1 = TourBaoCaoTheoThangViewModels(tuThang1, denThang1, nam1, BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList());
@@ -1141,10 +1194,19 @@ namespace SaleDoanInbound.Controllers
 
             // tyle tyLeSKCuaTong = tongSK2 / tongSK1 * 100; tyLeDTCuaTong = doanhThu2Tong / doanhThu1Tong * 100
             decimal tongSK2ChiaTongSK1 = 0;
-            tongSK2ChiaTongSK1 = Convert.ToDecimal(tongSK2) / Convert.ToDecimal(tongSK1);
+            if(tongSK1 > 0)
+            {
+                tongSK2ChiaTongSK1 = Convert.ToDecimal(tongSK2) / Convert.ToDecimal(tongSK1);
+            }
+            
             xlSheet.Cells[dong, 9].Value = (tongSK2ChiaTongSK1 * 100).ToString("N0") + "%";
             TrSetCellBorder(xlSheet, dong, 9, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
-            xlSheet.Cells[dong, 10].Value = (doanhThu2tong / doanhThu1tong * 100).ToString("N0") + "%";
+            decimal doanhThu2tongChiadoanhThu1tong = 0;
+            if (doanhThu1tong > 0)
+            {
+                doanhThu2tongChiadoanhThu1tong = doanhThu2tong / doanhThu1tong;
+            }
+            xlSheet.Cells[dong, 10].Value = (doanhThu2tongChiadoanhThu1tong * 100).ToString("N0") + "%";
             TrSetCellBorder(xlSheet, dong, 10, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
 
             setFontBold(dong, 2, dong, 10, 12, xlSheet);
