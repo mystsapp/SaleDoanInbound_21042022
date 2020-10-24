@@ -16,6 +16,9 @@ namespace Data.Models_QLT
         public string Natione { get; set; }
         public string Headoffice { get; set; }
         public string Msthue { get; set; }
+        public string Email { get; set; }
+        public string Nguoilienhe { get; set; }
+        public string Nguoidaidien { get; set; }
         public string Chinhanh { get; set; }
     }
 }

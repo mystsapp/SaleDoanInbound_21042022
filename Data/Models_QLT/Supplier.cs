@@ -23,5 +23,6 @@ namespace Data.Models_QLT
         public DateTime Ngaytao { get; set; }
         public string Nguoitao { get; set; }
         public string Chinhanh { get; set; }
+        public string Logfile { get; set; }
     }
 }

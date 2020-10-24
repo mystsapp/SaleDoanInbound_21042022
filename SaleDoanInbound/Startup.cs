@@ -18,6 +18,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Data.Models_QLTaiKhoan;
 using Data.Models_QLT;
 using Data.Services;
+using Data.Models_HDDT;
 
 namespace SaleDoanInbound
 {
@@ -36,9 +37,9 @@ namespace SaleDoanInbound
             services.AddDbContext<qltourContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))/*.EnableSensitiveDataLogging()*/);
             services.AddDbContext<SaleDoanIBDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("SaleDoanIBConnection"))/*.EnableSensitiveDataLogging()*/);
             services.AddDbContext<qltaikhoanContext>(options => options.UseSqlServer(Configuration.GetConnectionString("QLTaiKhoanConnection"))/*.EnableSensitiveDataLogging()*/);
+            services.AddDbContext<hoadondientuContext>(options => options.UseSqlServer(Configuration.GetConnectionString("HDDTConection"))/*.EnableSensitiveDataLogging()*/);
 
             services.AddTransient<IKhachHangRepository, KhachHangRepository>();
-
             services.AddTransient<IQuanRepository, QuanRepository>();
             services.AddTransient<IDMNganhNgheRepository, DMNganhNgheRepository>();
             services.AddTransient<IKhuVucTGRepository, KhuVucTGRepository>();
@@ -85,6 +86,9 @@ namespace SaleDoanInbound
             services.AddTransient<IBienNhanRepository, BienNhanRepository>();
             services.AddTransient<IChiTietBNRepository, ChiTietBNRepository>();
             services.AddTransient<IUnitOfWork, UnitOfwork>();
+
+            // HDDT
+            services.AddTransient<IDSDangKyHDRepository, DSDangKyHDRepository>();
 
             // services layer
             services.AddTransient<IBaoCaoService, BaoCaoService>();

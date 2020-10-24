@@ -87,19 +87,25 @@
 
                     <div class="form-group row">
 
-                        <div class="col-md-4">
+                        <div class="col-md-3">
+                            <label asp-for="Company.Email" class="control-label"></label>
+                            <input asp-for="Company.Email" class="form-control " />
+                            <span asp-validation-for="Company.Email" class="text-danger"></span>
+                        </div>
+                        
+                        <div class="col-md-3">
                             <label asp-for="Company.Tel" class="control-label"></label>
                             <input asp-for="Company.Tel" class="form-control " />
                             <span asp-validation-for="Company.Tel" class="text-danger"></span>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label asp-for="Company.Fax" class="control-label"></label>
                             <input asp-for="Company.Fax" class="form-control" />
                             <span asp-validation-for="Company.Fax" class="text-danger"></span>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label asp-for="Company.Contact" class="control-label"></label>
                             <input type="text" asp-for="Company.Contact" class="form-control maskInput" />
                             <span asp-validation-for="Company.Contact" class="text-danger"></span>
@@ -111,6 +117,7 @@
                                 <span asp-validation-for="Company.Natione" class="text-danger"></span>
                             </div>*@
                     </div>
+
                     <div class="form-group row">
                         <div class="col-md-4">
                             <label asp-for="Company.Headoffice" class="control-label"></label>
@@ -133,6 +140,21 @@
                             <span asp-validation-for="Company.Chinhanh" class="text-danger"></span>
                         </div>
 
+                    </div>
+                    
+                    <div class="form-group row">
+                        <div class="col-md-6">
+                            <label asp-for="Company.Nguoilienhe" class="control-label"></label>
+                            <input asp-for="Company.Nguoilienhe" class="form-control" />
+                            <span asp-validation-for="Company.Nguoilienhe" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="Company.Nguoidaidien" class="control-label"></label>
+                            <input asp-for="Company.Nguoidaidien" class="form-control" />
+                            <span asp-validation-for="Company.Nguoidaidien" class="text-danger"></span>
+                        </div>
+                        
                     </div>
 
                     <div class="form-group">

@@ -200,13 +200,14 @@ namespace SaleDoanInbound.Controllers
 
 
         #region Publish khách hàng lên hoá đơn điện tử VNPT
-        public async Task<IActionResult> TaoKhachhang(string id)
+        [HttpPost]
+        public async Task<IActionResult> TaoKhachhang(string id, string strUrl)
         {
-            //var company = await _unitOfWork.khachHangRepository.GetByIdAsync(id)
-            //if (string.IsNullOrEmpty(s.email))
+            var company = await _unitOfWork.khachHangRepository.GetByIdAsync(id);
+            //if (string.IsNullOrEmpty(company.Email))
             //{
-            //    SetAlert("Vui lòng cập nhật email, sau đó hãy tạo khách hàng trên VNPT", "error");
-            //    return Redirect(HttpContext.Session.GetString("urlEditSupplier"));
+            //    ModelState.AddModelError("", "Vui lòng cập nhật email, sau đó hãy tạo khách hàng trên VNPT");
+            //    return RedirectToAction(nameof(Edit), new { id, strUrl });
             //}
             //string xmlCusData = "<Customers>";
             //xmlCusData += "<Customer>";
@@ -226,21 +227,33 @@ namespace SaleDoanInbound.Controllers
             //xmlCusData += "</Customer>";
             //xmlCusData += "</Customers>";
 
-            //Customer customer = new Customer()
-            //{
-            //    Name = company.Name,
-            //    Code = company.CompanyId,
-            //    TaxCode = company.Msthue,
-            //    Address = company.Address,
-            //    BankAccountName = "",
-            //    BankName = "",
-            //    BankNumber = "",
-            //    Email = company.
-            //}
+            Customer customer = new Customer()
+            {
+                Name = company.Name,
+                Code = company.CompanyId,
+                TaxCode = company.Msthue,
+                Address = company.Address,
+                BankAccountName = "",
+                BankName = "",
+                BankNumber = "",
+                Email = company.Email,
+                Fax = company.Fax,
+                Phone = company.Tel,
+                ContactPerson = company.Nguoilienhe,
+                RepresentPerson = company.Nguoidaidien,
+                CusType = ""
+            };
 
-            //var inv = new PublishService.PublishServiceSoapClient(PublishService.PublishServiceSoapClient.EndpointConfiguration.PublishServiceSoap);
+            List<Customer> customers = new List<Customer>();
+            customers.Add(customer);
+
+            var abc = XmlUtil.Serializer(typeof(Customer), customer);
+            System.Diagnostics.Debug.WriteLine(abc);
+
+            var inv = new PublishService.PublishServiceSoapClient(PublishService.PublishServiceSoapClient.EndpointConfiguration.PublishServiceSoap);
 
             //var dkhd = _dsdangkyhdRepository.listDangkyhoadon().Where(x => x.kyhieuhd == HttpContext.Session.GetString("kyhieuhd") && x.chinhanh == HttpContext.Session.GetString("maviettat")).SingleOrDefault();
+            //var dkhd = _unitOfWork.dSDangKyHDRepository.FindAsync(x => x.Kyhieuhd == )
             //string sitehddt = dkhd.sitehddt.Trim() + "/PublishService.asmx";
             //string usersite = dkhd.usersite;
             //string passsite = dkhd.passsite;
@@ -273,8 +286,8 @@ namespace SaleDoanInbound.Controllers
             //    SetAlert("Tạo / cập nhật thông tin khách hàng trên hoá đơn điện tử thành công", "success");
             //}
 
-            //return Redirect(HttpContext.Session.GetString("urlEditSupplier"));
-            return View();
+            return Redirect(strUrl);
+
         }
         #endregion
 

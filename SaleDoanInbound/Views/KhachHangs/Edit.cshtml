@@ -46,7 +46,7 @@
 
             <form method="post" autocomplete="off">
                 <div class="p-4 border rounded">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div asp-validation-summary="All" class="text-danger"></div>
 
                     <input type="hidden" asp-for="Company.CompanyId" /> <!-- because it required-->
                     <input type="hidden" asp-for="TenCreate" value="abc" /> <!-- because it required-->
@@ -88,29 +88,35 @@
 
                     <div class="form-group row">
 
-                        <div class="col-md-4">
+                        <div class="col-md-3">
+                            <label asp-for="Company.Email" class="control-label"></label>
+                            <input asp-for="Company.Email" class="form-control " id="txtEmail"/>
+                            <span asp-validation-for="Company.Email" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-3">
                             <label asp-for="Company.Tel" class="control-label"></label>
                             <input asp-for="Company.Tel" class="form-control " />
                             <span asp-validation-for="Company.Tel" class="text-danger"></span>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label asp-for="Company.Fax" class="control-label"></label>
                             <input asp-for="Company.Fax" class="form-control" />
                             <span asp-validation-for="Company.Fax" class="text-danger"></span>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label asp-for="Company.Contact" class="control-label"></label>
                             <input type="text" asp-for="Company.Contact" class="form-control maskInput" />
                             <span asp-validation-for="Company.Contact" class="text-danger"></span>
                         </div>
 
                         @*<div class="col-md-6">
-                                <label asp-for="Company.Natione" class="control-label"></label>
-                                <input asp-for="Company.Natione" class="form-control" />
-                                <span asp-validation-for="Company.Natione" class="text-danger"></span>
-                            </div>*@
+                        <label asp-for="Company.Natione" class="control-label"></label>
+                        <input asp-for="Company.Natione" class="form-control" />
+                        <span asp-validation-for="Company.Natione" class="text-danger"></span>
+                    </div>*@
                     </div>
                     <div class="form-group row">
                         <div class="col-md-4">
@@ -138,14 +144,36 @@
 
                     <div class="form-group row">
                         <div class="col-md-6">
+                            <label asp-for="Company.Nguoilienhe" class="control-label"></label>
+                            <input asp-for="Company.Nguoilienhe" class="form-control" />
+                            <span asp-validation-for="Company.Nguoilienhe" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="Company.Nguoidaidien" class="control-label"></label>
+                            <input asp-for="Company.Nguoidaidien" class="form-control" />
+                            <span asp-validation-for="Company.Nguoidaidien" class="text-danger"></span>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-6">
                             <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i></button>
                             <a class="btn btn-success" asp-route-strUrl="@Model.StrUrl" asp-action="DetailsRedirect"><i class="fas fa-backward"></i></a>
                         </div>
                         <div class="col-md-6 float-lg-right">
-                            <a asp-action="TaoKhachhang" asp-route-id="@Model.Company.CompanyId" title="Tạo / cập nhật thông tin khách hàng trên hoá đơn điện tử " onclick="return confirm('Bạn muốn tạo / cập nhật thông tin khách hàng trên hoá đơn điện tử VNPT?')"><i class="fa  fa-cloud-upload fa-lg"></i></a>
+                            <button title="Tạo / cập nhật thông tin khách hàng trên hoá đơn điện tử " type="button" id="btnTaoKhachHang"
+                               onclick="return confirm('Bạn muốn tạo / cập nhật thông tin khách hàng trên hoá đơn điện tử VNPT?')">1111
+                            </button>
                         </div>
                     </div>
                 </div>
+            </form>
+
+            <form asp-action="TaoKhachhang" method="post" id="frmTaoKhachHang">
+                <input type="hidden" name="id" value="@Model.Company.CompanyId" />
+                <input type="hidden" name="strUrl" value="@Model.StrUrl" />
             </form>
 
         </div>
@@ -167,4 +195,5 @@
             });
         </script>*@
     <script src="~/js/Admin/KhachHang/editController.js"></script>
+
 }

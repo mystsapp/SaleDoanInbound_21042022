@@ -75,6 +75,8 @@ namespace SaleDoanInbound.Controllers
             BienNhanVM.BienNhan.TyGia = BienNhanVM.Tour.TyGia.Value;
             BienNhanVM.BienNhan.MaKH = BienNhanVM.Tour.MaKH;
             BienNhanVM.BienNhan.TenKhach = BienNhanVM.Tour.TenKH;
+            BienNhanVM.BienNhan.DienThoai = BienNhanVM.Tour.DienThoai;
+            BienNhanVM.BienNhan.DiaChi = BienNhanVM.Tour.DiaChi;
             return View(BienNhanVM);
         }
 

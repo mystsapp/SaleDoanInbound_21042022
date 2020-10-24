@@ -4,10 +4,19 @@
     },
     registerEvent: function () {
 
-        //$('.ddlQuocGia').off('change').on('change', function () {
-        //    var optionValue = $('.ddlQuocGia').val();
-        //    editController.loadDdlThanhPhoByQuocGia(optionValue);
-        //});
+        $('#btnTaoKhachHang').off('click').on('click', function () {
+            if ($('#txtEmail').val() === '') {
+                bootbox.alert({
+                    size: "small",
+                    title: "Infomation!",
+                    message: "Vui lòng cập nhật email, sau đó hãy tạo khách hàng trên VNPTTour này đã có invoices!"
+                });
+            }
+            else {
+                $('#frmTaoKhachHang').submit();
+            }
+
+        })
 
     }
     //loadDdlThanhPhoByQuocGia: function (optionValue) {

@@ -1,4 +1,5 @@
 ﻿
+using Data.Models_HDDT;
 using Data.Models_IB;
 using Data.Models_QLT;
 using Data.Models_QLTaiKhoan;
@@ -57,6 +58,9 @@ namespace Data.Repository
         IInvoiceRepository invoiceRepository { get; }
         IChiTietBNRepository chiTietBNRepository { get; }
         IBienNhanRepository bienNhanRepository { get; }
+
+        // HDDT
+        IDSDangKyHDRepository dSDangKyHDRepository { get; }
         Task<int> Complete();
     }
     public class UnitOfwork : IUnitOfWork
@@ -64,15 +68,19 @@ namespace Data.Repository
         private readonly SaleDoanIBDbContext _context;
         private readonly qltourContext _qltourContext;
         private readonly qltaikhoanContext _qltaikhoanContext;
+        private readonly hoadondientuContext _hoadondientuContext;
 
-        public UnitOfwork(SaleDoanIBDbContext context, qltourContext qltourContext, qltaikhoanContext qltaikhoanContext)
+        public UnitOfwork(SaleDoanIBDbContext context, 
+                          qltourContext qltourContext, 
+                          qltaikhoanContext qltaikhoanContext, 
+                          hoadondientuContext hoadondientuContext)
         {
             _context = context;
             _qltourContext = qltourContext;
             _qltaikhoanContext = qltaikhoanContext;
+            _hoadondientuContext = hoadondientuContext;
 
             khachHangRepository = new KhachHangRepository(qltourContext);
-
             quanRepository = new QuanRepository(_context);
             dMNganhNgheRepository = new DMNganhNgheRepository(_context);
             khuVucTGRepository = new KhuVucTGRepository(_context);
@@ -119,6 +127,9 @@ namespace Data.Repository
             invoiceRepository = new InvoiceRepository(_context);
             chiTietBNRepository = new ChiTietBNRepository(_context);
             bienNhanRepository = new BienNhanRepository(_context);
+
+            // HDDT
+            dSDangKyHDRepository = new DSDangKyHDRepository(_hoadondientuContext);
         }
 
         public IKhachHangRepository khachHangRepository { get; }
@@ -190,12 +201,15 @@ namespace Data.Repository
 
         public IApplicationQLTaiKhoanRepository applicationQLTaiKhoanRepository { get; }
 
+        // HDDT
+        public IDSDangKyHDRepository dSDangKyHDRepository { get; }
 
         public async Task<int> Complete()
         {
             await _context.SaveChangesAsync();
             await _qltourContext.SaveChangesAsync();
             await _qltaikhoanContext.SaveChangesAsync();
+            await _hoadondientuContext.SaveChangesAsync();
             return 1;
         }
 

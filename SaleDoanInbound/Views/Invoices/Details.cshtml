@@ -56,12 +56,12 @@
                             <input asp-for="Invoice.Replace" class="form-control" readonly />
                         </div>
 
-                        <div class="col-md-1">
+                        @*<div class="col-md-1">
                             <label asp-for="Invoice.Type" class="control-label"></label>
                             <input asp-for="Invoice.Type" class="form-control" readonly />
-                        </div>
+                        </div>*@
 
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <label asp-for="Invoice.MaKH" class="control-label"></label>
                             <input asp-for="Invoice.MaKH" class="form-control " readonly />
                         </div>
@@ -97,7 +97,7 @@
 
                         <div class="col-md-2">
                             <label asp-for="Invoice.Rate" class="control-label"></label>
-                            <input asp-for="Invoice.Rate" class="form-control" asp-format="{0:0,0}" readonly />
+                            <input asp-for="Invoice.Rate" class="form-control numbers" readonly />
                         </div>
 
                     </div>

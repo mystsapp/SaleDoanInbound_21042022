@@ -35,7 +35,7 @@ namespace Data.Models_QLT
         public string Logfile { get; set; }
         public string Dieuhanh { get; set; }
         public string Chinhanh { get; set; }
-        public DateTime Ngaythang { get; set; }
+        public DateTime? Ngaythang { get; set; }
         public DateTime? Ngayhuydv { get; set; }
         public string Nguoihuydv { get; set; }
         public string Lydohuydv { get; set; }
