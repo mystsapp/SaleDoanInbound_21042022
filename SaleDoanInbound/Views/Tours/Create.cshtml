@@ -62,7 +62,7 @@
                             <span asp-validation-for="Tour.ChiNhanhDHId" class="text-danger"></span>
                             <span class="badge badge-danger float-left" id="spanChiNhanhAlert" hidden>(*)Nếu chi nhánh tạo khác chi nhánh ĐH lần sau sẽ không cập nhật được chi nhánh ĐH</span>
                         </div>
-                        
+
 
                         <div class="col-md-3">
                             <label asp-for="Tour.PhongDH" class="control-label"></label>
@@ -73,14 +73,14 @@
                             <span asp-validation-for="Tour.PhongDH" class="text-danger"></span>
                         </div>
 
-                        <div class="col-md-3">
-                            <label asp-for="Tour.PhongBanMaCode" class="control-label"></label>
-                            <select asp-for="Tour.PhongBanMaCode" class="form-control select2"
-                                    asp-items="@(new SelectList(Model.listPhongMacode, "Macode", "Macode"))" id="ddlPhongBanMaCode">
-                                <!-- qltour -->
-                            </select>
-                            <span asp-validation-for="Tour.PhongBanMaCode" class="text-danger"></span>
-                        </div>
+                        @*<div class="col-md-3"> <!-- qltour -->
+            <label asp-for="Tour.PhongBanMaCode" class="control-label"></label>
+            <select asp-for="Tour.PhongBanMaCode" class="form-control select2"
+                    asp-items="@(new SelectList(Model.listPhongMacode, "Macode", "Macode"))" id="ddlPhongBanMaCode">
+
+            </select>
+            <span asp-validation-for="Tour.PhongBanMaCode" class="text-danger"></span>
+        </div>*@
 
                         <div class="col-md-3">
                             <label asp-for="Tour.SoHopDong" class="control-label"></label>
@@ -88,15 +88,15 @@
                             <span asp-validation-for="Tour.SoHopDong" class="text-danger"></span>
                         </div>
 
-                    </div>
-
-                    <div class="form-group row">
-
                         <div class="col-md-3 ">
                             <label asp-for="Tour.NgayDen" class="control-label"></label>
                             <input type="text" value="" asp-for="Tour.NgayDen" class="form-control maskInput" id="txtNgayDen" />
                             <span asp-validation-for="Tour.NgayDen" class="text-danger"></span>
                         </div>
+
+                    </div>
+
+                    <div class="form-group row">
 
                         <div class="col-md-3">
                             <label asp-for="Tour.NgayDi" class="control-label"></label>
@@ -104,7 +104,7 @@
                             <span asp-validation-for="Tour.NgayDi" class="text-danger"></span>
                         </div>
 
-                        <div class="col-md-6 chuDeTourGroup">
+                        <div class="col-md-9 chuDeTourGroup">
                             <label asp-for="Tour.ChuDeTour" class="control-label"></label>
                             <input asp-for="Tour.ChuDeTour" class="form-control" id="txtChuDeTour" />
                             <span asp-validation-for="Tour.ChuDeTour" class="text-danger"></span>

@@ -26,6 +26,7 @@ namespace Data.Dtos
         [DisplayName("Người khóa")]
         public string NguoiKhoa { get; set; }
 
+        [DisplayName("Ngày tạo")]
         public DateTime NgayTao { get; set; }
 
         [DisplayName("Người tạo")]
@@ -50,22 +51,22 @@ namespace Data.Dtos
         public string CompanyName { get; set; }
 
         [DisplayName("Ngày đàm phán")]
-        public DateTime NgayDamPhan { get; set; }
+        public DateTime? NgayDamPhan { get; set; }
 
         [DisplayName("HT giao dịch")]
         public string HinhThucGiaoDich { get; set; }
 
         [DisplayName("Ngày ký HD")]
-        public DateTime NgayKyHopDong { get; set; }
+        public DateTime? NgayKyHopDong { get; set; }
 
         [DisplayName("Người ký HĐ")]
         public string NguoiKyHopDong { get; set; }
 
         [DisplayName("Hạn xuất vé")]
-        public DateTime HanXuatVe { get; set; }
+        public DateTime? HanXuatVe { get; set; }
 
         [DisplayName("Ngày thanh lý HĐ")]
-        public DateTime NgayThanhLyHD { get; set; }
+        public DateTime? NgayThanhLyHD { get; set; }
 
         [DisplayName("Số khách TT")]
         public int SoKhachTT { get; set; }
@@ -102,14 +103,19 @@ namespace Data.Dtos
         [DisplayName("Chi nhánh")]
         public string MaCNTao { get; set; } // chinhanh tao: dmchinhanh: qltour
 
-        public DateTime NgayNhanDuTien { get; set; }
+        [DisplayName("Ngày nhận đủ tiền")]
+        public DateTime? NgayNhanDuTien { get; set; }
 
+        [DisplayName("Lý do")]
         public string LyDoNhanDu { get; set; }
 
         [DisplayName("Số HĐ")]
         public string SoHopDong { get; set; }
 
+        [DisplayName("Lãi dự tính chưa gồm vé (vé máy bay/vé xe lửa)")]
         public decimal LaiChuaVe { get; set; }
+
+        [DisplayName("Lãi dự tính bao gồm vé (vé máy bay/vé xe lửa)")]
         public decimal LaiGomVe { get; set; }
         public decimal LaiThucTeGomVe { get; set; }
 

@@ -48,15 +48,15 @@
 
                     <div class="form-group row">
 
-                        <div class="col-md-1">
+                        <div class="col-md-3">
                             <label class="control-label">CNDH</label>
                             <input type="text" asp-for="TourDto.MaCNDH" class="form-control" readonly />
                         </div>
 
-                        <div class="col-md-2">
+                        @*<div class="col-md-2">
                             <label asp-for="Tour.PhongBanMaCode" class="control-label"></label>
                             <input asp-for="Tour.PhongBanMaCode" class="form-control" readonly />
-                        </div>
+                        </div>*@
 
                         <div class="col-md-3">
                             <label asp-for="TourDto.Sgtcode" class="control-label"></label>
@@ -210,12 +210,12 @@
 
                         <div class="col-md-3">
                             <label asp-for="TourDto.NgayDamPhan" class="control-label"></label>
-                            <input type="text" asp-for="TourDto.NgayDamPhan" class="form-control maskInput" readonly />
+                            <input type="text" asp-for="TourDto.NgayDamPhan" class="form-control maskInput" readonly asp-format="{0:dd/MM/yyyy}"/>
                         </div>
 
                         <div class="col-md-3">
                             <label asp-for="TourDto.NgayKyHopDong" class="control-label"></label>
-                            <input type="text" asp-for="TourDto.NgayKyHopDong" class="form-control maskInput" readonly />
+                            <input type="text" asp-for="TourDto.NgayKyHopDong" class="form-control maskInput" readonly asp-format="{0:dd/MM/yyyy}"/>
                         </div>
 
                     </div>
@@ -248,17 +248,17 @@
 
                         <div class="col-md-3">
                             <label asp-for="TourDto.HanXuatVe" class="control-label"></label>
-                            <input type="text" asp-for="TourDto.HanXuatVe" class="form-control maskInput" readonly />
+                            <input type="text" asp-for="TourDto.HanXuatVe" class="form-control maskInput" readonly asp-format="{0:dd/MM/yyyy}"/>
                         </div>
 
                         <div class="col-md-3">
                             <label asp-for="TourDto.NgayThanhLyHD" class="control-label"></label>
-                            <input type="text" asp-for="TourDto.NgayThanhLyHD" class="form-control maskInput" readonly />
+                            <input type="text" asp-for="TourDto.NgayThanhLyHD" class="form-control maskInput" readonly asp-format="{0:dd/MM/yyyy}"/>
                         </div>
 
                         <div class="col-md-3">
                             <label asp-for="TourDto.NgayNhanDuTien" class="control-label"></label>
-                            <input type="text" asp-for="TourDto.NgayNhanDuTien" class="form-control maskInput" readonly />
+                            <input type="text" asp-for="TourDto.NgayNhanDuTien" class="form-control maskInput" readonly asp-format="{0:dd/MM/yyyy}"/>
                         </div>
 
                         <div class="col-md-3">

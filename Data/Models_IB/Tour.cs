@@ -176,7 +176,7 @@ namespace Data.Models_IB
 
         [DisplayName("Thị trường / khối")]
         [MaxLength(5), Column(TypeName = "nvarchar(5)")]
-        [Required(ErrorMessage = "Trường này không được để trống")]
+        //[Required(ErrorMessage = "Trường này không được để trống")]
         public string PhongBanMaCode { get; set; } // phong ban  : qltour
 
         // chinhanh DH
