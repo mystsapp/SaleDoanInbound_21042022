@@ -34,7 +34,11 @@ namespace Data.Models_IB
         public int SGL { get; set; }
         public int DBL { get; set; }
         public int TPL { get; set; }
+
+        [DisplayName("HTTT")]
         public string MOFP { get; set; }
+
+        [DisplayName("Ngày TT")]
         public DateTime? DOFP { get; set; }
 
         //[DisplayName("TourIB")]

@@ -112,9 +112,14 @@
             });
         });
 
-        $('.tdVal').click(function () {
-            id = $(this).data('id');
-            $('#hidId').val(id);
+
+        // invoice click
+        $('.tdInvoiceVal').click(function () {
+            
+            invoiceId = $(this).data('id');
+            var tourId = $(this).data('tourid');
+            $('#hidId').val(tourId);
+            $('#hidInvoiceId').val(invoiceId);
             //var page = $('.active .page-link').text();
             var page = $('.active span').text();
             $('#hidPage').val(page);

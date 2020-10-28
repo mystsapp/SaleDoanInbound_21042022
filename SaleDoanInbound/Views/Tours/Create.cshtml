@@ -4,7 +4,7 @@
 
 @{
     ViewData["Title"] = "Create";
-    
+
 }
 
 <!-- Content Header (Page header) -->
@@ -74,13 +74,13 @@
                         </div>
 
                         @*<div class="col-md-3"> <!-- qltour -->
-            <label asp-for="Tour.PhongBanMaCode" class="control-label"></label>
-            <select asp-for="Tour.PhongBanMaCode" class="form-control select2"
-                    asp-items="@(new SelectList(Model.listPhongMacode, "Macode", "Macode"))" id="ddlPhongBanMaCode">
+                                <label asp-for="Tour.PhongBanMaCode" class="control-label"></label>
+                                <select asp-for="Tour.PhongBanMaCode" class="form-control select2"
+                                        asp-items="@(new SelectList(Model.listPhongMacode, "Macode", "Macode"))" id="ddlPhongBanMaCode">
 
-            </select>
-            <span asp-validation-for="Tour.PhongBanMaCode" class="text-danger"></span>
-        </div>*@
+                                </select>
+                                <span asp-validation-for="Tour.PhongBanMaCode" class="text-danger"></span>
+                            </div>*@
 
                         <div class="col-md-3">
                             <label asp-for="Tour.SoHopDong" class="control-label"></label>
@@ -192,7 +192,7 @@
 
                         <div class="col-md-2 ">
                             <label asp-for="Tour.TyGia" class="control-label"></label>
-                            <input type="text" asp-for="Tour.TyGia" class="form-control numbers" id="txtTyGia"/>
+                            <input type="text" asp-for="Tour.TyGia" class="form-control numbers" id="txtTyGia" />
                             <span asp-validation-for="Tour.TyGia" class="text-danger"></span>
                         </div>
 
@@ -339,7 +339,7 @@
                         </div>
 
                     </div>
-                    
+
                     <div class="form-group row">
 
                         <div class="col-md-6">
@@ -445,7 +445,7 @@
         $('#txtChuDeTour').rules('add', {
             required: true,
             messages: {
-                // required: "Chủ đề không được để trống"
+                //required: "Chủ đề không được để trống"
             }
         });
 
@@ -525,28 +525,28 @@
                 // required: "Ngày đến không được để trống"
             }
         });
-        
-        $('#fUpload').rules('add', {
-            required: true,
-            messages: {
-                // required: "Ngày đến không được để trống"
-            }
-        });
-        
+
+        //$('#fUpload').rules('add', {
+        //    required: true,
+        //    messages: {
+        //        // required: "Ngày đến không được để trống"
+        //    }
+        //});
+
         $('#ddlLoaiTien').rules('add', {
             required: true,
             messages: {
                 // required: "Ngày đến không được để trống"
             }
         });
-        
+
         $('#txtTyGia').rules('add', {
             required: true,
             messages: {
                 // required: "Ngày đến không được để trống"
             }
         });
-        
+
         $('#ddlLoaiTour').rules('add', {
             required: true,
             messages: {

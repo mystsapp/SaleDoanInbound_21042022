@@ -56,9 +56,9 @@ namespace SaleDoanInbound.Controllers
             // invoice click
             if (!string.IsNullOrEmpty(id))
             {
-                InvoiceVM.Invoice = await _unitOfWork.invoiceRepository.GetByIdAsync(id);
-                InvoiceVM.CTVATs = await _unitOfWork.cTVATRepository.FindIncludeOneAsync(x => x.Invoice, y => y.InvoiceId == id && !y.TiengAnh);
-                InvoiceVM.CTInvoices = await _unitOfWork.cTVATRepository.FindIncludeOneAsync(x => x.Invoice, y => y.InvoiceId == id && y.TiengAnh);
+                //InvoiceVM.Invoice = await _unitOfWork.invoiceRepository.GetByIdAsync(id);
+                //InvoiceVM.CTVATs = await _unitOfWork.cTVATRepository.FindIncludeOneAsync(x => x.Invoice, y => y.InvoiceId == id && !y.TiengAnh);
+                //InvoiceVM.CTInvoices = await _unitOfWork.cTVATRepository.FindIncludeOneAsync(x => x.Invoice, y => y.InvoiceId == id && y.TiengAnh);
             }
 
             // invoice click

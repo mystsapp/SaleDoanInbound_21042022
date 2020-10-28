@@ -38,5 +38,11 @@ namespace SaleDoanInbound.Models
         public string StrUrl { get; set; }
         public string tabActive { get; set; }
         public string huy { get; set; }
+
+        // invoice
+        public Invoice Invoice { get; set; }
+        public IEnumerable<CTVAT> CTVATs { get; set; }
+        public IEnumerable<CTVAT> CTInvoices { get; set; }
+        // invoice
     }
 }

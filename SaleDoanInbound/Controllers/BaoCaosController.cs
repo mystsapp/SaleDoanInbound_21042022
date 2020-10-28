@@ -64,12 +64,20 @@ namespace SaleDoanInbound.Controllers
             return View();
         }
 
-        #region
+        #region Doanh so theo sale
 
         public async Task<IActionResult> DoanhSoTheoSale(string searchFromDate = null, string searchToDate = null, string Macn = null)
         {
             // from session
             var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
+
+            // moi load vao
+            //if(string.IsNullOrEmpty(searchToDate) && string.IsNullOrEmpty(searchFromDate))
+            //{
+            //    var currentMonth = DateTime.Now.Month;
+            //    searchFromDate = "01/" + currentMonth + "/" + DateTime.Now.Year;
+            //    searchToDate = "01/" + (currentMonth + 1) + "/" + DateTime.Now.Year;
+            //}
 
             ViewBag.Macn = Macn;
             ViewBag.searchFromDate = searchFromDate;
@@ -746,7 +754,7 @@ namespace SaleDoanInbound.Controllers
 
         #endregion
 
-        #region
+        #region Doanh so theo thang
 
         public IActionResult DoanhSoTheoThang(string tuThang1, string denThang1, string nam1,
                                               string tuThang2, string denThang2, string nam2, string chiNhanh)
@@ -1332,6 +1340,13 @@ namespace SaleDoanInbound.Controllers
 
         }
 
+        #endregion
+
+        #region Doanh so theo ngay
+        public IActionResult DoanhSoTheoNgay(string searchFromDate = null, string searchToDate = null, string loaiTour = null, string Macn = null)
+        {
+            return View();
+        }
         #endregion
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

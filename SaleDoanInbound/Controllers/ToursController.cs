@@ -36,6 +36,7 @@ namespace SaleDoanInbound.Controllers
             TourVM = new TourViewModel()
             {
                 Tour = new Data.Models_IB.Tour(),
+                Invoice = new Invoice(),
                 Thanhphos = _unitOfWork.thanhPhoForTuyenTQRepository.GetAll(),
                 Companies = _unitOfWork.khachHangRepository.GetAll(),
                 Tourkinds = _unitOfWork.tourKindRepository.GetAll(),
@@ -49,7 +50,9 @@ namespace SaleDoanInbound.Controllers
                 TourDto = new TourDto()
             };
         }
-        public async Task<IActionResult> Index(long id = 0, string searchString = null, int page = 1, string searchFromDate = null, string searchToDate = null)
+        public async Task<IActionResult> Index(long id = 0, string searchString = null, int page = 1, 
+                                               string searchFromDate = null, string searchToDate = null , 
+                                               string invoiceId = null)
         {
             // from session
             var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
@@ -127,6 +130,15 @@ namespace SaleDoanInbound.Controllers
 
                 // DS biên nhận theo tour
                 TourVM.BienNhans = _unitOfWork.bienNhanRepository.Find(x => x.TourId == id);
+
+                // click on invoice
+                if (!string.IsNullOrEmpty(invoiceId))
+                {
+                    TourVM.Invoice = await _unitOfWork.invoiceRepository.GetByIdAsync(invoiceId);
+                    TourVM.CTVATs = await _unitOfWork.cTVATRepository.FindIncludeOneAsync(x => x.Invoice, y => y.InvoiceId == invoiceId && !y.TiengAnh);
+                    TourVM.CTInvoices = await _unitOfWork.cTVATRepository.FindIncludeOneAsync(x => x.Invoice, y => y.InvoiceId == invoiceId && y.TiengAnh);
+                }
+                // click on invoice
             }
             //--> click vao tour
 
@@ -242,7 +254,7 @@ namespace SaleDoanInbound.Controllers
             TourVM.Tour.ChiNhanhTaoId = _unitOfWork.dmChiNhanhRepository.Find(x => x.Macn == user.MaCN).FirstOrDefault().Id;
             TourVM.Tour.NgayTao = DateTime.Now;
             TourVM.Tour.NguoiTao = user.Username;
-            if (TourVM.Tour.SoHopDong == null)
+            if (string.IsNullOrEmpty(TourVM.Tour.SoHopDong))
             {
                 TourVM.Tour.SoHopDong = "";
             }
