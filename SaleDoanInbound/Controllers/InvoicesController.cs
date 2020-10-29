@@ -56,14 +56,31 @@ namespace SaleDoanInbound.Controllers
             // invoice click
             if (!string.IsNullOrEmpty(id))
             {
-                //InvoiceVM.Invoice = await _unitOfWork.invoiceRepository.GetByIdAsync(id);
-                //InvoiceVM.CTVATs = await _unitOfWork.cTVATRepository.FindIncludeOneAsync(x => x.Invoice, y => y.InvoiceId == id && !y.TiengAnh);
-                //InvoiceVM.CTInvoices = await _unitOfWork.cTVATRepository.FindIncludeOneAsync(x => x.Invoice, y => y.InvoiceId == id && y.TiengAnh);
+                InvoiceVM.Invoice = await _unitOfWork.invoiceRepository.GetByIdAsync(id);
+                InvoiceVM.CTVATs = await _unitOfWork.cTVATRepository.FindIncludeOneAsync(x => x.Invoice, y => y.InvoiceId == id && !y.TiengAnh);
+                InvoiceVM.CTInvoices = await _unitOfWork.cTVATRepository.FindIncludeOneAsync(x => x.Invoice, y => y.InvoiceId == id && y.TiengAnh);
             }
 
             // invoice click
 
             return View(InvoiceVM);
+        }
+
+        public IActionResult IncoicesByTourPartial(long tourId)
+        {
+            InvoiceVM.Tour = _unitOfWork.tourRepository.GetById(tourId);
+            InvoiceVM.Invoices = _unitOfWork.invoiceRepository.ListInvoice("", tourId).OrderByDescending(x => x.Date);
+
+            return PartialView(InvoiceVM);
+        }
+        
+        public async Task<IActionResult> CTInvoicesCTVATsInInvoicePartial(string invoiceId)
+        {
+            InvoiceVM.Invoice = await _unitOfWork.invoiceRepository.GetByIdAsync(invoiceId);
+            InvoiceVM.CTVATs = await _unitOfWork.cTVATRepository.FindIncludeOneAsync(x => x.Invoice, y => y.InvoiceId == invoiceId && !y.TiengAnh);
+            InvoiceVM.CTInvoices = await _unitOfWork.cTVATRepository.FindIncludeOneAsync(x => x.Invoice, y => y.InvoiceId == invoiceId && y.TiengAnh);
+
+            return PartialView(InvoiceVM);
         }
 
         public async Task<IActionResult> Create(long tourId, /*string tabActive,*/ string strUrl)
@@ -73,14 +90,14 @@ namespace SaleDoanInbound.Controllers
             InvoiceVM.Tour = _unitOfWork.tourRepository.GetById(tourId);
             InvoiceVM.Invoice.Arr = InvoiceVM.Tour.NgayDen;
             InvoiceVM.Invoice.Dep = InvoiceVM.Tour.NgayDi;
-            InvoiceVM.Invoice.Pax = (InvoiceVM.Tour.SoKhachTT == 0)? InvoiceVM.Tour.SoKhachDK: InvoiceVM.Tour.SoKhachTT;
+            InvoiceVM.Invoice.Pax = (InvoiceVM.Tour.SoKhachTT == 0) ? InvoiceVM.Tour.SoKhachDK : InvoiceVM.Tour.SoKhachTT;
             InvoiceVM.Invoice.HopDong = InvoiceVM.Tour.SoHopDong;
             InvoiceVM.Invoice.MaKH = InvoiceVM.Tour.MaKH;
             InvoiceVM.Invoice.TenKhach = InvoiceVM.Tour.TenKH;
             InvoiceVM.Invoice.Ref = InvoiceVM.Tour.NguoiKyHopDong; // ref
             InvoiceVM.Invoice.MOFP = "TM/CK";
             InvoiceVM.Invoice.TourId = InvoiceVM.Tour.Id;
-            
+
             InvoiceVM.Invoice.Currency = InvoiceVM.Tour.LoaiTien;
             InvoiceVM.Invoice.Rate = InvoiceVM.Tour.TyGia.Value;
 
@@ -122,7 +139,7 @@ namespace SaleDoanInbound.Controllers
                 // cung nam
                 if (oldYear == currentYear.ToString())
                 {
-                    var oldId = invoice.Id.Substring(0, 6);                        
+                    var oldId = invoice.Id.Substring(0, 6);
                     InvoiceVM.Invoice.Id = GetNextId.NextID(oldId, "") + currentYear.ToString();
                 }
                 else
@@ -507,7 +524,7 @@ namespace SaleDoanInbound.Controllers
 
             return View(InvoiceVM);
         }
-        
+
         public async Task<IActionResult> InvoicePdfPrint(string id, string strUrl)
         {
             var invoices = await _unitOfWork.invoiceRepository.GetAllIncludeOneAsync(x => x.Tour);

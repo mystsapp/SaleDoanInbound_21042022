@@ -65,6 +65,16 @@ namespace SaleDoanInbound.Controllers
             return View(BienNhanVM);
         }
 
+        public IActionResult BienNhansByTourPartial(long tourId)
+        {
+            if (tourId == 0)
+                return NotFound();
+            BienNhanVM.Tour = _unitOfWork.tourRepository.GetById(tourId);
+            BienNhanVM.BienNhans = _unitOfWork.bienNhanRepository.ListBienNhan("", tourId, "", "");
+
+            return PartialView(BienNhanVM);
+        }
+
         public IActionResult Create(long tourId/*, string tabActive*/, string strUrl)
         {
             BienNhanVM.StrUrl = strUrl;// + "&tabActive=" + tabActive; // for redirect tab

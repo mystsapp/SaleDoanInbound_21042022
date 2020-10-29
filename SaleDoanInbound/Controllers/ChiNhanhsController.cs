@@ -9,7 +9,7 @@ using SaleDoanInbound.Models;
 
 namespace SaleDoanInbound.Controllers
 {
-    public class ChiNhanhsController : Controller
+    public class ChiNhanhsController : BaseController
     {
         private readonly IUnitOfWork _unitOfWork;
         [BindProperty]

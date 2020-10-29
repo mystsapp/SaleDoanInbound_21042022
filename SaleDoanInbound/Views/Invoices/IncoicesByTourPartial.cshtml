@@ -1,0 +1,125 @@
+﻿@model InvoiceViewModel
+
+    <section class="content">
+
+        <!-- Default box -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Sgtcode - <b>@Model.Tour.Sgtcode</b></h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+
+                <div style="overflow-x:auto;">
+                    <table class="table mytable text-nowrap tblEMD" id="listAll">
+                        <thead>
+                            <tr class="table-info">
+                                <th>#</th>
+                                <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Id)</th>
+                                <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Replace)</th>
+                                <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Type)</th>
+                                <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Date)</th>
+                                <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Arr)</th>
+                                <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Dep)</th>
+                                <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Pax)</th>
+                                <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Currency)</th>
+                                <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Rate)</th>
+                                <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().MaKH)</th>
+                                <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().TenKhach)</th>
+                                <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Ref)</th>
+                                <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().HopDong)</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                var invoices = Model.Invoices;
+                            }
+                            @foreach (var item in Model.Invoices)
+                            {
+
+                                <tr class="invoice-cursor-pointer " data-huy="@item.HuyInvoice">
+
+                                    <td>
+                                        <div class="btn-group text-white" role="group">
+                                            @if (item.HuyInvoice == true)
+                                            {
+                                                <a class="disabled" title="Cập nhật"><i class="fas fa-edit"></i></a>
+                                                <span class="text-dark"> | </span>
+                                            }
+                                            else
+                                            {
+                                                <a class="text-primary" title="Cập nhật" asp-action="Edit" asp-route-tourId="@Model.Tour.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
+                                                <span class="text-dark"> | </span>
+                                            }
+                                            <!--print invoice-->
+                                            <a asp-action="InvoicePdfViewer" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" class="text-warning btnPrintInvoice" title="Print"><i class="fas fa-print"></i></a>
+                                            <span class="text-dark"> | </span>
+                                            <a class="text-success" title="Chi tiết" asp-action="Details" asp-route-tourId="@Model.Tour.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
+                                            <span class="text-dark"> | </span>
+                                            <form asp-action="Delete" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" method="post">
+
+                                                <span id="confirmDeleteSpan_@item.Id" style="display: none">
+                                                    <span class="text-dark">Hủy?</span>
+                                                    <button type="button" data-id="@item.Id" data-url="@Model.StrUrl" class="btn btn-danger btn-xs btnHuyInvoice">Yes</button>
+                                                    <button type="button" class="btn btn-primary btn-xs" onclick="confirmDelete('@item.Id', false)">No</button>
+                                                </span>
+
+                                                <span id="deleteSpan_@item.Id">
+                                                    @if (item.HuyInvoice == true)
+                                                    {
+                                                        <button type="button" class="text-danger border-0 bg-transparent disabled"><i class="fas fa-trash-alt"></i></button>
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <button type="button" class="text-danger border-0 bg-transparent btnHuy" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
+
+                                                    }
+                                                </span>
+                                            </form>
+                                        </div>
+                                    </td>
+
+                                    <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Id)</td>
+                                    <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Replace)</td>
+                                    <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Type)</td>
+                                    <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.Raw(item.Date.ToShortDateString())</td>
+                                    <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.Raw(item.Arr.ToShortDateString())</td>
+                                    <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">
+                                        @if (item.Dep.HasValue)
+                                        {
+                                            @Html.Raw(item.Dep.Value.ToShortDateString())
+                                        }
+                                    </td>
+                                    <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Pax)</td>
+                                    <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Currency)</td>
+                                    <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Rate)</td>
+                                    <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.MaKH)</td>
+                                    <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.TenKhach)</td>
+
+                                    <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Ref)</td>
+                                    <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.HopDong)</td>
+                                </tr>
+
+                            }
+                        </tbody>
+
+                    </table>
+                </div>
+
+            </div>
+            <!-- /.card-body -->
+
+        </div>
+        <!-- /.card -->
+
+    </section>

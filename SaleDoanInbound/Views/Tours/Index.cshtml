@@ -101,7 +101,7 @@
                             <input type="hidden" name="id" id="hidId" />
                             <input type="hidden" name="page" id="hidPage" />
 
-                            <input type="hidden" name="invoiceId" id="hidInvoiceId" />
+                            @*<input type="hidden" name="invoiceId" id="hidInvoiceId" />*@
 
                             <div class="col-md-3">
                                 <br />
@@ -144,7 +144,7 @@
 
                                 <tr class="cursor-pointer " data-huy="@item.HuyTour">
 
-                                    <td class="tdVal_@item.Id">
+                                    <td>
                                         <div class="btn-group text-white" role="group">
                                             <a class="text-info" title="Invoice" asp-action="Index" asp-controller="Invoices" asp-route-tourId="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-file-invoice"></i></a>
                                             <span class="text-dark"> | </span>
@@ -203,31 +203,30 @@
                                     {
 
                                         case "0":
-                                            <td class="tdVal_@item.Id" data-id="@item.Id" onclick="tourRowClick(@item.Id)">@Html.DisplayFor(m => item.Sgtcode)</td>
+                                            <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
                                             break;
                                         case "1":
-                                            <td class="tdVal_@item.Id" data-id="@item.Id" onclick="tourRowClick(@item.Id)">@Html.DisplayFor(m => item.Sgtcode)</td>
+                                            <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
                                             break;
                                         case "2":
-                                            <td class="tdVal_@item.Id bg-yellow" data-id="@item.Id" onclick="tourRowClick(@item.Id)">@Html.DisplayFor(m => item.Sgtcode)</td>
+                                            <td class="tdVal bg-yellow" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
                                             break;
                                         case "3":
-                                            <td class="tdVal_@item.Id " style="background-color: chartreuse" data-id="@item.Id" onclick="tourRowClick(@item.Id)">@Html.DisplayFor(m => item.Sgtcode)</td>
+                                            <td class="tdVal" style="background-color: chartreuse" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
                                             break;
                                         case "4":
-                                            <td class="tdVal_@item.Id bg-red" data-id="@item.Id" onclick="tourRowClick(@item.Id)">@Html.DisplayFor(m => item.Sgtcode)</td>
+                                            <td class="tdVal bg-red" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
                                             break;
                                     }
-                                    @*<td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>*@
-                                    <td class="tdVal_@item.Id" data-id="@item.Id" onclick="tourRowClick(@item.Id)">@Html.DisplayFor(m => item.SoHopDong)</td>
-                                    <td class="tdVal_@item.Id" data-id="@item.Id" onclick="tourRowClick(@item.Id)">@Html.DisplayFor(m => item.ChuDeTour)</td>
-                                    <td class="tdVal_@item.Id" data-id="@item.Id" onclick="tourRowClick(@item.Id)">@Html.DisplayFor(m => item.TuyenTQ)</td>
-                                    <td class="tdVal_@item.Id" data-id="@item.Id" onclick="tourRowClick(@item.Id)">@Html.Raw(item.NgayDen.ToString("dd/MM/yyyy"))</td>
-                                    <td class="tdVal_@item.Id" data-id="@item.Id" onclick="tourRowClick(@item.Id)">@Html.Raw(item.NgayDi.ToString("dd/MM/yyyy"))</td>
-                                    @*<td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.HuyTour)</td>*@
-                                    <td class="tdVal_@item.Id" data-id="@item.Id" onclick="tourRowClick(@item.Id)">@Html.DisplayFor(m => item.NguoiTao)</td>
-                                    <td class="tdVal_@item.Id" data-id="@item.Id" onclick="tourRowClick(@item.Id)">@Html.Raw(item.NgayTao.ToString("dd/MM/yyyy"))</td>
-                                    <td class="tdVal_@item.Id" data-id="@item.Id" onclick="tourRowClick(@item.Id)">
+
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.SoHopDong)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.ChuDeTour)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.TuyenTQ)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayDen.ToString("dd/MM/yyyy"))</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayDi.ToString("dd/MM/yyyy"))</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.NguoiTao)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayTao.ToString("dd/MM/yyyy"))</td>
+                                    <td class="tdVal" data-id="@item.Id">
                                         @switch (item.TrangThai)
                                         {
 
@@ -291,690 +290,45 @@
 <!-- /.content -->
 <!-- Tabs invoice - biennhan-->
 
-@if (Model.Invoices != null)
-{
-
-    <div class="row">
-        <div class="col-md-12 ">
-            <div class="card card-primary card-outline card-outline-tabs">
-                <div class="card-header p-0 border-bottom-0">
-                    <ul class="nav nav-tabs" id="invoiceBNTab" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" id="custom-tabs-four-home-tab" data-toggle="pill" href="#tab_cttour" role="tab" aria-controls="custom-tabs-four-home" aria-selected="true">Invoices</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="custom-tabs-four-profile-tab" data-toggle="pill" href="#tab_ghichu" role="tab" aria-controls="custom-tabs-four-profile" aria-selected="false">Biên nhận</a>
-                        </li>
-                       
-                    </ul>
-                </div>
-                <div class="card-body">
-                    <div class="tab-content" id="custom-tabs-four-tabContent">
-
-                        <!-- tab_invoices -->
-                        <div class="tab-pane fade active show" id="tab_invoices" role="tabpanel" aria-labelledby="custom-tabs-four-home-tab">
-
-                            <section class="content">
-
-                                <!-- Default box -->
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h3 class="card-title">Sgtcode - <b>@Model.Tour.Sgtcode</b></h3>
-
-                                        <div class="card-tools">
-                                            <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
-                                                <i class="fas fa-minus"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
-                                                <i class="fas fa-times"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="card-body">
-
-                                        <div style="overflow-x:auto;">
-                                            <table class="table mytable text-nowrap tblEMD" id="listAll">
-                                                <thead>
-                                                    <tr class="table-info">
-                                                        <th>#</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Id)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Replace)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Type)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Date)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Arr)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Dep)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Pax)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Currency)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Rate)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().MaKH)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().TenKhach)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Ref)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().HopDong)</th>
-
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @{ 
-                                                        var invoices = Model.Invoices;
-                                                    }
-                                                    @foreach (var item in Model.Invoices)
-                                                    {
-
-                                                        <tr class="cursor-pointer " data-huy="@item.HuyInvoice">
-
-                                                            <td>
-                                                                <div class="btn-group text-white" role="group">
-                                                                    @if (item.HuyInvoice == true)
-                                                                    {
-                                                                        <a class="disabled" title="Cập nhật"><i class="fas fa-edit"></i></a>
-                                                                        <span class="text-dark"> | </span>
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        <a class="text-primary" title="Cập nhật" asp-action="Edit" asp-route-tourId="@Model.Tour.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
-                                                                        <span class="text-dark"> | </span>
-                                                                    }
-                                                                    <!--print invoice-->
-                                                                    <a asp-action="InvoicePdfViewer" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" class="text-warning btnPrintInvoice" title="Print"><i class="fas fa-print"></i></a>
-                                                                    <span class="text-dark"> | </span>
-                                                                    <a class="text-success" title="Chi tiết" asp-action="Details" asp-route-tourId="@Model.Tour.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
-                                                                    <span class="text-dark"> | </span>
-                                                                    <form asp-action="Delete" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" method="post">
-
-                                                                        <span id="confirmDeleteSpan_@item.Id" style="display: none">
-                                                                            <span class="text-dark">Hủy?</span>
-                                                                            <button type="button" data-id="@item.Id" data-url="@Model.StrUrl" class="btn btn-danger btn-xs btnHuyInvoice">Yes</button>
-                                                                            <button type="button" class="btn btn-primary btn-xs" onclick="confirmDelete('@item.Id', false)">No</button>
-                                                                        </span>
-
-                                                                        <span id="deleteSpan_@item.Id">
-                                                                            @if (item.HuyInvoice == true)
-                                                                            {
-                                                                                <button type="button" class="text-danger border-0 bg-transparent disabled"><i class="fas fa-trash-alt"></i></button>
-
-                                                                            }
-                                                                            else
-                                                                            {
-                                                                                <button type="button" class="text-danger border-0 bg-transparent btnHuy" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
-
-                                                                            }
-                                                                        </span>
-                                                                    </form>
-                                                                </div>
-                                                            </td>
-
-                                                            <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Id)</td>
-                                                            <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Replace)</td>
-                                                            <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Type)</td>
-                                                            <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.Raw(item.Date.ToShortDateString())</td>
-                                                            <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.Raw(item.Arr.ToShortDateString())</td>
-                                                            <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">
-                                                                @if (item.Dep.HasValue)
-                                                                {
-                                                                    @Html.Raw(item.Dep.Value.ToShortDateString())
-                                                                }
-                                                            </td>
-                                                            <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Pax)</td>
-                                                            <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Currency)</td>
-                                                            <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Rate)</td>
-                                                            <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.MaKH)</td>
-                                                            <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.TenKhach)</td>
-
-                                                            <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Ref)</td>
-                                                            <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.HopDong)</td>
-                                                        </tr>
-
-                                                    }
-                                                </tbody>
-
-                                            </table>
-                                        </div>
-
-                                    </div>
-                                    <!-- /.card-body -->
-
-                                </div>
-                                <!-- /.card -->
-
-                            </section>
-                            <!-- CTInvoice - CTVAT -->
-                            <!-- CTInvoice -->
-                            <section class="content">
-
-                                <!-- Default box -->
-                                <div class="card">
-                                    <div class="card-header">
-                                        @if (Model.Invoice.Id != null)
-                                        {
-                                            <h3 class="card-title">Danh sách chi tiết invoice - <b>@Model.Invoice.Id</b></h3>
-                                        }
-                                        else
-                                        {
-                                            <h3 class="card-title">Danh sách chi tiết invoice</h3>
-                                        }
-
-                                        <div class="card-tools">
-                                            <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
-                                                <i class="fas fa-minus"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
-                                                <i class="fas fa-times"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="card-body">
-
-                                        <div style="overflow-x:auto; overflow-y: auto; height: 200px;">
-                                            <table class="table mytable text-nowrap tblEMD" id="cTInvoiceTbl">
-                                                <thead>
-                                                    <tr class="table-info">
-                                                        <th>
-
-                                                            @if (Model.Invoice.HuyInvoice == true)
-                                                            {
-                                                                <a class="btn btn-default btn-sm text-bold disabled btn-block" title="Thêm CT invoice">New</a>
-
-                                                            }
-                                                            else
-                                                            {
-                                                                <a id="btnNewCTInvoice" data-id="@Model.Invoice.Id" asp-action="CreateCTInvoice" asp-controller="CTVATs" asp-route-invoiceId="@Model.Invoice.Id" asp-route-strUrl="@Model.StrUrl" class="btn btn-outline-info btn-sm text-bold btn-block" title="Thêm CT invoice"><i class="fas fa-plus"></i></a>
-                                                            }
-                                                        </th>
-                                                        <th>@Html.DisplayNameFor(m => m.CTInvoices.FirstOrDefault().Descript)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.CTInvoices.FirstOrDefault().Quantity)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.CTInvoices.FirstOrDefault().Unit)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.CTInvoices.FirstOrDefault().UnitPrice)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.CTInvoices.FirstOrDefault().Percent)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.CTInvoices.FirstOrDefault().Amount)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.CTInvoices.FirstOrDefault().ServiceFee)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.CTInvoices.FirstOrDefault().VAT)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.CTInvoices.FirstOrDefault().Muc)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.CTInvoices.FirstOrDefault().TenKhoanMuc)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.CTInvoices.FirstOrDefault().DS)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.CTInvoices.FirstOrDefault().DLHH)</th>
-
-
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @if (Model.CTInvoices != null && Model.Invoice.HuyInvoice != true)
-                                                    {
-                                                        @foreach (var item in Model.CTInvoices)
-                                                        {
-
-                                                            <tr class="cursor-pointer ">
-
-                                                                <td>
-                                                                    <div class="btn-group text-white" role="group">
-                                                                        <a class="text-primary" title="Cập nhật" asp-action="EditCTInvoice" asp-controller="CTVATs" asp-route-invoiceId="@Model.Invoice.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
-                                                                        <span class="text-dark"> | </span>
-                                                                        <a class="text-success" title="Chi tiết" asp-action="DetailsCTInvoice" asp-controller="CTVATs" asp-route-invoiceId="@Model.Invoice.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
-                                                                        <span class="text-dark"> | </span>
-                                                                        <form asp-action="DeleteCTInvoice" asp-controller="CTVATs" asp-route-id="@item.Id" asp-route-invoiceId="@Model.Invoice.Id" asp-route-strUrl="@Model.StrUrl" method="post">
-
-                                                                            <span id="confirmDeleteSpan_@item.Id" style="display: none">
-                                                                                <span class="text-dark">Xóa?</span>
-                                                                                <button type="submit" class="btn btn-danger btn-xs">Yes</button>
-                                                                                <button type="button" class="btn btn-primary btn-xs" onclick="confirmDelete('@item.Id', false)">No</button>
-                                                                            </span>
-
-                                                                            <span id="deleteSpan_@item.Id">
-                                                                                <button type="button" class="text-danger border-0 bg-transparent" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
-                                                                            </span>
-                                                                        </form>
-                                                                    </div>
-                                                                </td>
-
-                                                                <td>@Html.DisplayFor(m => item.Descript)</td>
-                                                                <td>@Html.DisplayFor(m => item.Quantity)</td>
-                                                                <td>@Html.DisplayFor(m => item.Unit)</td>
-                                                                <td>@Html.Raw(item.UnitPrice.ToString("N0"))</td>
-                                                                <td>@Html.Raw(item.Percent.ToString("N0"))</td>
-                                                                <td>@Html.Raw(item.Amount.ToString("N0"))</td>
-                                                                <td>@Html.Raw(item.ServiceFee.ToString("N0"))</td>
-                                                                <td>@Html.Raw(item.VAT.ToString("N0"))</td>
-                                                                <td>@Html.DisplayFor(m => item.Muc)</td>
-                                                                <td>@Html.DisplayFor(m => item.TenKhoanMuc)</td>
-                                                                <td>@Html.DisplayFor(m => item.DS)</td>
-                                                                <td>@Html.DisplayFor(m => item.DLHH)</td>
-                                                            </tr>
-
-                                                        }
-
-                                                    }
-                                                    @if (Model.Invoice.HuyInvoice == true)
-                                                    {
-                                                        @foreach (var item in Model.CTInvoices)
-                                                        {
-
-                                                            <tr class="cursor-pointer bg-secondary">
-
-                                                                <td>
-                                                                    <div class="btn-group text-white" role="group">
-                                                                        <a class="disabled" title="Cập nhật"><i class="fas fa-edit"></i></a>
-                                                                        <span class="text-dark"> | </span>
-                                                                        <a class="text-success" title="Chi tiết" asp-action="DetailsCTInvoice" asp-controller="CTVATs" asp-route-invoiceId="@Model.Invoice.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
-                                                                        <span class="text-dark"> | </span>
-                                                                        <form asp-action="DeleteCTInvoice" asp-controller="CTVATs" asp-route-id="@item.Id" asp-route-invoiceId="@Model.Invoice.Id" asp-route-strUrl="@Model.StrUrl" method="post">
-
-                                                                            <span id="confirmDeleteSpan_@item.Id" style="display: none">
-                                                                                <span class="text-dark">Xóa?</span>
-                                                                                <button type="submit" class="btn btn-danger btn-xs">Yes</button>
-                                                                                <button type="button" class="btn btn-primary btn-xs" onclick="confirmDelete('@item.Id', false)">No</button>
-                                                                            </span>
-
-                                                                            <span id="deleteSpan_@item.Id">
-                                                                                <button type="button" disabled class="text-danger border-0 bg-transparent" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
-                                                                            </span>
-                                                                        </form>
-                                                                    </div>
-                                                                </td>
-
-                                                                <td>@Html.DisplayFor(m => item.Descript)</td>
-                                                                <td>@Html.DisplayFor(m => item.Quantity)</td>
-                                                                <td>@Html.DisplayFor(m => item.Unit)</td>
-                                                                <td>@Html.Raw(item.UnitPrice.ToString("N0"))</td>
-                                                                <td>@Html.Raw(item.Percent.ToString("N0"))</td>
-                                                                <td>@Html.Raw(item.Amount.ToString("N0"))</td>
-                                                                <td>@Html.Raw(item.ServiceFee.ToString("N0"))</td>
-                                                                <td>@Html.Raw(item.VAT.ToString("N0"))</td>
-                                                                <td>@Html.DisplayFor(m => item.Muc)</td>
-                                                                <td>@Html.DisplayFor(m => item.TenKhoanMuc)</td>
-                                                                <td>@Html.DisplayFor(m => item.DS)</td>
-                                                                <td>@Html.DisplayFor(m => item.DLHH)</td>
-                                                            </tr>
-
-                                                        }
-
-                                                    }
-                                                </tbody>
-
-                                            </table>
-                                        </div>
-
-                                    </div>
-                                    <!-- /.card-body -->
-
-                                </div>
-                                <!-- /.card -->
-
-                            </section>
-                            <!-- /CTInvoice -->
-                            <!-- CTVAT -->
-                            <section class="content">
-
-                                <!-- Default box -->
-                                <div class="card">
-                                    <div class="card-header">
-                                        @if (Model.Invoice.Id != null)
-                                        {
-                                            <h3 class="card-title">Danh sách chi tiết VAT - <b>@Model.Invoice.Id</b></h3>
-                                        }
-                                        else
-                                        {
-                                            <h3 class="card-title">Danh sách chi tiết VAT</h3>
-                                        }
-
-                                        <div class="card-tools">
-                                            <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
-                                                <i class="fas fa-minus"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
-                                                <i class="fas fa-times"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="card-body">
-
-                                        <div style="overflow-x:auto; overflow-y: auto; height: 200px;">
-                                            <table class="table mytable text-nowrap tblEMD" id="cTVATTbl">
-                                                <thead>
-                                                    <tr class="table-info">
-                                                        <th>
-                                                            @if (Model.Invoice.HuyInvoice == true)
-                                                            {
-                                                                @*<a class="btn btn-default btn-sm text-bold disabled" title="Thêm CT invoice">New</a>*@
-                                                                <a class="btn btn-default btn-sm text-bold disabled" title="Copy CT invoice">Copy</a>
-                                                            }
-                                                            else
-                                                            {
-
-                                                                @*<a class="btn btn-default btn-sm text-bold " asp-action="CreateCTVAT" data-id="@Model.Invoice.Id" id="btnNewCTVAT" asp-controller="CTVATs" asp-route-invoiceId="@Model.Invoice.Id" asp-route-strUrl="@Model.StrUrl" title="Thêm CTVAT">New</a>*@
-                                                                <button class="btn btn-default btn-sm text-bold " data-id="@Model.Invoice.Id" id="btnCopyCTVAT" title="Copy CTVAT">Copy</button>
-
-                                                                <form id="frmCopyCTVAT" asp-action="CopyCTInvoice_DS_To_CTVAT" asp-controller="CTVATs" method="post" asp-route-invoiceId="@Model.Invoice.Id" asp-route-strUrl="@Model.StrUrl">
-                                                                </form>
-
-                                                            }
-
-                                                        </th>
-                                                        <th>@Html.DisplayNameFor(m => m.CTVATs.FirstOrDefault().Descript)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.CTVATs.FirstOrDefault().Quantity)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.CTVATs.FirstOrDefault().Unit)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.CTVATs.FirstOrDefault().UnitPrice)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.CTVATs.FirstOrDefault().Percent)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.CTVATs.FirstOrDefault().Amount)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.CTVATs.FirstOrDefault().ServiceFee)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.CTVATs.FirstOrDefault().VAT)</th>
-
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @if (Model.CTVATs != null && Model.Invoice.HuyInvoice != true)
-                                                    {
-                                                        @foreach (var item in Model.CTVATs)
-                                                        {
-
-                                                            <tr class="cursor-pointer ">
-
-                                                                <td>
-                                                                    <div class="btn-group text-white" role="group">
-                                                                        @*<a class="text-primary" title="Cập nhật" asp-action="EditCTVAT" asp-controller="CTVATs" asp-route-invoiceId="@Model.Invoice.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
-                                                    <span class="text-dark"> | </span>*@
-                                                                        <a class="text-success" title="Chi tiết" asp-action="DetailsCTVAT" asp-controller="CTVATs" asp-route-invoiceId="@Model.Invoice.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
-                                                                        <span class="text-dark"> | </span>
-                                                                        <form asp-action="DeleteCTVAT" asp-controller="CTVATs" asp-route-id="@item.Id" asp-route-invoiceId="@Model.Invoice.Id" asp-route-strUrl="@Model.StrUrl" method="post">
-
-                                                                            <span id="confirmDeleteSpan_@item.Id" style="display: none">
-                                                                                <span class="text-dark">Xóa?</span>
-                                                                                <button type="submit" class="btn btn-danger btn-xs">Yes</button>
-                                                                                <button type="button" class="btn btn-primary btn-xs" onclick="confirmDelete('@item.Id', false)">No</button>
-                                                                            </span>
-
-                                                                            <span id="deleteSpan_@item.Id">
-                                                                                <button type="button" class="text-danger border-0 bg-transparent" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
-                                                                            </span>
-                                                                        </form>
-                                                                    </div>
-                                                                </td>
-
-                                                                <td>@Html.DisplayFor(m => item.Descript)</td>
-                                                                <td>@Html.DisplayFor(m => item.Quantity)</td>
-                                                                <td>@Html.DisplayFor(m => item.Unit)</td>
-                                                                <td>@Html.Raw(item.UnitPrice.ToString("N0"))</td>
-                                                                <td>@Html.Raw(item.Percent.ToString("N0"))</td>
-                                                                <td>@Html.Raw(item.Amount.ToString("N0"))</td>
-                                                                <td>@Html.Raw(item.ServiceFee.ToString("N0"))</td>
-                                                                <td>@Html.Raw(item.VAT.ToString("N0"))</td>
-
-                                                            </tr>
-
-                                                        }
-
-                                                    }
-                                                    @if (Model.Invoice.HuyInvoice == true)
-                                                    {
-                                                        @foreach (var item in Model.CTVATs)
-                                                        {
-
-                                                            <tr class="cursor-pointer bg-secondary">
-
-                                                                <td>
-                                                                    <div class="btn-group text-white" role="group">
-                                                                        @*<a class="disabled" title="Cập nhật"><i class="fas fa-edit"></i></a>*@
-                                                                        @*<span class="text-dark"> | </span>*@
-                                                                        <a class="text-success" title="Chi tiết" asp-action="DetailsCTVAT" asp-controller="CTVATs" asp-route-invoiceId="@Model.Invoice.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
-                                                                        <span class="text-dark"> | </span>
-                                                                        <form asp-action="DeleteCTVAT" asp-controller="CTVATs" asp-route-id="@item.Id" asp-route-invoiceId="@Model.Invoice.Id" asp-route-strUrl="@Model.StrUrl" method="post">
-
-                                                                            <span id="confirmDeleteSpan_@item.Id" style="display: none">
-                                                                                <span class="text-dark">Xóa?</span>
-                                                                                <button type="submit" class="btn btn-danger btn-xs">Yes</button>
-                                                                                <button type="button" class="btn btn-primary btn-xs" onclick="confirmDelete('@item.Id', false)">No</button>
-                                                                            </span>
-
-                                                                            <span id="deleteSpan_@item.Id">
-                                                                                <button type="button" disabled class="text-danger border-0 bg-transparent" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
-                                                                            </span>
-                                                                        </form>
-                                                                    </div>
-                                                                </td>
-
-                                                                <td>@Html.DisplayFor(m => item.Descript)</td>
-                                                                <td>@Html.DisplayFor(m => item.Quantity)</td>
-                                                                <td>@Html.DisplayFor(m => item.Unit)</td>
-                                                                <td>@Html.Raw(item.UnitPrice.ToString("N0"))</td>
-                                                                <td>@Html.Raw(item.Percent.ToString("N0"))</td>
-                                                                <td>@Html.Raw(item.Amount.ToString("N0"))</td>
-                                                                <td>@Html.Raw(item.ServiceFee.ToString("N0"))</td>
-                                                                <td>@Html.Raw(item.VAT.ToString("N0"))</td>
-
-                                                            </tr>
-
-                                                        }
-
-                                                    }
-                                                </tbody>
-
-                                            </table>
-                                        </div>
-
-                                    </div>
-                                    <!-- /.card-body -->
-
-                                </div>
-                                <!-- /.card -->
-
-                            </section>
-                            <!-- /CTVAT -->
-                            <!-- CTInvoice - CTVAT -->
-                        </div>
-                        <!-- Invoices -->
-                        <!-- Bien Nhan -->
-                        <div class="tab-pane fade" id="custom-tabs-four-biennhan" role="tabpanel" aria-labelledby="custom-tabs-four-settings-tab">
-                            @if (Model.BienNhans != null)
-                            {
-                                <section class="content">
-
-                                    <!-- Default box -->
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <h3 class="card-title ">Danh sách biên nhận - <b>@Model.Tour.Sgtcode</b></h3>
-
-                                            <div class="card-tools">
-
-                                                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
-                                                    <i class="fas fa-minus"></i>
-                                                </button>
-                                                <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
-                                                    <i class="fas fa-times"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div class="card-body">
-                                            <div style="overflow-x:auto;">
-                                                <table class="table mytable text-nowrap tblEMD" id="listAll">
-                                                    <thead>
-                                                        <tr class="table-info">
-                                                            <th>
-                                                                <div class="btn-group">
-                                                                    <a asp-action="Create" asp-controller="BienNhans" asp-route-tourId="@Model.Tour.Id" asp-route-strUrl="@Model.StrUrl" asp-route-tabActive="custom-tabs-four-biennhan" class="btn btn-default btn-sm text-bold" title="Thêm 1 biên nhận">New</a>
-                                                                    <button type="button" class="btn btn-default btn-sm text-bold" data-toggle="modal" data-target="#modal-default">Find</button>
-                                                                    <!-- Bien Nhan Find-->
-                                                                    <div class="modal fade" id="modal-default" style="display: none;" aria-hidden="true">
-                                                                        <div class="modal-dialog">
-                                                                            <form asp-action="ChiTietBNFind" asp-controller="ChiTietBNs" asp-route-strUrl="@Model.StrUrl" asp-route-tabActive="custom-tabs-four-biennhan" method="get">
-                                                                                <div class="modal-content">
-                                                                                    <div class="modal-header">
-                                                                                        <h4 class="modal-title">Default Modal</h4>
-                                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                                            <span aria-hidden="true">×</span>
-                                                                                        </button>
-                                                                                    </div>
-                                                                                    <div class="modal-body">
-                                                                                        <div class="form-group">
-                                                                                            <input name="chiTietBNSearchString" class="form-control" />
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div class="modal-footer justify-content-between">
-                                                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                                                        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i></button>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </form>
-                                                                            <!-- /.modal-content -->
-                                                                        </div>
-                                                                        <!-- /.modal-dialog -->
-                                                                    </div>
-                                                                    <!-- Bien Nhan Find-->
-                                                                </div>
-                                                            </th>
-                                                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().Id)</th> <!-- so bien nhan-->
-                                                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().NgayBN)</th>
-                                                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().TenKhach)</th>
-                                                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().SK)</th>
-                                                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().GhiChu)</th>
-                                                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().LoaiTien)</th>
-                                                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().TyGia)</th>
-                                                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().KhachLe)</th>
-                                                            @*<th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().NoiDungHuy)</th>*@
-
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach (var item in Model.BienNhans)
-                                                        {
-
-                                                            <tr class="cursor-pointer ">
-
-                                                                <td>
-                                                                    <div class="btn-group text-white" role="group">
-                                                                        <a class="btn btn-primary btn-sm" title="Cập nhật" asp-action="Edit" asp-controller="BienNhans" asp-route-id="@item.Id" asp-route-tourIBId="@Model.Tour.Id" asp-route-strUrl="@Model.StrUrl" asp-route-tabActive="custom-tabs-four-biennhan"><i class="fas fa-edit"></i></a>
-                                                                        <a class="btn btn-success btn-sm" title="Chi tiết" asp-action="Details" asp-controller="BienNhans" asp-route-id="@item.Id" asp-route-invoiceId="@Model.Tour.Id" asp-route-strUrl="@Model.StrUrl" asp-route-tabActive="custom-tabs-four-biennhan"><i class="fas fa-list"></i></a>
-                                                                        <form asp-action="Delete" asp-controller="CTVATs" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" asp-route-tabActive="custom-tabs-four-CTVAT" method="post">
-
-                                                                            <span id="confirmBienNhanDeleteSpan_@item.Id" style="display: none">
-                                                                                <span class="text-light">Xóa?</span>
-                                                                                <button type="submit" class="btn btn-danger">Yes</button>
-                                                                                <a href="#" class="btn btn-primary" onclick="confirmBienNhanDelete('@item.Id', false)">No</a>
-                                                                            </span>
-
-                                                                            <span id="deleteBienNhanSpan_@item.Id">
-                                                                                <a href="#" class="btn btn-danger btn-sm" onclick="confirmBienNhanDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></a>
-                                                                            </span>
-                                                                        </form>
-                                                                    </div>
-                                                                </td>
-
-                                                                <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Id)</td>
-                                                                <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayBN.ToShortDateString())</td>
-                                                                <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.TenKhach)</td>
-                                                                <td class="tdVal" data-id="@item.Id">@Html.Raw(item.SK.ToString("N0"))</td>
-                                                                <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.GhiChu)</td>
-                                                                <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.LoaiTien)</td>
-                                                                <td class="tdVal" data-id="@item.Id">@Html.Raw(item.TyGia.ToString("N0"))</td>
-                                                                <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.KhachLe)</td>
-                                                                @*<td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.NoiDungHuy) </td>*@
-                                                            </tr>
-
-                                                        }
-                                                    </tbody>
-
-                                                </table>
-                                            </div>
-
-                                        </div>
-                                        <!-- /.card-body -->
-
-                                    </div>
-                                    <!-- /.card -->
-
-                                </section>
-
-                                <!-- chi tiet BN -->
-                                @*<section class="content">
-
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <h3 class="card-title">Danh sách Tour</h3>
-
-                                                <div class="card-tools">
-                                                    <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
-                                                        <i class="fas fa-minus"></i>
-                                                    </button>
-                                                    <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
-                                                        <i class="fas fa-times"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="card-body">
-                                                <div class="row">
-                                                    <div style="overflow-x:auto;" class="col-md-8">
-                                                        <table class="table mytable text-nowrap tblEMD" id="listAll">
-                                                            <thead>
-                                                                <tr class="table-info">
-                                                                    <th>#</th>
-                                                                    <th>@Html.DisplayNameFor(m => m.ChiTietBNs.FirstOrDefault().Descript)</th>
-                                                                    <th>@Html.DisplayNameFor(m => m.ChiTietBNs.FirstOrDefault().Amount)</th>
-
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                @if (Model.ChiTietBNs != null)
-                                                                {
-                                                                    @foreach (var item in Model.ChiTietBNs)
-                                                                    {
-
-                                                                        <tr class="cursor-pointer ">
-
-                                                                            <td>
-                                                                                <div class="btn-group text-white" role="group">
-                                                                                    <a class="btn btn-primary btn-sm" title="Cập nhật" asp-action="Edit" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
-                                                                                    <a class="btn btn-success btn-sm" title="Chi tiết" asp-action="Details" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
-                                                                                    <form asp-action="Delete" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" method="post">
-
-                                                                                        <span id="confirmDeleteSpan_@item.Id" style="display: none">
-                                                                                            <span class="text-light">Xóa?</span>
-                                                                                            <button type="submit" class="btn btn-danger">Yes</button>
-                                                                                            <a href="#" class="btn btn-primary" onclick="confirmDelete('@item.Id', false)">No</a>
-                                                                                        </span>
-
-                                                                                        <span id="deleteSpan_@item.Id">
-                                                                                            <a href="#" class="btn btn-danger btn-sm" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></a>
-                                                                                        </span>
-                                                                                    </form>
-                                                                                </div>
-                                                                            </td>
-
-                                                                            <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Id)</td>
-                                                                            <td class="tdVal" data-id="@item.Id">@Html.Raw(item.Amount.ToString("N0"))</td>
-
-                                                                        </tr>
-
-                                                                    }
-                                                                }
-
-                                                            </tbody>
-
-                                                        </table>
-                                                    </div>
-                                                    <div class="col-md-4">
-
-                                                        <button type="button" class="btn btn-default btn-block" title="Cấp số biên nhận">BN Number</button>
-                                                        <button type="button" class="btn btn-default btn-block btn-flat" title="Thêm 1 chi tiết của biên nhận">Add row</button>
-                                                        <button type="button" class="btn btn-default btn-block btn-sm" title="In hóa đơn biên nhận">Print</button>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-
-                                    </section>*@
-                                <!-- chi tiet BN -->
-
-                            }
+<div class="row">
+    <div class="col-md-12 ">
+        <div class="card card-primary card-outline card-outline-tabs">
+            <div class="card-header p-0 border-bottom-0">
+                <ul class="nav nav-tabs" id="invoiceBNTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="hrefToTabInvoices" data-tourid="@Model.Tour.Id" data-toggle="pill" href="#tab_invoices" role="tab" aria-controls="custom-tabs-four-home" aria-selected="true">Invoices</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="hrefToTabBienNhans" data-tourid="@Model.Tour.Id" data-toggle="pill" href="#tab_biennhans" role="tab" aria-controls="custom-tabs-four-profile" aria-selected="false">Biên nhận</a>
+                    </li>
+
+                </ul>
+            </div>
+            <div class="card-body">
+                <div class="tab-content" id="custom-tabs-four-tabContent">
+
+                    <!-- tab_invoices -->
+                    <div class="tab-pane fade active show" id="tab_invoices" role="tabpanel" aria-labelledby="custom-tabs-four-home-tab">
+
+                        <!-- CTInvoice - CTVAT -->
+                        <div class="cTInVoiceCTVAT">
 
                         </div>
-                        <!-- Bien Nhan -->
+                        <!-- CTInvoice - CTVAT -->
+                    </div>
+                    <!-- Invoices -->
+                    <!-- Bien Nhan -->
+                    <div class="tab-pane fade" id="tab_biennhans" role="tabpanel" aria-labelledby="custom-tabs-four-settings-tab">
 
                     </div>
+                    <!-- Bien Nhan -->
+
                 </div>
-                <!-- /.card -->
             </div>
+            <!-- /.card -->
         </div>
     </div>
-}
+</div>
 
 <!-- Tabs invoice - biennhan-->
 <!-- Tabs qltour info-->
@@ -1944,28 +1298,28 @@
             }
         }
         // tour row click --> for tour index
-        function tourRowClick(tourId) {
+        //function tourRowClick(tourId) {
 
-            id = tourId;
-            $('#hidId').val(id);
-            //var page = $('.active .page-link').text();
-            var page = $('.active span').text();
-            $('#hidPage').val(page);
+        //    id = tourId;
+        //    $('#hidId').val(id);
+        //    //var page = $('.active .page-link').text();
+        //    var page = $('.active span').text();
+        //    $('#hidPage').val(page);
 
-            //$.ajax({
-            //    url: '/CapThes/Index',
-            //    data: {
-            //        maCT: id
-            //    },
-            //    dataType: 'json',
-            //    type: 'GET',
-            //    success: function (response) {
+        //    //$.ajax({
+        //    //    url: '/CapThes/Index',
+        //    //    data: {
+        //    //        maCT: id
+        //    //    },
+        //    //    dataType: 'json',
+        //    //    type: 'GET',
+        //    //    success: function (response) {
 
-            //    }
-            //});
+        //    //    }
+        //    //});
 
-            $('#btnSubmit').click();
-        };
+        //    $('#btnSubmit').click();
+        //};
 
         // tour row click --> for tour index
 
@@ -1973,8 +1327,8 @@
         $('#myTabs a[href="#@Model.tabActive"]').tab('show') // Select tab by name
 
         // giu trang thai
-        
-        var tourId = @Model.Tour.Id;
+
+        @*var tourId = @Model.Tour.Id;
         if (tourId != 0) { // có click
             var tdClass = '.tdVal_' + tourId;
             if ($(tdClass).hasClass("hoverClass"))
@@ -1984,31 +1338,41 @@
                 $(tdClass).addClass("hoverClass");
             }
 
-        }
+        }*@
 
         // giu trang thai
+
+        // invoice-cursor-pointer hover
+
+        // invoice-cursor-pointer hover
 
     </script>
 
 
     <style>
-        #listTour {
+        /*#listTour {
             box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-        }
+        }*/
 
         #search {
             box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
         }
 
-        .tblTour .cursor-pointer:hover {
+        /*.tblTour .cursor-pointer:hover {
             background-color: #3E5C9A;
             cursor: pointer;
-        }
+        }*/
 
-        .hoverClass {
+        /*.invoice-cursor-pointer:hover {
             background-color: #3E5C9A;
+            color: red;
+            cursor: pointer;
+        }*/
+
+        /*.hoverClass {
+            background-color: #3C8DBC;
             color: white;
-        }
+        }*/
     </style>
 }
 

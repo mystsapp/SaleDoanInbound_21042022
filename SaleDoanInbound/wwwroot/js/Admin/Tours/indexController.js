@@ -11,9 +11,9 @@
             if (huy === 'True') {
                 $(this).addClass('bg-secondary');
             }
-            
+
         });
-    
+
 
         //$.when(indexController.checkHuy(id)).done(function (response) {
         //    if (response.status === true) { // check huy
@@ -112,14 +112,12 @@
             });
         });
 
+        // tour click --> load tourpro in qltour
+        $('.tdVal').off('click').on('click', function () {
 
-        // invoice click
-        $('.tdInvoiceVal').click(function () {
-            
-            invoiceId = $(this).data('id');
-            var tourId = $(this).data('tourid');
+            tourId = $(this).data('id');
+
             $('#hidId').val(tourId);
-            $('#hidInvoiceId').val(invoiceId);
             //var page = $('.active .page-link').text();
             var page = $('.active span').text();
             $('#hidPage').val(page);
@@ -137,8 +135,73 @@
             //});
 
             $('#btnSubmit').click();
-        });
 
+        });
+        // tour click --> load tourpro in qltour
+
+
+        // hrefToTabInvoices click
+        $('#hrefToTabInvoices').click(function () {
+
+            var tourId = $(this).data('tourid');
+            indexController.loadInvoices(tourId);
+        });
+        // hrefToTabInvoices click
+
+
+        // giu trang thai invoice click
+        $('.invoice-cursor-pointer').off('click').on('click', function () {
+            if ($(this).hasClass("hoverClass"))
+                $(this).removeClass("hoverClass");
+            else {
+                $('tr.hoverClass').removeClass("hoverClass");
+                $(this).addClass("hoverClass");
+            }
+        });
+        // giu trang thai invoice click
+
+        // invoice click --> CTInvoices & CTVAT
+        $('.tdInvoiceVal').click(function () {
+
+            invoiceId = $(this).data('id');
+            var url = '/Invoices/CTInvoicesCTVATsInInvoicePartial';
+            $.get(url, { invoiceId: invoiceId }, function (response) {
+
+                $('.cTInVoiceCTVAT').html(response);
+
+            });
+        });
+        // invoice click --> CTInvoices & CTVAT
+
+        // hrefToTabBienNhans click
+        $('#hrefToTabBienNhans').click(function () {
+
+            var tourId = $(this).data('tourid');
+            indexController.loadBienNhans(tourId);
+        });
+        // hrefToTabBienNhans click
+
+
+    },
+
+    loadBienNhans: function (tourid) {
+
+        var url = '/BienNhans/BienNhansByTourPartial';
+        $.get(url, { tourId: tourid }, function (response) {
+            
+                $('#tab_biennhans').html(response);
+
+            });
+    },
+
+    loadInvoices: function (tourid) {
+
+        var url = '/Invoices/IncoicesByTourPartial';
+        $.get(url, { tourId: tourid }, function (response) {
+            
+                $('#tab_invoices').html(response);
+
+            });
     }
     //checkInvoices: function (tourId) {
 

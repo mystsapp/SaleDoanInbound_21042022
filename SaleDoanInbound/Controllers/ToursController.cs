@@ -50,24 +50,20 @@ namespace SaleDoanInbound.Controllers
                 TourDto = new TourDto()
             };
         }
-        public async Task<IActionResult> Index(long id = 0, string searchString = null, int page = 1, 
-                                               string searchFromDate = null, string searchToDate = null , 
-                                               string invoiceId = null)
+        public async Task<IActionResult> Index(long id = 0, string searchString = null, int page = 1,string searchFromDate = null, string searchToDate = null)
         {
-            // from session
-            var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
 
             TourVM.StrUrl = UriHelper.GetDisplayUrl(Request);
 
-            //if (!string.IsNullOrEmpty(TourVM.StrUrl))
-            //{
-            //    // cat bo phai sau % --> too long error
-            //    var newStrUrl = TourVM.StrUrl.Split('%');
-            //    if (newStrUrl.Length > 1)
-            //    {
-            //        TourVM.StrUrl = newStrUrl[0];
-            //    }
-            //}
+            // from session
+            var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
+
+            // cat bo phai sau % --> too long error
+            var newStrUrl = TourVM.StrUrl.Split("+%");
+            if (newStrUrl.Length > 1)
+            {
+                TourVM.StrUrl = newStrUrl[0];
+            }
 
             ViewBag.searchString = searchString;
             ViewBag.searchFromDate = searchFromDate;
@@ -91,9 +87,9 @@ namespace SaleDoanInbound.Controllers
             var chiNhanhs = TourVM.Dmchinhanhs;
             var cacNoiDungHuyTours = _unitOfWork.cacNoiDungHuyTourRepository.GetAll();
             List<string> listRoleChiNhanh = new List<string>();
-            if(user.Role.RoleName != "Admins")
+            if (user.Role.RoleName != "Admins")
             {
-                if(user.Role.RoleName == "Users")
+                if (user.Role.RoleName == "Users")
                 {
                     listRoleChiNhanh.Add(user.MaCN);
                 }
@@ -106,13 +102,13 @@ namespace SaleDoanInbound.Controllers
             }
             else
             {
-                foreach(var item in chiNhanhs)
+                foreach (var item in chiNhanhs)
                 {
                     listRoleChiNhanh.Add(item.Macn);
                 }
             }
             TourVM.TourDtos = _unitOfWork.tourRepository.ListTour(searchString, companies, loaiTours, chiNhanhs, cacNoiDungHuyTours, page, searchFromDate, searchToDate, listRoleChiNhanh);
-            
+
             //--> click vao tour
             var tour = _unitOfWork.tourRepository.GetById(id);
             if (tour != null)
@@ -126,34 +122,11 @@ namespace SaleDoanInbound.Controllers
                 TourVM.ListHuongdan = ListHuongdan(tour.Sgtcode);
 
                 // DS invoice theo tour
-                TourVM.Invoices = _unitOfWork.invoiceRepository.Find(x => x.TourId == id);
+                //TourVM.Invoices = _unitOfWork.invoiceRepository.Find(x => x.TourId == id);
 
-                // DS biên nhận theo tour
-                TourVM.BienNhans = _unitOfWork.bienNhanRepository.Find(x => x.TourId == id);
-
-                // click on invoice
-                if (!string.IsNullOrEmpty(invoiceId))
-                {
-                    TourVM.Invoice = await _unitOfWork.invoiceRepository.GetByIdAsync(invoiceId);
-                    TourVM.CTVATs = await _unitOfWork.cTVATRepository.FindIncludeOneAsync(x => x.Invoice, y => y.InvoiceId == invoiceId && !y.TiengAnh);
-                    TourVM.CTInvoices = await _unitOfWork.cTVATRepository.FindIncludeOneAsync(x => x.Invoice, y => y.InvoiceId == invoiceId && y.TiengAnh);
-                }
-                // click on invoice
             }
             //--> click vao tour
 
-            //if (!string.IsNullOrEmpty(tabActive))
-            //{
-            //    TourVM.tabActive = tabActive;
-
-            //    // reset url -> cut tabActive
-            //    var newStrUrl = TourVM.StrUrl.Split("&tabActive");
-            //    if (newStrUrl.Length > 1)
-            //    {
-            //        TourVM.StrUrl = newStrUrl[0];
-            //    }
-
-            //}
             return View(TourVM);
         }
 
@@ -335,7 +308,7 @@ namespace SaleDoanInbound.Controllers
             }
             var chiNhanhDHId = _unitOfWork.tourRepository.GetById(id).ChiNhanhDHId;
             // user logon khac user DH
-            if(user.MaCN != TourVM.Dmchinhanhs.Where(x => x.Id == chiNhanhDHId).FirstOrDefault().Macn)
+            if (user.MaCN != TourVM.Dmchinhanhs.Where(x => x.Id == chiNhanhDHId).FirstOrDefault().Macn)
             {
                 return RedirectToAction(nameof(Details), new { id, strUrl });
             }
@@ -347,7 +320,7 @@ namespace SaleDoanInbound.Controllers
                 ViewBag.ErrorMessage = "Tour này không tồn tại.";
                 return View("~/Views/Shared/NotFound.cshtml");
             }
-            
+
             TourVM.Tour = await _unitOfWork.tourRepository.GetByLongIdAsync(id);
             //TourVM.InvoicesInTour = await _unitOfWork.invoiceRepository.FindAsync(x => x.TourId == id);
             ViewBag.maCn = _unitOfWork.dmChiNhanhRepository.GetById(TourVM.Tour.ChiNhanhDHId).Macn; // for view
@@ -422,7 +395,7 @@ namespace SaleDoanInbound.Controllers
                 {
                     temp += String.Format("- CN DH thay đổi: {0}->{1}", _unitOfWork.dmChiNhanhRepository.GetById(t.ChiNhanhDHId).Macn, _unitOfWork.dmChiNhanhRepository.GetById(TourVM.Tour.ChiNhanhDHId).Macn);
                 }
-                
+
                 if (t.PhongDH != TourVM.Tour.PhongDH)
                 {
                     temp += String.Format("- Phòng điều hành thay đổi: {0}->{1}", t.PhongDH, TourVM.Tour.PhongDH);
@@ -475,9 +448,9 @@ namespace SaleDoanInbound.Controllers
                 }
                 if (t.LoaiTourId != TourVM.Tour.LoaiTourId)
                 {
-                    temp += String.Format("- Loại tour thay đổi: {0}->{1}", 
-                        (t.LoaiTourId == 0)? "0": _unitOfWork.tourKindRepository.GetById(t.LoaiTourId.Value).TourkindInf, 
-                        (TourVM.Tour.LoaiTourId == 0)? "0": _unitOfWork.tourKindRepository.GetById(TourVM.Tour.LoaiTourId.Value).TourkindInf);
+                    temp += String.Format("- Loại tour thay đổi: {0}->{1}",
+                        (t.LoaiTourId == 0) ? "0" : _unitOfWork.tourKindRepository.GetById(t.LoaiTourId.Value).TourkindInf,
+                        (TourVM.Tour.LoaiTourId == 0) ? "0" : _unitOfWork.tourKindRepository.GetById(TourVM.Tour.LoaiTourId.Value).TourkindInf);
                 }
                 if (t.LoaiTien != TourVM.Tour.LoaiTien)
                 {
@@ -491,15 +464,15 @@ namespace SaleDoanInbound.Controllers
                 {
                     temp += String.Format("- Loại khách thay đổi: {0}->{1}", t.LoaiKhach, TourVM.Tour.LoaiKhach);
                 }
-                 if (t.MaKH != TourVM.Tour.MaKH)
+                if (t.MaKH != TourVM.Tour.MaKH)
                 {
                     temp += String.Format("- Hãng thay đổi: {0}->{1}", t.MaKH, TourVM.Tour.MaKH);
                 }
-                 if (t.NgayDamPhan != TourVM.Tour.NgayDamPhan)
+                if (t.NgayDamPhan != TourVM.Tour.NgayDamPhan)
                 {
                     temp += String.Format("- Ngày đàm phán thay đổi: {0:dd/MM/yyyy}->{1:dd/MM/yyyy}", t.NgayDamPhan, TourVM.Tour.NgayDamPhan);
                 }
-                 if (t.NgayKyHopDong != TourVM.Tour.NgayKyHopDong)
+                if (t.NgayKyHopDong != TourVM.Tour.NgayKyHopDong)
                 {
                     temp += String.Format("- Ngày ký HD phán thay đổi: {0:dd/MM/yyyy}->{1:dd/MM/yyyy}", t.NgayKyHopDong, TourVM.Tour.NgayKyHopDong);
                 }
@@ -633,7 +606,7 @@ namespace SaleDoanInbound.Controllers
                     TourVM.Ngoaites = _unitOfWork.ngoaiTeRepository.GetAll();
                     TourVM.NguonTours = NguonTour();
                     TourVM.StrUrl = strUrl;
-                
+
                     return View(TourVM);
                 }
             }
