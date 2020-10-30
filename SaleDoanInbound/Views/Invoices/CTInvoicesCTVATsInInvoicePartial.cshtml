@@ -26,7 +26,7 @@
         <div class="card-body">
 
             <div style="overflow-x:auto; overflow-y: auto;">
-                <table class="table mytable text-nowrap tblEMD" id="cTInvoiceTbl">
+                <table class="table mytable text-nowrap " id="cTInvoiceTbl">
                     <thead>
                         <tr class="table-info">
                             <th>
@@ -63,7 +63,7 @@
                         @foreach (var item in Model.CTInvoices)
                             {
 
-                        <tr class="cursor-pointer ">
+                        <tr class="ctinvoice-cursor-pointer ">
 
                             <td>
                                 <div class="btn-group text-white" role="group">
@@ -188,7 +188,7 @@
         <div class="card-body">
 
             <div style="overflow-x:auto; overflow-y: auto;">
-                <table class="table mytable text-nowrap tblEMD" id="cTVATTbl">
+                <table class="table mytable text-nowrap " id="ctvatTbl">
                     <thead>
                         <tr class="table-info">
                             <th>
@@ -226,7 +226,7 @@
                         @foreach (var item in Model.CTVATs)
                             {
 
-                        <tr class="cursor-pointer ">
+                        <tr class="ctvat-cursor-pointer ">
 
                             <td>
                                 <div class="btn-group text-white" role="group">
@@ -336,96 +336,4 @@
         //});
     });
 </script>
-@*<script src="~/js/Admin/Tours/indexController.js"></script>*@
-@*<script>
-        function confirmDelete(uniqueId, isDeleteClicked) {
-            var deleteSpan = 'deleteSpan_' + uniqueId;
-            var confirmDeleteSpan = 'confirmDeleteSpan_' + uniqueId;
-
-            if (isDeleteClicked) {
-                $('#' + deleteSpan).hide();
-                $('#' + confirmDeleteSpan).show();
-            } else {
-                $('#' + deleteSpan).show();
-                $('#' + confirmDeleteSpan).hide();
-            }
-        }
-        function confirmInvoiceDelete(uniqueId, isDeleteClicked) {
-            var deleteSpan = 'deleteInvoiceSpan_' + uniqueId;
-            var confirmDeleteSpan = 'confirmInvoiceDeleteSpan_' + uniqueId;
-
-            if (isDeleteClicked) {
-                $('#' + deleteSpan).hide();
-                $('#' + confirmDeleteSpan).show();
-            } else {
-                $('#' + deleteSpan).show();
-                $('#' + confirmDeleteSpan).hide();
-            }
-        }
-        // tour row click --> for tour index
-        function tourRowClick(tourId) {
-
-            id = tourId;
-            $('#hidId').val(id);
-            //var page = $('.active .page-link').text();
-            var page = $('.active span').text();
-            $('#hidPage').val(page);
-
-            //$.ajax({
-            //    url: '/CapThes/Index',
-            //    data: {
-            //        maCT: id
-            //    },
-            //    dataType: 'json',
-            //    type: 'GET',
-            //    success: function (response) {
-
-            //    }
-            //});
-
-            $('#btnSubmit').click();
-        };
-
-        // tour row click --> for tour index
-
-        // rollback tab
-        $('#myTabs a[href="#@Model.tabActive"]').tab('show') // Select tab by name
-
-        // giu trang thai
-
-        var tourId = @Model.Tour.Id;
-        if (tourId != 0) { // có click
-            var tdClass = '.tdVal_' + tourId;
-            if ($(tdClass).hasClass("hoverClass"))
-                $(tdClass).removeClass("hoverClass");
-            else {
-                $(tdClass).removeClass("hoverClass");
-                $(tdClass).addClass("hoverClass");
-            }
-
-        }
-
-        // giu trang thai
-
-    </script>*@
-
-
-<style>
-    /*#cTInvoiceTbl {
-        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    }
-
-    #search {
-        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    }
-
-    .tblTour .cursor-pointer:hover {
-        background-color: #3E5C9A;
-        cursor: pointer;
-    }*/
-
-    /*.hoverClass {
-        background-color: #3E5C9A;
-        color: white;
-    }*/
-</style>
+<script src="~/js/Admin/CTInvoicesCTVATsInInvoicePartial/indexController.js"></script>

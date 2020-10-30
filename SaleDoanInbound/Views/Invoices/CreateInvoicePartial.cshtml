@@ -1,0 +1,235 @@
+﻿@model InvoiceViewModel
+
+<!-- Main content -->
+@*<section class="content">
+
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-file text-info"></i> Thêm Mới Invoice - <b>@Model.Tour.Sgtcode</b></h3>
+
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">*@
+
+            <form method="post" id="frmInvoiceCreate" autocomplete="off">
+                <div class="p-4 border rounded">
+
+                    <input asp-for="Invoice.Id" type="hidden" value="aba" /> <!-- this field is required-->
+                    <input asp-for="Invoice.TourId" type="hidden" /> <!-- this field is required-->
+                    
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-group row">
+
+                        <div class="col-md-3">
+                            <label asp-for="Invoice.Replace" class="control-label"></label>
+                            <select asp-for="Invoice.Replace" class="form-control"
+                                    asp-items="@(new SelectList(Model.Invoices, "Id", "Id"))">
+                                <option value="">-- None --</option>
+                            </select>
+                            <span asp-validation-for="Invoice.Replace" class="text-danger"></span>
+                        </div>
+
+                        @*<div class="col-md-1">
+                                <label asp-for="Invoice.Type" class="control-label"></label>
+                                <select asp-for="Invoice.Type" class="form-control" id="ddlLoaiIV"
+                                        asp-items="@(new SelectList(Model.LoaiIVs, "Id", "Id"))"></select>
+                                <span asp-validation-for="Invoice.Type" class="text-danger"></span>
+                            </div>*@
+
+                        <div class="col-md-3">
+                            <label asp-for="Invoice.MaKH" class="control-label"></label>
+                            <input asp-for="Invoice.MaKH" class="form-control " readonly />
+                            <span asp-validation-for="Invoice.MaKH" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="Invoice.TenKhach" class="control-label"></label>
+                            <input asp-for="Invoice.TenKhach" class="form-control " id="txtTenKhach" />
+                            <span asp-validation-for="Invoice.TenKhach" class="text-danger"></span>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-md-3">
+                            <label asp-for="Invoice.Arr" class="control-label"></label>
+                            <input type="text" asp-for="Invoice.Arr" class="form-control maskInput" />
+                            <span asp-validation-for="Invoice.Arr" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label asp-for="Invoice.Dep" class="control-label"></label>
+                            <input type="text" asp-for="Invoice.Dep" class="form-control maskInput" />
+                            <span asp-validation-for="Invoice.Dep" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label asp-for="Invoice.Pax" class="control-label"></label>
+                            <input type="text" asp-for="Invoice.Pax" class="form-control numbers" />
+                            <span asp-validation-for="Invoice.Pax" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-2 ">
+                            <label asp-for="Invoice.Currency" class="control-label"></label>
+                            <select asp-for="Invoice.Currency" class="form-control " id="ddlLoaiTien"
+                                    asp-items="@(new SelectList(Model.Ngoaites, "MaNt", "MaNt"))">
+                                <!-- ngoaite: qltour-->
+                            </select>
+                            <span asp-validation-for="Invoice.Currency" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label asp-for="Invoice.Rate" class="control-label"></label>
+                            <input asp-for="Invoice.Rate" class="form-control numbers" id="txtTyGia" />
+                            <span asp-validation-for="Invoice.Rate" class="text-danger"></span>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-md-3">
+                            <label asp-for="Invoice.MOFP" class="control-label"></label>
+                            <input asp-for="Invoice.MOFP" class="form-control " />
+                            <span asp-validation-for="Invoice.MOFP" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label asp-for="Invoice.DOFP" class="control-label"></label>
+                            <input type="text" value="" asp-for="Invoice.DOFP" class="form-control maskInput" />
+                            <span asp-validation-for="Invoice.DOFP" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label asp-for="Invoice.Ref" class="control-label"></label>
+                            <input asp-for="Invoice.Ref" class="form-control " />
+                            <span asp-validation-for="Invoice.Ref" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label asp-for="Invoice.HopDong" class="control-label"></label>
+                            <input asp-for="Invoice.HopDong" class="form-control " />
+                            <span asp-validation-for="Invoice.HopDong" class="text-danger"></span>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-md-12">
+                            <label asp-for="Invoice.GhiChu" class="control-label"></label>
+                            <input asp-for="Invoice.GhiChu" class="form-control " id="txtGhiChu" />
+                            <span asp-validation-for="Invoice.GhiChu" class="text-danger"></span>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="form-group">
+                            <button type="button" id="btnCreateInvoicePartial" class="btn btn-primary"><i class="fas fa-save"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        @*</div>
+
+    </div>
+
+</section>*@
+
+
+@*<script>
+
+        $(function () {
+            $(".datepicker").datepicker({
+                dateFormat: 'dd/mm/yy'
+            });
+        });
+    </script>*@
+<script>
+    $(function () {
+        $('.select2').select2()
+    });
+    $(function () {
+        $(".maskInput").mask("99/99/9999");
+
+        //$('#AlertBox').removeClass('hide');
+        //$('#AlertBox').delay(1000).slideUp(1000);
+    });
+
+</script>
+
+<script src="~/js/Admin/CreateInvoicePartial/CreateController.js"></script>
+<!-- Validation -->
+<script>
+
+    $('#frmInvoiceCreate').validate({
+        //rules: {
+        //    email: {
+        //        required: true,
+        //        email: true,
+        //    },
+        //    NgayDen: {
+        //        required: true
+        //    },
+        //    chuDetour1: {
+        //        required: true
+        //    },
+        //},
+        //messages: {
+        //    email: {
+        //        required: "Please enter a email address",
+        //        email: "Please enter a vaild email address"
+        //    },
+        //    NgayDen: {
+        //        required: "Please provide a date"
+        //    },
+        //    chuDetour1: "Please enter value"
+        //},
+        errorElement: 'span',
+        errorPlacement: function (error, element) {
+            // add error text
+
+            //error.addClass('invalid-feedback').removeClass('error');
+            //element.closest('.chuDeTourGroup').append(error);
+        },
+        highlight: function (element, errorClass, validClass) {
+            $(element).addClass('is-invalid');
+        },
+        unhighlight: function (element, errorClass, validClass) {
+            $(element).removeClass('is-invalid');
+        }
+    });
+
+    $('#ddlLoaiTien').rules('add', {
+        required: true,
+        messages: {
+            // required: "Ngày đến không được để trống"
+        }
+    });
+
+    $('#txtTyGia').rules('add', {
+        required: true,
+        messages: {
+            // required: "Ngày đến không được để trống"
+        }
+    });
+
+</script>
+
+<style>
+    #ddlLoaiIV {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+    }
+</style>

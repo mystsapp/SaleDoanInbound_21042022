@@ -120,7 +120,7 @@
             var url = '/Tours/KeToan_TourInfoByTourPartial';
             $.get(url, { tourId: tourId }, function (response) {
 
-                $('#tabs_TourInfo').html(response);
+                $('#tabs_KeToan_TourInfo').html(response);
 
             });
 
@@ -157,27 +157,15 @@
 
 
         // giu trang thai tour click
-        $('.cursor-pointer').off('click').on('click', function () {
+        $('#tourTbl .cursor-pointer').off('click').on('click', function () {
             if ($(this).hasClass("hoverClass"))
                 $(this).removeClass("hoverClass");
             else {
-                $('tr.hoverClass').removeClass("hoverClass");
+                $('.cursor-pointer').removeClass("hoverClass");
                 $(this).addClass("hoverClass");
             }
         });
         // giu trang thai tour click
-
-
-        // giu trang thai invoice click
-        $('.invoice-cursor-pointer').off('click').on('click', function () {
-            if ($(this).hasClass("hoverClass"))
-                $(this).removeClass("hoverClass");
-            else {
-                $('tr.hoverClass').removeClass("hoverClass");
-                $(this).addClass("hoverClass");
-            }
-        });
-        // giu trang thai invoice click
 
         // invoice click --> CTInvoices & CTVAT
         $('.tdInvoiceVal').click(function () {
@@ -191,15 +179,6 @@
             });
         });
         // invoice click --> CTInvoices & CTVAT
-        
-        // hrefToTabBienNhans click
-        //$('#hrefToTabBienNhans').click(function () {
-
-        //    var tourId = $(this).data('tourid');
-        //    indexController.loadBienNhans(tourId);
-        //});
-        // hrefToTabBienNhans click
-
 
     }
 

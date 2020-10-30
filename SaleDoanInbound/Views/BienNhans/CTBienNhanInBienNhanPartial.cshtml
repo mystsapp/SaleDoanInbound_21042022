@@ -1,4 +1,134 @@
-﻿
-@*
-    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model BienNhanViewModel
+
+<!-- CTBienNhan -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            @if (Model.BienNhan.SoBN != null)
+            {
+                <h3 class="card-title">Danh sách chi tiết biên nhận - <b>@Model.BienNhan.TenKhach</b></h3>
+            }
+            else
+            {
+                <h3 class="card-title">Danh sách chi tiết biên nhận</h3>
+            }
+
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+
+            <div style="overflow-x:auto; overflow-y: auto;">
+                <table class="table mytable text-nowrap tblEMD" id="ctbnTbl">
+                    <thead>
+                        <tr class="table-info">
+                            <th>
+                                @if (Model.BienNhan.HuyBN == true)
+                                {
+                                    <a class="btn btn-default btn-sm text-bold disabled" title="Thêm CT biên nhận">New</a>
+
+                                }
+                                else
+                                {
+                                    <a id="btnNewCTBienNhan" data-id="@Model.BienNhan.Id" asp-action="Create" asp-controller="ChiTietBNs" asp-route-bienNhanId="@Model.BienNhan.Id" asp-route-strUrl="@Model.StrUrl" class="btn btn-default btn-sm text-bold" title="Thêm CT biên nhận">New</a>
+                                }
+
+                            </th>
+                            <th>@Html.DisplayNameFor(m => m.ChiTietBNs.FirstOrDefault().Descript)</th>
+                            <th>@Html.DisplayNameFor(m => m.ChiTietBNs.FirstOrDefault().Amount)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.ChiTietBNs != null && Model.BienNhan.HuyBN != true)
+                        {
+                            @foreach (var item in Model.ChiTietBNs)
+                            {
+
+                                <tr class="ctbn-cursor-pointer ">
+
+                                    <td>
+                                        <div class="btn-group text-white" role="group">
+                                            <a title="Cập nhật" asp-action="Edit" asp-controller="ChiTietBNs" asp-route-bienNhanId="@Model.BienNhan.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
+                                            <span class="text-dark"> | </span>
+                                            <a class="text-success" title="Chi tiết" asp-action="Details" asp-controller="ChiTietBNs" asp-route-bienNhanId="@Model.BienNhan.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
+                                            <span class="text-dark"> | </span>
+                                            <form asp-action="Delete" asp-controller="ChiTietBNs" asp-route-id="@item.Id" asp-route-bienNhanId="@Model.BienNhan.Id" asp-route-strUrl="@Model.StrUrl" method="post">
+
+                                                <span id="confirmDeleteSpanCTBN_@item.Id" style="display: none">
+                                                    <span class="text-dark spanXoa">Xóa?</span>
+                                                    <button type="submit" class="btn btn-danger btn-xs">Yes</button>
+                                                    <button type="button" class="btn btn-primary btn-xs" onclick="confirmDeleteCTBN('@item.Id', false)">No</button>
+                                                </span>
+
+                                                <span id="deleteSpanCTBN_@item.Id">
+                                                    <button title="Xóa" type="button" class="text-danger border-0 bg-transparent" onclick="confirmDeleteCTBN('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
+                                                </span>
+                                            </form>
+                                        </div>
+                                    </td>
+
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Descript)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.Raw(item.Amount.ToString("N0"))</td>
+                                </tr>
+
+                            }
+
+                        }
+                        @if (Model.BienNhan.HuyBN == true)
+                        {
+                            @foreach (var item in Model.ChiTietBNs)
+                            {
+
+                                <tr class="cursor-pointer bg-secondary">
+
+                                    <td>
+                                        <div class="btn-group text-white" role="group">
+                                            <a class="disabled" title="Cập nhật"><i class="fas fa-edit"></i></a>
+                                            <span class="text-dark"> | </span>
+                                            <a class="text-success" title="Chi tiết" asp-action="Details" asp-controller="ChiTietBNs" asp-route-bienNhanId="@Model.BienNhan.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
+                                            <span class="text-dark"> | </span>
+                                            <form asp-action="Delete" asp-controller="ChiTietBNs" asp-route-id="@item.Id" asp-route-bienNhanId="@Model.BienNhan.Id" asp-route-strUrl="@Model.StrUrl" method="post">
+
+                                                <span id="confirmDeleteSpanCTBN_@item.Id" style="display: none">
+                                                    <span class="text-dark spanXoa">Xóa?</span>
+                                                    <button type="submit" class="btn btn-danger">Yes</button>
+                                                    <button type="button" class="btn btn-primary" onclick="confirmDeleteCTBN('@item.Id', false)">No</button>
+                                                </span>
+
+                                                <span id="deleteSpanCTBN_@item.Id">
+                                                    <button type="button" disabled class="text-danger border-0 bg-transparent" onclick="confirmDeleteCTBN('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
+                                                </span>
+                                            </form>
+                                        </div>
+                                    </td>
+
+                                    <td>@Html.DisplayFor(m => item.Descript)</td>
+                                    <td>@Html.Raw(item.Amount.ToString("N0"))</td>
+                                </tr>
+
+                            }
+
+                        }
+
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+        <!-- /.card-body -->
+
+    </div>
+    <!-- /.card -->
+
+</section>
+<!-- /CTBienNhan -->
+<script src="~/js/Admin/CTBienNhanInBienNhanPartial/indexController.js"></script>

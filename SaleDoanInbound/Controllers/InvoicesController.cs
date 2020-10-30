@@ -106,6 +106,29 @@ namespace SaleDoanInbound.Controllers
 
             return View(InvoiceVM);
         }
+        
+        public async Task<IActionResult> CreateInvoicePartial(long tourId)
+        {
+            
+            InvoiceVM.Tour = _unitOfWork.tourRepository.GetById(tourId);
+            InvoiceVM.Invoice.Arr = InvoiceVM.Tour.NgayDen;
+            InvoiceVM.Invoice.Dep = InvoiceVM.Tour.NgayDi;
+            InvoiceVM.Invoice.Pax = (InvoiceVM.Tour.SoKhachTT == 0) ? InvoiceVM.Tour.SoKhachDK : InvoiceVM.Tour.SoKhachTT;
+            InvoiceVM.Invoice.HopDong = InvoiceVM.Tour.SoHopDong;
+            InvoiceVM.Invoice.MaKH = InvoiceVM.Tour.MaKH;
+            InvoiceVM.Invoice.TenKhach = InvoiceVM.Tour.TenKH;
+            InvoiceVM.Invoice.Ref = InvoiceVM.Tour.NguoiKyHopDong; // ref
+            InvoiceVM.Invoice.MOFP = "TM/CK";
+            InvoiceVM.Invoice.TourId = InvoiceVM.Tour.Id;
+
+            InvoiceVM.Invoice.Currency = InvoiceVM.Tour.LoaiTien;
+            InvoiceVM.Invoice.Rate = InvoiceVM.Tour.TyGia.Value;
+
+            InvoiceVM.LoaiIVs = _unitOfWork.loaiIVRepository.GetAll();
+            InvoiceVM.Invoices = await _unitOfWork.invoiceRepository.FindAsync(x => x.TourId == tourId);
+
+            return PartialView(InvoiceVM);
+        }
 
         [HttpPost, ActionName("Create")]
         [ValidateAntiForgeryToken]

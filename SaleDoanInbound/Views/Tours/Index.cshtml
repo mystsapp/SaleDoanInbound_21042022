@@ -1,5 +1,4 @@
-﻿
-@model TourViewModel
+﻿@model TourViewModel
 
 @using X.PagedList;
 @using X.PagedList.Mvc.Core
@@ -28,15 +27,14 @@
                 </button>
             </div>
             <div class="modal-body huyTourPartial">
-
             </div>
-
         </div>
         <!-- /.modal-content -->
     </div>
     <!-- /.modal-dialog -->
 </div>
 <!-- huy tour modal-->
+
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <div class="container-fluid">
@@ -118,7 +116,7 @@
             </form>
             <br />
             <div style="overflow-x:auto; overflow-y:auto; height: 300px">
-                <table class="table mytable text-nowrap tblTour" id="listTour">
+                <table class="table mytable text-nowrap tblTour" id="tourTbl">
                     <thead>
                         <tr class="table-info">
                             <th>#</th>
@@ -133,7 +131,6 @@
                             <th>@Html.DisplayNameFor(m => m.TourDtos.FirstOrDefault().NguoiTao)</th>
                             <th>@Html.DisplayNameFor(m => m.TourDtos.FirstOrDefault().NgayTao)</th>
                             <th>@Html.DisplayNameFor(m => m.TourDtos.FirstOrDefault().TrangThai)</th>
-
                         </tr>
                     </thead>
                     <tbody>
@@ -142,7 +139,7 @@
                             @foreach (var item in Model.TourDtos)
                             {
 
-                                <tr class="cursor-pointer " data-huy="@item.HuyTour">
+                                <tr class="cursor-pointer " data-huy="@item.HuyTour" onclick="Tabs_KeToan_TourInfo()">
 
                                     <td>
                                         <div class="btn-group text-white" role="group">
@@ -172,7 +169,6 @@
                                                     <span class="text-dark invoiceTrue">Hủy?</span>
                                                     <button type="button" class="btn btn-danger btn-xs btnHuyTour" data-id="@item.Id" data-url="@Model.StrUrl">Yes</button>
                                                     <button type="button" class="btn btn-primary btn-xs" onclick="confirmDelete('@item.Id', false)">No</button>
-
                                                 </span>
 
                                                 <span id="deleteSpan_@item.Id">
@@ -185,7 +181,6 @@
                                                         <button type="button" data-id="@item.Id" data-invoices="@item.Invoices" class="text-danger border-0 bg-transparent btnHuy" title="Hủy" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
 
                                                     }
-
                                                 </span>
 
                                                 <!-- hidden form khoiphuc-->
@@ -194,7 +189,6 @@
                                                     <input type="hidden" id="hidStrUrl" name="strUrl" value="@Model.StrUrl" />
                                                 </form>
                                             }
-
                                         </div>
                                     </td>
 
@@ -203,30 +197,30 @@
                                     {
 
                                         case "0":
-                                            <td class="tdVal" data-id="@item.Id" >@Html.DisplayFor(m => item.Sgtcode)</td>
+                                            <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
                                             break;
                                         case "1":
-                                            <td class="tdVal" data-id="@item.Id" >@Html.DisplayFor(m => item.Sgtcode)</td>
+                                            <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
                                             break;
                                         case "2":
                                             <td class="tdVal bg-yellow" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
                                             break;
                                         case "3":
-                                            <td class="tdVal" style="background-color: chartreuse" data-id="@item.Id" >@Html.DisplayFor(m => item.Sgtcode)</td>
+                                            <td class="tdVal" style="background-color: chartreuse" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
                                             break;
                                         case "4":
-                                            <td class="tdVal bg-red" data-id="@item.Id" >@Html.DisplayFor(m => item.Sgtcode)</td>
+                                            <td class="tdVal bg-red" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
                                             break;
                                     }
-                                                                         
-                                    <td class="tdVal" data-id="@item.Id" >@Html.DisplayFor(m => item.SoHopDong)</td>
-                                    <td class="tdVal" data-id="@item.Id" >@Html.DisplayFor(m => item.ChuDeTour)</td>
-                                    <td class="tdVal" data-id="@item.Id" >@Html.DisplayFor(m => item.TuyenTQ)</td>
-                                    <td class="tdVal" data-id="@item.Id" >@Html.Raw(item.NgayDen.ToString("dd/MM/yyyy"))</td>
-                                    <td class="tdVal" data-id="@item.Id" >@Html.Raw(item.NgayDi.ToString("dd/MM/yyyy"))</td>
-                                    <td class="tdVal" data-id="@item.Id" >@Html.DisplayFor(m => item.NguoiTao)</td>
-                                    <td class="tdVal" data-id="@item.Id" >@Html.Raw(item.NgayTao.ToString("dd/MM/yyyy"))</td>
-                                    <td class="tdVal" data-id="@item.Id" >
+
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.SoHopDong)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.ChuDeTour)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.TuyenTQ)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayDen.ToString("dd/MM/yyyy"))</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayDi.ToString("dd/MM/yyyy"))</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.NguoiTao)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayTao.ToString("dd/MM/yyyy"))</td>
+                                    <td class="tdVal" data-id="@item.Id">
                                         @switch (item.TrangThai)
                                         {
 
@@ -253,9 +247,7 @@
 
                             }
                         }
-
                     </tbody>
-
                 </table>
                 <!--hiden field for status click-->
                 <input type="hidden" id="hidTdValId" value="@Model.Tour.Id" />
@@ -279,20 +271,15 @@
                         ContainerDivClasses = new[] { "pagination-container" }
                     }, new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "nameListContainer" }))
             }
-
         </div>
         <!-- /.card-body -->
-
     </div>
     <!-- /.card -->
-
 </section>
 <!-- /.content -->
-
 <!-- Tabs qltour info-->
-    <div id="tabs_TourInfo">
-
-    </div>
+<div id="tabs_KeToan_TourInfo">
+</div>
 <!-- Tabs qltour info-->
 
 @section Scripts{
@@ -368,28 +355,10 @@
         // rollback tab
         $('#myTabs a[href="#@Model.tabActive"]').tab('show') // Select tab by name
 
-        // giu trang thai
-
-        @*var tourId = @Model.Tour.Id;
-        if (tourId != 0) { // có click
-            var tdClass = '.tdVal_' + tourId;
-            if ($(tdClass).hasClass("hoverClass"))
-                $(tdClass).removeClass("hoverClass");
-            else {
-                $(tdClass).removeClass("hoverClass");
-                $(tdClass).addClass("hoverClass");
-            }
-
-        }*@
-
-        // giu trang thai
-
-        // invoice-cursor-pointer hover
-
-        // invoice-cursor-pointer hover
-
+        function Tabs_KeToan_TourInfo() {
+            location.href = "#tabs_KeToan_TourInfo";
+    }
     </script>
-
 
     <style>
         /*#listTour {
@@ -417,4 +386,3 @@
         }*/
     </style>
 }
-
