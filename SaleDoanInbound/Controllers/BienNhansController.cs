@@ -65,15 +65,22 @@ namespace SaleDoanInbound.Controllers
             return View(BienNhanVM);
         }
 
-        public IActionResult BienNhansByTourPartial(long tourId)
+        public async Task<IActionResult> CTBienNhanInBienNhanPartial(long bienNhanId)
         {
-            if (tourId == 0)
-                return NotFound();
-            BienNhanVM.Tour = _unitOfWork.tourRepository.GetById(tourId);
-            BienNhanVM.BienNhans = _unitOfWork.bienNhanRepository.ListBienNhan("", tourId, "", "");
-
+            BienNhanVM.BienNhan = _unitOfWork.bienNhanRepository.GetById(bienNhanId);
+            BienNhanVM.ChiTietBNs = await _unitOfWork.chiTietBNRepository.FindAsync(x => x.BienNhanId == bienNhanId);
             return PartialView(BienNhanVM);
         }
+
+        //public IActionResult BienNhansByTourPartial(long tourId)
+        //{
+        //    if (tourId == 0)
+        //        return NotFound();
+        //    BienNhanVM.Tour = _unitOfWork.tourRepository.GetById(tourId);
+        //    BienNhanVM.BienNhans = _unitOfWork.bienNhanRepository.ListBienNhan("", tourId, "", "");
+
+        //    return PartialView(BienNhanVM);
+        //}
 
         public IActionResult Create(long tourId/*, string tabActive*/, string strUrl)
         {

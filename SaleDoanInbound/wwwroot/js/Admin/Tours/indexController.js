@@ -113,40 +113,59 @@
         });
 
         // tour click --> load tourpro in qltour
-        $('.tdVal').off('click').on('click', function () {
+        $('tr .tdVal').click(function () {
 
             tourId = $(this).data('id');
+            
+            var url = '/Tours/KeToan_TourInfoByTourPartial';
+            $.get(url, { tourId: tourId }, function (response) {
 
-            $('#hidId').val(tourId);
-            //var page = $('.active .page-link').text();
-            var page = $('.active span').text();
-            $('#hidPage').val(page);
+                $('#tabs_TourInfo').html(response);
 
-            //$.ajax({
-            //    url: '/CapThes/Index',
-            //    data: {
-            //        maCT: id
-            //    },
-            //    dataType: 'json',
-            //    type: 'GET',
-            //    success: function (response) {
+            });
 
-            //    }
-            //});
+            //$('#hidId').val(tourId);
+            ////var page = $('.active .page-link').text();
+            //var page = $('.active span').text();
+            //$('#hidPage').val(page);
 
-            $('#btnSubmit').click();
+            ////$.ajax({
+            ////    url: '/CapThes/Index',
+            ////    data: {
+            ////        maCT: id
+            ////    },
+            ////    dataType: 'json',
+            ////    type: 'GET',
+            ////    success: function (response) {
+
+            ////    }
+            ////});
+
+            //$('#btnSubmit').click();
 
         });
         // tour click --> load tourpro in qltour
 
 
         // hrefToTabInvoices click
-        $('#hrefToTabInvoices').click(function () {
+        //$('#hrefToTabInvoices').click(function () {
 
-            var tourId = $(this).data('tourid');
-            indexController.loadInvoices(tourId);
-        });
+        //    var tourId = $(this).data('tourid');
+        //    indexController.loadInvoices(tourId);
+        //});
         // hrefToTabInvoices click
+
+
+        // giu trang thai tour click
+        $('.cursor-pointer').off('click').on('click', function () {
+            if ($(this).hasClass("hoverClass"))
+                $(this).removeClass("hoverClass");
+            else {
+                $('tr.hoverClass').removeClass("hoverClass");
+                $(this).addClass("hoverClass");
+            }
+        });
+        // giu trang thai tour click
 
 
         // giu trang thai invoice click
@@ -172,37 +191,47 @@
             });
         });
         // invoice click --> CTInvoices & CTVAT
-
+        
         // hrefToTabBienNhans click
-        $('#hrefToTabBienNhans').click(function () {
+        //$('#hrefToTabBienNhans').click(function () {
 
-            var tourId = $(this).data('tourid');
-            indexController.loadBienNhans(tourId);
-        });
+        //    var tourId = $(this).data('tourid');
+        //    indexController.loadBienNhans(tourId);
+        //});
         // hrefToTabBienNhans click
 
 
-    },
-
-    loadBienNhans: function (tourid) {
-
-        var url = '/BienNhans/BienNhansByTourPartial';
-        $.get(url, { tourId: tourid }, function (response) {
-            
-                $('#tab_biennhans').html(response);
-
-            });
-    },
-
-    loadInvoices: function (tourid) {
-
-        var url = '/Invoices/IncoicesByTourPartial';
-        $.get(url, { tourId: tourid }, function (response) {
-            
-                $('#tab_invoices').html(response);
-
-            });
     }
+
+    //loadBienNhans: function (tourid) {
+
+    //    var url = '/BienNhans/BienNhansByTourPartial';
+    //    $.get(url, { tourId: tourid }, function (response) {
+            
+    //            $('#tab_biennhans').html(response);
+
+    //        });
+    //},
+
+    //loadInvoices: function (tourid) {
+
+    //    var url = '/Invoices/IncoicesByTourPartial';
+    //    $.get(url, { tourId: tourid }, function (response) {
+            
+    //            $('#tab_invoices').html(response);
+
+    //        });
+    //},
+
+    //load_KeToan_TourInfo_QLTour: function (tourId) {
+
+    //    var url = '/Tours/KeToan_TourInfoByTourPartial';
+    //    $.get(url, { tourId: tourId }, function (response) {
+            
+    //            $('#tabs_TourInfo').html(response);
+
+    //        });
+    //}
     //checkInvoices: function (tourId) {
 
     //    return $.ajax({

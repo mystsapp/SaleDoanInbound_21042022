@@ -121,13 +121,34 @@ namespace SaleDoanInbound.Controllers
                 TourVM.ListYeucauxe = await ListYeucauxe(tour.Sgtcode);
                 TourVM.ListHuongdan = ListHuongdan(tour.Sgtcode);
 
-                // DS invoice theo tour
-                //TourVM.Invoices = _unitOfWork.invoiceRepository.Find(x => x.TourId == id);
+                // DS invoice theo tour --> appear invoices and biennhan tabs
+                TourVM.Invoices = _unitOfWork.invoiceRepository.Find(x => x.TourId == id);
 
             }
             //--> click vao tour
 
             return View(TourVM);
+        }
+
+        public async Task<IActionResult> KeToan_TourInfoByTourPartial(long tourId)
+        {
+            var tour = _unitOfWork.tourRepository.GetById(tourId);
+
+            // tour program in qltour
+            TourVM.listTourProgAsync = await listTourProgAsync(tour.Sgtcode);
+            TourVM.TourNoteAsync = await TourNoteAsync(tour.Sgtcode);
+            TourVM.ListDsKhach = ListDsKhach(tour.Sgtcode);
+            TourVM.ListCPKhac = await ListCPKhac(tour.Sgtcode);
+            TourVM.ListYeucauxe = await ListYeucauxe(tour.Sgtcode);
+            TourVM.ListHuongdan = ListHuongdan(tour.Sgtcode);
+
+            // KeToan
+            TourVM.Tour = tour;
+            TourVM.Invoices = _unitOfWork.invoiceRepository.ListInvoice("", tourId).OrderByDescending(x => x.Date);
+            TourVM.BienNhans = _unitOfWork.bienNhanRepository.ListBienNhan("", tourId, "", "");
+
+
+            return PartialView(TourVM);
         }
 
         public IActionResult Create(string strUrl)

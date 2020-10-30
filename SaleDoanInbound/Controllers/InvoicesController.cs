@@ -66,13 +66,13 @@ namespace SaleDoanInbound.Controllers
             return View(InvoiceVM);
         }
 
-        public IActionResult IncoicesByTourPartial(long tourId)
-        {
-            InvoiceVM.Tour = _unitOfWork.tourRepository.GetById(tourId);
-            InvoiceVM.Invoices = _unitOfWork.invoiceRepository.ListInvoice("", tourId).OrderByDescending(x => x.Date);
+        //public IActionResult IncoicesByTourPartial(long tourId)
+        //{
+        //    InvoiceVM.Tour = _unitOfWork.tourRepository.GetById(tourId);
+        //    InvoiceVM.Invoices = _unitOfWork.invoiceRepository.ListInvoice("", tourId).OrderByDescending(x => x.Date);
 
-            return PartialView(InvoiceVM);
-        }
+        //    return PartialView(InvoiceVM);
+        //}
         
         public async Task<IActionResult> CTInvoicesCTVATsInInvoicePartial(string invoiceId)
         {
