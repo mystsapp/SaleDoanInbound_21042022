@@ -61,36 +61,36 @@
 
                         @if (ViewBag.chiNhanhTaoId == Model.Tour.ChiNhanhDHId)
                         {
-                            <div class="col-md-3">
-                                <label asp-for="Tour.ChiNhanhDHId" class="control-label"></label>
-                                <select asp-for="Tour.ChiNhanhDHId" class="form-control select2"
-                                        asp-items="@(new SelectList(Model.Dmchinhanhs, "Id", "Macn"))" id="ddlChiNhanhDH">
-                                    <!-- qltour -->
-                                </select>
-                                <span asp-validation-for="Tour.ChiNhanhDHId" class="text-danger"></span>
-                                <span class="badge badge-danger float-left" id="spanChiNhanhAlert" hidden>(*)Nếu chi nhánh tạo khác chi nhánh ĐH lần sau sẽ không cập nhật được chi nhánh ĐH</span>
-                            </div>
+                        <div class="col-md-3">
+                            <label asp-for="Tour.ChiNhanhDHId" class="control-label"></label>(<strong class="text-red">*</strong>)
+                            <select asp-for="Tour.ChiNhanhDHId" class="form-control select2"
+                                    asp-items="@(new SelectList(Model.Dmchinhanhs, "Id", "Macn"))" id="ddlChiNhanhDH">
+                                <!-- qltour -->
+                            </select>
+                            <span asp-validation-for="Tour.ChiNhanhDHId" class="text-danger"></span>
+                            <span class="badge badge-danger float-left" id="spanChiNhanhAlert" hidden>(*)Nếu chi nhánh tạo khác chi nhánh ĐH lần sau sẽ không cập nhật được chi nhánh ĐH</span>
+                        </div>
 
                         }
                         else
                         {
 
-                            <div class="col-md-3">
-                                <label asp-for="Tour.ChiNhanhDHId" class="control-label"></label>
-                                <input value="@ViewBag.maCn" class="form-control" readonly />
-                                <span asp-validation-for="Tour.ChiNhanhDHId" class="text-danger"></span>
-                            </div>
+                    <div class="col-md-3">
+                        <label asp-for="Tour.ChiNhanhDHId" class="control-label"></label>(<strong class="text-red">*</strong>)
+                        <input value="@ViewBag.maCn" class="form-control" readonly />
+                        <span asp-validation-for="Tour.ChiNhanhDHId" class="text-danger"></span>
+                    </div>
 
                         }
 
-                        <div class="col-md-3">
-                            <label asp-for="Tour.PhongDH" class="control-label"></label>
-                            <select asp-for="Tour.PhongDH" class="form-control select2"
-                                    asp-items="@(new SelectList(Model.listPhongDH, "Maphong", "Tenphong"))" id="ddlPhongDH">
-                                <!-- qltour -->
-                            </select>
-                            <span asp-validation-for="Tour.PhongDH" class="text-danger"></span>
-                        </div>
+                    <div class="col-md-3">
+                        <label asp-for="Tour.PhongDH" class="control-label"></label>(<strong class="text-red">*</strong>)
+                        <select asp-for="Tour.PhongDH" class="form-control select2"
+                                asp-items="@(new SelectList(Model.listPhongDH, "Maphong", "Tenphong"))" id="ddlPhongDH">
+                            <!-- qltour -->
+                        </select>
+                        <span asp-validation-for="Tour.PhongDH" class="text-danger"></span>
+                    </div>
 
                         @*<div class="col-md-3"> <!-- qltour -->
             <label asp-for="Tour.PhongBanMaCode" class="control-label"></label>
@@ -106,7 +106,7 @@
                         </div>
 
                         <div class="col-md-3 chuDeTourGroup">
-                            <label asp-for="Tour.NgayDen" class="control-label"></label>
+                            <label asp-for="Tour.NgayDen" class="control-label"></label>(<strong class="text-red">*</strong>)
                             <input type="text" asp-for="Tour.NgayDen" class="form-control maskInput" id="txtNgayDen" asp-format="{0:dd/MM/yyyy}" />
                             <span asp-validation-for="Tour.NgayDen" class="text-danger"></span>
                         </div>
@@ -116,8 +116,8 @@
                     <div class="form-group row">
 
                         <div class="col-md-3">
-                            <label asp-for="Tour.NgayDi" class="control-label"></label>
-                            <input type="text" asp-for="Tour.NgayDi" class="form-control maskInput" id="txtNgayDi" asp-format="{0:dd/MM/yyyy}"/>
+                            <label asp-for="Tour.NgayDi" class="control-label"></label>(<strong class="text-red">*</strong>)
+                            <input type="text" asp-for="Tour.NgayDi" class="form-control maskInput" id="txtNgayDi" asp-format="{0:dd/MM/yyyy}" />
                             <span asp-validation-for="Tour.NgayDi" class="text-danger"></span>
                         </div>
 
@@ -133,7 +133,7 @@
                     <div class="form-group row">
 
                         <div class="col-md-12">
-                            <label asp-for="Tour.TuyenTQ" class="control-label"></label>
+                            <label asp-for="Tour.TuyenTQ" class="control-label"></label>(<strong class="text-red">*</strong>)
                             <input type="hidden" asp-for="Tour.TuyenTQ" id="hidDdlTuyenTQ" />
                             <select class="tuyenTQ select2-hidden-accessible" multiple="" data-placeholder="Chọn tỉnh" style="width: 100%;" data-select2-id="23" tabindex="-1" aria-hidden="true"
                                     asp-items="@(new SelectList(Model.Thanhphos, "Tentp", "Tentp"))" id="ddlTuyenTQ">
@@ -146,13 +146,13 @@
                     <div class="form-group row">
 
                         <div class="col-md-2">
-                            <label asp-for="Tour.SoKhachDK" class="control-label"></label>
+                            <label asp-for="Tour.SoKhachDK" class="control-label"></label>(<strong class="text-red">*</strong>)
                             <input asp-for="Tour.SoKhachDK" class="form-control" id="txtSoKhachDK" />
                             <span asp-validation-for="Tour.SoKhachDK" class="text-danger"></span>
                         </div>
 
                         <div class="col-md-2">
-                            <label asp-for="Tour.DoanhThuDK" class="control-label"></label>
+                            <label asp-for="Tour.DoanhThuDK" class="control-label"></label>(<strong class="text-red">*</strong>)
                             <input type="text" asp-for="Tour.DoanhThuDK" class="form-control numbers" asp-format="{0:0,0}" id="txtDoanhThuDK" />
                             <span asp-validation-for="Tour.DoanhThuDK" class="text-danger"></span>
                         </div>
@@ -188,7 +188,7 @@
                     <div class="form-group row">
 
                         <div class="col-md-5">
-                            <label asp-for="Tour.LoaiTourId" class="control-label"></label>
+                            <label asp-for="Tour.LoaiTourId" class="control-label"></label>(<strong class="text-red">*</strong>)
                             <select asp-for="Tour.LoaiTourId" class="form-control " id="ddlLoaiTour"
                                     asp-items="@(new SelectList(Model.Tourkinds, "Id", "TourkindInf"))">
                                 <!-- tourkind: qltour-->
@@ -197,7 +197,7 @@
                         </div>
 
                         <div class="col-md-3 chuDeTourGroup">
-                            <label asp-for="Tour.LoaiTien" class="control-label"></label>
+                            <label asp-for="Tour.LoaiTien" class="control-label"></label>(<strong class="text-red">*</strong>)
                             <select asp-for="Tour.LoaiTien" class="form-control " id="ddlLoaiTien"
                                     asp-items="@(new SelectList(Model.Ngoaites, "MaNt", "MaNt"))">
                                 <!-- ngoaite: qltour-->
@@ -206,7 +206,7 @@
                         </div>
 
                         <div class="col-md-2 ">
-                            <label asp-for="Tour.TyGia" class="control-label"></label>
+                            <label asp-for="Tour.TyGia" class="control-label"></label>(<strong class="text-red">*</strong>)
                             <input type="text" asp-for="Tour.TyGia" class="form-control numbers" id="txtTyGia" />
                             <span asp-validation-for="Tour.TyGia" class="text-danger"></span>
                         </div>
@@ -227,15 +227,15 @@
                         <div class="col-md-2">
                             <label asp-for="Tour.MaKH" class="control-label"></label>
                             @*<select asp-for="Tour.MaKH" class="form-control select2" id="ddlMaKh"
-                                    asp-items="@(new SelectList(Model.Companies, "CompanyId", "CompanyId"))">
-                            </select>*@
-                            <input class="form-control" asp-for="Tour.MaKH" readonly />
+                asp-items="@(new SelectList(Model.Companies, "CompanyId", "CompanyId"))">
+        </select>*@
+                            <input class="form-control" asp-for="Tour.MaKH" readonly />(<strong class="text-red">*</strong>)
                             <span asp-validation-for="Tour.MaKH" class="text-danger"></span>
                         </div>
 
                         <div class="col-md-10">
-                            <label asp-for="Tour.TenKH" class="control-label"></label>
-                            <input asp-for="Tour.TenKH" class="form-control" id="txtTenKH" readonly/>
+                            <label asp-for="Tour.TenKH" class="control-label"></label>(<strong class="text-red">*</strong>)
+                            <input asp-for="Tour.TenKH" class="form-control" id="txtTenKH" readonly />
                             <span asp-validation-for="Tour.TenKH" class="text-danger"></span>
                         </div>
 

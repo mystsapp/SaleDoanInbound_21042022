@@ -305,9 +305,16 @@ namespace SaleDoanInbound.Controllers
                 await _unitOfWork.Complete();
                 SetAlert("Thêm mới thành công.", "success");
 
-                // upload excel
-                UploadExcelAsync(TourVM.Tour.Sgtcode);
-                // upload excel
+
+                var fileCheck = Request.Form.Files;
+                if (fileCheck.Count > 0)
+                {
+
+                    // upload excel
+                    UploadExcelAsync(TourVM.Tour.Sgtcode);
+                    // upload excel
+
+                }
 
                 return Redirect(strUrl);
             }

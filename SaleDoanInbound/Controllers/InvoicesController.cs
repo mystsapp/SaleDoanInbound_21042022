@@ -130,6 +130,126 @@ namespace SaleDoanInbound.Controllers
             return PartialView(InvoiceVM);
         }
 
+        [HttpPost, ActionName("CreateInvoicePartial")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateInvoicePartialPost()
+        {
+            var tourId = InvoiceVM.Invoice.TourId;
+            // from login session
+            var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
+
+            //if (!ModelState.IsValid)
+            //{
+            //    ////
+            //    //InvoiceVM.StrUrl = strUrl;// + "&tabActive=" + tabActive; // for redirect tab
+
+            //    InvoiceVM.Tour = _unitOfWork.tourRepository.GetById(tourId);
+            //    InvoiceVM.Invoice.Arr = InvoiceVM.Tour.NgayDen;
+            //    InvoiceVM.Invoice.Dep = InvoiceVM.Tour.NgayDi;
+            //    InvoiceVM.Invoice.Pax = (InvoiceVM.Tour.SoKhachTT == 0) ? InvoiceVM.Tour.SoKhachDK : InvoiceVM.Tour.SoKhachTT;
+            //    InvoiceVM.Invoice.HopDong = InvoiceVM.Tour.SoHopDong;
+            //    InvoiceVM.Invoice.MaKH = InvoiceVM.Tour.MaKH;
+            //    InvoiceVM.Invoice.TenKhach = InvoiceVM.Tour.TenKH;
+            //    InvoiceVM.Invoice.Ref = "";
+            //    InvoiceVM.Invoice.TourId = InvoiceVM.Tour.Id;
+
+            //    InvoiceVM.LoaiIVs = _unitOfWork.loaiIVRepository.GetAll();
+            //    InvoiceVM.Ngoaites = _unitOfWork.ngoaiTeRepository.GetAll();
+            //    InvoiceVM.Invoices = await _unitOfWork.invoiceRepository.FindAsync(x => x.TourId == tourId);
+            //    ////
+            //    //return View(InvoiceVM);
+            //    //return PartialView(InvoiceVM);
+            //    return LocalRedirect("Tours#tabs_KeToan_TourInfo");
+            //}
+
+            //InvoiceVM.Invoice = new Data.Models_IB.Invoice();
+            InvoiceVM.Invoice.Date = DateTime.Now;
+            InvoiceVM.Invoice.NgayVAT = DateTime.Now;
+            InvoiceVM.Invoice.NguoiTao = user.Username;
+
+            #region next id
+            ////// next id
+            var currentYear = DateTime.Now.Year;
+            var invoice = _unitOfWork.invoiceRepository.GetAll().OrderByDescending(x => x.Id).FirstOrDefault();
+            if (invoice == null)
+            {
+                var id = GetNextId.NextID("", "");
+                InvoiceVM.Invoice.Id = id + currentYear.ToString();
+            }
+            else
+            {
+                var oldYear = invoice.Id.Substring(6, 4);
+                // cung nam
+                if (oldYear == currentYear.ToString())
+                {
+                    var oldId = invoice.Id.Substring(0, 6);
+                    InvoiceVM.Invoice.Id = GetNextId.NextID(oldId, "") + currentYear.ToString();
+                }
+                else
+                {
+                    // sang nam khac' chay lai tu dau
+                    var id = GetNextId.NextID("", "");
+                    InvoiceVM.Invoice.Id = id + currentYear.ToString();
+                }
+
+            }
+            ////// next id
+            #endregion
+            ///
+            // ghi log
+
+            if (string.IsNullOrEmpty(InvoiceVM.Invoice.Replace))
+            {
+                InvoiceVM.Invoice.Replace = "";
+            }
+            if (string.IsNullOrEmpty(InvoiceVM.Invoice.Ref))
+            {
+                InvoiceVM.Invoice.Ref = "";
+            }
+            if (string.IsNullOrEmpty(InvoiceVM.Invoice.HopDong))
+            {
+                InvoiceVM.Invoice.HopDong = "";
+            }
+
+            InvoiceVM.Invoice.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
+            try
+            {
+                _unitOfWork.invoiceRepository.Create(InvoiceVM.Invoice);
+                await _unitOfWork.Complete();
+                //SetAlert("Thêm mới thành công.", "success");
+                //return Redirect(strUrl);
+                return Json(new
+                {
+                    status = true
+                });
+            }
+            catch (Exception ex)
+            {
+                SetAlert(ex.Message, "error");
+                ModelState.AddModelError("", ex.Message);
+                ////
+                //InvoiceVM.StrUrl = strUrl;// + "&tabActive=" + tabActive; // for redirect tab
+
+                InvoiceVM.Tour = _unitOfWork.tourRepository.GetById(tourId);
+                InvoiceVM.Invoice.Arr = InvoiceVM.Tour.NgayDen;
+                InvoiceVM.Invoice.Dep = InvoiceVM.Tour.NgayDi;
+                InvoiceVM.Invoice.Pax = (InvoiceVM.Tour.SoKhachTT == 0) ? InvoiceVM.Tour.SoKhachDK : InvoiceVM.Tour.SoKhachTT;
+                InvoiceVM.Invoice.HopDong = InvoiceVM.Tour.SoHopDong;
+                InvoiceVM.Invoice.MaKH = InvoiceVM.Tour.MaKH;
+                InvoiceVM.Invoice.TenKhach = InvoiceVM.Tour.TenKH;
+                InvoiceVM.Invoice.Ref = "";
+                InvoiceVM.Invoice.TourId = InvoiceVM.Tour.Id;
+
+                InvoiceVM.LoaiIVs = _unitOfWork.loaiIVRepository.GetAll();
+                InvoiceVM.Invoices = await _unitOfWork.invoiceRepository.FindAsync(x => x.TourId == tourId);
+                ////
+
+                //return View(InvoiceVM);
+                return PartialView(InvoiceVM);
+            }
+
+        }
+        
         [HttpPost, ActionName("Create")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreatePost(long tourId, string strUrl)
@@ -252,6 +372,24 @@ namespace SaleDoanInbound.Controllers
             InvoiceVM.LoaiIVs = _unitOfWork.loaiIVRepository.GetAll();
 
             return View(InvoiceVM);
+        }
+        public async Task<IActionResult> EditInvoicePartial(string invoiceId, long tourId)
+        {
+            
+            InvoiceVM.Tour = _unitOfWork.tourRepository.GetById(tourId);
+            InvoiceVM.Invoices = await _unitOfWork.invoiceRepository.FindAsync(x => x.TourId == tourId);
+
+            if (string.IsNullOrEmpty(invoiceId))
+                return NotFound();
+
+            InvoiceVM.Invoice = await _unitOfWork.invoiceRepository.GetByIdAsync(invoiceId);
+
+            if (InvoiceVM.Invoice == null)
+                return NotFound();
+
+            InvoiceVM.LoaiIVs = _unitOfWork.loaiIVRepository.GetAll();
+
+            return PartialView(InvoiceVM);
         }
 
         [HttpPost, ActionName("Edit")]

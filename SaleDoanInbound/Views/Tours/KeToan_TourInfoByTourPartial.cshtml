@@ -1,54 +1,943 @@
 ﻿@model TourViewModel
 <!-- create invoice modal-->
-<div class="modal fade" id="createInvoiceModal" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog modal-xl">
+@*<div class="modal fade" id="createInvoiceModal" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-xl">
 
-        <div class="modal-content ">
-            <div class="modal-header">
-                <h4 class="modal-title">Thêm mới invoice</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body createInvoicePartial">
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
-<!-- create invoice modal-->
-<section class="content">
-
-    <!--invoice - biennhan-->
-
-    <div class="row">
-        <div class="col-md-12 ">
-            <div class="card card-primary card-outline card-outline-tabs">
-                <div class="card-header p-0 border-bottom-0">
-                    <ul class="nav nav-tabs" id="invoiceBNTab" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" id="hrefToTabInvoices" data-tourid="@Model.Tour.Id" data-toggle="pill" href="#tab_invoices" role="tab" aria-controls="custom-tabs-four-home" aria-selected="true">Invoices</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="hrefToTabBienNhans" data-tourid="@Model.Tour.Id" data-toggle="pill" href="#tab_biennhans" role="tab" aria-controls="custom-tabs-four-profile" aria-selected="false">Biên nhận</a>
-                        </li>
-
-                    </ul>
+            <div class="modal-content ">
+                <div class="modal-header">
+                    <h4 class="modal-title">Thêm mới invoice</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
                 </div>
-                <div class="card-body">
-                    <div class="tab-content" id="custom-tabs-four-tabContent">
+                <div class="modal-body createInvoicePartial">
+                </div>
+            </div>
 
-                        <!-- tab_invoices -->
-                        <div class="tab-pane fade active show" id="tab_invoices" role="tabpanel" aria-labelledby="custom-tabs-four-home-tab">
+        </div>
+
+    </div>*@
+<!-- create invoice modal-->
+<!--invoice - biennhan-->
+
+<div class="row">
+    <div class="col-md-12 ">
+        <div class="card card-primary card-outline card-outline-tabs">
+            <div class="card-header p-0 border-bottom-0">
+                <ul class="nav nav-tabs" id="invoiceBNTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="hrefToTabInvoices" data-tourid="@Model.Tour.Id" data-toggle="pill" href="#tab_invoices" role="tab" aria-controls="custom-tabs-four-home" aria-selected="true">Invoices</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="hrefToTabBienNhans" data-tourid="@Model.Tour.Id" data-toggle="pill" href="#tab_biennhans" role="tab" aria-controls="custom-tabs-four-profile" aria-selected="false">Biên nhận</a>
+                    </li>
+
+                </ul>
+            </div>
+            <div class="card-body">
+                <div class="tab-content" id="custom-tabs-four-tabContent">
+
+                    <!-- tab_invoices -->
+                    <div class="tab-pane fade active show" id="tab_invoices" role="tabpanel" aria-labelledby="custom-tabs-four-home-tab">
+                        <section class="content">
+
+                            <!-- Default box -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Sgtcode - <b>@Model.Tour.Sgtcode</b></h3>
+
+                                    <div class="card-tools">
+                                        <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+
+                                    <div style="overflow-x:auto;">
+                                        <table class="table mytable text-nowrap tblEMD" id="invoicesTbl">
+                                            <thead>
+                                                <tr class="table-info">
+                                                    <th>
+                                                        <button class="btn btn-outline-info btn-sm text-bold btn-block" id="btnNewInvoice" data-tourid="@Model.Tour.Id" title="Thêm mới invoice" @*data-toggle="modal" data-target="#createInvoiceModal"*@><i class="fas fa-plus"></i></button>
+                                                    </th>
+                                                    <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Id)</th>
+                                                    <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Replace)</th>
+                                                    <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Type)</th>
+                                                    <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Date)</th>
+                                                    <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Arr)</th>
+                                                    <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Dep)</th>
+                                                    <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Pax)</th>
+                                                    <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Currency)</th>
+                                                    <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Rate)</th>
+                                                    <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().MaKH)</th>
+                                                    <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().TenKhach)</th>
+                                                    <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Ref)</th>
+                                                    <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().HopDong)</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                @foreach (var item in Model.Invoices)
+                                                {
+
+                                                    <tr class="invoice-cursor-pointer " data-huy="@item.HuyInvoice" onclick="CTInvoiceCTVATDiv()">
+
+                                                        <td>
+                                                            <div class="btn-group text-white" role="group">
+                                                                @if (item.HuyInvoice == true)
+                                                                {
+                                                                    <a class="disabled" title="Cập nhật"><i class="fas fa-edit"></i></a>
+                                                                    <span class="text-dark"> | </span>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <button id="btnEditInvoice" class="text-primary border-0 bg-transparent" title="Cập nhật" data-tourId="@Model.Tour.Id" data-invoiceId="@item.Id"><i class="fas fa-edit"></i></button>
+                                                                    <span class="text-dark"> | </span>
+                                                                }
+                                                                <!--print invoice-->
+                                                                <a asp-action="InvoicePdfViewer" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" class="text-warning btnPrintInvoice" title="Print"><i class="fas fa-print"></i></a>
+                                                                <span class="text-dark"> | </span>
+                                                                <a class="text-success" title="Chi tiết" asp-action="Details" asp-route-tourId="@Model.Tour.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
+                                                                <span class="text-dark"> | </span>
+                                                                <form asp-action="Delete" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" method="post">
+
+                                                                    <span id="confirmDeleteSpan_@item.Id" style="display: none">
+                                                                        <span class="text-dark">Hủy?</span>
+                                                                        <button type="button" data-id="@item.Id" data-url="@Model.StrUrl" class="btn btn-danger btn-xs btnHuyInvoice">Yes</button>
+                                                                        <button type="button" class="btn btn-primary btn-xs" onclick="confirmDelete('@item.Id', false)">No</button>
+                                                                    </span>
+
+                                                                    <span id="deleteSpan_@item.Id">
+                                                                        @if (item.HuyInvoice == true)
+                                                                        {
+                                                                            <button type="button" class="text-danger border-0 bg-transparent disabled"><i class="fas fa-trash-alt"></i></button>
+
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <button type="button" class="text-danger border-0 bg-transparent btnHuy" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
+
+                                                                        }
+                                                                    </span>
+                                                                </form>
+                                                            </div>
+                                                        </td>
+
+                                                        <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Id)</td>
+                                                        <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Replace)</td>
+                                                        <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Type)</td>
+                                                        <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.Raw(item.Date.ToShortDateString())</td>
+                                                        <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.Raw(item.Arr.ToShortDateString())</td>
+                                                        <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">
+                                                            @if (item.Dep.HasValue)
+                                                            {
+                                                                @Html.Raw(item.Dep.Value.ToShortDateString())
+                                                            }
+                                                        </td>
+                                                        <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Pax)</td>
+                                                        <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Currency)</td>
+                                                        <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Rate)</td>
+                                                        <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.MaKH)</td>
+                                                        <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.TenKhach)</td>
+
+                                                        <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Ref)</td>
+                                                        <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.HopDong)</td>
+                                                    </tr>
+
+                                                }
+                                            </tbody>
+
+                                        </table>
+                                    </div>
+
+                                </div>
+                                <!-- /.card-body -->
+
+                            </div>
+                            <!-- /.card -->
+
+                        </section>
+                        <!-- CTInvoice - CTVAT -->
+                        <div class="cTInVoiceCTVAT" id="cTInVoiceCTVAT">
+
+                        </div>
+                        <!-- CTInvoice - CTVAT -->
+                    </div>
+                    <!-- Invoices -->
+                    <!-- Bien Nhan -->
+                    <div class="tab-pane fade" id="tab_biennhans" role="tabpanel" aria-labelledby="custom-tabs-four-settings-tab">
+
+                        <!-- huy tour modal-->
+                        <div class="modal fade" id="huyBNModal" aria-hidden="true" style="display: none;">
+                            <div class="modal-dialog modal-lg">
+
+                                <div class="modal-content ">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Thông tin hủy BN</h4>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body huyBNPartial">
+
+                                    </div>
+
+                                </div>
+                                <!-- /.modal-content -->
+                            </div>
+                            <!-- /.modal-dialog -->
+                        </div>
+                        <!-- huy tour modal-->
+                        <!-- print BN modal-->
+                        <div class="modal fade" id="PrintBNPartial" style="display: none;" aria-hidden="true">
+                            <div class="modal-dialog modal-xl">
+                                <div class="modal-content">
+                                    <div class="modal-header bg-secondary">
+                                        <h4 class="modal-title ">Biên nhận <span id="spanSoBN"></span></h4>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body printBN" style="max-height: 400px !important; overflow-y:auto">
+
+                                    </div>
+                                    <div class="modal-footer justify-content-between">
+                                        <form id="frmPrintBN" asp-action="ExportPdf" method="post">
+                                            <input type="hidden" name="id" id="hidBienNhanIdForPdfPrint" />
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Print</button>
+                                        </form>
+
+                                    </div>
+                                </div>
+                                <!-- /.modal-content -->
+                            </div>
+                            <!-- /.modal-dialog -->
+                        </div>
+
+                        <!-- /.modal-dialog -->
+                        <!-- BienNhan -->
+                        <section class="content">
+
+                            <!-- Default box -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Danh sách biên nhận - <b>@Model.Tour.Sgtcode</b></h3>
+
+                                    <div class="card-tools">
+                                        <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+
+                                    <div style="overflow-x:auto; overflow-y: auto;">
+                                        <table class="table mytable text-nowrap tblEMD" id="biennhansTbl">
+                                            <thead>
+                                                <tr class="table-info">
+                                                    <th>#</th>
+                                                    <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().SoBN)</th> <!-- so bien nhan-->
+                                                    <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().NgayBN)</th>
+                                                    <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().TenKhach)</th>
+                                                    <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().DienThoai)</th>
+                                                    <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().SoTien)</th>
+                                                    @*<th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().NoiDung)</th>*@
+                                                    <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().SK)</th>
+                                                    <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().GhiChu)</th>
+                                                    <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().LoaiTien)</th>
+                                                    <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().TyGia)</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in Model.BienNhans)
+                                                {
+
+                                                    <tr class="biennhan-cursor-pointer " data-huy="@item.HuyBN">
+
+                                                        <td>
+                                                            <div class="btn-group text-white" role="group">
+                                                                @if (item.HuyBN == true)
+                                                                {
+                                                                    <a class="disabled" title="Cập nhật"><i class="fas fa-edit"></i></a>
+                                                                    <span class="text-dark"> | </span>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <a class="text-primary btnEditBN" title="Cập nhật" asp-action="Edit" asp-controller="BienNhans" asp-route-id="@item.Id" asp-route-tourId="@Model.Tour.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
+                                                                    <span class="text-dark"> | </span>
+                                                                }
+                                                                <!-- Print Pdf -->
+                                                                <a data-id="@item.Id" data-strUrl="@Model.StrUrl" class="text-warning border-0 bg-transparent btnPrintBN" title="Print"><i class="fas fa-print"></i></a>
+
+                                                                <span class="text-dark"> | </span>
+                                                                <a class="text-success" title="Chi tiết" asp-action="Details" asp-controller="BienNhans" asp-route-id="@item.Id" asp-route-tourId="@Model.Tour.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
+                                                                <span class="text-dark"> | </span>
+                                                                <form asp-action="Delete" asp-controller="BienNhans" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" method="post">
+
+                                                                    <span id="confirmDeleteSpan_@item.Id" style="display: none">
+                                                                        <span class="text-dark spanXoa">Hủy?</span>
+                                                                        <button type="button" data-id="@item.Id" data-url="@Model.StrUrl" class="btn btn-danger btn-xs btnHuyBN">Yes</button>
+                                                                        <button type="button" class="btn btn-primary btn-xs" onclick="confirmDelete('@item.Id', false)">No</button>
+                                                                    </span>
+
+                                                                    <span id="deleteSpan_@item.Id">
+                                                                        @if (item.HuyBN == true)
+                                                                        {
+                                                                            <button type="button" class="text-danger border-0 bg-transparent disabled"><i class="fas fa-trash-alt"></i></button>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <button title="Xóa" type="button" class="text-danger border-0 bg-transparent btnHuy" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
+                                                                        }
+                                                                    </span>
+                                                                </form>
+                                                            </div>
+                                                        </td>
+
+                                                        <td class="tdBNVal tdSoBN" data-id="@item.Id">@Html.DisplayFor(m => item.SoBN)</td>
+                                                        <td class="tdBNVal" data-id="@item.Id">@Html.Raw(item.NgayBN.ToString("dd/MM/yyyy"))</td>
+                                                        <td class="tdBNVal" data-id="@item.Id">@Html.DisplayFor(m => item.TenKhach)</td>
+                                                        <td class="tdBNVal" data-id="@item.Id">@Html.DisplayFor(m => item.DienThoai)</td>
+                                                        <td class="tdBNVal" data-id="@item.Id">@Html.Raw(item.SoTien.ToString("N0"))</td>
+                                                        <td class="tdBNVal" data-id="@item.Id">@Html.Raw(item.SK.ToString("N0"))</td>
+                                                        <td class="tdBNVal" data-id="@item.Id">@Html.DisplayFor(m => item.GhiChu)</td>
+                                                        <td class="tdBNVal" data-id="@item.Id">@Html.DisplayFor(m => item.LoaiTien)</td>
+                                                        <td class="tdBNVal" data-id="@item.Id">@Html.Raw(string.Format("{0:#,##0.00}", item.TyGia))</td>
+                                                        @*@Html.Raw(string.Format("{0:#,##0.00}", item.sotiennt))*@
+                                                    </tr>
+
+                                                }
+                                            </tbody>
+
+                                        </table>
+
+                                    </div>
+
+                                </div>
+                                <!-- /.card-body -->
+
+                            </div>
+                            <!-- /.card -->
+
+                        </section>
+                        <!-- /BienNhan -->
+                        <!-- CTBienNhan -->
+                        <div class="cTietBN">
+
+                        </div>
+                        <!-- CTBienNhan -->
+                    </div>
+                    <!-- Bien Nhan -->
+
+                </div>
+            </div>
+            <!-- /.card -->
+        </div>
+    </div>
+</div>
+
+
+<!--invoice - biennhan-->
+<!--tour programe-->
+<div class="row">
+    <div class="col-md-12 ">
+        <div class="card card-primary card-outline card-outline-tabs">
+            <div class="card-header p-0 border-bottom-0">
+                <ul class="nav nav-tabs" @*id="custom-tabs-four-tab"*@ id="myTabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="custom-tabs-four-home-tab" data-toggle="pill" href="#tab_cttour" role="tab" aria-controls="custom-tabs-four-home" aria-selected="true">Chương trình tour</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-four-profile-tab" data-toggle="pill" href="#tab_ghichu" role="tab" aria-controls="custom-tabs-four-profile" aria-selected="false">Ghi chú</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-four-messages-tab" data-toggle="pill" href="#tab_Dskhach" role="tab" aria-controls="custom-tabs-four-messages" aria-selected="false">Danh sách khách</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-four-settings-tab" data-toggle="pill" href="#tab_chiphikhac" role="tab" aria-controls="custom-tabs-four-settings" aria-selected="false">Chi phí khác</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-four-settings-tab" data-toggle="pill" href="#tab_ycxe" role="tab" aria-controls="custom-tabs-four-settings" aria-selected="false">Xe</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-four-settings-tab" data-toggle="pill" href="#tab_huongdan" role="tab" aria-controls="custom-tabs-four-settings" aria-selected="false">Hướng dẫn</a>
+                    </li>
+                    @*<li class="nav-item">
+                            <a class="nav-link" id="custom-tabs-four-home-tab" data-toggle="pill" href="#custom-tabs-four-invoice" role="tab" aria-controls="custom-tabs-four-home" aria-selected="true">Invoice</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="custom-tabs-four-settings-tab" data-toggle="pill" href="#custom-tabs-four-biennhan" role="tab" aria-controls="custom-tabs-four-settings" aria-selected="false">Biên nhận</a>
+                        </li>*@
+                </ul>
+            </div>
+            <div class="card-body">
+                <div class="tab-content" id="custom-tabs-four-tabContent">
+
+                    <!-- tab_cttour -->
+                    <div class="tab-pane fade active show" id="tab_cttour" role="tabpanel" aria-labelledby="custom-tabs-four-home-tab">
+
+                        <section class="content">
+
+                            <!-- Default box -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Sgtcode - <b>@Model.Tour.Sgtcode</b></h3>
+
+                                    <div class="card-tools">
+                                        <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+
+                                    <div style="overflow-x:auto;">
+                                        <table class="table mytable text-nowrap tblEMD" id="listAll">
+                                            <thead>
+                                                <tr class="table-info">
+
+                                                    <th class="text-center" width="5%">Triển khai</th>
+                                                    <th class="text-center" width="5%">Trạng thái</th>
+                                                    <th class="text-center" width="5%">Ngày</th>
+                                                    <th class="text-center" width="5%">Ngày tháng</th>
+                                                    <th class="text-center" width="5%">Giờ</th>
+                                                    <th class="text-center" width="5%">Dịch vụ</th>
+                                                    <th class="text-center" width="5%">Loại tiền</th>
+                                                    <th>Chương trình</th>
+                                                    <th>Ghi chú</th>
+                                                    <th width="10%">Điều hành</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in Model.listTourProgAsync)
+                                                {
+
+                                                    <tr class="cursor-pointer ">
+
+                                                        <td class="text-center">@item.Chinhanh</td>
+                                                        <td class="text-center">@item.Status</td>
+                                                        <td class="text-center">@item.Date</td>
+
+                                                        @switch (item.Logfile)
+                                                        {
+                                                            case string x when x.StartsWith("S"):
+                                                                <td style="background-color:#FF7800">@item.Logfile</td>
+                                                                break;
+                                                            default:
+                                                                <td>@item.Logfile</td>
+                                                                break;
+                                                        }
+                                                        <td class="text-center">@item.Time</td>
+                                                        <td class="text-center">@item.Srvtype</td>
+                                                        <td class="text-center">@item.Currency</td>
+                                                        <td>@item.TourItem</td>
+                                                        <td>@item.Srvnode</td>
+                                                        <td>@item.Dieuhanh</td>
+
+                                                    </tr>
+
+                                                }
+                                            </tbody>
+
+                                        </table>
+                                    </div>
+
+                                </div>
+                                <!-- /.card-body -->
+
+                            </div>
+                            <!-- /.card -->
+
+                        </section>
+
+                    </div>
+                    <!-- tab_cttour -->
+                    <!-- Tournote -->
+                    <div class="tab-pane fade" id="tab_ghichu" role="tabpanel" aria-labelledby="custom-tabs-four-profile-tab">
+                        <label class="control-label">Đầu tour</label>
+                        <textarea class="form-control" readonly>@((Model.TourNoteAsync == null)?"": Model.TourNoteAsync.Headernode)</textarea>
+
+                        <label class="control-label">Cuối tour</label>
+                        <textarea class="form-control" readonly>@((Model.TourNoteAsync == null)?"": Model.TourNoteAsync.Footernode)</textarea>
+                    </div>
+                    <!-- Tournote -->
+                    <!-- DS Khach -->
+                    <div class="tab-pane fade" id="tab_Dskhach" role="tabpanel" aria-labelledby="custom-tabs-four-messages-tab">
+                        <section class="content">
+
+                            <!-- Default box -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Sgtcode - <b>@Model.Tour.Sgtcode</b></h3>
+
+                                    <div class="card-tools">
+                                        <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+
+                                    <div style="overflow-x:auto;">
+                                        <table class="table mytable text-nowrap tblEMD" id="listAll">
+                                            <thead>
+                                                <tr class="table-info">
+
+                                                    <th>STT</th>
+                                                    <th>Mã</th>
+                                                    <th>Họ tên</th>
+                                                    <th>Ngày sinh</th>
+                                                    <th>Phái</th>
+                                                    <th>Điện thoại</th>
+                                                    <th>Hộ chiếu</th>
+                                                    <th>CMND</th>
+                                                    <th>Quốc tịch</th>
+                                                    <th>Loại phòng</th>
+                                                    <th class="text-center">
+                                                        Vé máy bay<br /><input type="checkbox" class="tfoot" style="display:none;" onchange="checkAll('tbKhachHang')" /><span class="tfoot" style="display:none"> | </span><a href="javascript:;" id="btSavedata" class="fa fa-save fa-lg tfoot" style="display:none;"></a>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in Model.ListDsKhach)
+                                                {
+
+                                                    <tr class="cursor-pointer ">
+
+                                                        <td class="text-center">
+                                                            @item.Stt
+                                                        </td>
+                                                        <td>
+                                                            @item.Makh
+                                                        </td>
+                                                        <td>
+                                                            @item.Hoten
+                                                        </td>
+                                                        <td>
+                                                            @Html.Raw(item.Ngaysinh.HasValue ? item.Ngaysinh.Value.ToString("dd/MM/yyyy") : "/ /")
+                                                        </td>
+                                                        <td>
+                                                            @Html.Raw(item.Phai == true ? "Nam" : "Nữ")
+                                                        </td>
+                                                        <td>@item.Dienthoai</td>
+                                                        <td>
+                                                            @item.Hochieu
+                                                        </td>
+                                                        <td>
+                                                            @item.Cmnd
+                                                        </td>
+                                                        <td>
+                                                            @item.Quoctich
+                                                        </td>
+                                                        <td>
+                                                            @item.Loaiphong
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <input type="checkbox" checked="@item.Vmb" name="vmb" class="ckId" disabled />
+                                                        </td>
+                                                        <td style="display:none">
+                                                        </td>
+                                                    </tr>
+
+                                                }
+                                            </tbody>
+
+                                        </table>
+                                    </div>
+
+                                </div>
+                                <!-- /.card-body -->
+
+                            </div>
+                            <!-- /.card -->
+
+                        </section>
+                    </div>
+                    <!-- DS Khach -->
+                    <!-- Chi Phi Khac -->
+                    <div class="tab-pane fade" id="tab_chiphikhac" role="tabpanel" aria-labelledby="custom-tabs-four-settings-tab">
+                        <section class="content">
+
+                            <!-- Default box -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Sgtcode - <b>@Model.Tour.Sgtcode</b></h3>
+
+                                    <div class="card-tools">
+                                        <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+
+                                    <div style="overflow-x:auto;">
+                                        <table class="table mytable text-nowrap tblEMD" id="listAll">
+                                            <thead>
+                                                <tr class="table-info">
+
+                                                    <th>CN</th>
+                                                    <th>Từ ngày</th>
+                                                    <th>Đến ngày</th>
+                                                    <th>Dịch vụ</th>
+                                                    <th>Nơi book</th>
+                                                    <th>Mục chương trình</th>
+                                                    <th>Số lượng</th>
+                                                    <th>Đơn giá</th>
+                                                    <th>Km</th>
+                                                    <th>Ngày HD</th>
+                                                    <th>Tổng chi phí</th>
+                                                    <th>Phải trả</th>
+                                                    <th>Phải thu</th>
+                                                    <th>Loại tiền</th>
+                                                    <th>VAT vào</th>
+                                                    <th>VAT ra</th>
+                                                    <th>Lợi nhuận</th>
+                                                    <th>Ghi chú</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in Model.ListCPKhac)
+                                                {
+
+                                                    <tr class="cursor-pointer ">
+
+                                                        <td>@item.Chiphikhac.Chinhanh</td>
+                                                        <td>
+                                                            @item.Chiphikhac.Fromdate
+                                                        </td>
+                                                        <td>
+                                                            @item.Chiphikhac.Todate
+                                                        </td>
+                                                        <td>
+                                                            @item.Tendv
+                                                        </td>
+                                                        <td>
+                                                            @*@Html.Raw(item.ngaysinh.HasValue ? item.ngaysinh.Value.ToString("dd/MM/yyyy") : "/ /")*@
+                                                            @item.Tengiaodich
+                                                        </td>
+                                                        <td>
+                                                            @item.Chiphikhac.TourItem
+                                                        </td>
+                                                        <td>
+                                                            @item.Chiphikhac.Quantity
+                                                        </td>
+                                                        <td>
+                                                            @item.Chiphikhac.Unitprice
+                                                        </td>
+                                                        <td>
+                                                            @item.Chiphikhac.Km
+                                                        </td>
+                                                        <td>
+                                                            @item.Chiphikhac.Guidedays
+                                                        </td>
+                                                        <td>
+                                                            @item.Chiphikhac.Amount
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <input type="checkbox" class="minimal" checked="@item.Chiphikhac.Debit" />
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <input type="checkbox" class="minimal" checked="@item.Chiphikhac.Credit" />
+                                                        </td>
+                                                        <td>
+                                                            @item.Chiphikhac.Currency
+                                                        </td>
+                                                        <td>
+                                                            @item.Chiphikhac.Vatin
+                                                        </td>
+                                                        <td>
+                                                            @item.Chiphikhac.Vatout
+                                                        </td>
+                                                        <td>
+                                                            @item.Chiphikhac.Srvprofit
+                                                        </td>
+                                                        <td>
+                                                            @item.Chiphikhac.Srvnode
+                                                        </td>
+                                                        <td style="display:none">
+                                                        </td>
+                                                    </tr>
+
+                                                }
+                                            </tbody>
+
+                                        </table>
+                                    </div>
+
+                                </div>
+                                <!-- /.card-body -->
+
+                            </div>
+                            <!-- /.card -->
+
+                        </section>
+                    </div>
+                    <!-- Chi Phi Khac -->
+                    <!-- Xe -->
+                    <div class="tab-pane fade" id="tab_ycxe" role="tabpanel" aria-labelledby="custom-tabs-four-settings-tab">
+                        <section class="content">
+
+                            <!-- Default box -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Sgtcode - <b>@Model.Tour.Sgtcode</b></h3>
+
+                                    <div class="card-tools">
+                                        <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+
+                                    <div style="overflow-x:auto;">
+                                        <table class="table mytable text-nowrap tblEMD" id="listAll">
+                                            <thead>
+                                                <tr class="table-info">
+
+                                                    <th>Triển khai</th>
+                                                    <th>Loại xe</th>
+                                                    <th>SK</th>
+                                                    <th>Từ ngày</th>
+                                                    <th>Đến ngày</th>
+                                                    <th>Chủ xe</th>
+                                                    <th>Số xe</th>
+                                                    <th>Lái xe</th>
+                                                    <th>Điện thoại</th>
+                                                    <th>Giờ hẹn xe</th>
+                                                    <th>Điểm hẹn xe</th>
+                                                    <th>KM</th>
+                                                    <th>Giá VND/KM</th>
+                                                    <th>Thành tiền</th>
+                                                    <th>Lộ trình</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in Model.ListYeucauxe)
+                                                {
+
+                                                    <tr class="cursor-pointer ">
+
+                                                        <td class="text-center">
+                                                            @item.Chinhanh
+                                                        </td>
+                                                        <td class="text-center">
+                                                            @item.Loaixe
+                                                        </td>
+                                                        <td class="text-center">
+                                                            @item.Sokhach
+                                                        </td>
+                                                        <td>
+                                                            @Html.Raw(item.Ngaydon.HasValue ? item.Ngaydon.Value.ToString("dd/MM/yyyy") : string.Empty)
+                                                        </td>
+                                                        <td>
+                                                            @Html.Raw(item.Denngay.HasValue ? item.Denngay.Value.ToString("dd/MM/yyyy") : string.Empty)
+                                                        </td>
+                                                        <td>
+                                                            @item.Supplierid
+                                                        </td>
+                                                        <td>
+                                                            @item.Soxe
+                                                        </td>
+                                                        <td>
+                                                            @item.Laixe
+                                                        </td>
+                                                        <td>
+                                                            @item.Dienthoai
+                                                        </td>
+                                                        <td>
+                                                            @Html.Raw(String.IsNullOrEmpty(item.Giodon) ? " : " : item.Giodon)
+                                                        </td>
+                                                        <td>
+                                                            @item.Diemdon
+                                                        </td>
+                                                        <td>
+                                                            @item.Km
+                                                        </td>
+                                                        <td class="text-right">
+                                                            @Html.Raw(String.Format("{0:#,##0}", item.Dongiakm))
+                                                        </td>
+                                                        <td class="text-right">
+                                                            @Html.Raw(string.Format("{0:#,##0}", item.Chiphi))
+                                                        </td>
+                                                        <td>
+                                                            @item.Lotrinh
+                                                        </td>
+
+                                                        <td style="display:none">
+                                                        </td>
+                                                    </tr>
+
+                                                }
+                                            </tbody>
+
+                                        </table>
+                                    </div>
+
+                                </div>
+                                <!-- /.card-body -->
+
+                            </div>
+                            <!-- /.card -->
+
+                        </section>
+                    </div>
+                    <!-- Xe -->
+                    <!-- HD -->
+                    <div class="tab-pane fade" id="tab_huongdan" role="tabpanel" aria-labelledby="custom-tabs-four-settings-tab">
+                        <section class="content">
+
+                            <!-- Default box -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Sgtcode - <b>@Model.Tour.Sgtcode</b></h3>
+
+                                    <div class="card-tools">
+                                        <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+
+                                    <div style="overflow-x:auto;">
+                                        <table class="table mytable text-nowrap tblEMD" id="listAll">
+                                            <thead>
+                                                <tr class="table-info">
+
+                                                    <th>Triển khai</th>
+                                                    <th>Ngày YC</th>
+                                                    <th>Tên HD</th>
+                                                    <th>Điện thoại</th>
+                                                    <th>Ngoại ngữ</th>
+                                                    <th>Bắt đầu</th>
+                                                    <th>Tại</th>
+                                                    <th>Kết thúc</th>
+                                                    <th>Tại</th>
+                                                    <th>Suốt tuyến</th>
+                                                    <th>Ghi chú</th>
+                                                    <th>Nội dung công việc</th>
+                                                    <th>Loại tiền</th>
+                                                    <th>Phí đón tiễn</th>
+                                                    <th>Phí đi đoàn</th>
+                                                    <th>Trả phí</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in Model.ListHuongdan)
+                                                {
+
+                                                    <tr class="cursor-pointer ">
+
+                                                        <td class="text-center">
+                                                            @item.Chinhanh
+                                                        </td>
+                                                        <td class="text-center">
+                                                            @Html.Raw(item.Ngayyeucau.ToString("dd/MM/yyyy"))
+                                                        </td>
+                                                        <td>
+                                                            @item.Tenhd
+                                                        </td>
+                                                        <td>
+                                                            @item.Dienthoai
+                                                        </td>
+                                                        <td>
+                                                            @item.Ngoaingu
+                                                        </td>
+                                                        <td>
+                                                            @Html.Raw(item.Batdau.HasValue ? item.Batdau.Value.ToString("dd/MM/yyyy") : "/ /")
+                                                        </td>
+                                                        <td>
+                                                            @item.Batdautai
+                                                        </td>
+                                                        <td>
+                                                            @Html.Raw(item.Ketthuc.HasValue ? item.Ketthuc.Value.ToString("dd/MM/yyyy") : "/ /")
+                                                        </td>
+                                                        <td>
+                                                            @item.Ketthuctai
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <input type="checkbox" class="minimal" checked="@item.Suottuyen" />
+                                                        </td>
+                                                        <td>
+                                                            @item.Ghichu
+                                                        </td>
+                                                        <td>
+                                                            @item.Ndcongviec
+                                                        </td>
+                                                        <td>
+                                                            @item.Loaitien
+                                                        </td>
+                                                        <td class="text-right">
+                                                            @Html.Raw(String.Format("{0:#,##0}", item.Phidontien))
+                                                        </td>
+                                                        <td class="text-right">
+                                                            @Html.Raw(string.Format("{0:#,##0}", item.Phididoan))
+                                                        </td>
+                                                        <td class="text-right">
+                                                            @Html.Raw(string.Format("{0:#,##0}", item.Traphi))
+                                                        </td>
+
+                                                        <td style="display:none">
+                                                        </td>
+                                                    </tr>
+
+                                                }
+                                            </tbody>
+
+                                        </table>
+                                    </div>
+
+                                </div>
+                                <!-- /.card-body -->
+
+                            </div>
+                            <!-- /.card -->
+
+                        </section>
+                    </div>
+                    <!-- HD -->
+                    <!-- Bien Nhan -->
+                    <div class="tab-pane fade" id="custom-tabs-four-biennhan" role="tabpanel" aria-labelledby="custom-tabs-four-settings-tab">
+                        @if (Model.BienNhans != null)
+                        {
                             <section class="content">
 
                                 <!-- Default box -->
                                 <div class="card">
                                     <div class="card-header">
-                                        <h3 class="card-title">Sgtcode - <b>@Model.Tour.Sgtcode</b></h3>
+                                        <h3 class="card-title ">Danh sách biên nhận - <b>@Model.Tour.Sgtcode</b></h3>
 
                                         <div class="card-tools">
+
                                             <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
                                                 <i class="fas fa-minus"></i>
                                             </button>
@@ -58,207 +947,52 @@
                                         </div>
                                     </div>
                                     <div class="card-body">
-
                                         <div style="overflow-x:auto;">
-                                            <table class="table mytable text-nowrap tblEMD" id="invoicesTbl">
+                                            <table class="table mytable text-nowrap tblEMD" id="listAll">
                                                 <thead>
                                                     <tr class="table-info">
                                                         <th>
-                                                            <button class="btn btn-outline-info btn-sm text-bold btn-block" id="btnNewInvoice" data-tourid="@Model.Tour.Id" title="Thêm mới invoice" data-toggle="modal" data-target="#createInvoiceModal"><i class="fas fa-plus"></i></button>
-                                                        </th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Id)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Replace)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Type)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Date)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Arr)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Dep)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Pax)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Currency)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Rate)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().MaKH)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().TenKhach)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Ref)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().HopDong)</th>
-
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @{
-                                                        var invoices = Model.Invoices;
-                                                    }
-                                                    @foreach (var item in Model.Invoices)
-                                                    {
-
-                                                        <tr class="invoice-cursor-pointer " data-huy="@item.HuyInvoice" onclick="CTInvoiceCTVATDiv()">
-
-                                                            <td>
-                                                                <div class="btn-group text-white" role="group">
-                                                                    @if (item.HuyInvoice == true)
-                                                                    {
-                                                                        <a class="disabled" title="Cập nhật"><i class="fas fa-edit"></i></a>
-                                                                        <span class="text-dark"> | </span>
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        <a class="text-primary" title="Cập nhật" asp-action="Edit" asp-route-tourId="@Model.Tour.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
-                                                                        <span class="text-dark"> | </span>
-                                                                    }
-                                                                    <!--print invoice-->
-                                                                    <a asp-action="InvoicePdfViewer" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" class="text-warning btnPrintInvoice" title="Print"><i class="fas fa-print"></i></a>
-                                                                    <span class="text-dark"> | </span>
-                                                                    <a class="text-success" title="Chi tiết" asp-action="Details" asp-route-tourId="@Model.Tour.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
-                                                                    <span class="text-dark"> | </span>
-                                                                    <form asp-action="Delete" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" method="post">
-
-                                                                        <span id="confirmDeleteSpan_@item.Id" style="display: none">
-                                                                            <span class="text-dark">Hủy?</span>
-                                                                            <button type="button" data-id="@item.Id" data-url="@Model.StrUrl" class="btn btn-danger btn-xs btnHuyInvoice">Yes</button>
-                                                                            <button type="button" class="btn btn-primary btn-xs" onclick="confirmDelete('@item.Id', false)">No</button>
-                                                                        </span>
-
-                                                                        <span id="deleteSpan_@item.Id">
-                                                                            @if (item.HuyInvoice == true)
-                                                                            {
-                                                                                <button type="button" class="text-danger border-0 bg-transparent disabled"><i class="fas fa-trash-alt"></i></button>
-
-                                                                            }
-                                                                            else
-                                                                            {
-                                                                                <button type="button" class="text-danger border-0 bg-transparent btnHuy" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
-
-                                                                            }
-                                                                        </span>
-                                                                    </form>
+                                                            <div class="btn-group">
+                                                                <a asp-action="Create" asp-controller="BienNhans" asp-route-tourId="@Model.Tour.Id" asp-route-strUrl="@Model.StrUrl" asp-route-tabActive="custom-tabs-four-biennhan" class="btn btn-default btn-sm text-bold" title="Thêm 1 biên nhận">New</a>
+                                                                <button type="button" class="btn btn-default btn-sm text-bold" data-toggle="modal" data-target="#modal-default">Find</button>
+                                                                <!-- Bien Nhan Find-->
+                                                                <div class="modal fade" id="modal-default" style="display: none;" aria-hidden="true">
+                                                                    <div class="modal-dialog">
+                                                                        <form asp-action="ChiTietBNFind" asp-controller="ChiTietBNs" asp-route-strUrl="@Model.StrUrl" asp-route-tabActive="custom-tabs-four-biennhan" method="get">
+                                                                            <div class="modal-content">
+                                                                                <div class="modal-header">
+                                                                                    <h4 class="modal-title">Default Modal</h4>
+                                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                        <span aria-hidden="true">×</span>
+                                                                                    </button>
+                                                                                </div>
+                                                                                <div class="modal-body">
+                                                                                    <div class="form-group">
+                                                                                        <input name="chiTietBNSearchString" class="form-control" />
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="modal-footer justify-content-between">
+                                                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                                                    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i></button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </form>
+                                                                        <!-- /.modal-content -->
+                                                                    </div>
+                                                                    <!-- /.modal-dialog -->
                                                                 </div>
-                                                            </td>
-
-                                                            <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Id)</td>
-                                                            <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Replace)</td>
-                                                            <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Type)</td>
-                                                            <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.Raw(item.Date.ToShortDateString())</td>
-                                                            <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.Raw(item.Arr.ToShortDateString())</td>
-                                                            <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">
-                                                                @if (item.Dep.HasValue)
-                                                                {
-                                                                    @Html.Raw(item.Dep.Value.ToShortDateString())
-                                                                }
-                                                            </td>
-                                                            <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Pax)</td>
-                                                            <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Currency)</td>
-                                                            <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Rate)</td>
-                                                            <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.MaKH)</td>
-                                                            <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.TenKhach)</td>
-
-                                                            <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Ref)</td>
-                                                            <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.HopDong)</td>
-                                                        </tr>
-
-                                                    }
-                                                </tbody>
-
-                                            </table>
-                                        </div>
-
-                                    </div>
-                                    <!-- /.card-body -->
-
-                                </div>
-                                <!-- /.card -->
-
-                            </section>
-                            <!-- CTInvoice - CTVAT -->
-                            <div class="cTInVoiceCTVAT" id="cTInVoiceCTVAT">
-
-                            </div>
-                            <!-- CTInvoice - CTVAT -->
-                        </div>
-                        <!-- Invoices -->
-                        <!-- Bien Nhan -->
-                        <div class="tab-pane fade" id="tab_biennhans" role="tabpanel" aria-labelledby="custom-tabs-four-settings-tab">
-
-                            <!-- huy tour modal-->
-                            <div class="modal fade" id="huyBNModal" aria-hidden="true" style="display: none;">
-                                <div class="modal-dialog modal-lg">
-
-                                    <div class="modal-content ">
-                                        <div class="modal-header">
-                                            <h4 class="modal-title">Thông tin hủy BN</h4>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">×</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body huyBNPartial">
-
-                                        </div>
-
-                                    </div>
-                                    <!-- /.modal-content -->
-                                </div>
-                                <!-- /.modal-dialog -->
-                            </div>
-                            <!-- huy tour modal-->
-                            <!-- print BN modal-->
-                            <div class="modal fade" id="PrintBNPartial" style="display: none;" aria-hidden="true">
-                                <div class="modal-dialog modal-xl">
-                                    <div class="modal-content">
-                                        <div class="modal-header bg-secondary">
-                                            <h4 class="modal-title ">Biên nhận <span id="spanSoBN"></span></h4>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">×</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body printBN" style="max-height: 400px !important; overflow-y:auto">
-
-                                        </div>
-                                        <div class="modal-footer justify-content-between">
-                                            <form id="frmPrintBN" asp-action="ExportPdf" method="post">
-                                                <input type="hidden" name="id" id="hidBienNhanIdForPdfPrint" />
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                <button type="submit" class="btn btn-primary">Print</button>
-                                            </form>
-
-                                        </div>
-                                    </div>
-                                    <!-- /.modal-content -->
-                                </div>
-                                <!-- /.modal-dialog -->
-                            </div>
-
-                            <!-- /.modal-dialog -->
-                            <!-- BienNhan -->
-                            <section class="content">
-
-                                <!-- Default box -->
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h3 class="card-title">Danh sách biên nhận - <b>@Model.Tour.Sgtcode</b></h3>
-
-                                        <div class="card-tools">
-                                            <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
-                                                <i class="fas fa-minus"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
-                                                <i class="fas fa-times"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="card-body">
-
-                                        <div style="overflow-x:auto; overflow-y: auto;">
-                                            <table class="table mytable text-nowrap tblEMD" id="biennhansTbl">
-                                                <thead>
-                                                    <tr class="table-info">
-                                                        <th>#</th>
-                                                        <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().SoBN)</th> <!-- so bien nhan-->
+                                                                <!-- Bien Nhan Find-->
+                                                            </div>
+                                                        </th>
+                                                        <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().Id)</th> <!-- so bien nhan-->
                                                         <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().NgayBN)</th>
                                                         <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().TenKhach)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().DienThoai)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().SoTien)</th>
-                                                        @*<th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().NoiDung)</th>*@
                                                         <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().SK)</th>
                                                         <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().GhiChu)</th>
                                                         <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().LoaiTien)</th>
                                                         <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().TyGia)</th>
+                                                        <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().KhachLe)</th>
+                                                        @*<th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().NoiDungHuy)</th>*@
 
                                                     </tr>
                                                 </thead>
@@ -266,65 +1000,42 @@
                                                     @foreach (var item in Model.BienNhans)
                                                     {
 
-                                                        <tr class="biennhan-cursor-pointer " data-huy="@item.HuyBN">
+                                                        <tr class="cursor-pointer ">
 
                                                             <td>
                                                                 <div class="btn-group text-white" role="group">
-                                                                    @if (item.HuyBN == true)
-                                                                    {
-                                                                        <a class="disabled" title="Cập nhật"><i class="fas fa-edit"></i></a>
-                                                                        <span class="text-dark"> | </span>
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        <a class="text-primary btnEditBN" title="Cập nhật" asp-action="Edit" asp-controller="BienNhans" asp-route-id="@item.Id" asp-route-tourId="@Model.Tour.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
-                                                                        <span class="text-dark"> | </span>
-                                                                    }
-                                                                    <!-- Print Pdf -->
-                                                                    <a data-id="@item.Id" data-strUrl="@Model.StrUrl" class="text-warning border-0 bg-transparent btnPrintBN" title="Print"><i class="fas fa-print"></i></a>
+                                                                    <a class="btn btn-primary btn-sm" title="Cập nhật" asp-action="Edit" asp-controller="BienNhans" asp-route-id="@item.Id" asp-route-tourIBId="@Model.Tour.Id" asp-route-strUrl="@Model.StrUrl" asp-route-tabActive="custom-tabs-four-biennhan"><i class="fas fa-edit"></i></a>
+                                                                    <a class="btn btn-success btn-sm" title="Chi tiết" asp-action="Details" asp-controller="BienNhans" asp-route-id="@item.Id" asp-route-invoiceId="@Model.Tour.Id" asp-route-strUrl="@Model.StrUrl" asp-route-tabActive="custom-tabs-four-biennhan"><i class="fas fa-list"></i></a>
+                                                                    <form asp-action="Delete" asp-controller="CTVATs" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" asp-route-tabActive="custom-tabs-four-CTVAT" method="post">
 
-                                                                    <span class="text-dark"> | </span>
-                                                                    <a class="text-success" title="Chi tiết" asp-action="Details" asp-controller="BienNhans" asp-route-id="@item.Id" asp-route-tourId="@Model.Tour.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
-                                                                    <span class="text-dark"> | </span>
-                                                                    <form asp-action="Delete" asp-controller="BienNhans" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" method="post">
-
-                                                                        <span id="confirmDeleteSpan_@item.Id" style="display: none">
-                                                                            <span class="text-dark spanXoa">Hủy?</span>
-                                                                            <button type="button" data-id="@item.Id" data-url="@Model.StrUrl" class="btn btn-danger btn-xs btnHuyBN">Yes</button>
-                                                                            <button type="button" class="btn btn-primary btn-xs" onclick="confirmDelete('@item.Id', false)">No</button>
+                                                                        <span id="confirmBienNhanDeleteSpan_@item.Id" style="display: none">
+                                                                            <span class="text-light">Xóa?</span>
+                                                                            <button type="submit" class="btn btn-danger">Yes</button>
+                                                                            <a href="#" class="btn btn-primary" onclick="confirmBienNhanDelete('@item.Id', false)">No</a>
                                                                         </span>
 
-                                                                        <span id="deleteSpan_@item.Id">
-                                                                            @if (item.HuyBN == true)
-                                                                            {
-                                                                                <button type="button" class="text-danger border-0 bg-transparent disabled"><i class="fas fa-trash-alt"></i></button>
-                                                                            }
-                                                                            else
-                                                                            {
-                                                                                <button title="Xóa" type="button" class="text-danger border-0 bg-transparent btnHuy" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
-                                                                            }
+                                                                        <span id="deleteBienNhanSpan_@item.Id">
+                                                                            <a href="#" class="btn btn-danger btn-sm" onclick="confirmBienNhanDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></a>
                                                                         </span>
                                                                     </form>
                                                                 </div>
                                                             </td>
 
-                                                            <td class="tdBNVal tdSoBN" data-id="@item.Id">@Html.DisplayFor(m => item.SoBN)</td>
-                                                            <td class="tdBNVal" data-id="@item.Id">@Html.Raw(item.NgayBN.ToString("dd/MM/yyyy"))</td>
-                                                            <td class="tdBNVal" data-id="@item.Id">@Html.DisplayFor(m => item.TenKhach)</td>
-                                                            <td class="tdBNVal" data-id="@item.Id">@Html.DisplayFor(m => item.DienThoai)</td>
-                                                            <td class="tdBNVal" data-id="@item.Id">@Html.Raw(item.SoTien.ToString("N0"))</td>
-                                                            <td class="tdBNVal" data-id="@item.Id">@Html.Raw(item.SK.ToString("N0"))</td>
-                                                            <td class="tdBNVal" data-id="@item.Id">@Html.DisplayFor(m => item.GhiChu)</td>
-                                                            <td class="tdBNVal" data-id="@item.Id">@Html.DisplayFor(m => item.LoaiTien)</td>
-                                                            <td class="tdBNVal" data-id="@item.Id">@Html.Raw(string.Format("{0:#,##0.00}", item.TyGia))</td>
-                                                            @*@Html.Raw(string.Format("{0:#,##0.00}", item.sotiennt))*@
+                                                            <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Id)</td>
+                                                            <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayBN.ToShortDateString())</td>
+                                                            <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.TenKhach)</td>
+                                                            <td class="tdVal" data-id="@item.Id">@Html.Raw(item.SK.ToString("N0"))</td>
+                                                            <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.GhiChu)</td>
+                                                            <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.LoaiTien)</td>
+                                                            <td class="tdVal" data-id="@item.Id">@Html.Raw(item.TyGia.ToString("N0"))</td>
+                                                            <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.KhachLe)</td>
+                                                            @*<td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.NoiDungHuy) </td>*@
                                                         </tr>
 
                                                     }
                                                 </tbody>
 
                                             </table>
-
                                         </div>
 
                                     </div>
@@ -334,738 +1045,22 @@
                                 <!-- /.card -->
 
                             </section>
-                            <!-- /BienNhan -->
-                            <!-- CTBienNhan -->
-                            <div class="cTietBN">
 
-                            </div>
-                            <!-- CTBienNhan -->
-                        </div>
-                        <!-- Bien Nhan -->
+                        }
 
                     </div>
+                    <!-- Bien Nhan -->
+
                 </div>
-                <!-- /.card -->
             </div>
+            <!-- /.card -->
         </div>
     </div>
-
-
-    <!--invoice - biennhan-->
-    <!--tour programe-->
-    <div class="row">
-        <div class="col-md-12 ">
-            <div class="card card-primary card-outline card-outline-tabs">
-                <div class="card-header p-0 border-bottom-0">
-                    <ul class="nav nav-tabs" @*id="custom-tabs-four-tab"*@ id="myTabs" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" id="custom-tabs-four-home-tab" data-toggle="pill" href="#tab_cttour" role="tab" aria-controls="custom-tabs-four-home" aria-selected="true">Chương trình tour</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="custom-tabs-four-profile-tab" data-toggle="pill" href="#tab_ghichu" role="tab" aria-controls="custom-tabs-four-profile" aria-selected="false">Ghi chú</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="custom-tabs-four-messages-tab" data-toggle="pill" href="#tab_Dskhach" role="tab" aria-controls="custom-tabs-four-messages" aria-selected="false">Danh sách khách</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="custom-tabs-four-settings-tab" data-toggle="pill" href="#tab_chiphikhac" role="tab" aria-controls="custom-tabs-four-settings" aria-selected="false">Chi phí khác</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="custom-tabs-four-settings-tab" data-toggle="pill" href="#tab_ycxe" role="tab" aria-controls="custom-tabs-four-settings" aria-selected="false">Xe</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="custom-tabs-four-settings-tab" data-toggle="pill" href="#tab_huongdan" role="tab" aria-controls="custom-tabs-four-settings" aria-selected="false">Hướng dẫn</a>
-                        </li>
-                        @*<li class="nav-item">
-                                <a class="nav-link" id="custom-tabs-four-home-tab" data-toggle="pill" href="#custom-tabs-four-invoice" role="tab" aria-controls="custom-tabs-four-home" aria-selected="true">Invoice</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="custom-tabs-four-settings-tab" data-toggle="pill" href="#custom-tabs-four-biennhan" role="tab" aria-controls="custom-tabs-four-settings" aria-selected="false">Biên nhận</a>
-                            </li>*@
-                    </ul>
-                </div>
-                <div class="card-body">
-                    <div class="tab-content" id="custom-tabs-four-tabContent">
-
-                        <!-- tab_cttour -->
-                        <div class="tab-pane fade active show" id="tab_cttour" role="tabpanel" aria-labelledby="custom-tabs-four-home-tab">
-
-                            <section class="content">
-
-                                <!-- Default box -->
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h3 class="card-title">Sgtcode - <b>@Model.Tour.Sgtcode</b></h3>
-
-                                        <div class="card-tools">
-                                            <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
-                                                <i class="fas fa-minus"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
-                                                <i class="fas fa-times"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="card-body">
-
-                                        <div style="overflow-x:auto;">
-                                            <table class="table mytable text-nowrap tblEMD" id="listAll">
-                                                <thead>
-                                                    <tr class="table-info">
-
-                                                        <th class="text-center" width="5%">Triển khai</th>
-                                                        <th class="text-center" width="5%">Trạng thái</th>
-                                                        <th class="text-center" width="5%">Ngày</th>
-                                                        <th class="text-center" width="5%">Ngày tháng</th>
-                                                        <th class="text-center" width="5%">Giờ</th>
-                                                        <th class="text-center" width="5%">Dịch vụ</th>
-                                                        <th class="text-center" width="5%">Loại tiền</th>
-                                                        <th>Chương trình</th>
-                                                        <th>Ghi chú</th>
-                                                        <th width="10%">Điều hành</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach (var item in Model.listTourProgAsync)
-                                                    {
-
-                                                        <tr class="cursor-pointer ">
-
-                                                            <td class="text-center">@item.Chinhanh</td>
-                                                            <td class="text-center">@item.Status</td>
-                                                            <td class="text-center">@item.Date</td>
-
-                                                            @switch (item.Logfile)
-                                                            {
-                                                                case string x when x.StartsWith("S"):
-                                                                    <td style="background-color:#FF7800">@item.Logfile</td>
-                                                                    break;
-                                                                default:
-                                                                    <td>@item.Logfile</td>
-                                                                    break;
-                                                            }
-                                                            <td class="text-center">@item.Time</td>
-                                                            <td class="text-center">@item.Srvtype</td>
-                                                            <td class="text-center">@item.Currency</td>
-                                                            <td>@item.TourItem</td>
-                                                            <td>@item.Srvnode</td>
-                                                            <td>@item.Dieuhanh</td>
-
-                                                        </tr>
-
-                                                    }
-                                                </tbody>
-
-                                            </table>
-                                        </div>
-
-                                    </div>
-                                    <!-- /.card-body -->
-
-                                </div>
-                                <!-- /.card -->
-
-                            </section>
-
-                        </div>
-                        <!-- tab_cttour -->
-                        <!-- Tournote -->
-                        <div class="tab-pane fade" id="tab_ghichu" role="tabpanel" aria-labelledby="custom-tabs-four-profile-tab">
-                            <label class="control-label">Đầu tour</label>
-                            <textarea class="form-control" readonly>@((Model.TourNoteAsync == null)?"": Model.TourNoteAsync.Headernode)</textarea>
-
-                            <label class="control-label">Cuối tour</label>
-                            <textarea class="form-control" readonly>@((Model.TourNoteAsync == null)?"": Model.TourNoteAsync.Footernode)</textarea>
-                        </div>
-                        <!-- Tournote -->
-                        <!-- DS Khach -->
-                        <div class="tab-pane fade" id="tab_Dskhach" role="tabpanel" aria-labelledby="custom-tabs-four-messages-tab">
-                            <section class="content">
-
-                                <!-- Default box -->
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h3 class="card-title">Sgtcode - <b>@Model.Tour.Sgtcode</b></h3>
-
-                                        <div class="card-tools">
-                                            <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
-                                                <i class="fas fa-minus"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
-                                                <i class="fas fa-times"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="card-body">
-
-                                        <div style="overflow-x:auto;">
-                                            <table class="table mytable text-nowrap tblEMD" id="listAll">
-                                                <thead>
-                                                    <tr class="table-info">
-
-                                                        <th>STT</th>
-                                                        <th>Mã</th>
-                                                        <th>Họ tên</th>
-                                                        <th>Ngày sinh</th>
-                                                        <th>Phái</th>
-                                                        <th>Điện thoại</th>
-                                                        <th>Hộ chiếu</th>
-                                                        <th>CMND</th>
-                                                        <th>Quốc tịch</th>
-                                                        <th>Loại phòng</th>
-                                                        <th class="text-center">
-                                                            Vé máy bay<br /><input type="checkbox" class="tfoot" style="display:none;" onchange="checkAll('tbKhachHang')" /><span class="tfoot" style="display:none"> | </span><a href="javascript:;" id="btSavedata" class="fa fa-save fa-lg tfoot" style="display:none;"></a>
-                                                        </th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach (var item in Model.ListDsKhach)
-                                                    {
-
-                                                        <tr class="cursor-pointer ">
-
-                                                            <td class="text-center">
-                                                                @item.Stt
-                                                            </td>
-                                                            <td>
-                                                                @item.Makh
-                                                            </td>
-                                                            <td>
-                                                                @item.Hoten
-                                                            </td>
-                                                            <td>
-                                                                @Html.Raw(item.Ngaysinh.HasValue ? item.Ngaysinh.Value.ToString("dd/MM/yyyy") : "/ /")
-                                                            </td>
-                                                            <td>
-                                                                @Html.Raw(item.Phai == true ? "Nam" : "Nữ")
-                                                            </td>
-                                                            <td>@item.Dienthoai</td>
-                                                            <td>
-                                                                @item.Hochieu
-                                                            </td>
-                                                            <td>
-                                                                @item.Cmnd
-                                                            </td>
-                                                            <td>
-                                                                @item.Quoctich
-                                                            </td>
-                                                            <td>
-                                                                @item.Loaiphong
-                                                            </td>
-                                                            <td class="text-center">
-                                                                <input type="checkbox" checked="@item.Vmb" name="vmb" class="ckId" disabled />
-                                                            </td>
-                                                            <td style="display:none">
-                                                            </td>
-                                                        </tr>
-
-                                                    }
-                                                </tbody>
-
-                                            </table>
-                                        </div>
-
-                                    </div>
-                                    <!-- /.card-body -->
-
-                                </div>
-                                <!-- /.card -->
-
-                            </section>
-                        </div>
-                        <!-- DS Khach -->
-                        <!-- Chi Phi Khac -->
-                        <div class="tab-pane fade" id="tab_chiphikhac" role="tabpanel" aria-labelledby="custom-tabs-four-settings-tab">
-                            <section class="content">
-
-                                <!-- Default box -->
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h3 class="card-title">Sgtcode - <b>@Model.Tour.Sgtcode</b></h3>
-
-                                        <div class="card-tools">
-                                            <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
-                                                <i class="fas fa-minus"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
-                                                <i class="fas fa-times"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="card-body">
-
-                                        <div style="overflow-x:auto;">
-                                            <table class="table mytable text-nowrap tblEMD" id="listAll">
-                                                <thead>
-                                                    <tr class="table-info">
-
-                                                        <th>CN</th>
-                                                        <th>Từ ngày</th>
-                                                        <th>Đến ngày</th>
-                                                        <th>Dịch vụ</th>
-                                                        <th>Nơi book</th>
-                                                        <th>Mục chương trình</th>
-                                                        <th>Số lượng</th>
-                                                        <th>Đơn giá</th>
-                                                        <th>Km</th>
-                                                        <th>Ngày HD</th>
-                                                        <th>Tổng chi phí</th>
-                                                        <th>Phải trả</th>
-                                                        <th>Phải thu</th>
-                                                        <th>Loại tiền</th>
-                                                        <th>VAT vào</th>
-                                                        <th>VAT ra</th>
-                                                        <th>Lợi nhuận</th>
-                                                        <th>Ghi chú</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach (var item in Model.ListCPKhac)
-                                                    {
-
-                                                        <tr class="cursor-pointer ">
-
-                                                            <td>@item.Chiphikhac.Chinhanh</td>
-                                                            <td>
-                                                                @item.Chiphikhac.Fromdate
-                                                            </td>
-                                                            <td>
-                                                                @item.Chiphikhac.Todate
-                                                            </td>
-                                                            <td>
-                                                                @item.Tendv
-                                                            </td>
-                                                            <td>
-                                                                @*@Html.Raw(item.ngaysinh.HasValue ? item.ngaysinh.Value.ToString("dd/MM/yyyy") : "/ /")*@
-                                                                @item.Tengiaodich
-                                                            </td>
-                                                            <td>
-                                                                @item.Chiphikhac.TourItem
-                                                            </td>
-                                                            <td>
-                                                                @item.Chiphikhac.Quantity
-                                                            </td>
-                                                            <td>
-                                                                @item.Chiphikhac.Unitprice
-                                                            </td>
-                                                            <td>
-                                                                @item.Chiphikhac.Km
-                                                            </td>
-                                                            <td>
-                                                                @item.Chiphikhac.Guidedays
-                                                            </td>
-                                                            <td>
-                                                                @item.Chiphikhac.Amount
-                                                            </td>
-                                                            <td class="text-center">
-                                                                <input type="checkbox" class="minimal" checked="@item.Chiphikhac.Debit" />
-                                                            </td>
-                                                            <td class="text-center">
-                                                                <input type="checkbox" class="minimal" checked="@item.Chiphikhac.Credit" />
-                                                            </td>
-                                                            <td>
-                                                                @item.Chiphikhac.Currency
-                                                            </td>
-                                                            <td>
-                                                                @item.Chiphikhac.Vatin
-                                                            </td>
-                                                            <td>
-                                                                @item.Chiphikhac.Vatout
-                                                            </td>
-                                                            <td>
-                                                                @item.Chiphikhac.Srvprofit
-                                                            </td>
-                                                            <td>
-                                                                @item.Chiphikhac.Srvnode
-                                                            </td>
-                                                            <td style="display:none">
-                                                            </td>
-                                                        </tr>
-
-                                                    }
-                                                </tbody>
-
-                                            </table>
-                                        </div>
-
-                                    </div>
-                                    <!-- /.card-body -->
-
-                                </div>
-                                <!-- /.card -->
-
-                            </section>
-                        </div>
-                        <!-- Chi Phi Khac -->
-                        <!-- Xe -->
-                        <div class="tab-pane fade" id="tab_ycxe" role="tabpanel" aria-labelledby="custom-tabs-four-settings-tab">
-                            <section class="content">
-
-                                <!-- Default box -->
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h3 class="card-title">Sgtcode - <b>@Model.Tour.Sgtcode</b></h3>
-
-                                        <div class="card-tools">
-                                            <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
-                                                <i class="fas fa-minus"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
-                                                <i class="fas fa-times"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="card-body">
-
-                                        <div style="overflow-x:auto;">
-                                            <table class="table mytable text-nowrap tblEMD" id="listAll">
-                                                <thead>
-                                                    <tr class="table-info">
-
-                                                        <th>Triển khai</th>
-                                                        <th>Loại xe</th>
-                                                        <th>SK</th>
-                                                        <th>Từ ngày</th>
-                                                        <th>Đến ngày</th>
-                                                        <th>Chủ xe</th>
-                                                        <th>Số xe</th>
-                                                        <th>Lái xe</th>
-                                                        <th>Điện thoại</th>
-                                                        <th>Giờ hẹn xe</th>
-                                                        <th>Điểm hẹn xe</th>
-                                                        <th>KM</th>
-                                                        <th>Giá VND/KM</th>
-                                                        <th>Thành tiền</th>
-                                                        <th>Lộ trình</th>
-
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach (var item in Model.ListYeucauxe)
-                                                    {
-
-                                                        <tr class="cursor-pointer ">
-
-                                                            <td class="text-center">
-                                                                @item.Chinhanh
-                                                            </td>
-                                                            <td class="text-center">
-                                                                @item.Loaixe
-                                                            </td>
-                                                            <td class="text-center">
-                                                                @item.Sokhach
-                                                            </td>
-                                                            <td>
-                                                                @Html.Raw(item.Ngaydon.HasValue ? item.Ngaydon.Value.ToString("dd/MM/yyyy") : string.Empty)
-                                                            </td>
-                                                            <td>
-                                                                @Html.Raw(item.Denngay.HasValue ? item.Denngay.Value.ToString("dd/MM/yyyy") : string.Empty)
-                                                            </td>
-                                                            <td>
-                                                                @item.Supplierid
-                                                            </td>
-                                                            <td>
-                                                                @item.Soxe
-                                                            </td>
-                                                            <td>
-                                                                @item.Laixe
-                                                            </td>
-                                                            <td>
-                                                                @item.Dienthoai
-                                                            </td>
-                                                            <td>
-                                                                @Html.Raw(String.IsNullOrEmpty(item.Giodon) ? " : " : item.Giodon)
-                                                            </td>
-                                                            <td>
-                                                                @item.Diemdon
-                                                            </td>
-                                                            <td>
-                                                                @item.Km
-                                                            </td>
-                                                            <td class="text-right">
-                                                                @Html.Raw(String.Format("{0:#,##0}", item.Dongiakm))
-                                                            </td>
-                                                            <td class="text-right">
-                                                                @Html.Raw(string.Format("{0:#,##0}", item.Chiphi))
-                                                            </td>
-                                                            <td>
-                                                                @item.Lotrinh
-                                                            </td>
-
-                                                            <td style="display:none">
-                                                            </td>
-                                                        </tr>
-
-                                                    }
-                                                </tbody>
-
-                                            </table>
-                                        </div>
-
-                                    </div>
-                                    <!-- /.card-body -->
-
-                                </div>
-                                <!-- /.card -->
-
-                            </section>
-                        </div>
-                        <!-- Xe -->
-                        <!-- HD -->
-                        <div class="tab-pane fade" id="tab_huongdan" role="tabpanel" aria-labelledby="custom-tabs-four-settings-tab">
-                            <section class="content">
-
-                                <!-- Default box -->
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h3 class="card-title">Sgtcode - <b>@Model.Tour.Sgtcode</b></h3>
-
-                                        <div class="card-tools">
-                                            <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
-                                                <i class="fas fa-minus"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
-                                                <i class="fas fa-times"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="card-body">
-
-                                        <div style="overflow-x:auto;">
-                                            <table class="table mytable text-nowrap tblEMD" id="listAll">
-                                                <thead>
-                                                    <tr class="table-info">
-
-                                                        <th>Triển khai</th>
-                                                        <th>Ngày YC</th>
-                                                        <th>Tên HD</th>
-                                                        <th>Điện thoại</th>
-                                                        <th>Ngoại ngữ</th>
-                                                        <th>Bắt đầu</th>
-                                                        <th>Tại</th>
-                                                        <th>Kết thúc</th>
-                                                        <th>Tại</th>
-                                                        <th>Suốt tuyến</th>
-                                                        <th>Ghi chú</th>
-                                                        <th>Nội dung công việc</th>
-                                                        <th>Loại tiền</th>
-                                                        <th>Phí đón tiễn</th>
-                                                        <th>Phí đi đoàn</th>
-                                                        <th>Trả phí</th>
-
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach (var item in Model.ListHuongdan)
-                                                    {
-
-                                                        <tr class="cursor-pointer ">
-
-                                                            <td class="text-center">
-                                                                @item.Chinhanh
-                                                            </td>
-                                                            <td class="text-center">
-                                                                @Html.Raw(item.Ngayyeucau.ToString("dd/MM/yyyy"))
-                                                            </td>
-                                                            <td>
-                                                                @item.Tenhd
-                                                            </td>
-                                                            <td>
-                                                                @item.Dienthoai
-                                                            </td>
-                                                            <td>
-                                                                @item.Ngoaingu
-                                                            </td>
-                                                            <td>
-                                                                @Html.Raw(item.Batdau.HasValue ? item.Batdau.Value.ToString("dd/MM/yyyy") : "/ /")
-                                                            </td>
-                                                            <td>
-                                                                @item.Batdautai
-                                                            </td>
-                                                            <td>
-                                                                @Html.Raw(item.Ketthuc.HasValue ? item.Ketthuc.Value.ToString("dd/MM/yyyy") : "/ /")
-                                                            </td>
-                                                            <td>
-                                                                @item.Ketthuctai
-                                                            </td>
-                                                            <td class="text-center">
-                                                                <input type="checkbox" class="minimal" checked="@item.Suottuyen" />
-                                                            </td>
-                                                            <td>
-                                                                @item.Ghichu
-                                                            </td>
-                                                            <td>
-                                                                @item.Ndcongviec
-                                                            </td>
-                                                            <td>
-                                                                @item.Loaitien
-                                                            </td>
-                                                            <td class="text-right">
-                                                                @Html.Raw(String.Format("{0:#,##0}", item.Phidontien))
-                                                            </td>
-                                                            <td class="text-right">
-                                                                @Html.Raw(string.Format("{0:#,##0}", item.Phididoan))
-                                                            </td>
-                                                            <td class="text-right">
-                                                                @Html.Raw(string.Format("{0:#,##0}", item.Traphi))
-                                                            </td>
-
-                                                            <td style="display:none">
-                                                            </td>
-                                                        </tr>
-
-                                                    }
-                                                </tbody>
-
-                                            </table>
-                                        </div>
-
-                                    </div>
-                                    <!-- /.card-body -->
-
-                                </div>
-                                <!-- /.card -->
-
-                            </section>
-                        </div>
-                        <!-- HD -->
-                        <!-- Bien Nhan -->
-                        <div class="tab-pane fade" id="custom-tabs-four-biennhan" role="tabpanel" aria-labelledby="custom-tabs-four-settings-tab">
-                            @if (Model.BienNhans != null)
-                            {
-                                <section class="content">
-
-                                    <!-- Default box -->
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <h3 class="card-title ">Danh sách biên nhận - <b>@Model.Tour.Sgtcode</b></h3>
-
-                                            <div class="card-tools">
-
-                                                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
-                                                    <i class="fas fa-minus"></i>
-                                                </button>
-                                                <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
-                                                    <i class="fas fa-times"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div class="card-body">
-                                            <div style="overflow-x:auto;">
-                                                <table class="table mytable text-nowrap tblEMD" id="listAll">
-                                                    <thead>
-                                                        <tr class="table-info">
-                                                            <th>
-                                                                <div class="btn-group">
-                                                                    <a asp-action="Create" asp-controller="BienNhans" asp-route-tourId="@Model.Tour.Id" asp-route-strUrl="@Model.StrUrl" asp-route-tabActive="custom-tabs-four-biennhan" class="btn btn-default btn-sm text-bold" title="Thêm 1 biên nhận">New</a>
-                                                                    <button type="button" class="btn btn-default btn-sm text-bold" data-toggle="modal" data-target="#modal-default">Find</button>
-                                                                    <!-- Bien Nhan Find-->
-                                                                    <div class="modal fade" id="modal-default" style="display: none;" aria-hidden="true">
-                                                                        <div class="modal-dialog">
-                                                                            <form asp-action="ChiTietBNFind" asp-controller="ChiTietBNs" asp-route-strUrl="@Model.StrUrl" asp-route-tabActive="custom-tabs-four-biennhan" method="get">
-                                                                                <div class="modal-content">
-                                                                                    <div class="modal-header">
-                                                                                        <h4 class="modal-title">Default Modal</h4>
-                                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                                            <span aria-hidden="true">×</span>
-                                                                                        </button>
-                                                                                    </div>
-                                                                                    <div class="modal-body">
-                                                                                        <div class="form-group">
-                                                                                            <input name="chiTietBNSearchString" class="form-control" />
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div class="modal-footer justify-content-between">
-                                                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                                                        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i></button>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </form>
-                                                                            <!-- /.modal-content -->
-                                                                        </div>
-                                                                        <!-- /.modal-dialog -->
-                                                                    </div>
-                                                                    <!-- Bien Nhan Find-->
-                                                                </div>
-                                                            </th>
-                                                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().Id)</th> <!-- so bien nhan-->
-                                                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().NgayBN)</th>
-                                                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().TenKhach)</th>
-                                                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().SK)</th>
-                                                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().GhiChu)</th>
-                                                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().LoaiTien)</th>
-                                                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().TyGia)</th>
-                                                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().KhachLe)</th>
-                                                            @*<th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().NoiDungHuy)</th>*@
-
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach (var item in Model.BienNhans)
-                                                        {
-
-                                                            <tr class="cursor-pointer ">
-
-                                                                <td>
-                                                                    <div class="btn-group text-white" role="group">
-                                                                        <a class="btn btn-primary btn-sm" title="Cập nhật" asp-action="Edit" asp-controller="BienNhans" asp-route-id="@item.Id" asp-route-tourIBId="@Model.Tour.Id" asp-route-strUrl="@Model.StrUrl" asp-route-tabActive="custom-tabs-four-biennhan"><i class="fas fa-edit"></i></a>
-                                                                        <a class="btn btn-success btn-sm" title="Chi tiết" asp-action="Details" asp-controller="BienNhans" asp-route-id="@item.Id" asp-route-invoiceId="@Model.Tour.Id" asp-route-strUrl="@Model.StrUrl" asp-route-tabActive="custom-tabs-four-biennhan"><i class="fas fa-list"></i></a>
-                                                                        <form asp-action="Delete" asp-controller="CTVATs" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" asp-route-tabActive="custom-tabs-four-CTVAT" method="post">
-
-                                                                            <span id="confirmBienNhanDeleteSpan_@item.Id" style="display: none">
-                                                                                <span class="text-light">Xóa?</span>
-                                                                                <button type="submit" class="btn btn-danger">Yes</button>
-                                                                                <a href="#" class="btn btn-primary" onclick="confirmBienNhanDelete('@item.Id', false)">No</a>
-                                                                            </span>
-
-                                                                            <span id="deleteBienNhanSpan_@item.Id">
-                                                                                <a href="#" class="btn btn-danger btn-sm" onclick="confirmBienNhanDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></a>
-                                                                            </span>
-                                                                        </form>
-                                                                    </div>
-                                                                </td>
-
-                                                                <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Id)</td>
-                                                                <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayBN.ToShortDateString())</td>
-                                                                <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.TenKhach)</td>
-                                                                <td class="tdVal" data-id="@item.Id">@Html.Raw(item.SK.ToString("N0"))</td>
-                                                                <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.GhiChu)</td>
-                                                                <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.LoaiTien)</td>
-                                                                <td class="tdVal" data-id="@item.Id">@Html.Raw(item.TyGia.ToString("N0"))</td>
-                                                                <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.KhachLe)</td>
-                                                                @*<td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.NoiDungHuy) </td>*@
-                                                            </tr>
-
-                                                        }
-                                                    </tbody>
-
-                                                </table>
-                                            </div>
-
-                                        </div>
-                                        <!-- /.card-body -->
-
-                                    </div>
-                                    <!-- /.card -->
-
-                                </section>
-
-                            }
-
-                        </div>
-                        <!-- Bien Nhan -->
-
-                    </div>
-                </div>
-                <!-- /.card -->
-            </div>
-        </div>
-    </div>
-    <!--tour programe-->
-
-</section>
+</div>
+<!--tour programe-->
 
 <script src="~/js/Admin/KeToan_TourInfoByTourPartial/indexController.js"></script>
+<script src="~/js/Admin/Tours/indexController.js"></script>
 <script>
     function CTInvoiceCTVATDiv() {
         location.href = "#cTInVoiceCTVAT";

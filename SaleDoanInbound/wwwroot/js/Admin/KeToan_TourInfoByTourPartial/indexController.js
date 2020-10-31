@@ -64,31 +64,6 @@
         });
         // giu trang thai biennhan click
 
-        // create new invoice
-        $('#btnNewInvoice').off('click').on('click', function () {
-            
-            tourid = $(this).data('tourid');
-            var url = '/Invoices/CreateInvoicePartial';
-            $.get(url, { tourid: tourid }, function (response) {
-
-                $('#createInvoiceModal').show();
-                $('.createInvoicePartial').html(response);
-                $('#createInvoiceModal').draggable();
-
-            });
-        });
-        // create new invoice
-
-        /// submit save --> load 
-        //tourId = $(this).data('id');
-
-        //var url = '/Tours/KeToan_TourInfoByTourPartial';
-        //$.get(url, { tourId: tourId }, function (response) {
-
-        //    $('#tabs_KeToan_TourInfo').html(response);
-
-        //});
-
     }
 };
 indexController.init();
