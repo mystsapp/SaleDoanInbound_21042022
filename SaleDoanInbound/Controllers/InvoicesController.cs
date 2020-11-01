@@ -531,6 +531,154 @@ namespace SaleDoanInbound.Controllers
 
             return View(InvoiceVM);
         }
+        
+        [HttpPost, ActionName("EditInvoicePartial")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditInvoicePartialPost()
+        {
+            // from login session
+            var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
+
+            string temp = "", log = "";
+
+            if (string.IsNullOrEmpty(InvoiceVM.Invoice.Id))
+                return NotFound();
+
+            if (ModelState.IsValid)
+            {
+                InvoiceVM.Invoice.NgaySua = DateTime.Now;
+                InvoiceVM.Invoice.NguoiSua = user.Username;
+
+                if (string.IsNullOrEmpty(InvoiceVM.Invoice.Replace))
+                {
+                    InvoiceVM.Invoice.Replace = "";
+                }
+                if (string.IsNullOrEmpty(InvoiceVM.Invoice.Ref))
+                {
+                    InvoiceVM.Invoice.Ref = "";
+                }
+                if (string.IsNullOrEmpty(InvoiceVM.Invoice.HopDong))
+                {
+                    InvoiceVM.Invoice.HopDong = "";
+                }
+
+                // kiem tra thay doi : trong getbyid() va ngoai view
+                #region log file
+                //var t = _unitOfWork.tourRepository.GetById(id);
+                var t = _unitOfWork.invoiceRepository.GetByIdAsNoTracking(x => x.Id == InvoiceVM.Invoice.Id);
+                if (t.Replace != InvoiceVM.Invoice.Replace)
+                {
+                    temp += String.Format("- Replace thay đổi: {0}->{1}", t.Replace, InvoiceVM.Invoice.Replace);
+                }
+                if (t.Type != InvoiceVM.Invoice.Type)
+                {
+                    temp += String.Format("- Loại invoice thay đổi: {0}->{1}", t.Type, InvoiceVM.Invoice.Type);
+                }
+                if (t.TenKhach != InvoiceVM.Invoice.TenKhach)
+                {
+                    temp += String.Format("- Tên khách thay đổi: {0}->{1}", t.TenKhach, InvoiceVM.Invoice.TenKhach);
+                }
+                if (t.GhiChu != InvoiceVM.Invoice.GhiChu)
+                {
+                    temp += String.Format("- Ghi chú thay đổi: {0}->{1}", t.GhiChu, InvoiceVM.Invoice.GhiChu);
+                }
+                if (t.Arr != InvoiceVM.Invoice.Arr)
+                {
+                    temp += String.Format("- Bắt đầu thay đổi: {0:dd/MM/yyyy}->{1:dd/MM/yyyy}", t.Arr, InvoiceVM.Invoice.Arr);
+                }
+                if (t.Dep != InvoiceVM.Invoice.Dep)
+                {
+                    temp += String.Format("- Kết thúc thay đổi: {0:dd/MM/yyyy}->{1:dd/MM/yyyy}", t.Dep, InvoiceVM.Invoice.Dep);
+                }
+                if (t.Pax != InvoiceVM.Invoice.Pax)
+                {
+                    temp += String.Format("- Số khách thay đổi: {0}->{1}", t.Pax, InvoiceVM.Invoice.Pax);
+                }
+
+                if (t.Currency != InvoiceVM.Invoice.Currency)
+                {
+                    temp += String.Format("- Loại tiền thay đổi: {0}->{1}", t.Currency, InvoiceVM.Invoice.Currency);
+                }
+                if (t.Rate != InvoiceVM.Invoice.Rate)
+                {
+                    temp += String.Format("- Tỷ giá thay đổi: {0:#,##0.0}->{1:#,##0.0}", t.Rate, InvoiceVM.Invoice.Rate);
+                }
+                if (t.SGL != InvoiceVM.Invoice.SGL)
+                {
+                    temp += String.Format("- SGL thay đổi: {0:#,##0.0}->{1:#,##0.0}", t.SGL, InvoiceVM.Invoice.SGL);
+                }
+                if (t.DBL != InvoiceVM.Invoice.DBL)
+                {
+                    temp += String.Format("- DBL thay đổi: {0:#,##0.0}->{1:#,##0.0}", t.DBL, InvoiceVM.Invoice.DBL);
+                }
+                if (t.TPL != InvoiceVM.Invoice.TPL)
+                {
+                    temp += String.Format("- TPL thay đổi: {0:#,##0.0}->{1:#,##0.0}", t.TPL, InvoiceVM.Invoice.TPL);
+                }
+                if (t.MOFP != InvoiceVM.Invoice.MOFP)
+                {
+                    temp += String.Format("- MOFP thay đổi: {0:#,##0.0}->{1:#,##0.0}", t.MOFP, InvoiceVM.Invoice.MOFP);
+                }
+                if (t.DOFP != InvoiceVM.Invoice.DOFP)
+                {
+                    temp += String.Format("- DOFP thay đổi: {0:dd/MM/yyyy}->{1:dd/MM/yyyy}", t.DOFP, InvoiceVM.Invoice.DOFP);
+                }
+                if (t.Ref != InvoiceVM.Invoice.Ref)
+                {
+                    temp += String.Format("- Ref thay đổi: {0}->{1}", t.Ref, InvoiceVM.Invoice.Ref);
+                }
+                if (t.HopDong != InvoiceVM.Invoice.HopDong)
+                {
+                    temp += String.Format("- Hộp đồng thay đổi: {0}->{1}", t.HopDong, InvoiceVM.Invoice.HopDong);
+                }
+
+                // loai tien, ty gia mac dinh: vnd, 1
+                #endregion
+                // kiem tra thay doi
+                if (temp.Length > 0)
+                {
+
+                    log = System.Environment.NewLine;
+                    log += "=============";
+                    log += System.Environment.NewLine;
+                    log += temp + " -User cập nhật tour: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // username
+                    t.LogFile = t.LogFile + log;
+                    InvoiceVM.Invoice.LogFile = t.LogFile;
+                }
+
+                try
+                {
+
+                    _unitOfWork.invoiceRepository.Update(InvoiceVM.Invoice);
+                    await _unitOfWork.Complete();
+                    //SetAlert("Cập nhật thành công", "success");
+                    return Json(new
+                    {
+                        status = true
+                    });
+                }
+                catch (Exception ex)
+                {
+                    //SetAlert(ex.Message, "error");
+                    //InvoiceVM = new InvoiceViewModel()
+                    //{
+                    //    Invoice = new Data.Models_IB.Invoice(),
+                    //    TourIB = new Data.Models_IB.TourIB(),
+                    //    Ngoaites = _unitOfWork.ngoaiTeRepository.GetAll(),
+                    //    LoaiIVs = _unitOfWork.loaiIVRepository.GetAll(),
+                    //    Tour = new Data.Models_IB.Tour()
+                    //};
+                    //return View(InvoiceVM);
+                    return Json(new
+                    {
+                        status = false,
+                        message = ex.Message
+                    });
+                }
+            }
+
+            return View(InvoiceVM);
+        }
 
         public async Task<IActionResult> Details(string id, long tourId/*, string tabActive*/, string strUrl)
         {

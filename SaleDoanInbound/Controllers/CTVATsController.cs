@@ -318,9 +318,19 @@ namespace SaleDoanInbound.Controllers
             //CTVATVM.CTInvoice.DLHH = false;
             return View(CTVATVM);
         }
+        public async Task<IActionResult> CreateCTInvoicePartial(string invoiceId)
+        {
+            CTVATVM.Invoice = await _unitOfWork.invoiceRepository.GetByIdAsync(invoiceId);
+            CTVATVM.CTInvoice.InvoiceId = CTVATVM.Invoice.Id;
+            CTVATVM.CTInvoice.Percent = 100;
+            CTVATVM.CTInvoice.ServiceFee = 3;
+            CTVATVM.CTInvoice.VAT = 10;
+            
+            return PartialView(CTVATVM);
+        }
 
         [HttpPost, ActionName("CreateCTInvoice")]
-        [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken] 
         public async Task<IActionResult> CreateCTInvoicePost(string invoiceId, string strUrl, string r1)
         {
             // from login session
@@ -372,6 +382,77 @@ namespace SaleDoanInbound.Controllers
                 CTVATVM.Invoice = await _unitOfWork.invoiceRepository.GetByIdAsync(invoiceId);
                 CTVATVM.CTInvoice.InvoiceId = CTVATVM.Invoice.Id;
                 return View(CTVATVM);
+            }
+
+        }
+        
+        [HttpPost, ActionName("CreateCTInvoicePartial")]
+        [ValidateAntiForgeryToken] 
+        public async Task<IActionResult> CreateCTInvoicePartialPost()
+        {
+            // from login session
+            var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
+
+            if (!ModelState.IsValid)
+            {
+                //CTVATVM.Invoice = await _unitOfWork.invoiceRepository.GetByIdAsync(CTVATVM.Invoice.Id);
+                //CTVATVM.CTInvoice.InvoiceId = CTVATVM.Invoice.Id;
+                return Json(new
+                {
+                    status = false,
+                    message = "Not valid?"
+                });
+            }
+            if (CTVATVM.CTInvoice.DLHH == false && CTVATVM.CTInvoice.DS == false)
+            {
+                //CTVATVM.Invoice = await _unitOfWork.invoiceRepository.GetByIdAsync(CTVATVM.Invoice.Id);
+                //CTVATVM.CTInvoice.InvoiceId = CTVATVM.Invoice.Id;
+                //ModelState.AddModelError("", "Ds Or DLHH ?");
+                return Json(new
+                {
+                    status = false,
+                    message = "Ds Or DLHH ?"
+                });
+            }
+            CTVATVM.CTInvoice.NgayTao = DateTime.Now;
+            CTVATVM.CTInvoice.NguoiTao = user.Username;
+            CTVATVM.CTInvoice.TiengAnh = true;
+
+            if (string.IsNullOrEmpty(CTVATVM.CTInvoice.Descript))
+            {
+                CTVATVM.CTInvoice.Descript = "";
+            }
+            CTVATVM.CTInvoice.Descript = CTVATVM.CTInvoice.Descript.ToUpper();
+            if (string.IsNullOrEmpty(CTVATVM.CTInvoice.Unit))
+            {
+                CTVATVM.CTInvoice.Unit = "";
+            }
+            CTVATVM.CTInvoice.Unit = CTVATVM.CTInvoice.Unit.ToUpper();
+            // ghi log
+            CTVATVM.CTInvoice.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
+            try
+            {
+
+                _unitOfWork.cTVATRepository.Create(CTVATVM.CTInvoice);
+                await _unitOfWork.Complete();
+                //SetAlert("Thêm mới thành công.", "success");
+                //return Redirect(CTVATVM.StrUrl);
+
+                return Json(new
+                {
+                    status = true
+                });
+            }
+            catch (Exception ex)
+            {
+                //SetAlert(ex.Message, "error");
+                //CTVATVM.Invoice = await _unitOfWork.invoiceRepository.GetByIdAsync(invoiceId);
+                //CTVATVM.CTInvoice.InvoiceId = CTVATVM.Invoice.Id;
+                return Json(new
+                {
+                    status = false,
+                    message = ex.Message
+                });
             }
 
         }

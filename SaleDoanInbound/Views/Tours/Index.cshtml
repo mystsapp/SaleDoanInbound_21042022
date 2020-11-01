@@ -288,6 +288,10 @@
 <div id="editInvoicePartial" class="ml-2 mr-2">
 </div>
 <!--cap nhat invoice-->
+<!--create CT invoice-->
+<div id="createCTInvoicePartial" class="ml-2 mr-2">
+</div>
+<!--create CT invoice-->
 
 @section Scripts{
 
@@ -346,7 +350,7 @@
         // rollback tab
         $('#myTabs a[href="#@Model.tabActive"]').tab('show') // Select tab by name
 
-        function Tabs_KeToan_TourInfo() {
+        function Tabs_KeToan_TourInfo() { // tab href
             location.href = "#tabs_KeToan_TourInfo";
     }
     </script>

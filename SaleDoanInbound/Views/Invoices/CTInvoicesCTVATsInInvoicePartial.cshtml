@@ -7,11 +7,11 @@
         <div class="card-header">
             @if (Model.Invoice.Id != null)
             {
-            <h3 class="card-title">Danh sách chi tiết invoice - <b>@Model.Invoice.Id</b></h3>
+                <h3 class="card-title">Danh sách chi tiết invoice - <b>@Model.Invoice.Id</b></h3>
             }
             else
             {
-            <h3 class="card-title">Danh sách chi tiết invoice</h3>
+                <h3 class="card-title">Danh sách chi tiết invoice</h3>
             }
 
             <div class="card-tools">
@@ -33,12 +33,12 @@
 
                                 @if (Model.Invoice.HuyInvoice == true)
                                 {
-                                <a class="btn btn-default btn-sm text-bold disabled btn-block" title="Thêm CT invoice">New</a>
+                                    <a class="btn btn-default btn-sm text-bold disabled btn-block" title="Thêm CT invoice">New</a>
 
                                 }
                                 else
                                 {
-                                <a id="btnNewCTInvoice" data-id="@Model.Invoice.Id" asp-action="CreateCTInvoice" asp-controller="CTVATs" asp-route-invoiceId="@Model.Invoice.Id" asp-route-strUrl="@Model.StrUrl" class="btn btn-outline-info btn-sm text-bold btn-block" title="Thêm CT invoice"><i class="fas fa-plus"></i></a>
+                                    <button type="button" id="btnNewCTInvoice" data-invoiceId="@Model.Invoice.Id" class="btn btn-outline-info btn-sm text-bold btn-block" title="Thêm CT invoice"><i class="fas fa-plus"></i></button>
                                 }
                             </th>
                             <th>@Html.DisplayNameFor(m => m.CTInvoices.FirstOrDefault().Descript)</th>
@@ -60,90 +60,90 @@
                     <tbody>
                         @if (Model.CTInvoices != null && Model.Invoice.HuyInvoice != true)
                         {
-                        @foreach (var item in Model.CTInvoices)
+                            @foreach (var item in Model.CTInvoices)
                             {
 
-                        <tr class="ctinvoice-cursor-pointer ">
+                                <tr class="ctinvoice-cursor-pointer ">
 
-                            <td>
-                                <div class="btn-group text-white" role="group">
-                                    <a class="text-primary" title="Cập nhật" asp-action="EditCTInvoice" asp-controller="CTVATs" asp-route-invoiceId="@Model.Invoice.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
-                                    <span class="text-dark"> | </span>
-                                    <a class="text-success" title="Chi tiết" asp-action="DetailsCTInvoice" asp-controller="CTVATs" asp-route-invoiceId="@Model.Invoice.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
-                                    <span class="text-dark"> | </span>
-                                    <form asp-action="DeleteCTInvoice" asp-controller="CTVATs" asp-route-id="@item.Id" asp-route-invoiceId="@Model.Invoice.Id" asp-route-strUrl="@Model.StrUrl" method="post">
+                                    <td>
+                                        <div class="btn-group text-white" role="group">
+                                            <a class="text-primary" title="Cập nhật" asp-action="EditCTInvoice" asp-controller="CTVATs" asp-route-invoiceId="@Model.Invoice.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
+                                            <span class="text-dark"> | </span>
+                                            <a class="text-success" title="Chi tiết" asp-action="DetailsCTInvoice" asp-controller="CTVATs" asp-route-invoiceId="@Model.Invoice.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
+                                            <span class="text-dark"> | </span>
+                                            <form asp-action="DeleteCTInvoice" asp-controller="CTVATs" asp-route-id="@item.Id" asp-route-invoiceId="@Model.Invoice.Id" asp-route-strUrl="@Model.StrUrl" method="post">
 
-                                        <span id="confirmDeleteSpan_@item.Id" style="display: none">
-                                            <span class="text-dark">Xóa?</span>
-                                            <button type="submit" class="btn btn-danger btn-xs">Yes</button>
-                                            <button type="button" class="btn btn-primary btn-xs" onclick="confirmDelete('@item.Id', false)">No</button>
-                                        </span>
+                                                <span id="confirmDeleteSpan_@item.Id" style="display: none">
+                                                    <span class="text-dark">Xóa?</span>
+                                                    <button type="submit" class="btn btn-danger btn-xs">Yes</button>
+                                                    <button type="button" class="btn btn-primary btn-xs" onclick="confirmDelete('@item.Id', false)">No</button>
+                                                </span>
 
-                                        <span id="deleteSpan_@item.Id">
-                                            <button type="button" class="text-danger border-0 bg-transparent" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
-                                        </span>
-                                    </form>
-                                </div>
-                            </td>
+                                                <span id="deleteSpan_@item.Id">
+                                                    <button type="button" class="text-danger border-0 bg-transparent" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
+                                                </span>
+                                            </form>
+                                        </div>
+                                    </td>
 
-                            <td>@Html.DisplayFor(m => item.Descript)</td>
-                            <td>@Html.DisplayFor(m => item.Quantity)</td>
-                            <td>@Html.DisplayFor(m => item.Unit)</td>
-                            <td>@Html.Raw(item.UnitPrice.ToString("N0"))</td>
-                            <td>@Html.Raw(item.Percent.ToString("N0"))</td>
-                            <td>@Html.Raw(item.Amount.ToString("N0"))</td>
-                            <td>@Html.Raw(item.ServiceFee.ToString("N0"))</td>
-                            <td>@Html.Raw(item.VAT.ToString("N0"))</td>
-                            <td>@Html.DisplayFor(m => item.Muc)</td>
-                            <td>@Html.DisplayFor(m => item.TenKhoanMuc)</td>
-                            <td>@Html.DisplayFor(m => item.DS)</td>
-                            <td>@Html.DisplayFor(m => item.DLHH)</td>
-                        </tr>
+                                    <td>@Html.DisplayFor(m => item.Descript)</td>
+                                    <td>@Html.DisplayFor(m => item.Quantity)</td>
+                                    <td>@Html.DisplayFor(m => item.Unit)</td>
+                                    <td>@Html.Raw(item.UnitPrice.ToString("N0"))</td>
+                                    <td>@Html.Raw(item.Percent.ToString("N0"))</td>
+                                    <td>@Html.Raw(item.Amount.ToString("N0"))</td>
+                                    <td>@Html.Raw(item.ServiceFee.ToString("N0"))</td>
+                                    <td>@Html.Raw(item.VAT.ToString("N0"))</td>
+                                    <td>@Html.DisplayFor(m => item.Muc)</td>
+                                    <td>@Html.DisplayFor(m => item.TenKhoanMuc)</td>
+                                    <td>@Html.DisplayFor(m => item.DS)</td>
+                                    <td>@Html.DisplayFor(m => item.DLHH)</td>
+                                </tr>
 
                             }
 
                         }
                         @if (Model.Invoice.HuyInvoice == true)
                         {
-                        @foreach (var item in Model.CTInvoices)
+                            @foreach (var item in Model.CTInvoices)
                             {
 
-                        <tr class="cursor-pointer bg-secondary">
+                                <tr class="cursor-pointer bg-secondary">
 
-                            <td>
-                                <div class="btn-group text-white" role="group">
-                                    <a class="disabled" title="Cập nhật"><i class="fas fa-edit"></i></a>
-                                    <span class="text-dark"> | </span>
-                                    <a class="text-success" title="Chi tiết" asp-action="DetailsCTInvoice" asp-controller="CTVATs" asp-route-invoiceId="@Model.Invoice.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
-                                    <span class="text-dark"> | </span>
-                                    <form asp-action="DeleteCTInvoice" asp-controller="CTVATs" asp-route-id="@item.Id" asp-route-invoiceId="@Model.Invoice.Id" asp-route-strUrl="@Model.StrUrl" method="post">
+                                    <td>
+                                        <div class="btn-group text-white" role="group">
+                                            <a class="disabled" title="Cập nhật"><i class="fas fa-edit"></i></a>
+                                            <span class="text-dark"> | </span>
+                                            <a class="text-success" title="Chi tiết" asp-action="DetailsCTInvoice" asp-controller="CTVATs" asp-route-invoiceId="@Model.Invoice.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
+                                            <span class="text-dark"> | </span>
+                                            <form asp-action="DeleteCTInvoice" asp-controller="CTVATs" asp-route-id="@item.Id" asp-route-invoiceId="@Model.Invoice.Id" asp-route-strUrl="@Model.StrUrl" method="post">
 
-                                        <span id="confirmDeleteSpan_@item.Id" style="display: none">
-                                            <span class="text-dark">Xóa?</span>
-                                            <button type="submit" class="btn btn-danger btn-xs">Yes</button>
-                                            <button type="button" class="btn btn-primary btn-xs" onclick="confirmDelete('@item.Id', false)">No</button>
-                                        </span>
+                                                <span id="confirmDeleteSpan_@item.Id" style="display: none">
+                                                    <span class="text-dark">Xóa?</span>
+                                                    <button type="submit" class="btn btn-danger btn-xs">Yes</button>
+                                                    <button type="button" class="btn btn-primary btn-xs" onclick="confirmDelete('@item.Id', false)">No</button>
+                                                </span>
 
-                                        <span id="deleteSpan_@item.Id">
-                                            <button type="button" disabled class="text-danger border-0 bg-transparent" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
-                                        </span>
-                                    </form>
-                                </div>
-                            </td>
+                                                <span id="deleteSpan_@item.Id">
+                                                    <button type="button" disabled class="text-danger border-0 bg-transparent" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
+                                                </span>
+                                            </form>
+                                        </div>
+                                    </td>
 
-                            <td>@Html.DisplayFor(m => item.Descript)</td>
-                            <td>@Html.DisplayFor(m => item.Quantity)</td>
-                            <td>@Html.DisplayFor(m => item.Unit)</td>
-                            <td>@Html.Raw(item.UnitPrice.ToString("N0"))</td>
-                            <td>@Html.Raw(item.Percent.ToString("N0"))</td>
-                            <td>@Html.Raw(item.Amount.ToString("N0"))</td>
-                            <td>@Html.Raw(item.ServiceFee.ToString("N0"))</td>
-                            <td>@Html.Raw(item.VAT.ToString("N0"))</td>
-                            <td>@Html.DisplayFor(m => item.Muc)</td>
-                            <td>@Html.DisplayFor(m => item.TenKhoanMuc)</td>
-                            <td>@Html.DisplayFor(m => item.DS)</td>
-                            <td>@Html.DisplayFor(m => item.DLHH)</td>
-                        </tr>
+                                    <td>@Html.DisplayFor(m => item.Descript)</td>
+                                    <td>@Html.DisplayFor(m => item.Quantity)</td>
+                                    <td>@Html.DisplayFor(m => item.Unit)</td>
+                                    <td>@Html.Raw(item.UnitPrice.ToString("N0"))</td>
+                                    <td>@Html.Raw(item.Percent.ToString("N0"))</td>
+                                    <td>@Html.Raw(item.Amount.ToString("N0"))</td>
+                                    <td>@Html.Raw(item.ServiceFee.ToString("N0"))</td>
+                                    <td>@Html.Raw(item.VAT.ToString("N0"))</td>
+                                    <td>@Html.DisplayFor(m => item.Muc)</td>
+                                    <td>@Html.DisplayFor(m => item.TenKhoanMuc)</td>
+                                    <td>@Html.DisplayFor(m => item.DS)</td>
+                                    <td>@Html.DisplayFor(m => item.DLHH)</td>
+                                </tr>
 
                             }
 
@@ -169,11 +169,11 @@
         <div class="card-header">
             @if (Model.Invoice.Id != null)
             {
-            <h3 class="card-title">Danh sách chi tiết VAT - <b>@Model.Invoice.Id</b></h3>
+                <h3 class="card-title">Danh sách chi tiết VAT - <b>@Model.Invoice.Id</b></h3>
             }
             else
             {
-            <h3 class="card-title">Danh sách chi tiết VAT</h3>
+                <h3 class="card-title">Danh sách chi tiết VAT</h3>
             }
 
             <div class="card-tools">
@@ -194,17 +194,17 @@
                             <th>
                                 @if (Model.Invoice.HuyInvoice == true)
                                 {
-                                @*<a class="btn btn-default btn-sm text-bold disabled" title="Thêm CT invoice">New</a>*@
-                                <a class="btn btn-default btn-sm text-bold disabled" title="Copy CT invoice">Copy</a>
+                                    @*<a class="btn btn-default btn-sm text-bold disabled" title="Thêm CT invoice">New</a>*@
+                                    <a class="btn btn-default btn-sm text-bold disabled" title="Copy CT invoice">Copy</a>
                                 }
                                 else
                                 {
 
-                                @*<a class="btn btn-default btn-sm text-bold " asp-action="CreateCTVAT" data-id="@Model.Invoice.Id" id="btnNewCTVAT" asp-controller="CTVATs" asp-route-invoiceId="@Model.Invoice.Id" asp-route-strUrl="@Model.StrUrl" title="Thêm CTVAT">New</a>*@
-                                <button class="btn btn-default btn-sm text-bold " data-id="@Model.Invoice.Id" id="btnCopyCTVAT" title="Copy CTVAT">Copy</button>
+                                    @*<a class="btn btn-default btn-sm text-bold " asp-action="CreateCTVAT" data-id="@Model.Invoice.Id" id="btnNewCTVAT" asp-controller="CTVATs" asp-route-invoiceId="@Model.Invoice.Id" asp-route-strUrl="@Model.StrUrl" title="Thêm CTVAT">New</a>*@
+                                    <button class="btn btn-default btn-sm text-bold " data-id="@Model.Invoice.Id" id="btnCopyCTVAT" title="Copy CTVAT">Copy</button>
 
-                                <form id="frmCopyCTVAT" asp-action="CopyCTInvoice_DS_To_CTVAT" asp-controller="CTVATs" method="post" asp-route-invoiceId="@Model.Invoice.Id" asp-route-strUrl="@Model.StrUrl">
-                                </form>
+                                    <form id="frmCopyCTVAT" asp-action="CopyCTInvoice_DS_To_CTVAT" asp-controller="CTVATs" method="post" asp-route-invoiceId="@Model.Invoice.Id" asp-route-strUrl="@Model.StrUrl">
+                                    </form>
 
                                 }
 
@@ -223,84 +223,84 @@
                     <tbody>
                         @if (Model.CTVATs != null && Model.Invoice.HuyInvoice != true)
                         {
-                        @foreach (var item in Model.CTVATs)
+                            @foreach (var item in Model.CTVATs)
                             {
 
-                        <tr class="ctvat-cursor-pointer ">
+                                <tr class="ctvat-cursor-pointer ">
 
-                            <td>
-                                <div class="btn-group text-white" role="group">
-                                    @*<a class="text-primary" title="Cập nhật" asp-action="EditCTVAT" asp-controller="CTVATs" asp-route-invoiceId="@Model.Invoice.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
-                                        <span class="text-dark"> | </span>*@
-                                    <a class="text-success" title="Chi tiết" asp-action="DetailsCTVAT" asp-controller="CTVATs" asp-route-invoiceId="@Model.Invoice.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
-                                    <span class="text-dark"> | </span>
-                                    <form asp-action="DeleteCTVAT" asp-controller="CTVATs" asp-route-id="@item.Id" asp-route-invoiceId="@Model.Invoice.Id" asp-route-strUrl="@Model.StrUrl" method="post">
+                                    <td>
+                                        <div class="btn-group text-white" role="group">
+                                            @*<a class="text-primary" title="Cập nhật" asp-action="EditCTVAT" asp-controller="CTVATs" asp-route-invoiceId="@Model.Invoice.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
+                                                <span class="text-dark"> | </span>*@
+                                            <a class="text-success" title="Chi tiết" asp-action="DetailsCTVAT" asp-controller="CTVATs" asp-route-invoiceId="@Model.Invoice.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
+                                            <span class="text-dark"> | </span>
+                                            <form asp-action="DeleteCTVAT" asp-controller="CTVATs" asp-route-id="@item.Id" asp-route-invoiceId="@Model.Invoice.Id" asp-route-strUrl="@Model.StrUrl" method="post">
 
-                                        <span id="confirmDeleteSpan_@item.Id" style="display: none">
-                                            <span class="text-dark">Xóa?</span>
-                                            <button type="submit" class="btn btn-danger btn-xs">Yes</button>
-                                            <button type="button" class="btn btn-primary btn-xs" onclick="confirmDelete('@item.Id', false)">No</button>
-                                        </span>
+                                                <span id="confirmDeleteSpan_@item.Id" style="display: none">
+                                                    <span class="text-dark">Xóa?</span>
+                                                    <button type="submit" class="btn btn-danger btn-xs">Yes</button>
+                                                    <button type="button" class="btn btn-primary btn-xs" onclick="confirmDelete('@item.Id', false)">No</button>
+                                                </span>
 
-                                        <span id="deleteSpan_@item.Id">
-                                            <button type="button" class="text-danger border-0 bg-transparent" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
-                                        </span>
-                                    </form>
-                                </div>
-                            </td>
+                                                <span id="deleteSpan_@item.Id">
+                                                    <button type="button" class="text-danger border-0 bg-transparent" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
+                                                </span>
+                                            </form>
+                                        </div>
+                                    </td>
 
-                            <td>@Html.DisplayFor(m => item.Descript)</td>
-                            <td>@Html.DisplayFor(m => item.Quantity)</td>
-                            <td>@Html.DisplayFor(m => item.Unit)</td>
-                            <td>@Html.Raw(item.UnitPrice.ToString("N0"))</td>
-                            <td>@Html.Raw(item.Percent.ToString("N0"))</td>
-                            <td>@Html.Raw(item.Amount.ToString("N0"))</td>
-                            <td>@Html.Raw(item.ServiceFee.ToString("N0"))</td>
-                            <td>@Html.Raw(item.VAT.ToString("N0"))</td>
+                                    <td>@Html.DisplayFor(m => item.Descript)</td>
+                                    <td>@Html.DisplayFor(m => item.Quantity)</td>
+                                    <td>@Html.DisplayFor(m => item.Unit)</td>
+                                    <td>@Html.Raw(item.UnitPrice.ToString("N0"))</td>
+                                    <td>@Html.Raw(item.Percent.ToString("N0"))</td>
+                                    <td>@Html.Raw(item.Amount.ToString("N0"))</td>
+                                    <td>@Html.Raw(item.ServiceFee.ToString("N0"))</td>
+                                    <td>@Html.Raw(item.VAT.ToString("N0"))</td>
 
-                        </tr>
+                                </tr>
 
                             }
 
                         }
                         @if (Model.Invoice.HuyInvoice == true)
                         {
-                        @foreach (var item in Model.CTVATs)
+                            @foreach (var item in Model.CTVATs)
                             {
 
-                        <tr class="cursor-pointer bg-secondary">
+                                <tr class="cursor-pointer bg-secondary">
 
-                            <td>
-                                <div class="btn-group text-white" role="group">
-                                    @*<a class="disabled" title="Cập nhật"><i class="fas fa-edit"></i></a>*@
-                                    @*<span class="text-dark"> | </span>*@
-                                    <a class="text-success" title="Chi tiết" asp-action="DetailsCTVAT" asp-controller="CTVATs" asp-route-invoiceId="@Model.Invoice.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
-                                    <span class="text-dark"> | </span>
-                                    <form asp-action="DeleteCTVAT" asp-controller="CTVATs" asp-route-id="@item.Id" asp-route-invoiceId="@Model.Invoice.Id" asp-route-strUrl="@Model.StrUrl" method="post">
+                                    <td>
+                                        <div class="btn-group text-white" role="group">
+                                            @*<a class="disabled" title="Cập nhật"><i class="fas fa-edit"></i></a>*@
+                                            @*<span class="text-dark"> | </span>*@
+                                            <a class="text-success" title="Chi tiết" asp-action="DetailsCTVAT" asp-controller="CTVATs" asp-route-invoiceId="@Model.Invoice.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
+                                            <span class="text-dark"> | </span>
+                                            <form asp-action="DeleteCTVAT" asp-controller="CTVATs" asp-route-id="@item.Id" asp-route-invoiceId="@Model.Invoice.Id" asp-route-strUrl="@Model.StrUrl" method="post">
 
-                                        <span id="confirmDeleteSpan_@item.Id" style="display: none">
-                                            <span class="text-dark">Xóa?</span>
-                                            <button type="submit" class="btn btn-danger btn-xs">Yes</button>
-                                            <button type="button" class="btn btn-primary btn-xs" onclick="confirmDelete('@item.Id', false)">No</button>
-                                        </span>
+                                                <span id="confirmDeleteSpan_@item.Id" style="display: none">
+                                                    <span class="text-dark">Xóa?</span>
+                                                    <button type="submit" class="btn btn-danger btn-xs">Yes</button>
+                                                    <button type="button" class="btn btn-primary btn-xs" onclick="confirmDelete('@item.Id', false)">No</button>
+                                                </span>
 
-                                        <span id="deleteSpan_@item.Id">
-                                            <button type="button" disabled class="text-danger border-0 bg-transparent" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
-                                        </span>
-                                    </form>
-                                </div>
-                            </td>
+                                                <span id="deleteSpan_@item.Id">
+                                                    <button type="button" disabled class="text-danger border-0 bg-transparent" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
+                                                </span>
+                                            </form>
+                                        </div>
+                                    </td>
 
-                            <td>@Html.DisplayFor(m => item.Descript)</td>
-                            <td>@Html.DisplayFor(m => item.Quantity)</td>
-                            <td>@Html.DisplayFor(m => item.Unit)</td>
-                            <td>@Html.Raw(item.UnitPrice.ToString("N0"))</td>
-                            <td>@Html.Raw(item.Percent.ToString("N0"))</td>
-                            <td>@Html.Raw(item.Amount.ToString("N0"))</td>
-                            <td>@Html.Raw(item.ServiceFee.ToString("N0"))</td>
-                            <td>@Html.Raw(item.VAT.ToString("N0"))</td>
+                                    <td>@Html.DisplayFor(m => item.Descript)</td>
+                                    <td>@Html.DisplayFor(m => item.Quantity)</td>
+                                    <td>@Html.DisplayFor(m => item.Unit)</td>
+                                    <td>@Html.Raw(item.UnitPrice.ToString("N0"))</td>
+                                    <td>@Html.Raw(item.Percent.ToString("N0"))</td>
+                                    <td>@Html.Raw(item.Amount.ToString("N0"))</td>
+                                    <td>@Html.Raw(item.ServiceFee.ToString("N0"))</td>
+                                    <td>@Html.Raw(item.VAT.ToString("N0"))</td>
 
-                        </tr>
+                                </tr>
 
                             }
 
@@ -337,3 +337,4 @@
     });
 </script>
 <script src="~/js/Admin/CTInvoicesCTVATsInInvoicePartial/indexController.js"></script>
+<script src="~/js/Admin/Tours/indexController.js"></script>
