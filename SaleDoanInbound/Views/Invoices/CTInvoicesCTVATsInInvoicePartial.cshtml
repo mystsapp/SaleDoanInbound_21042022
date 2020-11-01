@@ -67,15 +67,15 @@
 
                                     <td>
                                         <div class="btn-group text-white" role="group">
-                                            <a class="text-primary" title="Cập nhật" asp-action="EditCTInvoice" asp-controller="CTVATs" asp-route-invoiceId="@Model.Invoice.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
+                                            <button type="button" class="text-primary border-0 bg-transparent btnEditCTInvoice" title="Cập nhật" data-invoiceId="@Model.Invoice.Id" data-CTInvoiceId="@item.Id" ><i class="fas fa-edit"></i></button>
+                                            @*<span class="text-dark"> | </span>*@
+                                            @*<a class="text-success" title="Chi tiết" asp-action="DetailsCTInvoice" asp-controller="CTVATs" asp-route-invoiceId="@Model.Invoice.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>*@
                                             <span class="text-dark"> | </span>
-                                            <a class="text-success" title="Chi tiết" asp-action="DetailsCTInvoice" asp-controller="CTVATs" asp-route-invoiceId="@Model.Invoice.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
-                                            <span class="text-dark"> | </span>
-                                            <form asp-action="DeleteCTInvoice" asp-controller="CTVATs" asp-route-id="@item.Id" asp-route-invoiceId="@Model.Invoice.Id" asp-route-strUrl="@Model.StrUrl" method="post">
+                                            <form method="post">
 
                                                 <span id="confirmDeleteSpan_@item.Id" style="display: none">
                                                     <span class="text-dark">Xóa?</span>
-                                                    <button type="submit" class="btn btn-danger btn-xs">Yes</button>
+                                                    <button type="button" class="btn btn-danger btn-xs btnDeleteInCTInvoiceCTVATPartial" data-CTInvoiceId="@item.Id" data-invoiceId="@Model.Invoice.Id">Yes</button>
                                                     <button type="button" class="btn btn-primary btn-xs" onclick="confirmDelete('@item.Id', false)">No</button>
                                                 </span>
 
@@ -320,7 +320,9 @@
 <!-- /CTVAT -->
 
 <script>
-
+    $('#btnEditCTInvoice').click(function () {
+        alert('a');
+    })
     $(function () {
         //$("#datepicker").datepicker({
         //    dateFormat: 'dd/mm/yy'

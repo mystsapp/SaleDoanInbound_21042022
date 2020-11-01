@@ -1,30 +1,7 @@
 ﻿
 @model CTVATViewModel
 
-@{
-    ViewData["Title"] = "EditCTInvoice";
 
-}
-
-<!-- Content Header (Page header) -->
-<section class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1>Cập nhật</h1>
-            </div>
-            <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="/">Home</a></li>
-                    <li class="breadcrumb-item"><a asp-controller="KhachHangs" asp-route-strUrl="@Model.StrUrl" asp-action="DetailsRedirect">Danh Sách Invoice</a></li>
-                    <li class="breadcrumb-item active">Cập nhật CTInvoice</li>
-                </ol>
-            </div>
-        </div>
-    </div><!-- /.container-fluid -->
-</section>
-
-<!-- Main content -->
 
 <section class="content">
 
@@ -47,9 +24,8 @@
             <form method="post" autocomplete="off" id="frmCTInvoiceEdit">
                 <div class="p-4 border rounded">
 
-                    <input asp-for="CTInvoice.InvoiceId" type="hidden" /> <!-- this field is required - foreignkey to invoice-->
+                    <input asp-for="CTInvoice.InvoiceId" type="hidden" id="hidInvoiceIdInEditCTInvoicePartial"/> <!-- this field is required - foreignkey to invoice-->
                     <input asp-for="CTInvoice.Id" type="hidden" /> <!-- this field is required-->
-                    <input asp-for="StrUrl" type="hidden" value="@Model.StrUrl" /> <!-- this field for action post-->
                     <input asp-for="CTInvoice.NgayTao" type="hidden" />
                     <input asp-for="CTInvoice.NguoiTao" type="hidden" />
                     <input asp-for="CTInvoice.TiengAnh" type="hidden" />
@@ -150,8 +126,8 @@
 
                     <div class="form-group row">
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i></button>
-                            <a class="btn btn-success" asp-controller="KhachHangs" asp-route-strUrl="@Model.StrUrl" asp-action="DetailsRedirect"><i class="fas fa-backward"></i></a>
+                            <button type="button" id="btnSubmitEditCTInvoicePartial" class="btn btn-primary"><i class="fas fa-save"></i></button>
+                            <button type="button" id="btnReturnEditCTInvoicePartial" class="btn btn-success" data-tourId="@Model.Invoice.TourId" ><i class="fas fa-backward"></i></button>
                         </div>
                     </div>
                 </div>
@@ -165,80 +141,68 @@
 
 </section>
 <!-- /.content -->
+<!-- Validation -->
+<script>
 
-@section Scripts{
-    @*<script>
+    $('#frmCTInvoiceEdit').validate({
+        //rules: {
+        //    email: {
+        //        required: true,
+        //        email: true,
+        //    },
+        //    NgayDen: {
+        //        required: true
+        //    },
+        //    chuDetour1: {
+        //        required: true
+        //    },
+        //},
+        //messages: {
+        //    email: {
+        //        required: "Please enter a email address",
+        //        email: "Please enter a vaild email address"
+        //    },
+        //    NgayDen: {
+        //        required: "Please provide a date"
+        //    },
+        //    chuDetour1: "Please enter value"
+        //},
+        errorElement: 'span',
+        errorPlacement: function (error, element) {
+            // add error text
 
-            $(function () {
-                $(".datepicker").datepicker({
-                    dateFormat: 'dd/mm/yy'
-                });
-            });
-        </script>*@
+            //error.addClass('invalid-feedback').removeClass('error');
+            //element.closest('.chuDeTourGroup').append(error);
+        },
+        highlight: function (element, errorClass, validClass) {
+            $(element).addClass('is-invalid');
+        },
+        unhighlight: function (element, errorClass, validClass) {
+            $(element).removeClass('is-invalid');
+        }
+    });
 
-    <!-- Validation -->
-    <script>
+    $('#txtQuantity').rules('add', {
+        required: true,
+        messages: {
+            // required: "Ngày đến không được để trống"
+        }
+    });
 
-        $('#frmCTInvoiceEdit').validate({
-            //rules: {
-            //    email: {
-            //        required: true,
-            //        email: true,
-            //    },
-            //    NgayDen: {
-            //        required: true
-            //    },
-            //    chuDetour1: {
-            //        required: true
-            //    },
-            //},
-            //messages: {
-            //    email: {
-            //        required: "Please enter a email address",
-            //        email: "Please enter a vaild email address"
-            //    },
-            //    NgayDen: {
-            //        required: "Please provide a date"
-            //    },
-            //    chuDetour1: "Please enter value"
-            //},
-            errorElement: 'span',
-            errorPlacement: function (error, element) {
-                // add error text
+    $('#txtUnitPrice').rules('add', {
+        required: true,
+        messages: {
+            // required: "Ngày đến không được để trống"
+        }
+    });
 
-                //error.addClass('invalid-feedback').removeClass('error');
-                //element.closest('.chuDeTourGroup').append(error);
-            },
-            highlight: function (element, errorClass, validClass) {
-                $(element).addClass('is-invalid');
-            },
-            unhighlight: function (element, errorClass, validClass) {
-                $(element).removeClass('is-invalid');
-            }
-        });
+</script>
 
-        $('#txtQuantity').rules('add', {
-            required: true,
-            messages: {
-                // required: "Ngày đến không được để trống"
-            }
-        });
+<script>
+    $(function () {
+        $('.select2').select2()
+    });
+</script>
 
-        $('#txtUnitPrice').rules('add', {
-            required: true,
-            messages: {
-                // required: "Ngày đến không được để trống"
-            }
-        });
-
-    </script>
-
-    <script>
-        $(function () {
-            $('.select2').select2()
-        });
-    </script>
-
-    <script src="~/js/Admin/CTInvoice/editController.js"></script>
-}
-
+<script src="~/js/Admin/EditCTInvoicePartial/editController.js"></script>
+<script src="~/js/Admin/Tours/indexController.js"></script>

@@ -11,7 +11,7 @@ var indexController = {
             "preventDuplicates": false,
             "onclick": null,
             "showDuration": "300",
-            "hideDuration": "1000",
+            "hideDuration": "2000",
             "timeOut": "2000",
             "extendedTimeOut": "1000",
             "showEasing": "swing",
@@ -136,7 +136,7 @@ var indexController = {
         $('tr .tdVal').click(function () {
 
             $('#createInvoicePartial').hide();
-            $('#createCTInvoicePartial').hide();            
+            $('#createCTInvoicePartial').hide();
 
             tourId = $(this).data('id');
             var url = '/Tours/KeToan_TourInfoByTourPartial';
@@ -328,7 +328,7 @@ var indexController = {
 
         // edit invoice
         $('#btnEditInvoice').off('click').on('click', function () {
-            
+
             tourid = $(this).data('tourid');
             invoiceId = $(this).data('invoiceid');
 
@@ -354,7 +354,7 @@ var indexController = {
 
         // create CTInvoice
         $('#btnNewCTInvoice').off('click').on('click', function () {
-            
+
             invoiceId = $(this).data('invoiceid');
 
             $('#tabs_KeToan_TourInfo').hide();
@@ -370,61 +370,165 @@ var indexController = {
             });
         });
         // create CTInvoice
-        
-    $('#btnCreateCTInvoicePartial').off('click').on('click', function () {
-        debugger
-        // if frm valid
-        if ($('#frmCTInvoiceCreate').valid()) {
-            var invoice = $('#frmCTInvoiceCreate').serialize();
+
+        $('#btnCreateCTInvoicePartial').off('click').on('click', function () {
+
+            // if frm valid
+            if ($('#frmCTInvoiceCreate').valid()) {
+                var invoice = $('#frmCTInvoiceCreate').serialize();
+                $.ajax({
+                    type: "POST",
+                    url: "/CTVATs/CreateCTInvoicePartial",
+                    data: invoice,
+                    dataType: "json",
+                    success: function (response) {
+                        if (response.status) {
+
+                            toastr.success('Thêm mới CT invoice thành công!'); // toastr in admin/tour/indexController.js
+
+                            $('#createCTInvoicePartial').hide();
+
+                            $('#tabs_KeToan_TourInfo').show();
+                            tourId = tourIdInCreateCTInvoicePartial; // receive it from EditInvoicePartial
+                            indexController.Load_KeToan_TourInfoByTourPartial(tourId);
+
+                            invoiceIdReturn = $('#hidInvoiceIdInCreateCTInvoicePartial').val();
+                            var url = '/Invoices/CTInvoicesCTVATsInInvoicePartial';
+                            $.get(url, { invoiceId: invoiceIdReturn }, function (response) {
+
+                                $('.cTInVoiceCTVAT').html(response);
+
+                            });
+
+                        }
+                        else {
+                            toastr.error(response.message);
+
+                        }
+                    }
+                });
+            }
+        });
+
+        // del CTInvoice
+
+        $('.btnDeleteInCTInvoiceCTVATPartial').off('click').on('click', function () {
+
+            invoiceId = $(this).data('invoiceid');
+            ctInvoiceId = $(this).data('ctinvoiceid');
+
             $.ajax({
                 type: "POST",
-                url: "/CTVATs/CreateCTInvoicePartial",
-                data: invoice,
+                url: "/CTVATs/DeleteCTInvoiceInCTInvoicesCTVATsPartial",
+                data: {
+                    //invoiceId: invoiceId,
+                    ctInvoiceId: ctInvoiceId
+                },
                 dataType: "json",
                 success: function (response) {
                     if (response.status) {
 
-                        toastr.success('Thêm mới CT invoice thành công!'); // toastr in admin/tour/indexController.js
+                        toastr.success('Xóa CT invoice thành công!'); // toastr in admin/tour/indexController.js
 
-                        $('#createCTInvoicePartial').hide();
+                        $('#editCTInvoicePartial').hide();
 
-                        $('#tabs_KeToan_TourInfo').show();
-                        tourId = tourIdInCreateCTInvoicePartial; // receive it from EditInvoicePartial
-                        indexController.Load_KeToan_TourInfoByTourPartial(tourId);
-                        debugger
-                        invoiceIdReturn = $('#hidInvoiceIdInCreateCTInvoicePartial').val();
-                        var url = '/Invoices/CTInvoicesCTVATsInInvoicePartial';
-                        $.get(url, { invoiceId: invoiceIdReturn }, function (response) {
+                        //tourId = tourIdInCreateCTInvoicePartial; // receive it from EditInvoicePartial
+                        //indexController.Load_KeToan_TourInfoByTourPartial(tourId);
 
-                            $('.cTInVoiceCTVAT').html(response);
-
-                        });
-
+                        invoiceIdReturn = invoiceId;
+                        indexController.Load_CTInvoice_CTVAT_Partial(invoiceIdReturn);
                     }
                     else {
                         toastr.error(response.message);
-                        //  debugger
-                        // $('#createInvoiceModal').show();
-                        // $('.createInvoicePartial').html(response);
-                        //$('#createInvoiceModal').draggable();
-
-                        //tourid = $(this).data('tourid');
-                        //var url = '/Invoices/CreateInvoicePartial';
-                        //$.get(url, { tourid: tourid }, function (response) {
-
-                        //    $('#createInvoiceModal').show();
-                        //    $('.createInvoicePartial').html(response);
-                        //    $('#createInvoiceModal').draggable();
-
-                        //});
 
                     }
                 }
             });
-        }
-    });
-
+        });
         //////////////////////////////////////////////////////////////////////////////// CTInvoicesCTVATsInInvoicePartial
+
+        //////////////////////////////////////////////////////////////////////////////// editCTInvoicePartial
+
+        // edit CTInvoice btnEditCTInvoice
+        $('.btnEditCTInvoice').off('click').on('click', function () {
+
+            invoiceId = $(this).data('invoiceid');
+            ctInvoiceId = $(this).data('ctinvoiceid');
+
+            //$('#tabs_KeToan_TourInfo').hide();
+            $('#cTInVoiceCTVAT').hide();
+            $('#createInvoicePartial').hide();
+            $('#editInvoicePartial').hide();
+            $('#createCTInvoicePartial').hide();
+
+            var url = '/CTVATs/EditCTInvoicePartial';
+            $.get(url, { invoiceId: invoiceId, ctInvoiceId: ctInvoiceId }, function (response) {
+
+                $('#editCTInvoicePartial').show();
+                $('#editCTInvoicePartial').html(response);
+
+            });
+        });
+        // edit CTInvoice
+
+        $('#btnReturnEditCTInvoicePartial').off('click').on('click', function () {
+
+            //tourId = $(this).data('tourid');
+            //indexController.Load_KeToan_TourInfoByTourPartial(tourId);
+            invoiceId = $('#hidInvoiceId').val();
+            indexController.Load_CTInvoice_CTVAT_Partial(invoiceId);
+
+            $('#editCTInvoicePartial').hide();
+            $('#cTInVoiceCTVAT').show();
+        });
+        $('#btnSubmitEditCTInvoicePartial').off('click').on('click', function () {
+
+            // if frm valid
+            if ($('#frmCTInvoiceEdit').valid()) {
+                var invoice = $('#frmCTInvoiceEdit').serialize();
+                $.ajax({
+                    type: "POST",
+                    url: "/CTVATs/EditCTInvoicePartial",
+                    data: invoice,
+                    dataType: "json",
+                    success: function (response) {
+                        if (response.status) {
+
+                            toastr.success('Cập nhật CT invoice thành công!'); // toastr in admin/tour/indexController.js
+
+                            $('#editCTInvoicePartial').hide();
+
+                            //tourId = tourIdInCreateCTInvoicePartial; // receive it from EditInvoicePartial
+                            //indexController.Load_KeToan_TourInfoByTourPartial(tourId);
+
+                            invoiceIdReturn = $('#hidInvoiceIdInEditCTInvoicePartial').val();
+                            indexController.Load_CTInvoice_CTVAT_Partial(invoiceIdReturn);
+                        }
+                        else {
+                            toastr.error(response.message);
+                            //  debugger
+                            // $('#createInvoiceModal').show();
+                            // $('.createInvoicePartial').html(response);
+                            //$('#createInvoiceModal').draggable();
+
+                            //tourid = $(this).data('tourid');
+                            //var url = '/Invoices/CreateInvoicePartial';
+                            //$.get(url, { tourid: tourid }, function (response) {
+
+                            //    $('#createInvoiceModal').show();
+                            //    $('.createInvoicePartial').html(response);
+                            //    $('#createInvoiceModal').draggable();
+
+                            //});
+
+                        }
+                    }
+                });
+            }
+        });
+
+        //////////////////////////////////////////////////////////////////////////////// editCTInvoicePartial
+
     },
     Load_KeToan_TourInfoByTourPartial: function (tourId) {
         var url = '/Tours/KeToan_TourInfoByTourPartial';
@@ -437,10 +541,12 @@ var indexController = {
 
     },
     Load_CTInvoice_CTVAT_Partial: function (invoiceId) {
+
         var url = '/Invoices/CTInvoicesCTVATsInInvoicePartial';
         $.get(url, { invoiceId: invoiceId }, function (response) {
 
             $('.cTInVoiceCTVAT').html(response);
+            $('.cTInVoiceCTVAT').show();
 
         });
     }

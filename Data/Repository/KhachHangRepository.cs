@@ -31,10 +31,10 @@ namespace Data.Repository
             if (!string.IsNullOrEmpty(searchName))
             {
                 list = list.Where(x => x.CompanyId.ToLower().Contains(searchName.ToLower()) ||
-                                       x.Name.ToLower().Contains(searchName.ToLower()) ||
-                                       x.Nation.ToLower().Contains(searchName.ToLower()) ||
-                                       x.Natione.ToLower().Contains(searchName.ToLower())||
-                                       x.Fullname.ToLower().Contains(searchName.ToLower()));
+                                       (!string.IsNullOrEmpty(x.Name) && x.Name.ToLower().Contains(searchName.ToLower())) ||
+                                       (!string.IsNullOrEmpty(x.Nation) && x.Nation.ToLower().Contains(searchName.ToLower())) ||
+                                       (!string.IsNullOrEmpty(x.Natione) && x.Natione.ToLower().Contains(searchName.ToLower()))||
+                                       (!string.IsNullOrEmpty(x.Fullname) && x.Fullname.ToLower().Contains(searchName.ToLower())));
             }
 
             var count = list.Count();

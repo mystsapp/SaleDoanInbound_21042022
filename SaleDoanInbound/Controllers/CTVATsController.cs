@@ -473,6 +473,22 @@ namespace SaleDoanInbound.Controllers
 
             return View(CTVATVM);
         }
+        
+        public async Task<IActionResult> EditCTInvoicePartial(long ctInvoiceId, string invoiceId)
+        {
+            CTVATVM.Invoice = await _unitOfWork.invoiceRepository.GetByIdAsync(invoiceId);
+            CTVATVM.CTInvoice.InvoiceId = invoiceId;
+
+            if (ctInvoiceId == 0)
+                return NotFound();
+
+            CTVATVM.CTInvoice = _unitOfWork.cTVATRepository.GetById(ctInvoiceId);
+
+            if (CTVATVM.CTInvoice == null)
+                return NotFound();
+
+            return PartialView(CTVATVM);
+        }
 
         [HttpPost, ActionName("EditCTInvoice")]
         [ValidateAntiForgeryToken]
@@ -555,7 +571,7 @@ namespace SaleDoanInbound.Controllers
                     log = System.Environment.NewLine;
                     log += "=============";
                     log += System.Environment.NewLine;
-                    log += temp + " -User cập nhật tour: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // username
+                    log += temp + " -User cập nhật CTInvoice: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // username
                     t.LogFile = t.LogFile + log;
                     CTVATVM.CTInvoice.LogFile = t.LogFile;
                 }
@@ -590,6 +606,141 @@ namespace SaleDoanInbound.Controllers
             CTVATVM.Invoice = await _unitOfWork.invoiceRepository.GetByIdAsync(invoiceId);
             CTVATVM.CTInvoice.InvoiceId = invoiceId;
             return View(CTVATVM);
+        }
+        
+        [HttpPost, ActionName("EditCTInvoicePartial")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditCTInvoicePartialPost(string invoiceId)
+        {
+            // from login session
+            var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
+
+            string temp = "", log = "";
+
+            if (ModelState.IsValid)
+            {
+                CTVATVM.CTInvoice.NgaySua = DateTime.Now;
+                CTVATVM.CTInvoice.NguoiSua = user.Username;
+
+                // kiem tra thay doi : trong getbyid() va ngoai view
+                #region log file
+                //var t = _unitOfWork.tourRepository.GetById(id);
+                var t = _unitOfWork.cTVATRepository.GetByIdAsNoTracking(x => x.Id == CTVATVM.CTInvoice.Id);
+                if (t.Descript != CTVATVM.CTInvoice.Descript)
+                {
+                    temp += String.Format("- Descript thay đổi: {0}->{1}", t.Descript, CTVATVM.CTInvoice.Descript);
+                }
+                if (t.Quantity != CTVATVM.CTInvoice.Quantity)
+                {
+                    temp += String.Format("- Số lượng thay đổi: {0}->{1}", t.Quantity, CTVATVM.CTInvoice.Quantity);
+                }
+                if (t.Unit != CTVATVM.CTInvoice.Unit)
+                {
+                    temp += String.Format("- DVT thay đổi: {0}->{1}", t.Unit, CTVATVM.CTInvoice.Unit);
+                }
+                if (t.UnitPrice != CTVATVM.CTInvoice.UnitPrice)
+                {
+                    temp += String.Format("- Đơn giá thay đổi: {0}->{1}", t.UnitPrice, CTVATVM.CTInvoice.UnitPrice);
+                }
+                if (t.Percent != CTVATVM.CTInvoice.Percent)
+                {
+                    temp += String.Format("- Phần trăm thay đổi: {0}->{1}", t.Percent, CTVATVM.CTInvoice.Percent);
+                }
+                if (t.Amount != CTVATVM.CTInvoice.Amount)
+                {
+                    temp += String.Format("- Tổng tiền thay đổi: {0:N0}->{1:N0}", t.Amount, CTVATVM.CTInvoice.Amount);
+                }
+                if (t.ServiceFee != CTVATVM.CTInvoice.ServiceFee)
+                {
+                    temp += String.Format("- PPV thay đổi: {0:N0}->{1:N0}", t.ServiceFee, CTVATVM.CTInvoice.ServiceFee);
+                }
+
+                if (t.VAT != CTVATVM.CTInvoice.VAT)
+                {
+                    temp += String.Format("- VAT thay đổi: {0}->{1}", t.VAT, CTVATVM.CTInvoice.VAT);
+                }
+                // muc, tenkhoanmuc, ds, dlhh
+                if (t.Muc != CTVATVM.CTInvoice.Muc)
+                {
+                    temp += String.Format("- Muc thay đổi: {0}->{1}", t.VAT, CTVATVM.CTInvoice.Muc);
+                }
+                if (t.TenKhoanMuc != CTVATVM.CTInvoice.TenKhoanMuc)
+                {
+                    temp += String.Format("- TenKhoanMuc thay đổi: {0}->{1}", t.VAT, CTVATVM.CTInvoice.TenKhoanMuc);
+                }
+                if (t.DS != CTVATVM.CTInvoice.DS)
+                {
+                    temp += String.Format("- Ds thay đổi: {0}->{1}", t.VAT, CTVATVM.CTInvoice.DS);
+                }
+                if (t.DLHH != CTVATVM.CTInvoice.DLHH)
+                {
+                    temp += String.Format("- DLHH thay đổi: {0}->{1}", t.VAT, CTVATVM.CTInvoice.DLHH);
+                }
+
+                // loai tien, ty gia mac dinh: vnd, 1
+                #endregion
+                // kiem tra thay doi
+                if (temp.Length > 0)
+                {
+
+                    log = System.Environment.NewLine;
+                    log += "=============";
+                    log += System.Environment.NewLine;
+                    log += temp + " -User cập nhật CTInvoice: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // username
+                    t.LogFile = t.LogFile + log;
+                    CTVATVM.CTInvoice.LogFile = t.LogFile;
+                }
+
+                if (CTVATVM.CTInvoice.DLHH == false && CTVATVM.CTInvoice.DS == false)
+                {
+                    //CTVATVM.Invoice = await _unitOfWork.invoiceRepository.GetByIdAsync(invoiceId);
+                    //CTVATVM.CTInvoice.InvoiceId = CTVATVM.Invoice.Id;
+                    //ModelState.AddModelError("", "Ds Or DLHH ?");
+                    //return View(CTVATVM);
+
+                    return Json(new
+                    {
+                        status = false,
+                        message = "Ds Or DLHH ?"
+                    });
+                }
+
+                try
+                {
+                    _unitOfWork.cTVATRepository.Update(CTVATVM.CTInvoice);
+                    await _unitOfWork.Complete();
+                    //SetAlert("Cập nhật thành công", "success");
+                    //return Redirect(CTVATVM.StrUrl);
+
+                    return Json(new
+                    {
+                        status = true
+                    });
+                }
+                catch (Exception ex)
+                {
+                    //SetAlert(ex.Message, "error");
+                    //CTVATVM.Invoice = await _unitOfWork.invoiceRepository.GetByIdAsync(invoiceId);
+                    //CTVATVM.CTInvoice.InvoiceId = invoiceId;
+                    //return View(CTVATVM);
+
+                    return Json(new
+                    {
+                        status = false,
+                        message = ex.Message
+                    });
+                }
+            }
+            // for not valid
+            //CTVATVM.Invoice = await _unitOfWork.invoiceRepository.GetByIdAsync(invoiceId);
+            //CTVATVM.CTInvoice.InvoiceId = invoiceId;
+            //return View(CTVATVM);
+
+            return Json(new
+            {
+                status = false,
+                message = "Not valid!"
+            });
         }
 
         public async Task<IActionResult> DetailsCTInvoice(long id, string invoiceId/*, string tabActive*/, string strUrl)
@@ -634,6 +785,41 @@ namespace SaleDoanInbound.Controllers
                 CTVATVM.Invoice = await _unitOfWork.invoiceRepository.GetByIdAsync(invoiceId);
                 CTVATVM.CTInvoice.InvoiceId = invoiceId;
                 return Redirect(CTVATVM.StrUrl);
+            }
+        }
+        
+        [HttpPost, ActionName("DeleteCTInvoiceInCTInvoicesCTVATsPartial")]
+        public async Task<IActionResult> DeleteCTInvoiceInCTInvoicesCTVATsPartialPost(long ctInvoiceId, string invoiceId)
+        {
+
+            var cTInvoice = _unitOfWork.cTVATRepository.GetById(ctInvoiceId);
+            if (cTInvoice == null)
+                return NotFound();
+            try
+            {
+                _unitOfWork.cTVATRepository.Delete(cTInvoice);
+                await _unitOfWork.Complete();
+                //SetAlert("Xóa thành công.", "success");
+                //return Redirect(CTVATVM.StrUrl);
+
+                return Json(new
+                {
+                    status = true
+                });
+            }
+            catch (Exception ex)
+            {
+                //SetAlert(ex.Message, "error");
+                //// for not valid
+                //CTVATVM.Invoice = await _unitOfWork.invoiceRepository.GetByIdAsync(invoiceId);
+                //CTVATVM.CTInvoice.InvoiceId = invoiceId;
+                //return Redirect(CTVATVM.StrUrl);
+
+                return Json(new
+                {
+                    status = false,
+                    message = "Xóa không thành công!"
+                });
             }
         }
         #endregion
