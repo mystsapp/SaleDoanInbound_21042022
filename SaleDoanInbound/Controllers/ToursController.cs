@@ -147,6 +147,14 @@ namespace SaleDoanInbound.Controllers
             TourVM.Invoices = _unitOfWork.invoiceRepository.ListInvoice("", tourId).OrderByDescending(x => x.Date);
             TourVM.BienNhans = _unitOfWork.bienNhanRepository.ListBienNhan("", tourId, "", "");
 
+            return PartialView(TourVM);
+        }
+
+        public IActionResult BienNhanAndCTBNPartial(long tourId)
+        {
+            // KeToan
+            TourVM.Tour = _unitOfWork.tourRepository.GetById(tourId);
+            TourVM.BienNhans = _unitOfWork.bienNhanRepository.ListBienNhan("", tourId, "", "");
 
             return PartialView(TourVM);
         }

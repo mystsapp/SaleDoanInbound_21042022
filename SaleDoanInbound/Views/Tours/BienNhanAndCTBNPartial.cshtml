@@ -1,0 +1,115 @@
+﻿@model TourViewModel
+
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Danh sách biên nhận - <b>@Model.Tour.Sgtcode</b></h3>
+
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+
+            <div style="overflow-x:auto; overflow-y: auto;">
+                <table class="table mytable text-nowrap tblEMD" id="biennhansTbl">
+                    <thead>
+                        <tr class="table-info">
+                            <th>
+                                <button type="button" class="btn btn-outline-info btn-sm text-bold btn-block" id="btnNewBienNhan" data-tourid="@Model.Tour.Id" title="Thêm mới biên nhận" @*data-toggle="modal" data-target="#createInvoiceModal"*@><i class="fas fa-plus"></i></button>
+                            </th>
+                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().SoBN)</th> <!-- so bien nhan-->
+                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().NgayBN)</th>
+                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().TenKhach)</th>
+                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().DienThoai)</th>
+                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().SoTien)</th>
+                            @*<th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().NoiDung)</th>*@
+                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().SK)</th>
+                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().GhiChu)</th>
+                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().LoaiTien)</th>
+                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().TyGia)</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.BienNhans)
+                        {
+
+                            <tr class="biennhan-cursor-pointer " data-huy="@item.HuyBN">
+
+                                <td>
+                                    <div class="btn-group text-white" role="group">
+                                        @if (item.HuyBN == true)
+                                        {
+                                            <button class="border-0 bg-transparent disabled" title="Cập nhật"><i class="fas fa-edit"></i></button>
+                                            <span class="text-dark"> | </span>
+                                        }
+                                        else
+                                        {
+                                            <button type="button" class="text-primary border-0 bg-transparent btnEditBN" title="Cập nhật" data-biennhanid="@item.Id" data-tourId="@Model.Tour.Id" ><i class="fas fa-edit"></i></button>
+                                            <span class="text-dark"> | </span>
+                                        }
+                                        <!-- Print Pdf -->
+                                        <a data-id="@item.Id" data-strUrl="@Model.StrUrl" class="text-warning border-0 bg-transparent btnPrintBN" title="Print"><i class="fas fa-print"></i></a>
+
+                                        @*<span class="text-dark"> | </span>*@
+                                        @*<a class="text-success" title="Chi tiết" asp-action="Details" asp-controller="BienNhans" asp-route-id="@item.Id" asp-route-tourId="@Model.Tour.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>*@
+                                        <span class="text-dark"> | </span>
+                                        <form asp-action="Delete" asp-controller="BienNhans" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" method="post">
+
+                                            <span id="confirmDeleteSpan_@item.Id" style="display: none">
+                                                <span class="text-dark spanXoa">Hủy?</span>
+                                                <button type="button" data-id="@item.Id" data-url="@Model.StrUrl" class="btn btn-danger btn-xs btnHuyBN">Yes</button>
+                                                <button type="button" class="btn btn-primary btn-xs" onclick="confirmDelete('@item.Id', false)">No</button>
+                                            </span>
+
+                                            <span id="deleteSpan_@item.Id">
+                                                @if (item.HuyBN == true)
+                                                {
+                                                    <button type="button" class="text-danger border-0 bg-transparent disabled"><i class="fas fa-trash-alt"></i></button>
+                                                }
+                                                else
+                                                {
+                                                    <button title="Xóa" type="button" class="text-danger border-0 bg-transparent btnHuy" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
+                                                }
+                                            </span>
+                                        </form>
+                                    </div>
+                                </td>
+
+                                <td class="tdBNVal tdSoBN" data-id="@item.Id">@Html.DisplayFor(m => item.SoBN)</td>
+                                <td class="tdBNVal" data-id="@item.Id">@Html.Raw(item.NgayBN.ToString("dd/MM/yyyy"))</td>
+                                <td class="tdBNVal" data-id="@item.Id">@Html.DisplayFor(m => item.TenKhach)</td>
+                                <td class="tdBNVal" data-id="@item.Id">@Html.DisplayFor(m => item.DienThoai)</td>
+                                <td class="tdBNVal" data-id="@item.Id">@Html.Raw(item.SoTien.ToString("N0"))</td>
+                                <td class="tdBNVal" data-id="@item.Id">@Html.Raw(item.SK.ToString("N0"))</td>
+                                <td class="tdBNVal" data-id="@item.Id">@Html.DisplayFor(m => item.GhiChu)</td>
+                                <td class="tdBNVal" data-id="@item.Id">@Html.DisplayFor(m => item.LoaiTien)</td>
+                                <td class="tdBNVal" data-id="@item.Id">@Html.Raw(string.Format("{0:#,##0.00}", item.TyGia))</td>
+                                @*@Html.Raw(string.Format("{0:#,##0.00}", item.sotiennt))*@
+                            </tr>
+
+                        }
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+        <!-- /.card-body -->
+
+    </div>
+    <!-- /.card -->
+
+</section>
+
+<script src="~/js/Admin/BienNhanAndCTBNPartial/indexController.js"></script>
+<script src="~/js/Admin/Tours/indexController.js"></script>

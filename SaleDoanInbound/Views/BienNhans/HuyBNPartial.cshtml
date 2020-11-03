@@ -32,8 +32,8 @@
     </div>
     <div class="modal-footer ">
         <button type="button" class="btn btn-outline-dark" data-dismiss="modal"><i class="fas fa-power-off"></i></button>
-        <button type="submit" class="btn btn-outline-primary"><i class="fas fa-save"></i></button>
-        <a class="btn btn-outline-primary" title="Danh sách nguyên nhân" asp-controller="CacNoiDungHuyTours" asp-action="Index"><i class="fas fa-list"></i></a>
+        <button type="button" id="btnHuyBNPartialSubmit" class="btn btn-outline-primary"><i class="fas fa-save"></i></button>
+        @*<a class="btn btn-outline-primary" title="Danh sách nguyên nhân" asp-controller="CacNoiDungHuyTours" asp-action="Index"><i class="fas fa-list"></i></a>*@
     </div>
 </form>
 <!-- /.modal-content -->
@@ -93,6 +93,50 @@
         required: true,
         messages: {
             // required: "Ngày đến không được để trống"
+        }
+    });
+
+    $('#btnHuyBNPartialSubmit').off('click').on('click', function () {
+        // if frm valid
+        if ($('#frmHuyBNPartial').valid()) {
+            var bienNhan = $('#frmHuyBNPartial').serialize();
+            $.ajax({
+                type: "POST",
+                url: "/BienNhans/HuyBienNhanPartial",
+                data: bienNhan,
+                dataType: "json",
+                success: function (response) {
+                    if (response.status) {
+
+                        toastr.success('Hủy biên nhận thành công!'); // toastr in admin/tour/indexController.js
+
+                        $('#huyBNModal').modal('hide');
+
+                        //$('#tabs_KeToan_TourInfo').show();
+                        //tourId = tourIdInCreateCTInvoicePartial; // receive it from EditInvoicePartial
+                        //indexController.Load_KeToan_TourInfoByTourPartial(tourId);
+
+                        //invoiceIdReturn = $('#hidInvoiceIdInCreateCTInvoicePartial').val();
+                        //var url = '/Invoices/CTInvoicesCTVATsInInvoicePartial';
+                        //$.get(url, { invoiceId: invoiceIdReturn }, function (response) {
+
+                        //    $('.cTInVoiceCTVAT').html(response);
+
+                        //});
+
+                        tourId = @Model.BienNhan.TourId;
+                        $('#CreateBienNhanPartial').hide(500);
+                        $('#editBienNhanPartial').hide(500);
+
+                        indexController.Load_BienNhan_CTBN_Partial(tourId);
+
+                    }
+                    else {
+                        toastr.error(response.message);
+
+                    }
+                }
+            });
         }
     });
 

@@ -1,0 +1,232 @@
+﻿@model BienNhanViewModel
+<!-- Main content -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-file text-info"></i> Cập nhật biên nhận - <b>@Model.Tour.Sgtcode</b></h3>
+
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+
+
+            <form method="post" autocomplete="off" id="frmEditBienNhanPartial">
+                <div class="p-4 border rounded">
+
+                    <input asp-for="BienNhan.Id" type="hidden" /> <!-- this field is required -->
+                    <input asp-for="BienNhan.TourId" type="hidden" /> <!-- this field is required -->
+                    <input asp-for="BienNhan.NgayTao" type="hidden" />
+                    <input asp-for="BienNhan.NgayBN" type="hidden" />
+                    <input asp-for="BienNhan.NguoiTao" type="hidden" />
+                    <input asp-for="BienNhan.SK" type="hidden" />
+                    <input asp-for="BienNhan.SoBN" type="hidden" />
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    @*<div class="form-group row">
+
+                            <div class="col-md-12">
+                                <label asp-for="BienNhan.SoBN" class="control-label"></label>
+                                <input asp-for="BienNhan.SoBN" class="form-control " readonly />
+                                <span asp-validation-for="BienNhan.SoBN" class="text-danger"></span>
+                            </div>
+
+                        </div>*@
+
+                    <div class="form-group row">
+
+                        <div class="col-md-2">
+                            <label asp-for="BienNhan.MaKH" class="control-label"></label>
+                            <input asp-for="BienNhan.MaKH" class="form-control " readonly />
+                            <span asp-validation-for="BienNhan.MaKH" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label asp-for="BienNhan.SoBN" class="control-label"></label>
+                            <input asp-for="BienNhan.SoBN" class="form-control " readonly />
+                            <span asp-validation-for="BienNhan.SoBN" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-8">
+                            <label asp-for="BienNhan.TenKhach" class="control-label"></label>
+                            <input asp-for="BienNhan.TenKhach" class="form-control " />
+                            <span asp-validation-for="BienNhan.TenKhach" class="text-danger"></span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-md-2">
+                            <label asp-for="BienNhan.DienThoai" class="control-label"></label>
+                            <input asp-for="BienNhan.DienThoai" class="form-control " />
+                            <span asp-validation-for="BienNhan.DienThoai" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label asp-for="BienNhan.SK" class="control-label"></label>
+                            <input asp-for="BienNhan.SK" class="form-control " readonly />
+                            <span asp-validation-for="BienNhan.SK" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-8">
+                            <label asp-for="BienNhan.DiaChi" class="control-label"></label>
+                            <input asp-for="BienNhan.DiaChi" class="form-control " />
+                            <span asp-validation-for="BienNhan.DiaChi" class="text-danger"></span>
+                        </div>
+
+                    </div>
+
+                    @*<div class="form-group row">
+
+                            <div class="col-md-12">
+                                <label asp-for="BienNhan.NoiDung" class="control-label"></label>
+                                <input asp-for="BienNhan.NoiDung" class="form-control " />
+                                <span asp-validation-for="BienNhan.NoiDung" class="text-danger"></span>
+                            </div>
+
+                        </div>*@
+
+                    <div class="form-group row">
+
+                        <div class="col-md-2">
+                            <label asp-for="BienNhan.LoaiTien" class="control-label"></label>
+                            <select asp-for="BienNhan.LoaiTien" class="form-control " id="ddlLoaiTien"
+                                    asp-items="@(new SelectList(Model.Ngoaites, "MaNt", "MaNt"))">
+                                <!-- ngoaite: qltour-->
+                            </select>
+                            <span asp-validation-for="BienNhan.LoaiTien" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label asp-for="BienNhan.TyGia" class="control-label"></label>
+                            <input asp-for="BienNhan.TyGia" class="form-control numbers" />
+                            <span asp-validation-for="BienNhan.TyGia" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-8">
+                            <label asp-for="BienNhan.GhiChu" class="control-label"></label>
+                            <input asp-for="BienNhan.GhiChu" class="form-control" />
+                            <span asp-validation-for="BienNhan.GhiChu" class="text-danger"></span>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row btn-group">
+                        <button type="button" id="btnEditBienNhanPartialSubmit" class="btn btn-primary"><i class="fas fa-save"></i></button>
+                        <button type="button" id="btnEditBienPartialBack" class="btn btn-success"><i class="fas fa-backward"></i></button>
+                        @*<a class="btn btn-outline-primary" title="Danh sách nguyên nhân" asp-controller="CacNoiDungHuyTours" asp-action="Index"><i class="fas fa-list"></i></a>*@
+
+                    </div>
+
+                </div>
+
+            </form>
+        </div>
+
+        <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+
+</section>
+<!-- /.content -->
+
+<script src="~/js/Admin/EditBienNhanPartial/CreateController.js"></script>
+
+<script>
+
+    // Validation
+
+    $('#frmEditBienNhanPartial').validate({
+        //rules: {
+        //    email: {
+        //        required: true,
+        //        email: true,
+        //    },
+        //    NgayDen: {
+        //        required: true
+        //    },
+        //    chuDetour1: {
+        //        required: true
+        //    },
+        //},
+        //messages: {
+        //    email: {
+        //        required: "Please enter a email address",
+        //        email: "Please enter a vaild email address"
+        //    },
+        //    NgayDen: {
+        //        required: "Please provide a date"
+        //    },
+        //    chuDetour1: "Please enter value"
+        //},
+        errorElement: 'span',
+        errorPlacement: function (error, element) {
+            // add error text
+
+            //error.addClass('invalid-feedback').removeClass('error');
+            //element.closest('.chuDeTourGroup').append(error);
+        },
+        highlight: function (element, errorClass, validClass) {
+            $(element).addClass('is-invalid');
+        },
+        unhighlight: function (element, errorClass, validClass) {
+            $(element).removeClass('is-invalid');
+        }
+    });
+
+    $('#ddlLoaiTien').rules('add', {
+        required: true,
+        messages: {
+            // required: "Ngày đến không được để trống"
+        }
+    });
+
+    $('#txtTyGia').rules('add', {
+        required: true,
+        messages: {
+            // required: "Ngày đến không được để trống"
+        }
+    });
+
+
+    $('#btnEditBienNhanPartialSubmit').off('click').on('click', function () {
+        if ($('#frmEditBienNhanPartial').valid()) {
+            var bienNhan = $('#frmEditBienNhanPartial').serialize();
+            $.ajax({
+                type: "POST",
+                url: "/BienNhans/EditBienNhanPartial",
+                data: bienNhan,
+                dataType: "json",
+                success: function (response) {
+                    if (response.status) {
+
+                        toastr.success('Cập nhật biên nhận thành công!'); // toastr in admin/tour/indexController.js
+
+                        $('#editBienNhanPartial').hide(500);
+
+                        tourId = @Model.Tour.Id;
+
+                        indexController.Load_BienNhan_CTBN_Partial(tourId);
+                    }
+                    else {
+                        toastr.error(response.message);
+
+                    }
+                }
+            });
+        }
+        
+    });
+
+</script>

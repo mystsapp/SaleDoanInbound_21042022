@@ -15,9 +15,9 @@
     <div class="form-group row">
 
         <div class="col-md-3">
-            <label asp-for="Invoice.HuyInvoice" class="control-label"></label>
-            <input type="text" asp-for="Invoice.HuyInvoice" class="form-control maskInput" id="txtNgayHuyInvoice" />
-            <span asp-validation-for="Invoice.HuyInvoice" class="text-danger"></span>
+            <label asp-for="Invoice.NgayHuy" class="control-label"></label>
+            <input type="text" asp-for="Invoice.NgayHuy" class="form-control maskInput" id="txtNgayHuyInvoice" />
+            <span asp-validation-for="Invoice.NgayHuy" class="text-danger"></span>
         </div>
 
         <div class="col-md-9">
@@ -37,7 +37,8 @@
     </div>
     <div class="modal-footer ">
         <button type="button" class="btn btn-outline-dark" data-dismiss="modal"><i class="fas fa-power-off"></i></button>
-        <button type="submit" class="btn btn-outline-primary"><i class="fas fa-save"></i></button>
+        @*<button type="submit" class="btn btn-outline-primary"><i class="fas fa-save"></i></button>*@
+        <button type="button" id="btnHuyInvoicePartialSubmit" class="btn btn-outline-primary"><i class="fas fa-save"></i></button>
         <a class="btn btn-outline-primary" title="Danh sách nguyên nhân" asp-controller="CacNoiDungHuyTours" asp-action="Index"><i class="fas fa-list"></i></a>
     </div>
 </form>
@@ -98,6 +99,44 @@
         required: true,
         messages: {
             // required: "Ngày đến không được để trống"
+        }
+    });
+
+    $('#btnHuyInvoicePartialSubmit').off('click').on('click', function () {
+        // if frm valid
+        if ($('#frmHuyInvoicePartial').valid()) {
+            var invoice = $('#frmHuyInvoicePartial').serialize();
+            $.ajax({
+                type: "POST",
+                url: "/Invoices/HuyInvoicePartial",
+                data: invoice,
+                dataType: "json",
+                success: function (response) {
+                    if (response.status) {
+
+                        toastr.success('Hủy invoice thành công!'); // toastr in admin/tour/indexController.js
+
+                        $('#huyInvoiceModal').modal('hide');
+
+                        //$('#tabs_KeToan_TourInfo').show();
+                        //tourId = tourIdInCreateCTInvoicePartial; // receive it from EditInvoicePartial
+                        //indexController.Load_KeToan_TourInfoByTourPartial(tourId);
+
+                        //invoiceIdReturn = $('#hidInvoiceIdInCreateCTInvoicePartial').val();
+                        //var url = '/Invoices/CTInvoicesCTVATsInInvoicePartial';
+                        //$.get(url, { invoiceId: invoiceIdReturn }, function (response) {
+
+                        //    $('.cTInVoiceCTVAT').html(response);
+
+                        //});
+
+                    }
+                    else {
+                        toastr.error(response.message);
+
+                    }
+                }
+            });
         }
     });
 

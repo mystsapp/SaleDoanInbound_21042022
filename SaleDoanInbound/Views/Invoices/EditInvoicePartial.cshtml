@@ -1,8 +1,6 @@
 ﻿@model InvoiceViewModel
-<!-- Main content -->
-<section class="content">
 
-    <!-- Default box -->
+<section class="content">
     <div class="card">
         <div class="card-header">
             <h3 class="card-title"><i class="fas fa-file text-info"></i> Cập nhật Invoice - <b>@Model.Tour.Sgtcode</b></h3>
@@ -16,6 +14,7 @@
                 </button>
             </div>
         </div>
+
         <div class="card-body">
 
 
@@ -85,10 +84,10 @@
                         </div>
 
                         <div class="col-md-2 ">
+                            <!-- ngoaite: qltour-->
                             <label asp-for="Invoice.Currency" class="control-label"></label>
                             <select asp-for="Invoice.Currency" class="form-control " id="ddlLoaiTien"
                                     asp-items="@(new SelectList(Model.Ngoaites, "MaNt", "TenNt"))">
-                                <!-- ngoaite: qltour-->
                             </select>
                             <span asp-validation-for="Invoice.Currency" class="text-danger"></span>
                         </div>
@@ -142,24 +141,22 @@
                     <div class="form-group row">
                         <div class="form-group">
                             <button type="button" id="btnEditInvoicePartial" class="btn btn-primary"><i class="fas fa-save"></i></button>
+                            <button id="btnBackEditInvoicePartial" type="button" class="btn btn-success"><i class="fas fa-backward"></i></button>
                         </div>
                     </div>
                 </div>
             </form>
 
         </div>
-        <!-- /.card-body -->
 
     </div>
-    <!-- /.card -->
 
 </section>
-<!-- /.content -->
 
 <script>
-    $(function () {
-        $('.select2').select2()
-    });
+    //$(function () {
+    //    $('.select2').select2()
+    //});
     $(function () {
         $(".maskInput").mask("99/99/9999");
 
@@ -167,12 +164,7 @@
         //$('#AlertBox').delay(1000).slideUp(1000);
     });
 
-</script>
-<script src="~/js/Admin/EditInvoicePartial/editController.js"></script>
-<script src="~/js/Admin/Tours/indexController.js"></script>
-<!-- Validation -->
-<script>
-    var tourIdInEditInvoicePartial = @Model.Tour.Id; // send it to indexController
+     var tourIdInEditInvoicePartial = @Model.Tour.Id; // send it to indexController
 
 
     $('#frmInvoiceEditPartial').validate({
@@ -227,8 +219,9 @@
         }
     });
 
+
     $('#btnEditInvoicePartial').off('click').on('click', function () {
-        debugger
+
         // if frm valid
         if ($('#frmInvoiceEditPartial').valid()) {
             var invoice = $('#frmInvoiceEditPartial').serialize();
@@ -274,9 +267,3 @@
 
 </script>
 
-<style>
-    #ddlLoaiIV {
-        -webkit-appearance: none;
-        -moz-appearance: none;
-    }
-</style>

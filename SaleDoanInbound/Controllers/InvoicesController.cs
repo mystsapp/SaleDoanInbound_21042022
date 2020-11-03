@@ -373,7 +373,7 @@ namespace SaleDoanInbound.Controllers
 
             return View(InvoiceVM);
         }
-        public async Task<IActionResult> EditInvoicePartial(string invoiceId, long tourId)
+        public async Task<IActionResult> EditInvoicePartial(long tourId, string invoiceId)
         {
             
             InvoiceVM.Tour = _unitOfWork.tourRepository.GetById(tourId);
@@ -387,7 +387,7 @@ namespace SaleDoanInbound.Controllers
             if (InvoiceVM.Invoice == null)
                 return NotFound();
 
-            InvoiceVM.LoaiIVs = _unitOfWork.loaiIVRepository.GetAll();
+            //InvoiceVM.LoaiIVs = _unitOfWork.loaiIVRepository.GetAll();
 
             return PartialView(InvoiceVM);
         }
@@ -795,6 +795,82 @@ namespace SaleDoanInbound.Controllers
                 SetAlert("Error: " + ex.Message, "error");
                 ModelState.AddModelError("", ex.Message);
                 return Redirect(InvoiceVM.StrUrl);
+
+            }
+        }
+        
+        [HttpPost]
+        public async Task<IActionResult> HuyInvoicePartial()
+        {
+            // from login session
+            var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
+
+            string temp = "", log;
+
+            // BN
+            var invoice = await _unitOfWork.invoiceRepository.GetByIdAsync(InvoiceVM.Invoice.Id);
+            if (InvoiceVM.Invoice.NgayHuy.HasValue)
+            {
+                invoice.NgayHuy = InvoiceVM.Invoice.NgayHuy;
+            }
+            else
+            {
+                invoice.NgayHuy = DateTime.Now;
+            }
+            invoice.NDHuyBNId = InvoiceVM.Invoice.NDHuyBNId;
+            invoice.HuyInvoice = true;
+
+            // kiem tra thay doi
+
+            if (InvoiceVM.Invoice.NDHuyBNId > 0)
+            {
+                var cacNoiDungHuyTour = _unitOfWork.cacNoiDungHuyTourRepository.GetById(InvoiceVM.Invoice.NDHuyBNId);
+                temp += String.Format("- Nội dung huy: {0}", cacNoiDungHuyTour.NoiDung);
+            }
+
+            //if (!string.IsNullOrEmpty(BienNhanVM.BienNhan.GhiChu))
+            //{
+            //    temp += String.Format("- Ghi chú: {0}", BienNhanVM.BienNhan.GhiChu);
+            //}
+
+            if (InvoiceVM.Invoice.NgayHuy.HasValue)
+            {
+                temp += String.Format("- Ngày hủy: {0:dd/MM/yyyy} - Người hủy: {1}", InvoiceVM.Invoice.NgayHuy, user.Username); // username
+            }
+
+            if (temp.Length > 0)
+            {
+
+                log = System.Environment.NewLine;
+                log += "=============";
+                log += System.Environment.NewLine;
+                log += temp;
+                invoice.LogFile = invoice.LogFile + log;
+            }
+
+            try
+            {
+                _unitOfWork.invoiceRepository.Update(invoice);
+                await _unitOfWork.Complete();
+                //SetAlert("Hủy thành công.", "success");
+                //return Redirect(InvoiceVM.StrUrl);
+
+                return Json(new
+                {
+                    status = true
+                });
+            }
+            catch (Exception ex)
+            {
+                //SetAlert("Error: " + ex.Message, "error");
+                //ModelState.AddModelError("", ex.Message);
+                //return Redirect(InvoiceVM.StrUrl);
+
+                return Json(new
+                {
+                    status = false,
+                    message = ex.Message
+                });
 
             }
         }

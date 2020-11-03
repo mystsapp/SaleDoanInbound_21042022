@@ -1,5 +1,15 @@
 ﻿var indexController = {
     init: function () {
+        $.each($('.invoice-cursor-pointer'), function (i, item) {
+
+            var huy = $(item).data('huy');
+            //console.log(huy);
+            if (huy === 'True') {
+                $(this).addClass('bg-secondary');
+            }
+
+        });
+
         indexController.registerEvent();
     },
 
