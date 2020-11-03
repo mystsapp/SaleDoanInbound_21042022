@@ -118,7 +118,11 @@
                 <table class="table mytable text-nowrap tblTour" id="tourTbl">
                     <thead>
                         <tr class="table-info">
-                            <th>#</th>
+                            @if (user.Role.RoleName != "KeToans")
+                            {
+                                <th>#</th>
+                            }
+
                             <th>@Html.DisplayNameFor(m => m.TourDtos.FirstOrDefault().Sgtcode)</th>
                             <th>@Html.DisplayNameFor(m => m.TourDtos.FirstOrDefault().SoHopDong)</th>
                             <th>@Html.DisplayNameFor(m => m.TourDtos.FirstOrDefault().ChuDeTour)</th>
@@ -138,16 +142,16 @@
                             {
 
                                 <tr class="cursor-pointer " data-huy="@item.HuyTour" onclick="Tabs_KeToan_TourInfo()">
+                                    @if (user.Role.RoleName != "KeToans")
+                                    {
+                                        <td>
+                                            <div class="btn-group text-white" role="group">
+                                                @*<a class="text-info" title="Invoice" asp-action="Index" asp-controller="Invoices" asp-route-tourId="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-file-invoice"></i></a>
+                                                    <span class="text-dark"> | </span>
+                                                    <a class="text-success" title="Biên nhận" asp-action="Index" asp-controller="BienNhans" asp-route-tourId="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-file-alt"></i></a>*@
+                                                @*<span class="text-dark"> | </span>*@
 
-                                    <td>
-                                        <div class="btn-group text-white" role="group">
-                                            <a class="text-info" title="Invoice" asp-action="Index" asp-controller="Invoices" asp-route-tourId="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-file-invoice"></i></a>
-                                            <span class="text-dark"> | </span>
-                                            <a class="text-success" title="Biên nhận" asp-action="Index" asp-controller="BienNhans" asp-route-tourId="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-file-alt"></i></a>
 
-                                            @if (user.Role.RoleName != "KeToans")
-                                            {
-                                                <span class="text-dark"> | </span>
                                                 @if (item.HuyTour == true)
                                                 {
                                                     <a class="disabled" title="Cập nhật"><i class="fas fa-edit"></i></a>
@@ -186,10 +190,10 @@
                                                     <input type="hidden" id="hidTourId" name="id" />
                                                     <input type="hidden" id="hidStrUrl" name="strUrl" value="@Model.StrUrl" />
                                                 </form>
-                                            }
-                                        </div>
-                                    </td>
 
+                                            </div>
+                                        </td>
+                                    }
                                     @switch (item.TrangThai)
                                     {
 

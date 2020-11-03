@@ -405,11 +405,11 @@ namespace SaleDoanInbound.Controllers
                 TourVM.Tour.TuyenTQ = TourVM.Tour.TuyenTQ.Replace(',', '-');
 
                 // kiem tra trang thai
+                
                 if (TourVM.Tour.NgayDamPhan != null)
                 {
                     TourVM.Tour.TrangThai = "1";
                 }
-
 
                 if (TourVM.Tour.NgayKyHopDong != null)
                 {
@@ -420,7 +420,11 @@ namespace SaleDoanInbound.Controllers
                 {
                     TourVM.Tour.TrangThai = "3";
                 }
+
+                TourVM.Tour.TrangThai = TourVM.Tour.TrangThai ?? "0";
                 // kiem tra trang thai
+
+                TourVM.Tour.SoHopDong = TourVM.Tour.SoHopDong ?? "";
 
                 // kiem tra thay doi : trong getbyid() va ngoai view
                 #region log file
