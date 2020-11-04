@@ -1,7 +1,9 @@
-﻿@*@using Microsoft.AspNetCore.Http
-    @using EMD.Utilities
-    @inject IHttpContextAccessor HttpContextAccessor*@
-
+﻿@using Microsoft.AspNetCore.Http
+@using Data.Utilities
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    var user = HttpContextAccessor.HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
+}
 
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-navy elevation-4 sidenav">
@@ -38,18 +40,17 @@
             <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
                 @*<ul class="nav nav-pills nav-sidebar flex-column nav-flat nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">*@
                 <!-- Add icons to the links using the .nav-icon class
-                with font-awesome or any other icon font library -->
-
+    with font-awesome or any other icon font library -->
                 @*<li class="nav-item has-treeview ">
-                    <a asp-action="Index" asp-controller="InvoiceTours" class="nav-link">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
-                        <p>
-                            Invoice tour
-                        </p>
-                    </a>
+            <a asp-action="Index" asp-controller="InvoiceTours" class="nav-link">
+                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <p>
+                    Invoice tour
+                </p>
+            </a>
 
-                </li>*@
-                
+        </li>*@
+
                 <li class="nav-item has-treeview ">
                     <a asp-action="Index" asp-controller="Tours" class="nav-link">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -59,92 +60,92 @@
                     </a>
 
                 </li>
-                
+
                 <li class="nav-item has-treeview ">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-tachometer-alt"></i>
-                            <p>
-                                Danh Mục
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a asp-action="Index" asp-controller="KhachHangs" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Khách hàng</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a asp-action="Index" asp-controller="QuocGias" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Quốc gia</p>
-                                </a>
-                            </li>
-
-                            <!-- dung danh muc thanh phong trong qltour-->
-                            @*<li class="nav-item">
-                                <a asp-action="Index" asp-controller="ThanhPhos" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Thành phố</p>
-                                </a>
-                            </li>*@
-                            <!-- dung danh muc thanh phong trong qltour-->
-
-                            <!-- dung danh muc thanh phong trong qltour-->
-                            @*<li class="nav-item">
-                            <a asp-action="Index" asp-controller="DiemTQ" class="nav-link">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>
+                            Danh Mục
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a asp-action="Index" asp-controller="KhachHangs" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Điểm TQ</p>
+                                <p>Khách hàng</p>
                             </a>
-                            </li>*@
+                        </li>
+                        <li class="nav-item">
+                            <a asp-action="Index" asp-controller="QuocGias" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Quốc gia</p>
+                            </a>
+                        </li>
 
-                            <li class="nav-item">
-                                <a asp-action="Index" asp-controller="ChiNhanhs" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Chi nhánh</p>
-                                </a>
-                            </li>
+                        <!-- dung danh muc thanh phong trong qltour-->
+                        @*<li class="nav-item">
+                    <a asp-action="Index" asp-controller="ThanhPhos" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Thành phố</p>
+                    </a>
+                </li>*@
+                        <!-- dung danh muc thanh phong trong qltour-->
+                        <!-- dung danh muc thanh phong trong qltour-->
+                        @*<li class="nav-item">
+                <a asp-action="Index" asp-controller="DiemTQ" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Điểm TQ</p>
+                </a>
+                </li>*@
 
-                            <!-- modify trong qltour-->
-                            @*<li class="nav-item">
-        <a asp-action="Index" asp-controller="LoaiTours" class="nav-link">
-            <i class="far fa-circle nav-icon"></i>
-            <p>Loại tour</p>
-        </a>
-        </li>*@
-                            <!-- modify trong qltour-->
+                        <li class="nav-item">
+                            <a asp-action="Index" asp-controller="ChiNhanhs" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Chi nhánh</p>
+                            </a>
+                        </li>
 
-                            @*<li class="nav-item">
-                                <a asp-action="Index" asp-controller="KhuVucTGs" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Khu vực</p>
-                                </a>
-                            </li>*@
+                        <!-- modify trong qltour-->
+                        @*<li class="nav-item">
+                <a asp-action="Index" asp-controller="LoaiTours" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Loại tour</p>
+                </a>
+                </li>*@
+                        <!-- modify trong qltour-->
+                        @*<li class="nav-item">
+                    <a asp-action="Index" asp-controller="KhuVucTGs" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Khu vực</p>
+                    </a>
+                </li>*@
 
-                            @*<li class="nav-item">
-                                <a asp-action="Index" asp-controller="NganhNghes" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Ngành nghề</p>
-                                </a>
-                            </li>*@
+                        @*<li class="nav-item">
+                    <a asp-action="Index" asp-controller="NganhNghes" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Ngành nghề</p>
+                    </a>
+                </li>*@
 
-                            <li class="nav-item">
-                                <a asp-action="Index" asp-controller="CacNoiDungHuyTours" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Nguyên nhân hủy tour</p>
-                                </a>
-                            </li>
+                        <li class="nav-item">
+                            <a asp-action="Index" asp-controller="CacNoiDungHuyTours" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Nguyên nhân hủy tour</p>
+                            </a>
+                        </li>
 
-                            <li class="nav-item">
-                                <a asp-action="Index" asp-controller="LoaiIVs" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Loại IV</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
+                        <li class="nav-item">
+                            <a asp-action="Index" asp-controller="LoaiIVs" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Loại IV</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
 
+                @if (user.Role.RoleName == "Admins")
+                {
                     <li class="nav-item has-treeview">
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-copy"></i>
@@ -174,7 +175,7 @@
                                 </a>
                             </li>
 
-                            <li class="nav-item">
+                            @*<li class="nav-item">
                                 <a href="../layout/fixed-sidebar.html" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Fixed Sidebar</p>
@@ -197,64 +198,66 @@
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Collapsed Sidebar</p>
                                 </a>
-                            </li>
+                            </li>*@
                         </ul>
                     </li>
+
+                }
 
                 <li class="nav-item has-treeview">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-users-cog"></i>
-                            <p>
-                                Báo cáo
-                                <i class="fas fa-angle-left right"></i>
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-users-cog"></i>
+                        <p>
+                            Báo cáo
+                            <i class="fas fa-angle-left right"></i>
 
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a asp-action="DoanhSoTheoSale" asp-controller="BaoCaos" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Doanh số theo sale</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a asp-action="DoanhSoTheoThang" asp-controller="BaoCaos" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Doanh số theo tháng</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a asp-action="DoanhSoTheoNgayDi" asp-controller="BaoCaos" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Doanh số theo ngày đi tour</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="../layout/fixed-sidebar.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Fixed Sidebar</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="../layout/fixed-topnav.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Fixed Navbar</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="../layout/fixed-footer.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Fixed Footer</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="../layout/collapsed-sidebar.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Collapsed Sidebar</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a asp-action="DoanhSoTheoSale" asp-controller="BaoCaos" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Doanh số theo sale</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-action="DoanhSoTheoThang" asp-controller="BaoCaos" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Doanh số theo tháng</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-action="DoanhSoTheoNgayDi" asp-controller="BaoCaos" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Doanh số theo ngày đi tour</p>
+                            </a>
+                        </li>
+                        @*<li class="nav-item">
+                            <a href="../layout/fixed-sidebar.html" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Fixed Sidebar</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="../layout/fixed-topnav.html" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Fixed Navbar</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="../layout/fixed-footer.html" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Fixed Footer</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="../layout/collapsed-sidebar.html" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Collapsed Sidebar</p>
+                            </a>
+                        </li>*@
+                    </ul>
+                </li>
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

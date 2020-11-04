@@ -201,7 +201,7 @@
                                 {
 
                                     @*<a class="btn btn-default btn-sm text-bold " asp-action="CreateCTVAT" data-id="@Model.Invoice.Id" id="btnNewCTVAT" asp-controller="CTVATs" asp-route-invoiceId="@Model.Invoice.Id" asp-route-strUrl="@Model.StrUrl" title="Thêm CTVAT">New</a>*@
-                                    <button class="btn btn-default btn-sm text-bold " data-id="@Model.Invoice.Id" id="btnCopyCTVAT" title="Copy CTVAT">Copy</button>
+                                    <button type="button" class="btn btn-default btn-sm text-bold " data-id="@Model.Invoice.Id" id="btnCopyCTVAT" title="Copy CTVAT">Copy</button>
 
                                     <form id="frmCopyCTVAT" asp-action="CopyCTInvoice_DS_To_CTVAT" asp-controller="CTVATs" method="post" asp-route-invoiceId="@Model.Invoice.Id" asp-route-strUrl="@Model.StrUrl">
                                     </form>

@@ -358,22 +358,21 @@ var indexController = {
         //////////////////////////////////////////////////////////////////////////////// CTInvoicesCTVATsInInvoicePartial
 
         // create CTInvoice
-        //$('#btnNewCTInvoice').off('click').on('click', function () {
-        //    debugger
-        //    invoiceId = $(this).data('invoiceid');
-        //    alert(invoiceId);
-        //    $('#tabs_KeToan_TourInfo').hide(5000);
-        //    $('#createInvoicePartial').hide();
-        //    $('#editInvoicePartial').hide();
+        $('#btnNewCTInvoice').off('click').on('click', function () {
+            invoiceId = $(this).data('invoiceid');
+            
+            $('#tabs_KeToan_TourInfo').hide(500);
+            $('#createInvoicePartial').hide();
+            $('#editInvoicePartial').hide();
 
-        //    var url = '/CTVATs/CreateCTInvoicePartial';
-        //    $.get(url, { invoiceId: invoiceId }, function (response) {
+            var url = '/CTVATs/CreateCTInvoicePartial';
+            $.get(url, { invoiceId: invoiceId }, function (response) {
 
-        //        $('#createCTInvoicePartial').show(5000);
-        //        $('#createCTInvoicePartial').html(response);
+                $('#createCTInvoicePartial').show(500);
+                $('#createCTInvoicePartial').html(response);
 
-        //    });
-        //});
+            });
+        });
         // create CTInvoice
 
         $('#btnCreateCTInvoicePartial').off('click').on('click', function () {
@@ -393,14 +392,15 @@ var indexController = {
 
                             $('#createCTInvoicePartial').hide();
 
-                            $('#tabs_KeToan_TourInfo').show();
-                            tourId = tourIdInCreateCTInvoicePartial; // receive it from EditInvoicePartial
-                            indexController.Load_KeToan_TourInfoByTourPartial(tourId);
+                            $('#tabs_KeToan_TourInfo').show(500);
+                            //tourId = tourIdInCreateCTInvoicePartial; // receive it from EditInvoicePartial
+                            //indexController.Load_KeToan_TourInfoByTourPartial(tourId);
 
                             invoiceIdReturn = $('#hidInvoiceIdInCreateCTInvoicePartial').val();
                             var url = '/Invoices/CTInvoicesCTVATsInInvoicePartial';
                             $.get(url, { invoiceId: invoiceIdReturn }, function (response) {
 
+                                $('.cTInVoiceCTVAT').show(500);
                                 $('.cTInVoiceCTVAT').html(response);
 
                             });
@@ -531,6 +531,53 @@ var indexController = {
                 });
             }
         });
+
+        // btnCopyCTVAT 
+        $('#btnCopyCTVAT').off('click').on('click', function () {
+            invoiceId = $(this).data('id');
+
+            if (invoiceId === '') {
+
+                bootbox.alert({
+                    title: "Information",
+                    size: "small",
+                    message: "Bạn chưa chọn invoice nào!"
+                });
+            }
+            else {
+
+                $.ajax({
+                    url: '/CTVATs/CopyCTInvoice_DS_To_CTVATPost',
+                    data: {
+                        invoiceId: invoiceId
+                    },
+                    dataType: 'json',
+                    type: 'POST',
+                    success: function (response) {
+                        if (response.status) {
+
+                            toastr.success('Copy thành công!'); // toastr in admin/tour/indexController.js
+
+                            //$('#editCTInvoicePartial').hide();
+
+                            //tourId = tourIdInCreateCTInvoicePartial; // receive it from EditInvoicePartial
+                            //indexController.Load_KeToan_TourInfoByTourPartial(tourId);
+
+                            indexController.Load_CTInvoice_CTVAT_Partial(invoiceId);
+                        }
+                        else {
+                            toastr.error(response.message);
+
+                        }
+                    }
+                });
+
+                //$('#frmCopyCTVAT').submit();
+            }
+
+        });
+
+        // btnCopyCTVAT 
 
         //////////////////////////////////////////////////////////////////////////////// editCTInvoicePartial
 

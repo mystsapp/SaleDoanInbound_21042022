@@ -54,10 +54,10 @@ namespace Data.Repository
             if (!string.IsNullOrEmpty(searchString))
             {
                 list = list.Where(x => x.Username.ToLower().Contains(searchString.ToLower()) ||
-                                       x.HoTen.ToLower().Contains(searchString.ToLower()) ||
-                                       x.MaCN.ToLower().Contains(searchString.ToLower()) ||
-                                       x.Email.ToLower().Contains(searchString.ToLower()) ||
-                                       x.DienThoai.ToLower().Contains(searchString.ToLower()));
+                                       (!string.IsNullOrEmpty(x.HoTen) && x.HoTen.ToLower().Contains(searchString.ToLower())) ||
+                                       (!string.IsNullOrEmpty(x.MaCN) && x.MaCN.ToLower().Contains(searchString.ToLower())) ||
+                                       (!string.IsNullOrEmpty(x.Email) && x.Email.ToLower().Contains(searchString.ToLower())) ||
+                                       (!string.IsNullOrEmpty(x.DienThoai) && x.DienThoai.ToLower().Contains(searchString.ToLower())));
             }
 
             var count = list.Count();

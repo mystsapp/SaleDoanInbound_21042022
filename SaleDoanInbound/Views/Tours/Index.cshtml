@@ -282,18 +282,23 @@
 <div id="tabs_KeToan_TourInfo" class="ml-2 mr-2">
 </div>
 <!-- Tabs qltour info-->
-<!--Tao moi invoice-->
-<div id="createInvoicePartial" class="ml-2 mr-2">
-</div>
-<!--Tao moi invoice-->
-<!--cap nhat invoice-->
-<div id="editInvoicePartial" class="ml-2 mr-2">
-</div>
-<!--cap nhat invoice-->
-<!--create CT invoice-->
-<div id="createCTInvoicePartial" class="ml-2 mr-2">
-</div>
-<!--create CT invoice-->
+@if (user.Role.RoleName != "Users")
+{
+
+    <!--Tao moi invoice-->
+    <div id="createInvoicePartial" class="ml-2 mr-2">
+    </div>
+    <!--Tao moi invoice-->
+    <!--cap nhat invoice-->
+    <div id="editInvoicePartial" class="ml-2 mr-2">
+    </div>
+    <!--cap nhat invoice-->
+    <!--create CT invoice-->
+    <div id="createCTInvoicePartial" class="ml-2 mr-2">
+    </div>
+    <!--create CT invoice-->
+
+}
 
 @section Scripts{
 
