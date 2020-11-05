@@ -64,11 +64,19 @@ namespace SaleDoanInbound.Controllers
             }
             return View(BienNhanVM);
         }
+        //public async Task<IActionResult> CTBNPartial(long bienNhanId)
+        //{
 
-        public IActionResult CTBienNhanInBienNhanPartial(long bienNhanId)
+        //        BienNhanVM.BienNhan = _unitOfWork.bienNhanRepository.GetById(bienNhanId);
+        //        BienNhanVM.ChiTietBNs = await _unitOfWork.chiTietBNRepository.FindAsync(x => x.BienNhanId == bienNhanId);
+
+        //    return PartialView(BienNhanVM);
+        //}
+
+        public async Task<IActionResult> CTBienNhanInBienNhanPartial(long bienNhanId)
         {
             BienNhanVM.BienNhan = _unitOfWork.bienNhanRepository.GetById(bienNhanId);
-            BienNhanVM.ChiTietBNs = _unitOfWork.chiTietBNRepository.Find(x => x.BienNhanId == bienNhanId);
+            BienNhanVM.ChiTietBNs = await _unitOfWork.chiTietBNRepository.FindAsync(x => x.BienNhanId == bienNhanId);
             return PartialView(BienNhanVM);
         }
 

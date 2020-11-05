@@ -232,13 +232,13 @@
                                         <div class="btn-group text-white" role="group">
                                             @*<a class="text-primary" title="Cập nhật" asp-action="EditCTVAT" asp-controller="CTVATs" asp-route-invoiceId="@Model.Invoice.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
                                                 <span class="text-dark"> | </span>*@
-                                            <a class="text-success" title="Chi tiết" asp-action="DetailsCTVAT" asp-controller="CTVATs" asp-route-invoiceId="@Model.Invoice.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
-                                            <span class="text-dark"> | </span>
+                                            @*<a class="text-success" title="Chi tiết" asp-action="DetailsCTVAT" asp-controller="CTVATs" asp-route-invoiceId="@Model.Invoice.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
+                                            <span class="text-dark"> | </span>*@
                                             <form asp-action="DeleteCTVAT" asp-controller="CTVATs" asp-route-id="@item.Id" asp-route-invoiceId="@Model.Invoice.Id" asp-route-strUrl="@Model.StrUrl" method="post">
 
                                                 <span id="confirmDeleteSpan_@item.Id" style="display: none">
                                                     <span class="text-dark">Xóa?</span>
-                                                    <button type="submit" class="btn btn-danger btn-xs">Yes</button>
+                                                    <button type="button" data-ctvatid="@item.Id" data-invoiceId="@Model.Invoice.Id" class="btn btn-danger btn-xs btnDeleteCTVAT">Yes</button>
                                                     <button type="button" class="btn btn-primary btn-xs" onclick="confirmDelete('@item.Id', false)">No</button>
                                                 </span>
 

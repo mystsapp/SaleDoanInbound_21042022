@@ -360,7 +360,7 @@ var indexController = {
         // create CTInvoice
         $('#btnNewCTInvoice').off('click').on('click', function () {
             invoiceId = $(this).data('invoiceid');
-            
+
             $('#tabs_KeToan_TourInfo').hide(500);
             $('#createInvoicePartial').hide();
             $('#editInvoicePartial').hide();
@@ -450,6 +450,15 @@ var indexController = {
                 }
             });
         });
+
+        // BackCreateCTInvoicePartial
+        $('#btnBackCreateCTInvoicePartial').off('click').on('click', function () {
+
+            $('#createCTInvoicePartial').hide(500);
+
+            $('#tabs_KeToan_TourInfo').show(500);
+        });
+        // BackCreateCTInvoicePartial
         //////////////////////////////////////////////////////////////////////////////// CTInvoicesCTVATsInInvoicePartial
 
         //////////////////////////////////////////////////////////////////////////////// editCTInvoicePartial
@@ -579,6 +588,42 @@ var indexController = {
 
         // btnCopyCTVAT 
 
+        // Delete CTVAT
+        $('.btnDeleteCTVAT').off('click').on('click', function () {
+
+            ctvatId = $(this).data('ctvatid');
+            invoiceId = $(this).data('invoiceid');
+
+            $.ajax({
+                url: '/CTVATs/DeleteCTVATPost',
+                data: {
+                    ctvatId: ctvatId,
+                    invoiceId: invoiceId
+                },
+                dataType: 'json',
+                type: 'POST',
+                success: function (response) {
+                    if (response.status) {
+
+                        toastr.success('Xóa thành công!'); // toastr in admin/tour/indexController.js
+
+                        //$('#editCTInvoicePartial').hide();
+
+                        //tourId = tourIdInCreateCTInvoicePartial; // receive it from EditInvoicePartial
+                        //indexController.Load_KeToan_TourInfoByTourPartial(tourId);
+
+                        indexController.Load_CTInvoice_CTVAT_Partial(invoiceId);
+                    }
+                    else {
+                        toastr.error(response.message);
+
+                    }
+                }
+            });
+
+        });
+        // Delete CTVAT
+
         //////////////////////////////////////////////////////////////////////////////// editCTInvoicePartial
 
         //////////////////////////////////////////////////////////////////////////////// BienNhan
@@ -630,7 +675,6 @@ var indexController = {
         // edit biennhan
 
         // del biennhan ( huy biennhan)
-
         $('.btnHuyBN').off('click').on('click', function () {
             id = $(this).data('id');
             strUrl = $(this).data('url');
@@ -643,10 +687,79 @@ var indexController = {
             });
         });
 
-        // btnHuyInvoicePartialSubmit in its partial
-
         // del biennhan ( huy biennhan)
+        // Load CTBienNhanInBienNhanPartial
+        $('.tdBNVal').off('click').on('click', function () {
 
+            bienNhanId = $(this).data('id');
+            indexController.Load_CTBienNhanInBienNhanPartial(bienNhanId);
+
+        });
+        // Load CTBienNhanInBienNhanPartial
+
+        // Create CTBN Partial
+        $('#btnNewCTBienNhan').off('click').on('click', function () {
+
+            //bienNhanId = $(this).data('bienNhanId');
+            bienNhanId = $('#hidBienNhanId').val();
+
+            $('#CTBienNhanInBienNhanPartial').hide(500);
+
+            var url = '/ChiTietBNs/CreateCTBienNhanPartial';
+            $.get(url, { bienNhanId: bienNhanId }, function (response) {
+
+                $('#CreateCTBNPartial').show(500);
+
+                $('#CreateCTBNPartial').html(response);
+
+            });
+
+        });
+        // Create CTBN Partial
+        $('#btnCreateCTBienNhanPartialSubmit').off('click').on('click', function () {
+            // if frm valid
+            if ($('#frmCreateCTBienNhanPartial').valid()) {
+                //var invoice = $('#frmCreateCTBienNhanPartial').serialize();
+                $.ajax({
+                    type: "POST",
+                    url: "/ChiTietBNs/CreateCTBienNhanPartialPost",
+                    //data: invoice,
+                    dataType: "json",
+                    success: function (response) {
+                        if (response.status) {
+
+                            toastr.success('Thêm mới CTBN thành công!'); // toastr in admin/tour/indexController.js
+
+                            $('#editCTInvoicePartial').hide();
+
+                            //tourId = tourIdInCreateCTInvoicePartial; // receive it from EditInvoicePartial
+                            //indexController.Load_KeToan_TourInfoByTourPartial(tourId);
+
+                            invoiceIdReturn = $('#hidInvoiceIdInEditCTInvoicePartial').val();
+                            indexController.Load_CTInvoice_CTVAT_Partial(invoiceIdReturn);
+                        }
+                        else {
+                            toastr.error(response.message);
+                            //  debugger
+                            // $('#createInvoiceModal').show();
+                            // $('.createInvoicePartial').html(response);
+                            //$('#createInvoiceModal').draggable();
+
+                            //tourid = $(this).data('tourid');
+                            //var url = '/Invoices/CreateInvoicePartial';
+                            //$.get(url, { tourid: tourid }, function (response) {
+
+                            //    $('#createInvoiceModal').show();
+                            //    $('.createInvoicePartial').html(response);
+                            //    $('#createInvoiceModal').draggable();
+
+                            //});
+
+                        }
+                    }
+                });
+            }
+        });
         //////////////////////////////////////////////////////////////////////////////// BienNhan
 
     },
@@ -681,6 +794,15 @@ var indexController = {
 
         });
 
+    },
+    Load_CTBienNhanInBienNhanPartial: function (bienNhanId) {
+
+        var url = '/BienNhans/CTBienNhanInBienNhanPartial';
+        $.get(url, { bienNhanId: bienNhanId }, function (response) {
+
+            $('#CTBienNhanInBienNhanPartial').html(response);
+            $('#CTBienNhanInBienNhanPartial').show(500);
+        });
     }
 
 

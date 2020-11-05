@@ -235,6 +235,39 @@ namespace SaleDoanInbound.Controllers
                 return Redirect(CTVATVM.StrUrl);
             }
         }
+        
+        [HttpPost, ActionName("DeleteCTVATPost")]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteCTVATPost(long ctvatId, string invoiceId)
+        {
+
+            var cTVAT = _unitOfWork.cTVATRepository.GetById(ctvatId);
+            if (cTVAT == null)
+                return NotFound();
+            try
+            {
+                _unitOfWork.cTVATRepository.Delete(cTVAT);
+                await _unitOfWork.Complete();
+                //SetAlert("Xóa thành công.", "success");
+                //return Redirect(CTVATVM.StrUrl);
+
+                return Json(new
+                {
+                    status = true
+                });
+            }
+            catch (Exception ex)
+            {
+                //SetAlert(ex.Message, "error");
+                //return Redirect(CTVATVM.StrUrl);
+
+                return Json(new
+                {
+                    status = false,
+                    message = ex.Message
+                });
+            }
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
