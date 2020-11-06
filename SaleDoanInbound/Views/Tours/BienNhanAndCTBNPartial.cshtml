@@ -42,7 +42,7 @@
                         @foreach (var item in Model.BienNhans)
                         {
 
-                            <tr class="biennhan-cursor-pointer " data-huy="@item.HuyBN">
+                            <tr class="biennhan-cursor-pointer " data-huy="@item.HuyBN" onclick="CTBienNhanInBienNhanPartial()">
 
                                 <td>
                                     <div class="btn-group text-white" role="group">
@@ -120,6 +120,15 @@
 
 </div>
 <!-- new CTBN -->
+    <!-- edit CTBN -->
+<div id="EditCTBNPartial">
 
+</div>
+<!-- edit CTBN -->
+<script>
+    function CTBienNhanInBienNhanPartial() { // tab href
+        location.href = "#CTBienNhanInBienNhanPartial";
+    }
+</script>
 <script src="~/js/Admin/BienNhanAndCTBNPartial/indexController.js"></script>
 <script src="~/js/Admin/Tours/indexController.js"></script>

@@ -1,11 +1,12 @@
-﻿@model ChiTietBNViewModel
+﻿
+@model ChiTietBNViewModel
 <!-- Main content -->
 <section class="content">
 
     <!-- Default box -->
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title"><i class="fas fa-file text-info"></i> Thêm mới chi tiết BN - <b>@Model.BienNhan.Id</b></h3>
+            <h3 class="card-title"><i class="fas fa-file text-info"></i> Cập nhật chi tiết BN - <b>@Model.BienNhan.SoBN</b></h3>
 
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
@@ -18,10 +19,13 @@
         </div>
         <div class="card-body">
 
-            <form method="post" autocomplete="off" id="frmCreateCTBienNhanPartial">
+            <form method="post" autocomplete="off" id="frmEditCTBienNhanPartial">
                 <div class="p-4 border rounded">
 
                     <input asp-for="ChiTietBN.BienNhanId" type="hidden" /> <!-- this field is required - foreignkey to invoice-->
+                    <input asp-for="ChiTietBN.Id" type="hidden" /> <!-- this field is required -->
+                    <input asp-for="ChiTietBN.NgayTao" type="hidden" />
+                    <input asp-for="ChiTietBN.NguoiTao" type="hidden" />
                     <input asp-for="StrUrl" type="hidden" value="@Model.StrUrl" /> <!-- this field for action post-->
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -29,13 +33,13 @@
 
                         <div class="col-md-9">
                             <label asp-for="ChiTietBN.Descript" class="control-label"></label>
-                            <input asp-for="ChiTietBN.Descript" class="form-control" id="txtDescript" />
+                            <input asp-for="ChiTietBN.Descript" class="form-control" id="txtDescript"/>
                             <span asp-validation-for="ChiTietBN.Descript" class="text-danger"></span>
                         </div>
 
                         <div class="col-md-3">
                             <label asp-for="ChiTietBN.Amount" class="control-label"></label>
-                            <input asp-for="ChiTietBN.Amount" class="form-control numbers" id="txtAbount" />
+                            <input type="text" asp-for="ChiTietBN.Amount" class="form-control numbers" asp-format="{0:0,0}" id="txtAbount"/>
                             <span asp-validation-for="ChiTietBN.Amount" class="text-danger"></span>
                         </div>
 
@@ -43,9 +47,8 @@
 
                     <div class="form-group row">
                         <div class="form-group">
-                            <input type="hidden" id="hidBienNhanIdInCreateCTBienNhanPartial" value="@Model.BienNhan.Id" />
-                            <button type="button" id="btnCreateCTBienNhanPartialSubmit" class="btn btn-primary"><i class="fas fa-save"></i></button>
-                            <button type="button" id="btnCreateCTBienNhanPartialBack" class="btn btn-success"><i class="fas fa-backward"></i></button>
+                            <button type="button" id="btnEditBienNhanPartialSubmit" class="btn btn-primary" ><i class="fas fa-save"></i></button>
+                            <button type="button" id="btnEditBienNhanPartialBack" class="btn btn-success"><i class="fas fa-backward"></i></button>
                         </div>
                     </div>
                 </div>
@@ -68,8 +71,8 @@
 
 <!-- Validation -->
 <script>
-    
-    $('#frmCreateCTBienNhanPartial').validate({
+
+    $('#frmEditCTBienNhanPartial').validate({
         //rules: {
         //    email: {
         //        required: true,
@@ -121,15 +124,17 @@
         }
     });
 
-    $('#btnCreateCTBienNhanPartialSubmit').off('click').on('click', function () {
+    $('#btnEditBienNhanPartialSubmit').off('click').on('click', function () {
         debugger
-        bienNhanId = $('#hidBienNhanIdInCreateCTBienNhanPartial').val();
+        bienNhanId = @Model.BienNhan.Id;
+        tourId = @Model.BienNhan.TourId;
+
         // if frm valid
-        if ($('#frmCreateCTBienNhanPartial').valid()) {
-            var chiTietBN = $('#frmCreateCTBienNhanPartial').serialize();
+        if ($('#frmEditCTBienNhanPartial').valid()) {
+            var chiTietBN = $('#frmEditCTBienNhanPartial').serialize();
             $.ajax({
                 type: "POST",
-                url: "/ChiTietBNs/CreateCTBienNhanPartialPost",
+                url: "/ChiTietBNs/EditCTBienNhanPartialPost",
                 data: chiTietBN,
                 //data: {
                 //    chiTietBN: chiTietBN,
@@ -139,12 +144,22 @@
                 success: function (response) {
                     if (response.status) {
 
-                        toastr.success('Thêm mới CTBN thành công!'); // toastr in admin/tour/indexController.js
+                        toastr.success('Cập nhật CTBN thành công!'); // toastr in admin/tour/indexController.js
 
-                        $('#CreateCTBNPartial').hide(500);
+                        $('#EditCTBNPartial').hide(500);
 
                         //tourId = tourIdInCreateCTInvoicePartial; // receive it from EditInvoicePartial
                         //indexController.Load_KeToan_TourInfoByTourPartial(tourId);
+
+                        //$('#CTBienNhanInBienNhanPartial').show(500);
+
+                        //var url = '/BienNhans/CTBienNhanInBienNhanPartial';
+                        //$.get(url, { bienNhanId: bienNhanId }, function (response) {
+
+                        //    $('#CTBienNhanInBienNhanPartial').html(response);
+                            
+                        //});
+
 
                         var url = '/Tours/BienNhanAndCTBNPartial';
                         $.get(url, { tourId: tourId }, function (response) {
@@ -154,10 +169,11 @@
                             indexController.Load_CTBienNhanInBienNhanPartial(bienNhanId)
                         });
 
+
                     }
                     else {
                         toastr.error(response.message);
-                        
+
                     }
                 }
             });
@@ -165,5 +181,5 @@
     });
 </script>
 
-<script src="~/js/Admin/CreateCTBienNhanPartial/CreateController.js"></script>
+<script src="~/js/Admin/EditCTBienNhanPartial/EditController.js"></script>
 <script src="~/js/Admin/Tours/indexController.js"></script>

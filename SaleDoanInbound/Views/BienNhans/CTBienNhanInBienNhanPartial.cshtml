@@ -56,7 +56,7 @@
 
                                     <td>
                                         <div class="btn-group text-white" role="group">
-                                            <button class="btnEditCTBN text-primary border-0 bg-transparent" title="Cập nhật" data-bienNhanId="@Model.BienNhan.Id" data-ctBienNhanid="@item.Id" ><i class="fas fa-edit"></i></button>
+                                            <button type="button" class="btnEditCTBN text-primary border-0 bg-transparent" title="Cập nhật" data-bienNhanId="@Model.BienNhan.Id" data-ctBienNhanid="@item.Id" ><i class="fas fa-edit"></i></button>
                                             @*<span class="text-dark"> | </span>
                                             <a class="text-success" title="Chi tiết" asp-action="Details" asp-controller="ChiTietBNs" asp-route-bienNhanId="@Model.BienNhan.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>*@
                                             <span class="text-dark"> | </span>
@@ -64,7 +64,7 @@
 
                                                 <span id="confirmDeleteSpanCTBN_@item.Id" style="display: none">
                                                     <span class="text-dark spanXoa">Xóa?</span>
-                                                    <button type="submit" class="btn btn-danger btn-xs">Yes</button>
+                                                    <button type="button" data-chitietbnid="@item.Id" data-biennhanid="@item.BienNhanId" class="btn btn-danger btn-xs btnXoaCTBienNhanInCTBienNhanPartial">Yes</button>
                                                     <button type="button" class="btn btn-primary btn-xs" onclick="confirmDeleteCTBN('@item.Id', false)">No</button>
                                                 </span>
 
@@ -133,3 +133,23 @@
 <!-- /CTBienNhan -->
 <script src="~/js/Admin/CTBienNhanInBienNhanPartial/indexController.js"></script>
 <script src="~/js/Admin/Tours/indexController.js"></script>
+
+<script>
+    function confirmDeleteCTBN(uniqueId, isDeleteClicked) {
+        var deleteSpan = 'deleteSpanCTBN_' + uniqueId;
+        var confirmDeleteSpan = 'confirmDeleteSpanCTBN_' + uniqueId;
+
+        if (isDeleteClicked) {
+            $('#' + deleteSpan).hide();
+            $('#' + confirmDeleteSpan).show();
+
+
+        } else {
+            $('#' + deleteSpan).show();
+            $('#' + confirmDeleteSpan).hide();
+
+        }
+
+
+    }
+</script>

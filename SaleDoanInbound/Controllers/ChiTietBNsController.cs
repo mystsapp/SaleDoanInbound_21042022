@@ -111,8 +111,8 @@ namespace SaleDoanInbound.Controllers
         }
         
         [HttpPost, ActionName("CreateCTBienNhanPartialPost")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateCTBienNhanPartialPost(long bienNhanId, string strUrl)
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateCTBienNhanPartialPost()
         {
             // from login session
             var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
@@ -121,11 +121,17 @@ namespace SaleDoanInbound.Controllers
 
             if (!ModelState.IsValid)
             {
-                ChiTietBNVM.StrUrl = strUrl;
-                ChiTietBNVM.BienNhan = _unitOfWork.bienNhanRepository.GetById(bienNhanId);
-                ChiTietBNVM.ChiTietBN.BienNhanId = ChiTietBNVM.BienNhan.Id;
-                return View(ChiTietBNVM);
+                //ChiTietBNVM.BienNhan = _unitOfWork.bienNhanRepository.GetById(bienNhanId);
+                //ChiTietBNVM.ChiTietBN.BienNhanId = ChiTietBNVM.BienNhan.Id;
+                //return View(ChiTietBNVM);
+
+                return Json(new
+                {
+                    status = false,
+                    message = "Not valid."
+                });
             }
+            
             ChiTietBNVM.ChiTietBN.NgayTao = DateTime.Now;
             ChiTietBNVM.ChiTietBN.NguoiTao = user.Username;
 
@@ -138,7 +144,7 @@ namespace SaleDoanInbound.Controllers
             // ghi log
             ChiTietBNVM.ChiTietBN.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
             // sotien --> BN
-            var bienNhan = _unitOfWork.bienNhanRepository.GetById(bienNhanId);
+            var bienNhan = _unitOfWork.bienNhanRepository.GetById(ChiTietBNVM.ChiTietBN.BienNhanId);
             var st = bienNhan.SoTien + ChiTietBNVM.ChiTietBN.Amount;
 
             if (bienNhan.SoTien != st)
@@ -166,16 +172,26 @@ namespace SaleDoanInbound.Controllers
 
                 _unitOfWork.chiTietBNRepository.Create(ChiTietBNVM.ChiTietBN);
                 await _unitOfWork.Complete();
-                SetAlert("Thêm mới thành công.", "success");
-                return Redirect(ChiTietBNVM.StrUrl);
+                //SetAlert("Thêm mới thành công.", "success");
+                //return Redirect(ChiTietBNVM.StrUrl);
+
+                return Json(new
+                {
+                    status = true
+                });
             }
             catch (Exception ex)
             {
-                SetAlert(ex.Message, "error");
-                ChiTietBNVM.StrUrl = strUrl;
-                ChiTietBNVM.BienNhan = _unitOfWork.bienNhanRepository.GetById(bienNhanId);
-                ChiTietBNVM.ChiTietBN.BienNhanId = ChiTietBNVM.BienNhan.Id;
-                return View(ChiTietBNVM);
+                //SetAlert(ex.Message, "error");
+                //ChiTietBNVM.BienNhan = _unitOfWork.bienNhanRepository.GetById(bienNhanId);
+                //ChiTietBNVM.ChiTietBN.BienNhanId = ChiTietBNVM.BienNhan.Id;
+                //return View(ChiTietBNVM);
+
+                return Json(new
+                {
+                    status = false,
+                    message = ex.Message
+                });
             }
 
         }
@@ -195,6 +211,22 @@ namespace SaleDoanInbound.Controllers
                 return NotFound();
 
             return View(ChiTietBNVM);
+        }
+        
+        public IActionResult EditCTBienNhanPartial(long ctBienNhanId, long bienNhanId)
+        {
+            ChiTietBNVM.BienNhan = _unitOfWork.bienNhanRepository.GetById(bienNhanId);
+            ChiTietBNVM.ChiTietBN.BienNhanId = bienNhanId;
+
+            if (ctBienNhanId == 0)
+                return NotFound();
+
+            ChiTietBNVM.ChiTietBN = _unitOfWork.chiTietBNRepository.GetById(ctBienNhanId);
+
+            if (ChiTietBNVM.ChiTietBN == null)
+                return NotFound();
+
+            return PartialView(ChiTietBNVM);
         }
 
         [HttpPost, ActionName("Edit")]
@@ -295,6 +327,121 @@ namespace SaleDoanInbound.Controllers
             ChiTietBNVM.ChiTietBN.BienNhanId = bienNhanId;
             return View(ChiTietBNVM);
         }
+        
+        [HttpPost, ActionName("EditCTBienNhanPartialPost")]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditCTBienNhanPartialPost()
+        {
+            // from login session
+            var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
+
+            string temp = "", log = "";
+
+            if (ModelState.IsValid)
+            {
+                ChiTietBNVM.ChiTietBN.NgaySua = DateTime.Now;
+                ChiTietBNVM.ChiTietBN.NguoiSua = user.Username;
+                // kiem tra thay doi : trong getbyid() va ngoai view
+                #region log file
+                //var t = _unitOfWork.tourRepository.GetById(id);
+                var t = _unitOfWork.chiTietBNRepository.GetByIdAsNoTracking(x => x.Id == ChiTietBNVM.ChiTietBN.Id);
+                if (t.Descript != ChiTietBNVM.ChiTietBN.Descript)
+                {
+                    temp += String.Format("- Descript thay đổi: {0}->{1}", t.Descript, ChiTietBNVM.ChiTietBN.Descript);
+                }
+
+                var bienNhan = new BienNhan();
+                // neu' sotien trong CTBN thay doi --> cap nhat st trong BN
+                if (t.Amount != ChiTietBNVM.ChiTietBN.Amount)
+                {
+                    temp += String.Format("- Tổng tiền thay đổi: {0:N0}->{1:N0}", t.Amount, ChiTietBNVM.ChiTietBN.Amount);
+                    // sotien --> BN
+                    bienNhan = _unitOfWork.bienNhanRepository.GetById(ChiTietBNVM.ChiTietBN.BienNhanId);
+                    var st = (bienNhan.SoTien - t.Amount) + ChiTietBNVM.ChiTietBN.Amount;
+                    string tempBN = "", logBN = "";
+
+                    if (bienNhan.SoTien != st)
+                    {
+                        tempBN += String.Format("- Số tiền thay đổi: {0:N0} -> {1:N0}, người thay đổi: {2}, vào lúc: {3} ", bienNhan.SoTien, st, user.Username, System.DateTime.Now.ToString());
+                    }
+                    bienNhan.SoTien = st;
+                    _unitOfWork.bienNhanRepository.Update(bienNhan);
+
+                    // kiem tra thay doi
+                    if (tempBN.Length > 0)
+                    {
+
+                        logBN = System.Environment.NewLine;
+                        logBN += "=============";
+                        logBN += System.Environment.NewLine;
+                        logBN += tempBN;// + " -User cập nhật tour: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // username
+                        bienNhan.LogFile = bienNhan.LogFile + logBN;
+
+                    }
+
+                    // sotien --> BN
+
+                }
+
+                // neu' sotien trong CTBN thay doi
+
+                #endregion
+                // kiem tra thay doi
+                if (temp.Length > 0)
+                {
+
+                    log = System.Environment.NewLine;
+                    log += "=============";
+                    log += System.Environment.NewLine;
+                    log += temp + " -User cập nhật tour: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // username
+                    t.LogFile = t.LogFile + log;
+                    ChiTietBNVM.ChiTietBN.LogFile = t.LogFile;
+                }
+
+                try
+                {
+                    //if (t.Amount != ChiTietBNVM.ChiTietBN.Amount)
+                    //{
+                    //    _unitOfWork.bienNhanRepository.Update(bienNhan);
+                    //}
+                    
+                    _unitOfWork.chiTietBNRepository.Update(ChiTietBNVM.ChiTietBN);
+                    await _unitOfWork.Complete();
+                    //SetAlert("Cập nhật thành công", "success");
+                    //return Redirect(ChiTietBNVM.StrUrl);
+
+                    return Json(new
+                    {
+                        status = true
+                    });
+                }
+                catch (Exception ex)
+                {
+                    //SetAlert(ex.Message, "error");
+                    //ChiTietBNVM.StrUrl = strUrl;// + "&tabActive=" + tabActive; // for redirect tab
+                    //ChiTietBNVM.BienNhan = _unitOfWork.bienNhanRepository.GetById(bienNhanId);
+                    //ChiTietBNVM.ChiTietBN.BienNhanId = bienNhanId;
+                    //return View(ChiTietBNVM);
+
+                    return Json(new
+                    {
+                        status = false,
+                        message = ex.Message
+                    });
+                }
+            }
+            // for not valid
+            //ChiTietBNVM.StrUrl = strUrl;// + "&tabActive=" + tabActive; // for redirect tab
+            //ChiTietBNVM.BienNhan = _unitOfWork.bienNhanRepository.GetById(bienNhanId);
+            //ChiTietBNVM.ChiTietBN.BienNhanId = bienNhanId;
+            //return View(ChiTietBNVM);
+
+            return Json(new
+            {
+                status = false,
+                message = "Not valid."
+            });
+        }
 
         public IActionResult Details(long id, long bienNhanId/*, string tabActive*/, string strUrl)
         {
@@ -336,8 +483,73 @@ namespace SaleDoanInbound.Controllers
                 return Redirect(ChiTietBNVM.StrUrl);
             }
         }
+
+        [HttpPost, ActionName("DeleteChiTietBNPartialPost")]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteChiTietBNPartialPost(long chitietbnid)
+        {
+            // from login session
+            var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
+
+            var chiTietBN = _unitOfWork.chiTietBNRepository.GetById(chitietbnid);
+            if (chiTietBN == null)
+                return NotFound();
+
+            
+            // cap nhat st trong BN
+            
+                // sotien --> BN
+                var bienNhan = _unitOfWork.bienNhanRepository.GetById(chiTietBN.BienNhanId);
+            var st = bienNhan.SoTien - chiTietBN.Amount;
+
+                string tempBN = "", logBN = "";
+
+                if (bienNhan.SoTien != st)
+                {
+                    tempBN += String.Format("- Số tiền thay đổi: {0:N0} -> {1:N0}, người thay đổi: {2}, vào lúc: {3} ", bienNhan.SoTien, st, user.Username, System.DateTime.Now.ToString());
+                }
+                bienNhan.SoTien = st;
+                _unitOfWork.bienNhanRepository.Update(bienNhan);
+
+                // kiem tra thay doi
+                if (tempBN.Length > 0)
+                {
+
+                    logBN = System.Environment.NewLine;
+                    logBN += "=============";
+                    logBN += System.Environment.NewLine;
+                    logBN += tempBN;// + " -User cập nhật tour: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // username
+                    bienNhan.LogFile = bienNhan.LogFile + logBN;
+
+                }
+
+                // cap nhat st trong BN
+
+            try
+            {
+                _unitOfWork.chiTietBNRepository.Delete(chiTietBN);
+                await _unitOfWork.Complete();
+                //SetAlert("Xóa thành công.", "success");
+                //return Redirect(ChiTietBNVM.StrUrl);
+
+                return Json(new
+                {
+                    status = true
+                });
+            }
+            catch (Exception ex)
+            {
+                //SetAlert(ex.Message, "error");
+                //return Redirect(ChiTietBNVM.StrUrl);
+
+                return Json(new
+                {
+                    status = false,
+                    message = ex.Message
+                });
+            }
+        }
         // CTBienNhan
         
-
     }
 }
