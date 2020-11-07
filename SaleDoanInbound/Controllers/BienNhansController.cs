@@ -801,6 +801,91 @@ namespace SaleDoanInbound.Controllers
 
             return pdf;
         }
+
+        [HttpPost]
+        public async Task<IActionResult> ExportPdfPartial(long id)
+        {
+
+            // from login session
+            var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
+
+            if (id == 0)
+                return NotFound();
+
+            BienNhanVM.BienNhan = await _unitOfWork.bienNhanRepository.GetByIdIncludeOneAsync(id);
+            BienNhanVM.ChiTietBNs = await _unitOfWork.chiTietBNRepository.FindAsync(x => x.BienNhanId == id);
+
+            // ChiTietBNPrint
+            BienNhanVM.ChiTietBNPrint = new ListViewModel();
+            foreach (var item in BienNhanVM.ChiTietBNs)
+            {
+                if (string.IsNullOrEmpty(item.Descript))
+                {
+                    BienNhanVM.ChiTietBNPrint.DienGiais += "" + "<br />";
+                }
+                else
+                {
+                    BienNhanVM.ChiTietBNPrint.DienGiais += "- " + "<b>" + item.Descript + "</b>" + "<br>";
+                }
+                BienNhanVM.ChiTietBNPrint.SoTiens += "<b>" + item.Amount.ToString("N0") + "</b>" + "<br />";
+
+            }
+            // ChiTietBNPrint
+
+            //next SoBN(so bien nhan)
+            if (string.IsNullOrEmpty(BienNhanVM.BienNhan.SoBN))
+            {
+                var currentYear = DateTime.Now.Year;
+                var subfix = "IB" + currentYear.ToString();
+                var bienNhan = _unitOfWork.bienNhanRepository.Find(x => !string.IsNullOrEmpty(x.SoBN)).OrderByDescending(x => x.SoBN).FirstOrDefault();
+                if (bienNhan == null)
+                {
+                    BienNhanVM.BienNhan.SoBN = GetNextId.NextID("", "") + subfix;
+                }
+                else
+                {
+                    var oldYear = bienNhan.SoBN.Substring(8, 4);
+                    // cung nam
+                    if (oldYear == currentYear.ToString())
+                    {
+                        var oldSoBN = bienNhan.SoBN.Substring(0, 6);
+                        BienNhanVM.BienNhan.SoBN = GetNextId.NextID(oldSoBN, "") + subfix;
+                    }
+                    else
+                    {
+                        // sang nam khac' chay lai tu dau
+                        BienNhanVM.BienNhan.SoBN = GetNextId.NextID("", "") + subfix;
+                    }
+
+                }
+                _unitOfWork.bienNhanRepository.Update(BienNhanVM.BienNhan);
+
+                await _unitOfWork.Complete();
+
+            }
+
+            //next id(so bien nhan)
+
+            ///// Currency to money
+            string s = SoSangChu.DoiSoSangChu(BienNhanVM.BienNhan.SoTien.ToString().Split('.')[0]);
+            string c = AmountToWords.changeCurrencyToWords(BienNhanVM.BienNhan.SoTien.ToString().ToLower());
+            //string t = String.IsNullOrEmpty(loaitien) ? "" : " Exchange rate USD/VND";
+            BienNhanVM.SoTienBangChu = char.ToUpper(s[0]) + s.Substring(1) + " đồng";// + " / " + char.ToUpper(c[0]) + c.Substring(1).ToLower() + "vnd";
+
+            BienNhanVM.BienNhan.NguoiTao = user.HoTen;
+
+            var pdf = new ViewAsPdf
+            {
+                FileName = "BienNhan_" + BienNhanVM.BienNhan.SoBN + "_" + DateTime.Now.ToString("dd/MM/yyyy") + ".pdf",
+                PageSize = Rotativa.AspNetCore.Options.Size.A4,
+                PageOrientation = Rotativa.AspNetCore.Options.Orientation.Landscape,
+                IsGrayScale = true,
+                PageMargins = new Margins { Bottom = 5, Left = 5, Right = 5, Top = 5 },
+                Model = BienNhanVM
+            };
+
+            return pdf;
+        }
         //----------- Print BN partial ------------
     }
 }

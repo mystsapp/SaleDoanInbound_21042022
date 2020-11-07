@@ -630,7 +630,7 @@ var indexController = {
         $('#hrefToTabBienNhans').off('click').on('click', function () {
 
             tourId = $(this).data('tourid');
-            $('#CreateBienNhanPartial').hide(500);
+            $('#createBienNhanPartial').hide(500);
             $('#editBienNhanPartial').hide(500);
 
             indexController.Load_BienNhan_CTBN_Partial(tourId);

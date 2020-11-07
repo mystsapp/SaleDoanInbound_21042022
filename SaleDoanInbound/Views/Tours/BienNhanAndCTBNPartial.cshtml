@@ -1,4 +1,31 @@
 ﻿@model TourViewModel
+<!-- print BN modal-->
+<div class="modal fade" id="PrintBNPartial" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header bg-secondary">
+                <h4 class="modal-title ">Biên nhận <span id="spanSoBN"></span></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body printBN" style="max-height: 400px !important; overflow-y:auto">
+
+            </div>
+            <div class="modal-footer justify-content-between">
+                <form id="frmPrintBN" asp-controller="BienNhans" asp-action="ExportPdf" method="post">
+                    <input type="hidden" name="id" id="hidBienNhanIdForPdfPrint" />
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" id="btnPrintBNPartial" class="btn btn-primary">Print</button>
+                </form>
+
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- print BN modal-->
 
 <section class="content">
 
@@ -57,7 +84,7 @@
                                             <span class="text-dark"> | </span>
                                         }
                                         <!-- Print Pdf -->
-                                        <a data-id="@item.Id" data-strUrl="@Model.StrUrl" class="text-warning border-0 bg-transparent btnPrintBN" title="Print"><i class="fas fa-print"></i></a>
+                                        <button type="button" data-id="@item.Id" class="text-warning border-0 bg-transparent btnPrintBN" title="Print"><i class="fas fa-print"></i></button>
 
                                         @*<span class="text-dark"> | </span>*@
                                         @*<a class="text-success" title="Chi tiết" asp-action="Details" asp-controller="BienNhans" asp-route-id="@item.Id" asp-route-tourId="@Model.Tour.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>*@
@@ -120,7 +147,7 @@
 
 </div>
 <!-- new CTBN -->
-    <!-- edit CTBN -->
+<!-- edit CTBN -->
 <div id="EditCTBNPartial">
 
 </div>
