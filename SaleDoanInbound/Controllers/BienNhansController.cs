@@ -11,18 +11,22 @@ using Data.Models_IB;
 using Rotativa.AspNetCore;
 using Rotativa.AspNetCore.Options;
 using NumToWords;
+using Data.Services;
 
 namespace SaleDoanInbound.Controllers
 {
     public class BienNhansController : BaseController
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IBienNhanService _bienNhanService;
+
         [BindProperty]
         public BienNhanViewModel BienNhanVM { get; set; }
 
-        public BienNhansController(IUnitOfWork unitOfWork)
+        public BienNhansController(IUnitOfWork unitOfWork, IBienNhanService bienNhanService)
         {
             _unitOfWork = unitOfWork;
+            _bienNhanService = bienNhanService;
             BienNhanVM = new BienNhanViewModel()
             {
                 BienNhan = new Data.Models_IB.BienNhan(),
@@ -32,11 +36,12 @@ namespace SaleDoanInbound.Controllers
                 ChiTietBNPrint = new ListViewModel()
             };
         }
-        public async Task<IActionResult> Index(long tourId, long id = 0, string searchString = null, string searchFromDate = null, string searchToDate = null)
+        public async Task<IActionResult> Index(long id = 0, string searchString = null, string searchFromDate = null, string searchToDate = null, int page = 1)
         {
 
             BienNhanVM.StrUrl = UriHelper.GetDisplayUrl(Request);
-            BienNhanVM.Tour = _unitOfWork.tourRepository.GetById(tourId);
+            //BienNhanVM.BienNhan = _unitOfWork.bienNhanRepository.GetById(id);
+            
             ViewBag.searchString = searchString;
             ViewBag.searchFromDate = searchFromDate;
             ViewBag.searchToDate = searchToDate;
@@ -54,12 +59,12 @@ namespace SaleDoanInbound.Controllers
             //    }
             //}
 
-            BienNhanVM.BienNhans = _unitOfWork.bienNhanRepository.ListBienNhan(searchString, tourId, searchFromDate, searchToDate);
+            BienNhanVM.BienNhanPagedList = await _bienNhanService.BienNhanPagedList(searchString, searchFromDate, searchToDate, page);
 
             // click BienNhan row
             if (id != 0)
             {
-                BienNhanVM.BienNhan = _unitOfWork.bienNhanRepository.GetById(id);
+                BienNhanVM.BienNhan = await _unitOfWork.bienNhanRepository.GetByIdIncludeOneAsync(id);
                 BienNhanVM.ChiTietBNs = await _unitOfWork.chiTietBNRepository.FindAsync(x => x.BienNhanId == id);
             }
             return View(BienNhanVM);
@@ -502,7 +507,7 @@ namespace SaleDoanInbound.Controllers
 
 
         //-----------HuyBN------------
-        public async Task<IActionResult> HuyBNPartial(long id, string strUrl)
+        public async Task<IActionResult> HuyBNPartialIndex(long id, string strUrl)
         {
             if (id == 0)
                 return NotFound();
@@ -579,7 +584,18 @@ namespace SaleDoanInbound.Controllers
             }
         }
         //-----------HuyBN------------
-        
+        public async Task<IActionResult> HuyBNPartial(long id, string strUrl)
+        {
+            if (id == 0)
+                return NotFound();
+
+            BienNhanVM.StrUrl = strUrl;
+            BienNhanVM.BienNhan = _unitOfWork.bienNhanRepository.GetById(id);
+            BienNhanVM.CacNoiDungHuyTours = await _unitOfWork.cacNoiDungHuyTourRepository.FindAsync(x => x.Xoa == false);
+
+            return PartialView(BienNhanVM);
+        }
+
         [HttpPost]
         public async Task<IActionResult> HuyBienNhanPartial()
         {

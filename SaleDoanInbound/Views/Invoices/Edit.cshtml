@@ -136,7 +136,7 @@
 
                         <div class="col-md-3">
                             <label asp-for="Invoice.DOFP" class="control-label"></label>
-                            <input type="text" value="" asp-for="Invoice.DOFP" class="form-control maskInput" />
+                            <input type="text" asp-for="Invoice.DOFP" class="form-control maskInput" asp-format="{0:dd/MM/yyyy}"/>
                             <span asp-validation-for="Invoice.DOFP" class="text-danger"></span>
                         </div>
 

@@ -258,11 +258,13 @@
             @if (Model.TourDtos != null)
             {
                 @Html.PagedListPager((IPagedList)Model.TourDtos, page => Url.Action("Index", new
-                {
-                    page = page,
-                    option = Context.Request.Query["option"],
-                    searchString = @ViewBag.searchString
-                }),
+           {
+               page = page,
+               option = Context.Request.Query["option"],
+               searchString = @ViewBag.searchString,
+               searchFromDate = ViewBag.searchFromDate,
+               searchToDate = ViewBag.searchToDate
+           }),
                     PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new PagedListRenderOptions
                     {
                         LiElementClasses = new string[] { "page-item" },

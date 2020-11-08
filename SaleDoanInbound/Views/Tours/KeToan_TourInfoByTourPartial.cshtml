@@ -79,17 +79,18 @@
                                                         </th>
                                                         <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Id)</th>
                                                         <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Replace)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Type)</th>
+                                                        @*<th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Type)</th>*@
+                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().MaKH)</th>
+                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().TenKhach)</th>
+                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Ref)</th>
+                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().HopDong)</th>
                                                         <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Date)</th>
                                                         <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Arr)</th>
                                                         <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Dep)</th>
                                                         <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Pax)</th>
                                                         <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Currency)</th>
                                                         <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Rate)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().MaKH)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().TenKhach)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Ref)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().HopDong)</th>
+
 
                                                     </tr>
                                                 </thead>
@@ -98,71 +99,71 @@
                                                     @foreach (var item in Model.Invoices)
                                                     {
 
-                                                        <tr class="invoice-cursor-pointer " data-huy="@item.HuyInvoice" onclick="CTInvoiceCTVATDiv()">
+                                                    <tr class="invoice-cursor-pointer " data-huy="@item.HuyInvoice" onclick="CTInvoiceCTVATDiv()">
 
-                                                            <td>
-                                                                <div class="btn-group text-white" role="group">
-                                                                    @if (item.HuyInvoice == true)
-                                                                    {
-                                                                        <button type="button" class="text-primary border-0 bg-transparent disabled" title="Cập nhật"><i class="fas fa-edit"></i></button>
-                                                                        <span class="text-dark"> | </span>
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        @*<button type="button" id="invoice_@item.Id" class="text-primary border-0 bg-transparent btnEditInvoice" title="Cập nhật" data-tourId="@Model.Tour.Id" data-invoiceId="@item.Id"><i class="fas fa-edit"></i></button>*@
-                                                                        <button class="text-primary border-0 bg-transparent btnEditInvoice" title="Cập nhật" data-tourId="@Model.Tour.Id" data-invoiceId="@item.Id"><i class="fas fa-edit"></i></button>
-                                                                        <span class="text-dark"> | </span>
-                                                                    }
-                                                                    <!--print invoice-->
-                                                                    <a asp-controller="Invoices" asp-action="InvoicePdfViewer" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" class="text-warning btnPrintInvoice" title="Print"><i class="fas fa-print"></i></a>
-                                                                    @*<span class="text-dark"> | </span>
-                                                                        <a class="text-success" title="Chi tiết" asp-action="Details" asp-route-tourId="@Model.Tour.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>*@
-                                                                    <span class="text-dark"> | </span>
-                                                                    <form method="post">
-
-                                                                        <span id="confirmDeleteSpan_@item.Id" style="display: none">
-                                                                            <span class="text-dark">Hủy?</span>
-                                                                            <button type="button" data-id="@item.Id" data-invoiceId="@item.Id" data-url="@Model.StrUrl" class="btn btn-danger btn-xs btnHuyInvoice" data-toggle="modal" data-target=".huyInvoiceModal">Yes</button>
-                                                                            <button type="button" class="btn btn-primary btn-xs" onclick="confirmDelete('@item.Id', false)">No</button>
-                                                                        </span>
-
-                                                                        <span id="deleteSpan_@item.Id">
-                                                                            @if (item.HuyInvoice == true)
-                                                                            {
-                                                                                <button type="button" class="text-danger border-0 bg-transparent disabled"><i class="fas fa-trash-alt"></i></button>
-
-                                                                            }
-                                                                            else
-                                                                            {
-                                                                                <button type="button" class="text-danger border-0 bg-transparent btnHuy" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
-
-                                                                            }
-                                                                        </span>
-                                                                    </form>
-                                                                </div>
-                                                            </td>
-
-                                                            <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Id)</td>
-                                                            <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Replace)</td>
-                                                            <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Type)</td>
-                                                            <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.Raw(item.Date.ToShortDateString())</td>
-                                                            <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.Raw(item.Arr.ToShortDateString())</td>
-                                                            <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">
-                                                                @if (item.Dep.HasValue)
+                                                        <td>
+                                                            <div class="btn-group text-white" role="group">
+                                                                @if (item.HuyInvoice == true)
                                                                 {
-                                                                    @Html.Raw(item.Dep.Value.ToShortDateString())
+                                                                    <button type="button" class="text-primary border-0 bg-transparent disabled" title="Cập nhật"><i class="fas fa-edit"></i></button>
+                                                                    <span class="text-dark"> | </span>
                                                                 }
-                                                            </td>
-                                                            <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Pax)</td>
-                                                            <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Currency)</td>
-                                                            <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Rate)</td>
-                                                            <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.MaKH)</td>
-                                                            <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.TenKhach)</td>
+                                                                else
+                                                                {
+                                                                    @*<button type="button" id="invoice_@item.Id" class="text-primary border-0 bg-transparent btnEditInvoice" title="Cập nhật" data-tourId="@Model.Tour.Id" data-invoiceId="@item.Id"><i class="fas fa-edit"></i></button>*@
+                                                                    <button class="text-primary border-0 bg-transparent btnEditInvoice" title="Cập nhật" data-tourId="@Model.Tour.Id" data-invoiceId="@item.Id"><i class="fas fa-edit"></i></button>
+                                                                    <span class="text-dark"> | </span>
+                                                                }
+                                                                <!--print invoice-->
+                                                                <a asp-controller="Invoices" asp-action="InvoicePdfViewer" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" class="text-warning btnPrintInvoice" title="Print"><i class="fas fa-print"></i></a>
+                                                                @*<span class="text-dark"> | </span>
+                <a class="text-success" title="Chi tiết" asp-action="Details" asp-route-tourId="@Model.Tour.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>*@
+                                                                <span class="text-dark"> | </span>
+                                                                <form method="post">
 
-                                                            <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Ref)</td>
-                                                            <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.HopDong)</td>
+                                                                    <span id="confirmDeleteSpan_@item.Id" style="display: none">
+                                                                        <span class="text-dark">Hủy?</span>
+                                                                        <button type="button" data-id="@item.Id" data-invoiceId="@item.Id" data-url="@Model.StrUrl" class="btn btn-danger btn-xs btnHuyInvoice" data-toggle="modal" data-target=".huyInvoiceModal">Yes</button>
+                                                                        <button type="button" class="btn btn-primary btn-xs" onclick="confirmDelete('@item.Id', false)">No</button>
+                                                                    </span>
 
-                                                        </tr>
+                                                                    <span id="deleteSpan_@item.Id">
+                                                                        @if (item.HuyInvoice == true)
+                                                                        {
+                                                                            <button type="button" class="text-danger border-0 bg-transparent disabled"><i class="fas fa-trash-alt"></i></button>
+
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <button type="button" class="text-danger border-0 bg-transparent btnHuy" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
+
+                                                                        }
+                                                                    </span>
+                                                                </form>
+                                                            </div>
+                                                        </td>
+
+                                                        <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Id)</td>
+                                                        <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Replace)</td>
+                                                        @*<td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Type)</td>*@
+                                                        <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.MaKH)</td>
+                                                        <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.TenKhach)</td>
+                                                        <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Ref)</td>
+                                                        <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.HopDong)</td>
+                                                        <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.Raw(item.Date.ToString("dd/MM/yyyy"))</td>
+                                                        <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.Raw(item.Arr.ToString("dd/MM/yyyy"))</td>
+                                                        <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">
+                                                            @if (item.Dep.HasValue)
+                                                            {
+                                                                @Html.Raw(item.Dep.Value.ToString("dd/MM/yyyy"))
+                                                            }
+                                                        </td>
+                                                        <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Pax)</td>
+                                                        <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Currency)</td>
+                                                        <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Rate)</td>
+
+
+                                                    </tr>
 
                                                     }
                                                 </tbody>

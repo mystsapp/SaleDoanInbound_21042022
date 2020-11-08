@@ -25,11 +25,11 @@ namespace Data.Repository
             if (!string.IsNullOrEmpty(searchString))
             {
                 list = list.Where(x => x.Id.ToLower().Contains(searchString.ToLower()) ||
-                                       x.Replace.ToLower().Contains(searchString.ToLower()) ||
-                                       x.Type.ToLower().Contains(searchString.ToLower()) ||
-                                       x.Ref.ToLower().Contains(searchString.ToLower()) ||
-                                       x.HopDong.ToLower().Contains(searchString.ToLower())||
-                                       x.Tour.Sgtcode.ToLower().Contains(searchString.ToLower()));
+                                       (!string.IsNullOrEmpty(x.Replace) && x.Replace.ToLower().Contains(searchString.ToLower())) ||
+                                       (!string.IsNullOrEmpty(x.Type) && x.Type.ToLower().Contains(searchString.ToLower())) ||
+                                       (!string.IsNullOrEmpty(x.Ref) && x.Ref.ToLower().Contains(searchString.ToLower())) ||
+                                       (!string.IsNullOrEmpty(x.HopDong) && x.HopDong.ToLower().Contains(searchString.ToLower()))||
+                                       (!string.IsNullOrEmpty(x.Tour.Sgtcode) && x.Tour.Sgtcode.ToLower().Contains(searchString.ToLower())));
             }
 
             var count = list.Count();

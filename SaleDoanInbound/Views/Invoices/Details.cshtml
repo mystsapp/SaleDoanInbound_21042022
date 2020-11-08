@@ -111,7 +111,7 @@
 
                         <div class="col-md-3">
                             <label asp-for="Invoice.DOFP" class="control-label"></label>
-                            <input type="text" value="" asp-for="Invoice.DOFP" class="form-control " readonly/>
+                            <input type="text" asp-for="Invoice.DOFP" class="form-control " asp-format="{0:dd/MM/yyyy}" readonly/>
                         </div>
 
                         <div class="col-md-3">
@@ -135,7 +135,7 @@
 
                         <div class="col-md-3">
                             <label asp-for="Invoice.NgayVAT" class="control-label"></label>
-                            <input type="text" asp-for="Invoice.NgayVAT" class="form-control maskInput" readonly />
+                            <input type="text" asp-for="Invoice.NgayVAT" class="form-control maskInput" asp-format="{0:dd/MM/yyyy}" readonly />
                         </div>
 
                         <div class="col-md-3">

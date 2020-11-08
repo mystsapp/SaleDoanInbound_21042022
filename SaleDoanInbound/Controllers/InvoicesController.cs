@@ -10,18 +10,21 @@ using Data.Utilities;
 using Data.Models_IB;
 using NumToWords;
 using Microsoft.AspNetCore.Razor.Language;
+using Data.Services;
 
 namespace SaleDoanInbound.Controllers
 {
     public class InvoicesController : BaseController
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IInvoiceService _invoiceService;
 
         [BindProperty]
         public InvoiceViewModel InvoiceVM { get; set; }
-        public InvoicesController(IUnitOfWork unitOfWork)
+        public InvoicesController(IUnitOfWork unitOfWork, IInvoiceService invoiceService)
         {
             _unitOfWork = unitOfWork;
+            _invoiceService = invoiceService;
             InvoiceVM = new InvoiceViewModel()
             {
                 Invoice = new Data.Models_IB.Invoice(),
@@ -32,11 +35,13 @@ namespace SaleDoanInbound.Controllers
                 Tour = new Data.Models_IB.Tour()
             };
         }
-        public async Task<IActionResult> Index(long tourId, string id, string searchString = null)
+        public async Task<IActionResult> Index(string id, string searchString = null, string searchFromDate = null, string searchToDate = null, int page = 1)
         {
             InvoiceVM.StrUrl = UriHelper.GetDisplayUrl(Request);
-            InvoiceVM.Tour = _unitOfWork.tourRepository.GetById(tourId);
+
             ViewBag.searchString = searchString;
+            ViewBag.searchFromDate = searchFromDate;
+            ViewBag.searchToDate = searchToDate;
 
             // for delete
             //if (id != 0)
@@ -51,7 +56,7 @@ namespace SaleDoanInbound.Controllers
             //    }
             //}
 
-            InvoiceVM.Invoices = _unitOfWork.invoiceRepository.ListInvoice(searchString, tourId).OrderByDescending(x => x.Date);
+            InvoiceVM.InvoicePagedList = await _invoiceService.InvoicePagedList(searchString, searchFromDate, searchToDate, page);
 
             // invoice click
             if (!string.IsNullOrEmpty(id))
@@ -722,6 +727,17 @@ namespace SaleDoanInbound.Controllers
 
 
         //-----------HuyInvoice------------
+        public async Task<IActionResult> HuyInvoicePartialIndex(string id, string strUrl)
+        {
+            if (string.IsNullOrEmpty(id))
+                return NotFound();
+
+            InvoiceVM.StrUrl = strUrl;
+            InvoiceVM.Invoice = await _unitOfWork.invoiceRepository.GetByIdAsync(id);
+            InvoiceVM.CacNoiDungHuyTours = await _unitOfWork.cacNoiDungHuyTourRepository.FindAsync(x => x.Xoa == false);
+
+            return PartialView(InvoiceVM);
+        }
         public async Task<IActionResult> HuyInvoicePartial(string id, string strUrl)
         {
             if (string.IsNullOrEmpty(id))

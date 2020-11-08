@@ -32,7 +32,7 @@ namespace SaleDoanInbound.Controllers
             ChiTietBNVM.ChiTietBN.BienNhanId = ChiTietBNVM.BienNhan.Id;
             return View(ChiTietBNVM);
         }
-        
+
         public IActionResult CreateCTBienNhanPartial(long bienNhanId)
         {
             ChiTietBNVM.BienNhan = _unitOfWork.bienNhanRepository.GetById(bienNhanId);
@@ -64,7 +64,7 @@ namespace SaleDoanInbound.Controllers
                 ChiTietBNVM.ChiTietBN.Descript = "";
             }
             ChiTietBNVM.ChiTietBN.Descript = ChiTietBNVM.ChiTietBN.Descript.ToUpper();
-            
+
             // ghi log
             ChiTietBNVM.ChiTietBN.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
             // sotien --> BN
@@ -85,7 +85,7 @@ namespace SaleDoanInbound.Controllers
                 log += System.Environment.NewLine;
                 log += temp;// + " -User cập nhật tour: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // username
                 bienNhan.LogFile = bienNhan.LogFile + log;
-                
+
             }
 
             // sotien --> BN
@@ -109,7 +109,7 @@ namespace SaleDoanInbound.Controllers
             }
 
         }
-        
+
         [HttpPost, ActionName("CreateCTBienNhanPartialPost")]
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateCTBienNhanPartialPost()
@@ -131,7 +131,7 @@ namespace SaleDoanInbound.Controllers
                     message = "Not valid."
                 });
             }
-            
+
             ChiTietBNVM.ChiTietBN.NgayTao = DateTime.Now;
             ChiTietBNVM.ChiTietBN.NguoiTao = user.Username;
 
@@ -140,7 +140,7 @@ namespace SaleDoanInbound.Controllers
                 ChiTietBNVM.ChiTietBN.Descript = "";
             }
             ChiTietBNVM.ChiTietBN.Descript = ChiTietBNVM.ChiTietBN.Descript.ToUpper();
-            
+
             // ghi log
             ChiTietBNVM.ChiTietBN.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
             // sotien --> BN
@@ -161,7 +161,7 @@ namespace SaleDoanInbound.Controllers
                 log += System.Environment.NewLine;
                 log += temp;// + " -User cập nhật tour: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // username
                 bienNhan.LogFile = bienNhan.LogFile + log;
-                
+
             }
 
             // sotien --> BN
@@ -212,7 +212,7 @@ namespace SaleDoanInbound.Controllers
 
             return View(ChiTietBNVM);
         }
-        
+
         public IActionResult EditCTBienNhanPartial(long ctBienNhanId, long bienNhanId)
         {
             ChiTietBNVM.BienNhan = _unitOfWork.bienNhanRepository.GetById(bienNhanId);
@@ -245,6 +245,7 @@ namespace SaleDoanInbound.Controllers
             {
                 ChiTietBNVM.ChiTietBN.NgaySua = DateTime.Now;
                 ChiTietBNVM.ChiTietBN.NguoiSua = user.Username;
+                ChiTietBNVM.ChiTietBN.Descript = ChiTietBNVM.ChiTietBN.Descript.ToUpper();
                 // kiem tra thay doi : trong getbyid() va ngoai view
                 #region log file
                 //var t = _unitOfWork.tourRepository.GetById(id);
@@ -280,7 +281,7 @@ namespace SaleDoanInbound.Controllers
                         bienNhan.LogFile = bienNhan.LogFile + logBN;
 
                     }
-
+                    _unitOfWork.bienNhanRepository.Update(bienNhan);
                     // sotien --> BN
 
                 }
@@ -302,11 +303,11 @@ namespace SaleDoanInbound.Controllers
 
                 try
                 {
-                    if(bienNhan != null)
-                    {
-                        _unitOfWork.bienNhanRepository.Update(bienNhan);
-                    }
-                    
+                    //if(bienNhan != null)
+                    //{
+                    //    _unitOfWork.bienNhanRepository.Update(bienNhan);
+                    //}
+
                     _unitOfWork.chiTietBNRepository.Update(ChiTietBNVM.ChiTietBN);
                     await _unitOfWork.Complete();
                     SetAlert("Cập nhật thành công", "success");
@@ -327,7 +328,7 @@ namespace SaleDoanInbound.Controllers
             ChiTietBNVM.ChiTietBN.BienNhanId = bienNhanId;
             return View(ChiTietBNVM);
         }
-        
+
         [HttpPost, ActionName("EditCTBienNhanPartialPost")]
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> EditCTBienNhanPartialPost()
@@ -341,6 +342,7 @@ namespace SaleDoanInbound.Controllers
             {
                 ChiTietBNVM.ChiTietBN.NgaySua = DateTime.Now;
                 ChiTietBNVM.ChiTietBN.NguoiSua = user.Username;
+                ChiTietBNVM.ChiTietBN.Descript = ChiTietBNVM.ChiTietBN.Descript.ToUpper();
                 // kiem tra thay doi : trong getbyid() va ngoai view
                 #region log file
                 //var t = _unitOfWork.tourRepository.GetById(id);
@@ -404,7 +406,7 @@ namespace SaleDoanInbound.Controllers
                     //{
                     //    _unitOfWork.bienNhanRepository.Update(bienNhan);
                     //}
-                    
+
                     _unitOfWork.chiTietBNRepository.Update(ChiTietBNVM.ChiTietBN);
                     await _unitOfWork.Complete();
                     //SetAlert("Cập nhật thành công", "success");
@@ -463,16 +465,48 @@ namespace SaleDoanInbound.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(long id, string bienNhanId, string strUrl/*, string tabActive*/)
+        public async Task<IActionResult> DeleteConfirmed(long id, long bienNhanId, string strUrl/*, string tabActive*/)
         {
+            // from login session
+            var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
+
             ChiTietBNVM.StrUrl = strUrl;// + "&tabActive=" + tabActive; // for redirect tab
 
-            var cTVAT = _unitOfWork.chiTietBNRepository.GetById(id);
-            if (cTVAT == null)
+            var chiTietBN = _unitOfWork.chiTietBNRepository.GetById(id);
+            if (chiTietBN == null)
                 return NotFound();
+
+            // cap nhat st trong BN
+
+            // sotien --> BN
+            var bienNhan = _unitOfWork.bienNhanRepository.GetById(bienNhanId);
+            var st = bienNhan.SoTien - chiTietBN.Amount;
+
+            string tempBN = "", logBN = "";
+
+            if (bienNhan.SoTien != st)
+            {
+                tempBN += String.Format("- Số tiền thay đổi: {0:N0} -> {1:N0}, người thay đổi: {2}, vào lúc: {3} ", bienNhan.SoTien, st, user.Username, System.DateTime.Now.ToString());
+            }
+            bienNhan.SoTien = st;
+
+            // kiem tra thay doi
+            if (tempBN.Length > 0)
+            {
+
+                logBN = System.Environment.NewLine;
+                logBN += "=============";
+                logBN += System.Environment.NewLine;
+                logBN += tempBN;// + " -User cập nhật tour: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // username
+                bienNhan.LogFile = bienNhan.LogFile + logBN;
+
+            }
+            _unitOfWork.bienNhanRepository.Update(bienNhan);
+
+            // cap nhat st trong BN
             try
             {
-                _unitOfWork.chiTietBNRepository.Delete(cTVAT);
+                _unitOfWork.chiTietBNRepository.Delete(chiTietBN);
                 await _unitOfWork.Complete();
                 SetAlert("Xóa thành công.", "success");
                 return Redirect(ChiTietBNVM.StrUrl);
@@ -495,35 +529,35 @@ namespace SaleDoanInbound.Controllers
             if (chiTietBN == null)
                 return NotFound();
 
-            
+
             // cap nhat st trong BN
-            
-                // sotien --> BN
-                var bienNhan = _unitOfWork.bienNhanRepository.GetById(chiTietBN.BienNhanId);
+
+            // sotien --> BN
+            var bienNhan = _unitOfWork.bienNhanRepository.GetById(chiTietBN.BienNhanId);
             var st = bienNhan.SoTien - chiTietBN.Amount;
 
-                string tempBN = "", logBN = "";
+            string tempBN = "", logBN = "";
 
-                if (bienNhan.SoTien != st)
-                {
-                    tempBN += String.Format("- Số tiền thay đổi: {0:N0} -> {1:N0}, người thay đổi: {2}, vào lúc: {3} ", bienNhan.SoTien, st, user.Username, System.DateTime.Now.ToString());
-                }
-                bienNhan.SoTien = st;
-                _unitOfWork.bienNhanRepository.Update(bienNhan);
+            if (bienNhan.SoTien != st)
+            {
+                tempBN += String.Format("- Số tiền thay đổi: {0:N0} -> {1:N0}, người thay đổi: {2}, vào lúc: {3} ", bienNhan.SoTien, st, user.Username, System.DateTime.Now.ToString());
+            }
+            bienNhan.SoTien = st;
 
-                // kiem tra thay doi
-                if (tempBN.Length > 0)
-                {
+            // kiem tra thay doi
+            if (tempBN.Length > 0)
+            {
 
-                    logBN = System.Environment.NewLine;
-                    logBN += "=============";
-                    logBN += System.Environment.NewLine;
-                    logBN += tempBN;// + " -User cập nhật tour: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // username
-                    bienNhan.LogFile = bienNhan.LogFile + logBN;
+                logBN = System.Environment.NewLine;
+                logBN += "=============";
+                logBN += System.Environment.NewLine;
+                logBN += tempBN;// + " -User cập nhật tour: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // username
+                bienNhan.LogFile = bienNhan.LogFile + logBN;
 
-                }
+            }
+            _unitOfWork.bienNhanRepository.Update(bienNhan);
 
-                // cap nhat st trong BN
+            // cap nhat st trong BN
 
             try
             {
@@ -550,6 +584,6 @@ namespace SaleDoanInbound.Controllers
             }
         }
         // CTBienNhan
-        
+
     }
 }

@@ -1,5 +1,13 @@
 ﻿@model BienNhanViewModel
 
+@using X.PagedList;
+@using X.PagedList.Mvc.Core
+@using X.PagedList.Mvc.Core.Common
+
+@using Microsoft.AspNetCore.Http
+@using Data.Utilities
+@inject IHttpContextAccessor HttpContextAccessor
+
 @{
     ViewData["Title"] = "Bien Nhan";
 }
@@ -36,7 +44,7 @@
                 </button>
             </div>
             <div class="modal-body printBN" style="max-height: 400px !important; overflow-y:auto">
-                
+
             </div>
             <div class="modal-footer justify-content-between">
                 <form id="frmPrintBN" asp-action="ExportPdf" method="post">
@@ -44,7 +52,7 @@
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">Print</button>
                 </form>
-                
+
             </div>
         </div>
         <!-- /.modal-content -->
@@ -53,31 +61,31 @@
 </div>
 @*<div class="modal fade" id="PrintBNPartial" aria-hidden="true" style="display: none;">
 
-    <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-lg">
 
-        <div class="modal-content ">
-            <div class="modal-header bg-secondary">
-                <h4 class="modal-title">Biên nhận</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body printBN" style="max-height: 400px !important; overflow-y:auto">
+            <div class="modal-content ">
+                <div class="modal-header bg-secondary">
+                    <h4 class="modal-title">Biên nhận</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body printBN" style="max-height: 400px !important; overflow-y:auto">
 
+                </div>
+
+                <div class="modal-footer ">
+                    <form id="frmPrintBN" asp-action="ExportPdf" asp-route-id="@Model.BienNhan.Id" method="post">
+                        <button type="button" class="btn btn-outline-dark" data-dismiss="modal"><i class="fas fa-power-off"></i></button>
+                        <button type="submit" class="btn btn-outline-primary"><i class="fas fa-save"></i></button>
+                        <a class="btn btn-outline-primary" title="Danh sách nguyên nhân" asp-controller="CacNoiDungHuyTours" asp-action="Index"><i class="fas fa-list"></i></a>
+                    </form>
+                </div>
             </div>
 
-            <div class="modal-footer ">
-                <form id="frmPrintBN" asp-action="ExportPdf" asp-route-id="@Model.BienNhan.Id" method="post">
-                    <button type="button" class="btn btn-outline-dark" data-dismiss="modal"><i class="fas fa-power-off"></i></button>
-                    <button type="submit" class="btn btn-outline-primary"><i class="fas fa-save"></i></button>
-                    <a class="btn btn-outline-primary" title="Danh sách nguyên nhân" asp-controller="CacNoiDungHuyTours" asp-action="Index"><i class="fas fa-list"></i></a>
-                </form>
-            </div>
         </div>
 
-    </div>
-
-</div>*@
+    </div>*@
 
 <!-- /.modal-dialog -->
 <!-- BienNhan -->
@@ -86,7 +94,7 @@
     <!-- Default box -->
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Danh sách biên nhận - <b>@Model.Tour.Sgtcode</b></h3>
+            <h3 class="card-title">Danh sách biên nhận </h3>
 
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
@@ -125,7 +133,8 @@
 
                             <!-- click row and submit to index -->
                             <input type="hidden" name="id" id="hidId" />
-                            <input type="hidden" name="tourId" value="@Model.Tour.Id" />
+                            <input type="hidden" name="page" id="hidPage" />
+                            @*<input type="hidden" name="tourId" value="@Model.Tour.Id" />*@
 
                             <div class="col-md-3 ">
                                 <br />
@@ -133,7 +142,7 @@
                                     <button type="submit" class="btn btn-primary " id="btnSubmit">
                                         <i class="fas fa-search"></i>
                                     </button>
-                                    <a class="btn btn-outline-info" asp-action="Create" asp-route-tourId="@Model.Tour.Id" asp-route-strUrl="@Model.StrUrl" title="Thêm mới"><i class="fas fa-plus"></i></a>
+                                    @*<a class="btn btn-outline-info" asp-action="Create" asp-route-tourId="@Model.Tour.Id" asp-route-strUrl="@Model.StrUrl" title="Thêm mới"><i class="fas fa-plus"></i></a>*@
                                 </div>
 
                             </div>
@@ -144,11 +153,12 @@
             </form>
             <br />
             <div style="overflow-x:auto; overflow-y: auto; height: 200px;">
-                <table class="table mytable text-nowrap tblEMD" id="listAll">
+                <table class="table mytable text-nowrap tblEMD" id="biennhansTbl">
                     <thead>
                         <tr class="table-info">
                             <th>#</th>
                             <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().SoBN)</th> <!-- so bien nhan-->
+                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().Sgtcode)</th>
                             <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().NgayBN)</th>
                             <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().TenKhach)</th>
                             <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().DienThoai)</th>
@@ -162,64 +172,66 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in Model.BienNhans)
+                        @foreach (var item in Model.BienNhanPagedList)
                         {
 
-                        <tr class="cursor-pointer " data-huy="@item.HuyBN">
+                            <tr id="bn_@item.Id" class="biennhan-cursor-pointer " data-huy="@item.HuyBN">
 
-                            <td>
-                                <div class="btn-group text-white" role="group">
-                                    @if (item.HuyBN == true)
-                                    {
-                                        <a class="disabled" title="Cập nhật"><i class="fas fa-edit"></i></a>
+                                <td>
+                                    <div class="btn-group text-white" role="group">
+                                        @if (item.HuyBN == true)
+                                        {
+                                            <a class="disabled" title="Cập nhật"><i class="fas fa-edit"></i></a>
+                                            <span class="text-dark"> | </span>
+                                        }
+                                        else
+                                        {
+                                            <a class="text-primary btnEditBN" title="Cập nhật" asp-action="Edit" asp-controller="BienNhans" asp-route-id="@item.Id" asp-route-tourId="@item.TourId" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
+                                            <span class="text-dark"> | </span>
+                                        }
+                                        <!-- Print Pdf -->
+                                        <a data-id="@item.Id" data-strUrl="@Model.StrUrl" class="text-warning border-0 bg-transparent btnPrintBN" title="Print"><i class="fas fa-print"></i></a>
+
                                         <span class="text-dark"> | </span>
-                                    }
-                                    else
-                                    {
-                                        <a class="text-primary btnEditBN" title="Cập nhật" asp-action="Edit" asp-controller="BienNhans" asp-route-id="@item.Id" asp-route-tourId="@Model.Tour.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
+                                        <a class="text-success" title="Chi tiết" asp-action="Details" asp-controller="BienNhans" asp-route-id="@item.Id" asp-route-tourId="@item.TourId" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
                                         <span class="text-dark"> | </span>
-                                    }
-                                    <!-- Print Pdf -->
-                                    <a data-id="@item.Id" data-strUrl="@Model.StrUrl" class="text-warning border-0 bg-transparent btnPrintBN" title="Print"><i class="fas fa-print"></i></a>
+                                        <form asp-action="Delete" asp-controller="BienNhans" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" method="post">
 
-                                    <span class="text-dark"> | </span>
-                                    <a class="text-success" title="Chi tiết" asp-action="Details" asp-controller="BienNhans" asp-route-id="@item.Id" asp-route-tourId="@Model.Tour.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
-                                    <span class="text-dark"> | </span>
-                                    <form asp-action="Delete" asp-controller="BienNhans" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" method="post">
+                                            <span id="confirmDeleteSpan_@item.Id" style="display: none">
+                                                <span class="text-dark spanXoa">Hủy?</span>
+                                                <button type="button" data-id="@item.Id" data-url="@Model.StrUrl" class="btn btn-danger btn-xs btnHuyBN">Yes</button>
+                                                <button type="button" class="btn btn-primary btn-xs" onclick="confirmDelete('@item.Id', false)">No</button>
+                                            </span>
 
-                                        <span id="confirmDeleteSpan_@item.Id" style="display: none">
-                                            <span class="text-dark spanXoa">Hủy?</span>
-                                            <button type="button" data-id="@item.Id" data-url="@Model.StrUrl" class="btn btn-danger btn-xs btnHuyBN">Yes</button>
-                                            <button type="button" class="btn btn-primary btn-xs" onclick="confirmDelete('@item.Id', false)">No</button>
-                                        </span>
+                                            <span id="deleteSpan_@item.Id">
+                                                @if (item.HuyBN == true)
+                                                {
+                                                    <button type="button" class="text-danger border-0 bg-transparent disabled"><i class="fas fa-trash-alt"></i></button>
+                                                }
+                                                else
+                                                {
+                                                    <button title="Xóa" type="button" class="text-danger border-0 bg-transparent btnHuy" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
+                                                }
+                                            </span>
+                                        </form>
+                                    </div>
+                                </td>
 
-                                        <span id="deleteSpan_@item.Id">
-                                            @if (item.HuyBN == true)
-                                            {
-                                                <button type="button" class="text-danger border-0 bg-transparent disabled"><i class="fas fa-trash-alt"></i></button>
-                                            }
-                                            else
-                                            {
-                                                <button title="Xóa" type="button" class="text-danger border-0 bg-transparent btnHuy" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
-                                            }
-                                        </span>
-                                    </form>
-                                </div>
-                            </td>
+                                <td class="tdVal tdSoBN" data-id="@item.Id">@Html.DisplayFor(m => item.SoBN)</td>
+                                <td class="tdVal tdSoBN" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
+                                <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayBN.ToString("dd/MM/yyyy"))</td>
+                                <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.TenKhach)</td>
+                                <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.DienThoai)</td>
+                                <td class="tdVal" data-id="@item.Id">@Html.Raw(item.SoTien.ToString("N0"))</td>
+                                @*<td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.NoiDung)</td>*@
+                                <td class="tdVal" data-id="@item.Id">@Html.Raw(item.SK.ToString("N0"))</td>
+                                <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.GhiChu)</td>
+                                <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.LoaiTien)</td>
+                                @*<td class="tdVal" data-id="@item.Id">@Html.Raw(item.TyGia.ToString("0:##0"))</td>*@
+                                <td class="tdVal" data-id="@item.Id">@Html.Raw(string.Format("{0:#,##0.00}", item.TyGia))</td>
+                                @*@Html.Raw(string.Format("{0:#,##0.00}", item.sotiennt))*@
 
-                            <td class="tdVal tdSoBN" data-id="@item.Id">@Html.DisplayFor(m => item.SoBN)</td>
-                            <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayBN.ToString("dd/MM/yyyy"))</td>
-                            <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.TenKhach)</td>
-                            <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.DienThoai)</td>
-                            <td class="tdVal" data-id="@item.Id">@Html.Raw(item.SoTien.ToString("N0"))</td>
-                            @*<td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.NoiDung)</td>*@
-                            <td class="tdVal" data-id="@item.Id">@Html.Raw(item.SK.ToString("N0"))</td>
-                            <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.GhiChu)</td>
-                            <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.LoaiTien)</td>
-                            @*<td class="tdVal" data-id="@item.Id">@Html.Raw(item.TyGia.ToString("0:##0"))</td>*@
-                            <td class="tdVal" data-id="@item.Id">@Html.Raw(string.Format("{0:#,##0.00}", item.TyGia))</td>
-                            @*@Html.Raw(string.Format("{0:#,##0.00}", item.sotiennt))*@
-                        </tr>
+                            </tr>
 
                         }
                     </tbody>
@@ -228,6 +240,25 @@
 
             </div>
 
+            @if (Model.BienNhanPagedList != null)
+            {
+                @Html.PagedListPager((IPagedList)Model.BienNhanPagedList, page => Url.Action("Index", new
+           {
+               page = page,
+               option = Context.Request.Query["option"],
+               searchString = @ViewBag.searchString,
+               searchFromDate = ViewBag.searchFromDate,
+               searchToDate = ViewBag.searchToDate
+           }),
+                    PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new PagedListRenderOptions
+                    {
+                        LiElementClasses = new string[] { "page-item" },
+                        PageClasses = new string[] { "page-link" },
+                        MaximumPageNumbersToDisplay = 5,
+                        UlElementClasses = new[] { "pagination" },
+                        ContainerDivClasses = new[] { "pagination-container" }
+                    }, new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "nameListContainer" }))
+            }
         </div>
         <!-- /.card-body -->
 
@@ -237,7 +268,7 @@
 </section>
 <!-- /BienNhan -->
 <!-- CTBienNhan -->
-<section class="content">
+<section class="content" id="CTBNSection">
 
     <!-- Default box -->
     <div class="card">
@@ -311,8 +342,8 @@
                                         </div>
                                     </td>
 
-                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Descript)</td>
-                                    <td class="tdVal" data-id="@item.Id">@Html.Raw(item.Amount.ToString("N0"))</td>
+                                    <td class="tdValCTBN" data-id="@item.Id">@Html.DisplayFor(m => item.Descript)</td>
+                                    <td class="tdValCTBN" data-id="@item.Id">@Html.Raw(item.Amount.ToString("N0"))</td>
                                 </tr>
 
                             }
@@ -420,12 +451,31 @@
 
 
         }
-        $('.cursor-pointer').hover(function () {
-            $('.spanXoa').removeClass('text-dark');
-        })
-        $('.cursor-pointer').mouseout(function () {
-            $('.spanXoa').addClass('text-dark');
-        })
+        //$('.cursor-pointer').hover(function () {
+        //    $('.spanXoa').removeClass('text-dark');
+        //})
+        //$('.cursor-pointer').mouseout(function () {
+        //    $('.spanXoa').addClass('text-dark');
+        //})
+
+
+        // giu trang thai biennhan click
+        //$('#biennhansTbl .biennhan-cursor-pointer').off('click').on('click', function () {
+            if (@Model.BienNhan.Id != 0) {
+                if ($('#bn_@Model.BienNhan.Id').hasClass("hoverClass"))
+                    $('#bn_@Model.BienNhan.Id').removeClass("hoverClass");
+                else {
+                    $('#bn_@Model.BienNhan.Id').removeClass("hoverClass");
+                    $('#bn_@Model.BienNhan.Id').addClass("hoverClass");
+                }
+                debugger
+                // chay xuong tab CTBN
+                location.href = "#CTBNSection";
+            }
+
+        //});
+        // giu trang thai biennhan click
+
     </script>
 
 

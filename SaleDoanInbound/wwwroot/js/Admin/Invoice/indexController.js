@@ -4,7 +4,7 @@
     },
 
     registerEvent: function () {
-        $.each($('.cursor-pointer'), function (i, item) {
+        $.each($('.invoice-cursor-pointer'), function (i, item) {
 
             var huy = $(item).data('huy');
             //console.log(huy);
@@ -14,12 +14,12 @@
 
         });
 
-        $('.tdVal').click(function () {
+        $('.tdInvoiceVal').click(function () {
             id = $(this).data('id');
             $('#hidId').val(id);
-            //var page = $('.active .page-link').text();
+            var page = $('.active .page-link').text();
             //var page = $('.active span').text();
-            //$('#hidPage').val(page);
+            $('#hidPage').val(page);
             //$.ajax({
             //    url: '/CapThes/Index',
             //    data: {
@@ -102,7 +102,7 @@
             id = $(this).data('id');
             strUrl = $(this).data('url');
 
-            $.get('/Invoices/HuyInvoicePartial', { id: id, strUrl: strUrl }, function (response) {
+            $.get('/Invoices/HuyInvoicePartialIndex', { id: id, strUrl: strUrl }, function (response) {
 
                 console.log(response);
                 $('#huyInvoiceModal').modal('show');

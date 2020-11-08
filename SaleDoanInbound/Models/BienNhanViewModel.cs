@@ -5,12 +5,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using X.PagedList;
 
 namespace SaleDoanInbound.Models
 {
     public class BienNhanViewModel
     {
         public IEnumerable<BienNhanDto> BienNhans { get; set; }
+        public IPagedList<BienNhanDto> BienNhanPagedList { get; set; }
         public IEnumerable<ChiTietBN> ChiTietBNs { get; set; }
         public IEnumerable<CacNoiDungHuyTour> CacNoiDungHuyTours { get; set; }
         public BienNhan BienNhan { get; set; }

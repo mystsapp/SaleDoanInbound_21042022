@@ -92,6 +92,8 @@ namespace SaleDoanInbound
 
             // services layer
             services.AddTransient<IBaoCaoService, BaoCaoService>();
+            services.AddTransient<IBienNhanService, BienNhanService>();
+            services.AddTransient<IInvoiceService, InvoiceService>();
             // services layer
 
             services.AddSession(options =>
