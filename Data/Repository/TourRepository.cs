@@ -122,7 +122,7 @@ namespace Data.Repository
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                list = list.Where(x => x.Sgtcode.ToLower().Contains(searchString.ToLower()) ||
+                list = list.Where(x => x.Sgtcode.ToLower().Contains(searchString.Trim().ToLower()) ||
                                        (!string.IsNullOrEmpty(x.SoHopDong.ToLower()) && x.SoHopDong.ToLower().Contains(searchString.ToLower())) ||
                                        (!string.IsNullOrEmpty(x.ChuDeTour.ToLower()) && x.ChuDeTour.ToLower().Contains(searchString.ToLower())) ||
                                        (!string.IsNullOrEmpty(x.TuyenTQ.ToLower()) && x.TuyenTQ.ToLower().Contains(searchString.ToLower()))).ToList();

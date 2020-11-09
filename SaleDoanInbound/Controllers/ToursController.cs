@@ -234,17 +234,17 @@ namespace SaleDoanInbound.Controllers
             // kiem tra trang thai
             TourVM.Tour.TrangThai = "0";//mac dinh la moi tao
 
-            if (TourVM.Tour.NgayDamPhan != null)
+            if (TourVM.Tour.NgayDamPhan != null) // da dam phan
             {
                 TourVM.Tour.TrangThai = "1";
             }
 
-            if (TourVM.Tour.NgayKyHopDong != null)
+            if (TourVM.Tour.NgayKyHopDong != null) // da ky HD
             {
                 TourVM.Tour.TrangThai = "2";
             }
 
-            if (TourVM.Tour.NgayThanhLyHD != null)
+            if (TourVM.Tour.NgayThanhLyHD != null) // da thanh ly
             {
                 TourVM.Tour.TrangThai = "3";
             }

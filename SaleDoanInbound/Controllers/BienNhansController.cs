@@ -144,29 +144,29 @@ namespace SaleDoanInbound.Controllers
             BienNhanVM.BienNhan.SoBN = "";
 
             // next SoBN (so bien nhan)
-            //var currentYear = DateTime.Now.Year;
-            //var subfix = "IB" + currentYear.ToString();
-            //var bienNhan = _unitOfWork.bienNhanRepository.GetAll().OrderByDescending(x => x.Id).FirstOrDefault();
-            //if (bienNhan == null)
-            //{
-            //    BienNhanVM.BienNhan.SoBN = GetNextId.NextID("", "") + subfix;
-            //}
-            //else
-            //{
-            //    var oldYear = bienNhan.SoBN.Substring(8, 4);
-            //    // cung nam
-            //    if (oldYear == currentYear.ToString())
-            //    {
-            //        var oldSoBN = bienNhan.SoBN.Substring(0, 6);
-            //        BienNhanVM.BienNhan.SoBN = GetNextId.NextID(oldSoBN, "") + subfix;
-            //    }
-            //    else
-            //    {
-            //        // sang nam khac' chay lai tu dau
-            //        BienNhanVM.BienNhan.SoBN = GetNextId.NextID("", "") + subfix;
-            //    }
+            var currentYear = DateTime.Now.Year;
+            var subfix = "IB" + currentYear.ToString();
+            var bienNhan = _unitOfWork.bienNhanRepository.GetAll().OrderByDescending(x => x.Id).FirstOrDefault();
+            if (bienNhan == null)
+            {
+                BienNhanVM.BienNhan.SoBN = GetNextId.NextID("", "") + subfix;
+            }
+            else
+            {
+                var oldYear = bienNhan.SoBN.Substring(8, 4);
+                // cung nam
+                if (oldYear == currentYear.ToString())
+                {
+                    var oldSoBN = bienNhan.SoBN.Substring(0, 6);
+                    BienNhanVM.BienNhan.SoBN = GetNextId.NextID(oldSoBN, "") + subfix;
+                }
+                else
+                {
+                    // sang nam khac' chay lai tu dau
+                    BienNhanVM.BienNhan.SoBN = GetNextId.NextID("", "") + subfix;
+                }
 
-            //}
+            }
 
             // next id (so bien nhan)
 
@@ -206,6 +206,33 @@ namespace SaleDoanInbound.Controllers
             BienNhanVM.BienNhan.NguoiTao = user.Username;
             BienNhanVM.BienNhan.DienThoai = BienNhanVM.BienNhan.DienThoai ?? "";
             BienNhanVM.BienNhan.SoBN = "";
+
+            // next SoBN (so bien nhan)
+            var currentYear = DateTime.Now.Year;
+            var subfix = "IB" + currentYear.ToString();
+            var bienNhan = _unitOfWork.bienNhanRepository.GetAll().OrderByDescending(x => x.Id).FirstOrDefault();
+            if (bienNhan == null)
+            {
+                BienNhanVM.BienNhan.SoBN = GetNextId.NextID("", "") + subfix;
+            }
+            else
+            {
+                var oldYear = bienNhan.SoBN.Substring(8, 4);
+                // cung nam
+                if (oldYear == currentYear.ToString())
+                {
+                    var oldSoBN = bienNhan.SoBN.Substring(0, 6);
+                    BienNhanVM.BienNhan.SoBN = GetNextId.NextID(oldSoBN, "") + subfix;
+                }
+                else
+                {
+                    // sang nam khac' chay lai tu dau
+                    BienNhanVM.BienNhan.SoBN = GetNextId.NextID("", "") + subfix;
+                }
+
+            }
+
+            // next id (so bien nhan)
 
             // ghi log
             BienNhanVM.BienNhan.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
@@ -763,39 +790,39 @@ namespace SaleDoanInbound.Controllers
             }
             // ChiTietBNPrint
 
-            //next SoBN(so bien nhan)
-            if (string.IsNullOrEmpty(BienNhanVM.BienNhan.SoBN))
-            {
-                var currentYear = DateTime.Now.Year;
-                var subfix = "IB" + currentYear.ToString();
-                var bienNhan = _unitOfWork.bienNhanRepository.Find(x => !string.IsNullOrEmpty(x.SoBN)).OrderByDescending(x => x.SoBN).FirstOrDefault();
-                if (bienNhan == null)
-                {
-                    BienNhanVM.BienNhan.SoBN = GetNextId.NextID("", "") + subfix;
-                }
-                else
-                {
-                    var oldYear = bienNhan.SoBN.Substring(8, 4);
-                    // cung nam
-                    if (oldYear == currentYear.ToString())
-                    {
-                        var oldSoBN = bienNhan.SoBN.Substring(0, 6);
-                        BienNhanVM.BienNhan.SoBN = GetNextId.NextID(oldSoBN, "") + subfix;
-                    }
-                    else
-                    {
-                        // sang nam khac' chay lai tu dau
-                        BienNhanVM.BienNhan.SoBN = GetNextId.NextID("", "") + subfix;
-                    }
+            ////next SoBN(so bien nhan)
+            //if (string.IsNullOrEmpty(BienNhanVM.BienNhan.SoBN))
+            //{
+            //    var currentYear = DateTime.Now.Year;
+            //    var subfix = "IB" + currentYear.ToString();
+            //    var bienNhan = _unitOfWork.bienNhanRepository.Find(x => !string.IsNullOrEmpty(x.SoBN)).OrderByDescending(x => x.SoBN).FirstOrDefault();
+            //    if (bienNhan == null)
+            //    {
+            //        BienNhanVM.BienNhan.SoBN = GetNextId.NextID("", "") + subfix;
+            //    }
+            //    else
+            //    {
+            //        var oldYear = bienNhan.SoBN.Substring(8, 4);
+            //        // cung nam
+            //        if (oldYear == currentYear.ToString())
+            //        {
+            //            var oldSoBN = bienNhan.SoBN.Substring(0, 6);
+            //            BienNhanVM.BienNhan.SoBN = GetNextId.NextID(oldSoBN, "") + subfix;
+            //        }
+            //        else
+            //        {
+            //            // sang nam khac' chay lai tu dau
+            //            BienNhanVM.BienNhan.SoBN = GetNextId.NextID("", "") + subfix;
+            //        }
 
-                }
-                _unitOfWork.bienNhanRepository.Update(BienNhanVM.BienNhan);
+            //    }
+            //    _unitOfWork.bienNhanRepository.Update(BienNhanVM.BienNhan);
 
-                await _unitOfWork.Complete();
+            //    await _unitOfWork.Complete();
 
-            }
+            //}
 
-            //next id(so bien nhan)
+            ////next id(so bien nhan)
 
             ///// Currency to money
             string s = SoSangChu.DoiSoSangChu(BienNhanVM.BienNhan.SoTien.ToString().Split('.')[0]);

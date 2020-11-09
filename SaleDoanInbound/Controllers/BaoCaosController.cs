@@ -36,7 +36,10 @@ namespace SaleDoanInbound.Controllers
             BaoCaoVM = new BaoCaoViewModel()
             {
                 Dmchinhanhs = _unitOfWork.dmChiNhanhRepository.GetAll(),
-                Thangs = Thangs()
+                Tourkinds = _unitOfWork.tourKindRepository.GetAll(),
+                Thangs = Thangs(),
+
+                TourBaoCaoDtosTheoNgay = new TourBaoCaoDtosTheoNgay()
             };
         }
 
@@ -829,7 +832,7 @@ namespace SaleDoanInbound.Controllers
                 }
                 else
                 {
-                    
+
                     if (!string.IsNullOrEmpty(chiNhanh))  // da chon chinhanh
                     {
                         List<string> listMaCN = new List<string>();
@@ -967,7 +970,7 @@ namespace SaleDoanInbound.Controllers
                 }
                 else
                 {
-                   
+
                     // chon chi nhanh
                     if (chiNhanh != "-- Select --")// da chon chinhanh
                     {
@@ -1167,11 +1170,11 @@ namespace SaleDoanInbound.Controllers
                 //xlSheet.Cells[dong, 9].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
                 decimal tyLeDoanhThu = 0;
-                if(doanhThu1 > 0)
+                if (doanhThu1 > 0)
                 {
                     tyLeDoanhThu = doanhThu2 / doanhThu1 * 100;
                 }
-                
+
                 xlSheet.Cells[dong, 10].Value = tyLeDoanhThu.ToString("N0") + "%";
                 TrSetCellBorder(xlSheet, dong, 10, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
                 // xlSheet.Cells[dong, 10].Style.Border.Right.Style = ExcelBorderStyle.Thin;
@@ -1202,11 +1205,11 @@ namespace SaleDoanInbound.Controllers
 
             // tyle tyLeSKCuaTong = tongSK2 / tongSK1 * 100; tyLeDTCuaTong = doanhThu2Tong / doanhThu1Tong * 100
             decimal tongSK2ChiaTongSK1 = 0;
-            if(tongSK1 > 0)
+            if (tongSK1 > 0)
             {
                 tongSK2ChiaTongSK1 = Convert.ToDecimal(tongSK2) / Convert.ToDecimal(tongSK1);
             }
-            
+
             xlSheet.Cells[dong, 9].Value = (tongSK2ChiaTongSK1 * 100).ToString("N0") + "%";
             TrSetCellBorder(xlSheet, dong, 9, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
             decimal doanhThu2tongChiadoanhThu1tong = 0;
@@ -1234,7 +1237,7 @@ namespace SaleDoanInbound.Controllers
             // xlSheet.Cells[dong, 6].Formula = "SUM(F6:F" + (6 + d.Count() - 1) + ")";
 
             //setBorder(5, 1, 5 + d.Count() + 2, 10, xlSheet);
-            
+
             //setFontBold(5, 1, 5, 8, 11, xlSheet);
             //setFontSize(6, 1, 6 + d.Count() + 2, 8, 11, xlSheet);
             // canh giua cot stt
@@ -1342,11 +1345,105 @@ namespace SaleDoanInbound.Controllers
 
         #endregion
 
-        #region Doanh so theo ngay
-        public IActionResult DoanhSoTheoNgay(string searchFromDate = null, string searchToDate = null, string loaiTour = null, string Macn = null)
+        #region Doanh so theo ngay di
+        public async Task<IActionResult> DoanhSoTheoNgayDi(string searchFromDate = null, string searchToDate = null, string loaiTour = null, string macn = null)
         {
-            return View();
+            // from session
+            var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
+
+            // moi load vao
+            //if(string.IsNullOrEmpty(searchToDate) && string.IsNullOrEmpty(searchFromDate))
+            //{
+            //    var currentMonth = DateTime.Now.Month;
+            //    searchFromDate = "01/" + currentMonth + "/" + DateTime.Now.Year;
+            //    searchToDate = "01/" + (currentMonth + 1) + "/" + DateTime.Now.Year;
+            //}
+
+            ViewBag.macn = macn;
+            ViewBag.loaiTour = loaiTour;
+            ViewBag.searchFromDate = searchFromDate;
+            ViewBag.searchToDate = searchToDate;
+
+            //// moi load vao
+            if (user.Role.RoleName != "Admins")
+            {
+                if (user.Role.RoleName == "Users")
+                {
+                    BaoCaoVM.Dmchinhanhs = new List<Dmchinhanh>() { new Dmchinhanh() { Macn = user.MaCN } };
+                    BaoCaoVM.TourBaoCaoDtos = _baoCaoService.DoanhSoTheoNgay(searchFromDate, searchToDate, loaiTour, BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList());
+                    BaoCaoVM.TourBaoCaoDtos = BaoCaoVM.TourBaoCaoDtos.Where(x => x.NguoiTao == user.Username);
+                    DoanhSoTheoNgay();
+                }
+                else
+                {
+                    var phanKhuCNs = await _unitOfWork.phanKhuCNRepository.FindIncludeOneAsync(x => x.Role, y => y.RoleId == user.RoleId);
+                    List<string> maCns = new List<string>();
+                    foreach (var item in phanKhuCNs)
+                    {
+                        maCns.AddRange(item.ChiNhanhs.Split(',').ToList());
+                    }
+                    //BaoCaoVM.Dmchinhanhs = _unitOfWork.dmChiNhanhRepository.Find(x => x.KhuVuc == user.Role.RoleName);
+                    BaoCaoVM.Dmchinhanhs = BaoCaoVM.Dmchinhanhs.Where(item1 => maCns.Any(item2 => item1.Macn == item2));
+                    BaoCaoVM.TourBaoCaoDtos = _baoCaoService.DoanhSoTheoNgay(searchFromDate, searchToDate, loaiTour, BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList());
+                    DoanhSoTheoNgay();
+                }
+            }
+            else
+            {
+                BaoCaoVM.TourBaoCaoDtos = _baoCaoService.DoanhSoTheoNgay(searchFromDate, searchToDate, loaiTour, BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList());
+                DoanhSoTheoNgay();
+            }
+
+            return View(BaoCaoVM);
         }
+
+        private void DoanhSoTheoNgay()
+        {
+
+            BaoCaoVM.TourBaoCaoDtosTheoNgay.TourBaoCaoDtos = BaoCaoVM.TourBaoCaoDtos;
+            //foreach (var item in BaoCaoVM.TourBaoCaoDtos)
+            //{
+            //var sk = (item.SoKhachTT == 0) ? item.SoKhachDK : item.SoKhachTT;
+            var sk = BaoCaoVM.TourBaoCaoDtos.Sum(x => (x.SoKhachTT == 0) ? x.SoKhachDK : x.SoKhachTT);
+            var ds = BaoCaoVM.TourBaoCaoDtos.Sum(x => (x.DoanhThuTT == 0) ? x.DoanhThuDK : x.DoanhThuTT);
+
+            var skCacDoanDaThanhLy = BaoCaoVM.TourBaoCaoDtos.Where(x => x.TrangThai == "3") // (3)
+                                                            .Sum(x => (x.SoKhachTT == 0) ? x.SoKhachDK : x.SoKhachTT);
+            var dsCacDoanDaThanhLy = BaoCaoVM.TourBaoCaoDtos.Where(x => x.TrangThai == "3")
+                                                            .Sum(x => (x.DoanhThuTT == 0) ? x.DoanhThuDK : x.DoanhThuTT);
+
+            var skCacDoanChuaThanhLy = BaoCaoVM.TourBaoCaoDtos.Where(x => x.TrangThai != "3") // gom moitao (0), da damphan (1), da ky Hd (2)
+                                                              .Sum(x => (x.SoKhachTT == 0) ? x.SoKhachDK : x.SoKhachTT);
+            var dsCacDoanChuaThanhLy = BaoCaoVM.TourBaoCaoDtos.Where(x => x.TrangThai != "3")
+                                                              .Sum(x => (x.DoanhThuTT == 0) ? x.DoanhThuDK : x.DoanhThuTT);
+
+            var skCacDoanChuaKyHD = BaoCaoVM.TourBaoCaoDtos.Where(x => x.TrangThai == "0" || x.TrangThai == "1") // gom moitao (0), da damphan (1)
+                                                           .Sum(x => (x.SoKhachTT == 0) ? x.SoKhachDK : x.SoKhachTT);
+            var dsCacDoanChuaKyHD = BaoCaoVM.TourBaoCaoDtos.Where(x => x.TrangThai == "0" || x.TrangThai == "1")
+                                                           .Sum(x => (x.DoanhThuTT == 0) ? x.DoanhThuDK : x.DoanhThuTT);
+
+            BaoCaoVM.TourBaoCaoDtosTheoNgay.TongSK += sk;
+            BaoCaoVM.TourBaoCaoDtosTheoNgay.TongDS += ds;
+
+            BaoCaoVM.TourBaoCaoDtosTheoNgay.TongSKCacDoanDaThanhLy += skCacDoanDaThanhLy;
+            BaoCaoVM.TourBaoCaoDtosTheoNgay.TongDSCacDoanDaThanhLy += dsCacDoanDaThanhLy;
+
+            BaoCaoVM.TourBaoCaoDtosTheoNgay.TongSKCacDoanChuaThanhLy += skCacDoanChuaThanhLy;
+            BaoCaoVM.TourBaoCaoDtosTheoNgay.TongDSCacDoanChuaThanhLy += dsCacDoanChuaThanhLy;
+
+            BaoCaoVM.TourBaoCaoDtosTheoNgay.TongSKCacDoanChuaKyHD += skCacDoanChuaKyHD;
+            BaoCaoVM.TourBaoCaoDtosTheoNgay.TongDSCacDoanChuaKyHD += dsCacDoanChuaKyHD;
+
+            //}
+
+            //foreach (var item1 in item.ChiTietHdViewModels)
+            //{
+            //    item1.TC = tongCong;
+            //}
+
+
+        }
+
         #endregion
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

@@ -131,41 +131,44 @@
                                     <table class="invoicetable ">
                                         <thead>
                                             <tr>
-                                                <th class="invoicecell text-center">SIZE OF GROUP</th>
-                                                <th class="invoicecell text-center">DESCRIPTION</th>
-                                                <th class="invoicecell text-center">AMOUNT (USD)</th>
+                                                <th class="invoicecell text-center">No</th>
+                                                <th class="invoicecell text-center">Description</th>
+                                                <th class="invoicecell text-center">Number</th>
+                                                <th class="invoicecell text-center">Unit Price</th>
+                                                <th class="invoicecell text-center">Total (USD)</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @*<tr>
-            <td>@Model.Invoice.Pax</td>
-            <td></td>
-            <td></td>
-        </tr>*@
-                                            @*@foreach (var item in Model.CTInvoices)
-        {
-            <tr>
-                @if (i == 1)
-                {
+                                                    <td>@Model.Invoice.Pax</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>*@
 
-                    <td class="invoicecell text-center" rowspan="@Model.CTInvoices.Count()">@Model.Invoice.Pax PAX</td>
-                }
+                                            @foreach (var item in Model.CTInvoices)
+                                            {
+                                                var totalUSD = Convert.ToDecimal(item.Quantity) * item.UnitPrice;
+                                                <tr>
 
-                <td class="invoicecell ">@item.Descript</td>
-                <td class="invoicecell text-center">@item.Amount.ToString("N0")</td>
+                                                    <td class="invoicecell text-center">@i</td>
+                                                    <td class="invoicecell ">@item.Descript</td>
+                                                    <td class="invoicecell ">@(item.Quantity + item.Unit )</td>
+                                                    <td class="invoicecell text-right">@item.UnitPrice</td>
+                                                    <td class="invoicecell text-right">@totalUSD.ToString("N0")</td>
+                                                </tr>
+                                                i++;
+                                            }
 
-            </tr>
-            i++;
-        }*@
-
-                                            <tr>
-                                                <td class="invoicecell text-center" width="15%">@Model.Invoice.Pax PAX</td>
-                                                <td class="invoicecell " width="70%">@Html.Raw(Model.InvoicePrint.DienGiais)</td>
-                                                <td class="invoicecell text-center" width="15%">@Html.Raw(Model.InvoicePrint.SoTiens)</td>
-                                            </tr>
+                                            @*<tr>
+                                                    <td class="invoicecell text-center" width="15%">@Model.Invoice.Pax PAX</td>
+                                                    <td class="invoicecell " width="70%">@Html.Raw(Model.InvoicePrint.DienGiais)</td>
+                                                    <td class="invoicecell text-center" width="15%">@Html.Raw(Model.InvoicePrint.SoTiens)</td>
+                                                </tr>*@
 
                                             <tr class="text-bold">
                                                 <td class="invoicecell text-center">TOTAL </td>
+                                                <td></td>
+                                                <td></td>
                                                 <td></td>
                                                 <td class="invoicecell text-center">@Model.CTInvoices.Sum(x => x.Amount).ToString("N0")</td>
                                             </tr>
@@ -181,7 +184,14 @@
 
                             <br />
                             <br />
-                            PLEASE ASK YOUR BANK TO REMIT BY TELEGRAPHIC TRANSFER TO JOINT STOCK COMMERCIAL BANK FOR FOREIGN TRADE OF VIET NAM, HOCHIMINH CITY BRANCH  ( 05 ME LINH SQUARE, BEN THANH WARD, 1ST DISTRICT, HCM CITY. PHONE (+84-8) 38297245, FAX : (+84-8) 38297228) <b> SWIFT CODE: BFTVVNVX007 </b> IN FAVOUR OF SAIGONTOURIST TRAVEL SERVICE Co., LTD. ACC NO. <b> 0071370087213 </b>      AND PLEASE SEND US A COPY OF YOUR BANK TRANSFER FOR OUR REFERENCE.
+                            PLEASE ASK YOUR BANK TO REMIT BY TELEGRAPHIC TRANSFER TO <br />
+                            JOINT STOCK COMMERCIAL BANK FOR FOREIGN TRADE OF VIET NAM, HOCHIMINH CITY BRANCH <br />
+                            05 ME LINH SQUARE, BEN THANH WARD, 1ST DISTRICT, HCM CITY.<br />
+                            PHONE (+84-8) 38297245, FAX : (+84-8) 38297228 <b><br />
+                            - SWIFT CODE: BFTVVNVX007</b><br />
+                            - ACC NAME: SAIGONTOURIST TRAVEL SERVICE Co., LTD.<br />
+                            - ACC NO. <b> 0071370087213 </b> <br />
+                            AND PLEASE SEND US A COPY OF YOUR BANK TRANSFER FOR OUR REFERENCE.
                             <br />
                             <!-- /.row -->
                             <div class="row">
