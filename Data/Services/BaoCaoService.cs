@@ -126,15 +126,12 @@ namespace Data.Services
             }
 
             // loc theo loai tour
-            if (!string.IsNullOrEmpty(loaiTour)) // do list tourkind ( rong -> 0 )
+            if (!string.IsNullOrEmpty(loaiTour)) 
             {
                 list = list.Where(x => x.TenLoaiTour.Trim().ToLower() == loaiTour.Trim().ToLower()).ToList();
             }
-            if(loaiTour != "0")
-            {
 
-            }
-// loc theo loai tour
+            // loc theo loai tour
 
             // loc theo chinhanh
             if (maCNs.Count > 0)
