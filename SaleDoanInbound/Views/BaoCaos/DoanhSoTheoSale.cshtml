@@ -41,7 +41,9 @@
         </div>
         <div class="card-body">
 
-            <form autocomplete="off">
+            <form autocomplete="off" id="frmDoanhSoTheoSale">
+
+                <div asp-validation-summary="All" class="text-danger"></div>
 
                 <div class="container" style="padding-bottom:10px; background-color: aliceblue;" id="search">
 
@@ -50,12 +52,12 @@
 
                             <div class="col-md-3">
                                 Từ ngày
-                                <input class="form-control maskInput" name="searchFromDate" value="@ViewBag.searchFromDate" />
+                                <input class="form-control maskInput" name="searchFromDate" value="@ViewBag.searchFromDate" id="txtSearchFromDate" />
                             </div>
 
                             <div class="col-md-3">
                                 Đến ngày
-                                <input class="form-control maskInput" name="searchToDate" value="@ViewBag.searchToDate" />
+                                <input class="form-control maskInput" name="searchToDate" value="@ViewBag.searchToDate" id="txtSearchToDate" />
                             </div>
 
                             <div class="col-md-3">
@@ -244,6 +246,61 @@
                 "autoWidth": true,
             });
         });
+
+
+        $('#frmDoanhSoTheoSale').validate({
+            //rules: {
+            //    email: {
+            //        required: true,
+            //        email: true,
+            //    },
+            //    NgayDen: {
+            //        required: true
+            //    },
+            //    chuDetour1: {
+            //        required: true
+            //    },
+            //},
+            //messages: {
+            //    email: {
+            //        required: "Please enter a email address",
+            //        email: "Please enter a vaild email address"
+            //    },
+            //    NgayDen: {
+            //        required: "Please provide a date"
+            //    },
+            //    chuDetour1: "Please enter value"
+            //},
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+                // add error text
+
+                //error.addClass('invalid-feedback').removeClass('error');
+                //element.closest('#txtSearchFromDate').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            }
+        });
+
+        $('#txtSearchFromDate').rules('add', {
+            dateITA: true,
+            messages: {
+                //dateITA: "Không đúng định dạng."
+            }
+        });
+
+        $('#txtSearchToDate').rules('add', {
+            dateITA: true,
+            messages: {
+                
+                //dateITA: "Không đúng định dạng."
+            }
+        });
+
     </script>
     @*<script src="~/js/Admin/DoanhSoTheoSale/doanhSoTheoSaleController.js"></script>*@
 

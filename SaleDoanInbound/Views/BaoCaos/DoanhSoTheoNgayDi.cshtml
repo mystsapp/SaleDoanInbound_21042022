@@ -24,7 +24,9 @@
         </div>
         <div class="card-body">
 
-            <form autocomplete="off">
+            <form autocomplete="off" id="frmDoanhSoTheoNgayDi">
+                
+                <div asp-validation-summary="All" class="text-danger"></div>
 
                 <div class="container" style="padding-bottom:10px; background-color: aliceblue;" id="search">
 
@@ -33,12 +35,12 @@
 
                             <div class="col-md-3">
                                 Từ ngày
-                                <input class="form-control maskInput" name="searchFromDate" value="@ViewBag.searchFromDate" />
+                                <input class="form-control maskInput" name="searchFromDate" value="@ViewBag.searchFromDate" id="txtSearchFromDate" />
                             </div>
 
                             <div class="col-md-3">
                                 Đến ngày
-                                <input class="form-control maskInput" name="searchToDate" value="@ViewBag.searchToDate" />
+                                <input class="form-control maskInput" name="searchToDate" value="@ViewBag.searchToDate" id="txtSearchToDate" />
                             </div>
 
                             <div class="col-md-2">
@@ -71,7 +73,7 @@
             <br />
 
             <div style="overflow-x:auto;">
-                <table class="table mytable text-nowrap " id="listDoanhSoTheoThang">
+                <table class="table mytable text-nowrap " id="listDoanhSoTheoNgayDi">
                     <thead>
                         <tr class="table-info">
                             <th>Sgtcode</th>
@@ -93,93 +95,93 @@
                             @foreach (var item in Model.TourBaoCaoDtosTheoNgay.TourBaoCaoDtos)
                             {
 
-                        <tr class="cursor-pointer ">
+                                <tr class="cursor-pointer ">
 
-                            @switch (item.TrangThai)
-                            {
+                                    @switch (item.TrangThai)
+                                    {
 
-                                case "0":
-                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
-                                    break;
-                                case "1":
-                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
-                                    break;
-                                case "2":
-                                    <td class="tdVal bg-yellow" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
-                                    break;
-                                case "3":
-                                    <td class="tdVal " style="background-color: chartreuse" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
-                                    break;
-                                case "4":
-                                    <td class="tdVal bg-red" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
-                                    break;
+                                        case "0":
+                                            <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
+                                            break;
+                                        case "1":
+                                            <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
+                                            break;
+                                        case "2":
+                                            <td class="tdVal bg-yellow" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
+                                            break;
+                                        case "3":
+                                            <td class="tdVal " style="background-color: chartreuse" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
+                                            break;
+                                        case "4":
+                                            <td class="tdVal bg-red" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
+                                            break;
+                                    }
+
+                                    <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayDi.ToString("dd/MM/yyyy"))</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.TuyenTQ)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.Raw((item.SoKhachTT == 0) ? "0" : item.SoKhachTT.ToString("N0"))</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.Raw((item.DoanhThuTT == 0) ? "0" : item.DoanhThuTT.ToString("N0"))</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.NguoiTao)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.CompanyName)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.TenLoaiTour)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.NguonTour)</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayTao.ToString("dd/MM/yyyy"))</td>
+
+                                </tr>
+
                             }
+                            <tr class="cursor-pointer text-bold">
+                                <td></td>
+                                <td></td>
+                                <td>Tổng Cộng:</td>
+                                <td>@Html.Raw(Model.TourBaoCaoDtosTheoNgay.TongSK.ToString("N0"))</td>
+                                <td>@Html.Raw(Model.TourBaoCaoDtosTheoNgay.TongDS.ToString("N0"))</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
 
-                            <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayDi.ToString("dd/MM/yyyy"))</td>
-                            <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.TuyenTQ)</td>
-                            <td class="tdVal" data-id="@item.Id">@Html.Raw((item.SoKhachTT == 0) ? "0" : item.SoKhachTT.ToString("N0"))</td>
-                            <td class="tdVal" data-id="@item.Id">@Html.Raw((item.DoanhThuTT == 0) ? "0" : item.DoanhThuTT.ToString("N0"))</td>
-                            <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.NguoiTao)</td>
-                            <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.CompanyName)</td>
-                            <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.TenLoaiTour)</td>
-                            <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.NguonTour)</td>
-                            <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayTao.ToString("dd/MM/yyyy"))</td>
+                            </tr>
+                            <tr class="cursor-pointer text-bold">
+                                <td></td>
+                                <td></td>
+                                <td style="background-color: chartreuse">Các đoàn đã thanh lý:</td>
+                                <td>@Html.Raw(Model.TourBaoCaoDtosTheoNgay.TongSKCacDoanDaThanhLy.ToString("N0"))</td>
+                                <td>@Html.Raw(Model.TourBaoCaoDtosTheoNgay.TongDSCacDoanDaThanhLy.ToString("N0"))</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
 
-                        </tr>
+                            </tr>
+                            <tr class="cursor-pointer text-bold">
+                                <td></td>
+                                <td></td>
+                                <td class="bg-yellow">Các đoàn chưa thanh lý:</td>
+                                <td>@Html.Raw(Model.TourBaoCaoDtosTheoNgay.TongSKCacDoanChuaThanhLy.ToString("N0"))</td>
+                                <td>@Html.Raw(Model.TourBaoCaoDtosTheoNgay.TongDSCacDoanChuaThanhLy.ToString("N0"))</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
 
-                            }
-                    <tr class="cursor-pointer text-bold">
-                        <td></td>
-                        <td></td>
-                        <td>Tổng Cộng:</td>
-                        <td>@Html.Raw(Model.TourBaoCaoDtosTheoNgay.TongSK.ToString("N0"))</td>
-                        <td>@Html.Raw(Model.TourBaoCaoDtosTheoNgay.TongDS.ToString("N0"))</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                            </tr>
+                            <tr class="cursor-pointer text-bold">
+                                <td></td>
+                                <td></td>
+                                <td>Các đoàn chưa ký HD:</td>
+                                <td>@Html.Raw(Model.TourBaoCaoDtosTheoNgay.TongSKCacDoanChuaKyHD.ToString("N0"))</td>
+                                <td>@Html.Raw(Model.TourBaoCaoDtosTheoNgay.TongDSCacDoanChuaKyHD.ToString("N0"))</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
 
-                    </tr>
-                    <tr class="cursor-pointer text-bold">
-                        <td></td>
-                        <td></td>
-                        <td style="background-color: chartreuse">Các đoàn đã thanh lý:</td>
-                        <td>@Html.Raw(Model.TourBaoCaoDtosTheoNgay.TongSKCacDoanDaThanhLy.ToString("N0"))</td>
-                        <td>@Html.Raw(Model.TourBaoCaoDtosTheoNgay.TongDSCacDoanDaThanhLy.ToString("N0"))</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-
-                    </tr>
-                    <tr class="cursor-pointer text-bold">
-                        <td></td>
-                        <td></td>
-                        <td class="bg-yellow">Các đoàn chưa thanh lý:</td>
-                        <td>@Html.Raw(Model.TourBaoCaoDtosTheoNgay.TongSKCacDoanChuaThanhLy.ToString("N0"))</td>
-                        <td>@Html.Raw(Model.TourBaoCaoDtosTheoNgay.TongDSCacDoanChuaThanhLy.ToString("N0"))</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-
-                    </tr>
-                    <tr class="cursor-pointer text-bold">
-                        <td></td>
-                        <td></td>
-                        <td>Các đoàn chưa ký HD:</td>
-                        <td>@Html.Raw(Model.TourBaoCaoDtosTheoNgay.TongSKCacDoanChuaKyHD.ToString("N0"))</td>
-                        <td>@Html.Raw(Model.TourBaoCaoDtosTheoNgay.TongDSCacDoanChuaKyHD.ToString("N0"))</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-
-                    </tr>
+                            </tr>
 
                         }
 
@@ -198,6 +200,7 @@
 <!-- /.content -->
 
 @section Scripts{
+    
     <script>
 
         $(function () {
@@ -205,7 +208,7 @@
             //    dateFormat: 'dd/mm/yy'
             //});
 
-            $('#listDoanhSoTheoSale').DataTable({
+            $('#listDoanhSoTheoNgayDi').DataTable({
                 "paging": true,
                 "lengthChange": true,
                 "searching": true,
@@ -214,6 +217,59 @@
                 "autoWidth": true,
             });
         });
+
+        $('#frmDoanhSoTheoNgayDi').validate({
+            //rules: {
+            //    email: {
+            //        required: true,
+            //        email: true,
+            //    },
+            //    NgayDen: {
+            //        required: true
+            //    },
+            //    chuDetour1: {
+            //        required: true
+            //    },
+            //},
+            //messages: {
+            //    email: {
+            //        required: "Please enter a email address",
+            //        email: "Please enter a vaild email address"
+            //    },
+            //    NgayDen: {
+            //        required: "Please provide a date"
+            //    },
+            //    chuDetour1: "Please enter value"
+            //},
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+                // add error text
+
+                //error.addClass('invalid-feedback').removeClass('error');
+                //element.closest('.chuDeTourGroup').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            }
+        });
+
+        $('#txtSearchFromDate').rules('add', {
+            dateITA: true,
+            messages: {
+                //required: "Chủ đề không được để trống"
+            }
+        });
+
+        $('#txtSearchToDate').rules('add', {
+            dateITA: true,
+            messages: {
+                //required: "Chủ đề không được để trống"
+            }
+        });
+
     </script>
     @*<script src="~/js/Admin/DoanhSoTheoSale/doanhSoTheoSaleController.js"></script>*@
 
