@@ -1984,12 +1984,12 @@ namespace SaleDoanInbound.Controllers
             {
                 if (user.Role.RoleName == "Users")
                 {
-                    thiTruongs = new List<string>();
-                    thiTruongs.Add(user.PhongBanId);
-                    BaoCaoVM.TourBaoCaoDtos = _baoCaoService.DoanhSoTheoThiTruong(searchFromDate, searchToDate, thiTruongs); //, BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList());
+
+                    BaoCaoVM.Phongbans = BaoCaoVM.Phongbans.Where(x => x.Maphong == user.PhongBanId);
+                    BaoCaoVM.TourBaoCaoDtos = _baoCaoService.DoanhSoTheoThiTruong(searchFromDate, searchToDate, BaoCaoVM.Phongbans.Select(x => x.Maphong).ToList()); //, BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList());
 
                     // loc theo thi truong cua minh
-                    BaoCaoVM.TourBaoCaoDtos = BaoCaoVM.TourBaoCaoDtos.Where(x => x.ThiTruongByNguoiTao == user.PhongBanId);
+                    //BaoCaoVM.TourBaoCaoDtos = BaoCaoVM.TourBaoCaoDtos.Where(x => x.ThiTruongByNguoiTao == user.PhongBanId);
 
                     // loc chi nhanh
                     BaoCaoVM.TourBaoCaoDtos = BaoCaoVM.TourBaoCaoDtos.Where(x => x.NguoiTao == user.Username);
