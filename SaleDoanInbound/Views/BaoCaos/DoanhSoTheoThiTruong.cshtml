@@ -1,7 +1,7 @@
 ﻿@model BaoCaoViewModel
 
 @{
-    ViewData["Title"] = "DoanhSoTheoNgay";
+    ViewData["Title"] = "DoanhSoTheoThiTruong";
     int i = 1;
 }
 
@@ -11,7 +11,7 @@
     <!-- Default box -->
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">BÁO CÁO DOANH SỐ THEO NGÀY</h3>
+            <h3 class="card-title">BÁO CÁO DOANH SỐ THEO THỊ TRƯỜNG</h3>
 
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
@@ -24,8 +24,8 @@
         </div>
         <div class="card-body">
 
-            <form autocomplete="off" id="frmDoanhSoTheoNgayDi">
-                
+            <form autocomplete="off" id="frmDoanhSoTheoThiTruong">
+
                 <div asp-validation-summary="All" class="text-danger"></div>
 
                 <div class="container" style="padding-bottom:10px; background-color: aliceblue;" id="search">
@@ -43,26 +43,18 @@
                                 <input class="form-control maskInput" name="searchToDate" value="@ViewBag.searchToDate" id="txtSearchToDate" />
                             </div>
 
-                            <div class="col-md-2">
-                                Loại tour
-                                <select class="form-control" name="loaiTour" id="ddlLoaiTour"
-                                        asp-items="@(new SelectList(Model.Tourkinds, "TourkindInf", "TourkindInf", ViewBag.loaiTour))">
-                                    <!-- tourkind: qltour-->
+                            <div class="col-md-3">
+                                Thị trường
+                                <select class="form-control" name="thiTruong"
+                                        asp-items="@(new SelectList(Model.Phongbans, "Maphong", "Tenphong", ViewBag.thiTruong))">
                                 </select>
                             </div>
 
-                            <div class="col-md-2">
-                                Chi nhánh
-                                <select class="form-control" name="Macn"
-                                        asp-items="@(new SelectList(Model.Dmchinhanhs, "Macn", "Macn", ViewBag.Macn))">
-                                </select>
-                            </div>
-
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <br />
                                 <div class="btn-group btn-block">
-                                    <button type="submit" class="btn btn-outline-primary " id="btnSubmitSearch" formaction="/BaoCaos/DoanhSoTheoNgayDi" formmethod="get" title="Search"><i class="fas fa-search"></i></button>
-                                    <button type="submit" class="btn btn-outline-success " id="btnSubmitExcel" formaction="/BaoCaos/DoanhSoTheoNgayDiExcel" formmethod="post" title="Export excel"><i class="fas fa-file-excel"></i></button>
+                                    <button type="submit" class="btn btn-outline-primary " id="btnSubmitSearch" formaction="/BaoCaos/DoanhSoTheoThiTruong" formmethod="get" title="Search"><i class="fas fa-search"></i></button>
+                                    <button type="submit" class="btn btn-outline-success " id="btnSubmitExcel" formaction="/BaoCaos/DoanhSoTheoThiTruongExcel" formmethod="post" title="Export excel"><i class="fas fa-file-excel"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -73,7 +65,7 @@
             <br />
 
             <div style="overflow-x:auto;">
-                <table class="table mytable text-nowrap " id="listDoanhSoTheoNgayDi">
+                <table class="table mytable text-nowrap " id="listDoanhSoTheoThiTruong">
                     <thead>
                         <tr class="table-info">
                             <th>Sgtcode</th>
@@ -87,6 +79,7 @@
                             <th>Loại tour</th>
                             <th>Nguồn tour</th>
                             <th>Ngày tạo</th>
+                            <th>Thị trường</th>
 
                         </tr>
                     </thead>
@@ -128,6 +121,7 @@
                                     <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.TenLoaiTour)</td>
                                     <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.NguonTour)</td>
                                     <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayTao.ToString("dd/MM/yyyy"))</td>
+                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.ThiTruongByNguoiTao)</td>
 
                                 </tr>
 
@@ -138,6 +132,8 @@
                                 <td>Tổng Cộng:</td>
                                 <td>@Html.Raw(Model.TourBaoCaoDtosTheoNgay.TongSK.ToString("N0"))</td>
                                 <td>@Html.Raw(Model.TourBaoCaoDtosTheoNgay.TongDS.ToString("N0"))</td>
+                                <td></td>
+                                <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -156,6 +152,8 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
+                                <td></td>
+                                <td></td>
 
                             </tr>
                             <tr class="cursor-pointer text-bold">
@@ -169,6 +167,8 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
+                                <td></td>
+                                <td></td>
 
                             </tr>
                             <tr class="cursor-pointer text-bold">
@@ -177,6 +177,8 @@
                                 <td>Các đoàn chưa ký HD:</td>
                                 <td>@Html.Raw(Model.TourBaoCaoDtosTheoNgay.TongSKCacDoanChuaKyHD.ToString("N0"))</td>
                                 <td>@Html.Raw(Model.TourBaoCaoDtosTheoNgay.TongDSCacDoanChuaKyHD.ToString("N0"))</td>
+                                <td></td>
+                                <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -202,7 +204,7 @@
 <!-- /.content -->
 
 @section Scripts{
-    
+
     <script>
 
         $(function () {
@@ -210,7 +212,7 @@
             //    dateFormat: 'dd/mm/yy'
             //});
 
-            $('#listDoanhSoTheoNgayDi').DataTable({
+            $('#listDoanhSoTheoThiTruong').DataTable({
                 "paging": true,
                 "lengthChange": true,
                 "searching": true,
@@ -220,7 +222,7 @@
             });
         });
 
-        $('#frmDoanhSoTheoNgayDi').validate({
+        $('#frmDoanhSoTheoThiTruong').validate({
             //rules: {
             //    email: {
             //        required: true,

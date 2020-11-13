@@ -161,5 +161,9 @@ namespace Data.Dtos
         public decimal DaThanhLyHopDong { get; set; }
         public decimal TongCongTheoTungSale { get; set; }
         public int TongSoKhachTheoSale { get; set; }
+
+        // DoanhSoTheoThiTruong
+        public string ThiTruongByNguoiTao { get; set; }
+
     }
 }

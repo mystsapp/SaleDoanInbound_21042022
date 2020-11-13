@@ -30,5 +30,9 @@ namespace SaleDoanInbound.Models
         public TourBaoCaoDtosTheoNgay TourBaoCaoDtosTheoNgay { get; set; }
         public IEnumerable<Tourkind> Tourkinds { get; set; } // qltour
         // theo ngay
+
+        // theo THI TRUONNG
+        public IEnumerable<Phongban> Phongbans { get; set; }
+        // theo THI TRUONNG
     }
 }
