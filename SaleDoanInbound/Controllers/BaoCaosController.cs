@@ -1776,9 +1776,9 @@ namespace SaleDoanInbound.Controllers
                 xlSheet.Cells[dong + 3, 5].Value = "Các đoàn chưa ký hợp đồng:";
                 TrSetCellBorder(xlSheet, dong + 3, 5, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
 
-                xlSheet.Cells[dong + 3, 6].Value = BaoCaoVM.TourBaoCaoDtosTheoNgay.TongSKCacDoanChuaThanhLy;
+                xlSheet.Cells[dong + 3, 6].Value = BaoCaoVM.TourBaoCaoDtosTheoNgay.TongSKCacDoanChuaKyHD;
                 TrSetCellBorder(xlSheet, dong + 3, 6, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
-                xlSheet.Cells[dong + 3, 7].Value = BaoCaoVM.TourBaoCaoDtosTheoNgay.TongDSCacDoanChuaThanhLy;
+                xlSheet.Cells[dong + 3, 7].Value = BaoCaoVM.TourBaoCaoDtosTheoNgay.TongDSCacDoanChuaKyHD;
                 TrSetCellBorder(xlSheet, dong + 3, 7, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
 
                 setBorder(dong, 1, dong + 3, 12, xlSheet);
@@ -1976,7 +1976,7 @@ namespace SaleDoanInbound.Controllers
             ViewBag.thiTruong = thiTruong;
             ViewBag.searchFromDate = searchFromDate;
             ViewBag.searchToDate = searchToDate;
-            
+
             List<string> thiTruongs = new List<string>();
             List<string> maCns = new List<string>();
 
@@ -1984,33 +1984,43 @@ namespace SaleDoanInbound.Controllers
             {
                 if (user.Role.RoleName == "Users")
                 {
-                    //BaoCaoVM.Dmchinhanhs = new List<Dmchinhanh>() { new Dmchinhanh() { Macn = user.MaCN } };
+                    thiTruongs = new List<string>();
                     thiTruongs.Add(user.PhongBanId);
                     BaoCaoVM.TourBaoCaoDtos = _baoCaoService.DoanhSoTheoThiTruong(searchFromDate, searchToDate, thiTruongs); //, BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList());
-                    //BaoCaoVM.TourBaoCaoDtos = BaoCaoVM.TourBaoCaoDtos.Where(x => x.NguoiTao == user.Username);
+
+                    // loc theo thi truong cua minh
+                    BaoCaoVM.TourBaoCaoDtos = BaoCaoVM.TourBaoCaoDtos.Where(x => x.ThiTruongByNguoiTao == user.PhongBanId);
+
+                    // loc chi nhanh
+                    BaoCaoVM.TourBaoCaoDtos = BaoCaoVM.TourBaoCaoDtos.Where(x => x.NguoiTao == user.Username);
+
                     DoanhSoTheoNgay();
                 }
                 else
                 {
                     var phanKhuCNs = await _unitOfWork.phanKhuCNRepository.FindIncludeOneAsync(x => x.Role, y => y.RoleId == user.RoleId);
-                    
+
                     foreach (var item in phanKhuCNs)
                     {
                         maCns.AddRange(item.ChiNhanhs.Split(',').ToList());
                     }
                     thiTruongs = new List<string>();
-                    foreach(var item in maCns)
+                    foreach (var item in maCns)
                     {
                         var users = await _unitOfWork.userRepository.FindIncludeOneAsync(x => x.Role, y => y.MaCN == item);
                         var phongBanIds = users.Select(x => x.PhongBanId).Distinct();
                         thiTruongs.AddRange(phongBanIds);
                     }
-                    
+
                     BaoCaoVM.TourBaoCaoDtos = _baoCaoService.DoanhSoTheoThiTruong(searchFromDate, searchToDate, thiTruongs);
                     if (!string.IsNullOrEmpty(thiTruong))
                     {
                         BaoCaoVM.TourBaoCaoDtos = BaoCaoVM.TourBaoCaoDtos.Where(x => x.ThiTruongByNguoiTao == thiTruong);
                     }
+
+                    // loc chi nhanh
+                    BaoCaoVM.TourBaoCaoDtos = BaoCaoVM.TourBaoCaoDtos.Where(item1 => maCns.Any(item2 => item1.MaCNTao == item2));
+
                     DoanhSoTheoNgay();
                 }
             }
@@ -2246,7 +2256,7 @@ namespace SaleDoanInbound.Controllers
                     xlSheet.Cells[dong, 12].Value = item.NgayTao;
                     TrSetCellBorder(xlSheet, dong, 12, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
                     // xlSheet.Cells[dong, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-                    
+
                     xlSheet.Cells[dong, 13].Value = item.ThiTruongByNguoiTao;
                     TrSetCellBorder(xlSheet, dong, 13, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
                     // xlSheet.Cells[dong, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
@@ -2285,9 +2295,9 @@ namespace SaleDoanInbound.Controllers
                 xlSheet.Cells[dong + 3, 5].Value = "Các đoàn chưa ký hợp đồng:";
                 TrSetCellBorder(xlSheet, dong + 3, 5, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
 
-                xlSheet.Cells[dong + 3, 6].Value = BaoCaoVM.TourBaoCaoDtosTheoNgay.TongSKCacDoanChuaThanhLy;
+                xlSheet.Cells[dong + 3, 6].Value = BaoCaoVM.TourBaoCaoDtosTheoNgay.TongSKCacDoanChuaKyHD;
                 TrSetCellBorder(xlSheet, dong + 3, 6, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
-                xlSheet.Cells[dong + 3, 7].Value = BaoCaoVM.TourBaoCaoDtosTheoNgay.TongDSCacDoanChuaThanhLy;
+                xlSheet.Cells[dong + 3, 7].Value = BaoCaoVM.TourBaoCaoDtosTheoNgay.TongDSCacDoanChuaKyHD;
                 TrSetCellBorder(xlSheet, dong + 3, 7, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
 
                 setBorder(dong, 1, dong + 3, 13, xlSheet);

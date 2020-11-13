@@ -108,7 +108,27 @@ namespace SaleDoanInbound.Controllers
                 }
             }
             TourVM.TourDtos = _unitOfWork.tourRepository.ListTour(searchString, companies, loaiTours, chiNhanhs, cacNoiDungHuyTours, page, searchFromDate, searchToDate, listRoleChiNhanh);
-
+            //if (user.Role.RoleName != "Admins")
+            //{
+            //    if (user.Role.RoleName == "Users")
+            //    {
+            //        TourVM.TourDtos = TourVM.TourDtos.Where(x => x.nguoi)
+            //    }
+            //    else
+            //    {
+            //        // add chinhanhs in PhanKhuCN
+            //        var phanKhuCN = await _unitOfWork.phanKhuCNRepository.GetByIdAsync(user.RoleId);
+            //        listRoleChiNhanh.AddRange(phanKhuCN.ChiNhanhs.Split(','));
+            //    }
+            //}
+            //else
+            //{
+            //    foreach (var item in chiNhanhs)
+            //    {
+            //        listRoleChiNhanh.Add(item.Macn);
+            //    }
+            //}
+            
             //--> click vao tour
             var tour = _unitOfWork.tourRepository.GetById(id);
             if (tour != null)
