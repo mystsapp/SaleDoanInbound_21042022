@@ -1514,9 +1514,10 @@ namespace SaleDoanInbound.Controllers
                     {
                         maCns.AddRange(item.ChiNhanhs.Split(',').ToList());
                     }
-                    //BaoCaoVM.Dmchinhanhs = _unitOfWork.dmChiNhanhRepository.Find(x => x.KhuVuc == user.Role.RoleName);
+                    
                     BaoCaoVM.Dmchinhanhs = BaoCaoVM.Dmchinhanhs.Where(item1 => maCns.Any(item2 => item1.Macn == item2));
                     BaoCaoVM.TourBaoCaoDtos = _baoCaoService.DoanhSoTheoNgay(searchFromDate, searchToDate, loaiTour, BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList());
+                    
                     if (!string.IsNullOrEmpty(macn))
                     {
                         BaoCaoVM.TourBaoCaoDtos = BaoCaoVM.TourBaoCaoDtos.Where(x => x.MaCNTao == macn);
@@ -2011,7 +2012,7 @@ namespace SaleDoanInbound.Controllers
                         var phongBanIds = users.Select(x => x.PhongBanId).Distinct();
                         thiTruongs.AddRange(phongBanIds);
                     }
-
+                    BaoCaoVM.Phongbans = BaoCaoVM.Phongbans.Where(item1 => thiTruongs.Any(item2 => item1.Maphong == item2));
                     BaoCaoVM.TourBaoCaoDtos = _baoCaoService.DoanhSoTheoThiTruong(searchFromDate, searchToDate, thiTruongs);
                     if (!string.IsNullOrEmpty(thiTruong))
                     {
@@ -2133,9 +2134,9 @@ namespace SaleDoanInbound.Controllers
                 if (user.Role.RoleName == "Users")
                 {
                     //BaoCaoVM.Dmchinhanhs = new List<Dmchinhanh>() { new Dmchinhanh() { Macn = user.MaCN } };
-                    thiTruongs.Add(user.PhongBanId);
-                    BaoCaoVM.TourBaoCaoDtos = _baoCaoService.DoanhSoTheoThiTruong(searchFromDate, searchToDate, thiTruongs); //, BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList());
-                    //BaoCaoVM.TourBaoCaoDtos = BaoCaoVM.TourBaoCaoDtos.Where(x => x.NguoiTao == user.Username);
+                    BaoCaoVM.Phongbans = _unitOfWork.phongBanRepository.Find(x => x.Maphong == user.PhongBanId);
+                    BaoCaoVM.TourBaoCaoDtos = _baoCaoService.DoanhSoTheoThiTruong(searchFromDate, searchToDate, BaoCaoVM.Phongbans.Select(x => x.Maphong).ToList()); //, BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList());
+                    BaoCaoVM.TourBaoCaoDtos = BaoCaoVM.TourBaoCaoDtos.Where(x => x.NguoiTao == user.Username);
                     DoanhSoTheoNgay();
                 }
                 else
@@ -2159,6 +2160,10 @@ namespace SaleDoanInbound.Controllers
                     {
                         BaoCaoVM.TourBaoCaoDtos = BaoCaoVM.TourBaoCaoDtos.Where(x => x.ThiTruongByNguoiTao == thiTruong);
                     }
+
+                    // loc chi nhanh
+                    BaoCaoVM.TourBaoCaoDtos = BaoCaoVM.TourBaoCaoDtos.Where(item1 => maCns.Any(item2 => item1.MaCNTao == item2));
+
                     DoanhSoTheoNgay();
                 }
             }
