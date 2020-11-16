@@ -215,7 +215,9 @@
                                         // SK
                                         if (int.Parse(sk1) > 0)
                                         {
-                                            tyLeSK = int.Parse(sk2) / int.Parse(sk1) * 100;
+                                            var sk1Int = int.Parse(sk1);
+                                            var sk2Int = tourBaoCao2[i].SoKhach;
+                                            tyLeSK = (sk2Int / sk1Int) * 100;
                                         }
                                         else
                                         {
@@ -237,69 +239,69 @@
                                 </tr>
 
                             }
+                    <tr>
+                        <td></td>
+                        <td><strong>Tổng Cộng:</strong></td>
+                        <td>
+                            @{
 
+                                tongSK1 = Model.TourBaoCaoTheoThangs1.Sum(x => x.SoKhach);
+                                <strong>@tongSK1.ToString("N0")</strong>
+                            }
+
+                        </td> <!-- tong SK1-->
+                        <td><strong>@Model.TourBaoCaoTheoThangs1.Sum(x => x.DoanhSo).ToString("N0")</strong></td> <!-- tong DS1-->
+                        <td><strong>@doanhThu1Tong.ToString("N0")</strong></td><!-- tong DT1-->
+
+                        <td>
+                            @{
+
+                                tongSK2 = Model.TourBaoCaoTheoThangs2.Sum(x => x.SoKhach);
+                                <strong>@tongSK2.ToString("N0")</strong>
+                            }
+
+                        </td>
+                        <td><strong>@Model.TourBaoCaoTheoThangs2.Sum(x => x.DoanhSo).ToString("N0")</strong></td>
+                        <td><strong>@doanhThu2Tong.ToString("N0")</strong></td>
+                        <td>
+                            <!--tyLeSKCuaTong = tongSK2 / tongSK1 * 100-->
+                            @{
+                                decimal tyLeSKCuaTong = 0;
+
+                                if (tongSK1 > 0)
+                                {
+                                    tyLeSKCuaTong = Convert.ToDecimal(tongSK2) / Convert.ToDecimal(tongSK1) * 100;
+                                    <strong>@tyLeSKCuaTong.ToString("N0")%</strong>
+                                }
+                                else
+                                {
+                                    <strong>0%</strong>
+                                }
+
+                            }
+
+                        </td>
+                        <td>
+                            <!--tyLeDTCuaTong = doanhThu2Tong / doanhThu1Tong * 100-->
+                            @{
+                                decimal tyLeDTCuaTong = 0;
+
+                                if (doanhThu1Tong > 0)
+                                {
+                                    tyLeDTCuaTong = doanhThu2Tong / doanhThu1Tong * 100;
+                                    <strong>@tyLeDTCuaTong.ToString("N0")%</strong>
+                                }
+                                else
+                                {
+                                    <strong>0%</strong>
+                                }
+
+                            }
+
+                        </td>
+                    </tr>
                         }
-                        <tr>
-                            <td></td>
-                            <td><strong>Tổng Cộng:</strong></td>
-                            <td>
-                                @{
-
-                                    tongSK1 = Model.TourBaoCaoTheoThangs1.Sum(x => x.SoKhach);
-                                    <strong>@tongSK1.ToString("N0")</strong>
-                                }
-
-                            </td> <!-- tong SK1-->
-                            <td><strong>@Model.TourBaoCaoTheoThangs1.Sum(x => x.DoanhSo).ToString("N0")</strong></td> <!-- tong DS1-->
-                            <td><strong>@doanhThu1Tong.ToString("N0")</strong></td><!-- tong DT1-->
-
-                            <td>
-                                @{
-
-                                    tongSK2 = Model.TourBaoCaoTheoThangs2.Sum(x => x.SoKhach);
-                                    <strong>@tongSK2.ToString("N0")</strong>
-                                }
-
-                            </td>
-                            <td><strong>@Model.TourBaoCaoTheoThangs2.Sum(x => x.DoanhSo).ToString("N0")</strong></td>
-                            <td><strong>@doanhThu2Tong.ToString("N0")</strong></td>
-                            <td>
-                                <!--tyLeSKCuaTong = tongSK2 / tongSK1 * 100-->
-                                @{
-                                    decimal tyLeSKCuaTong = 0;
-
-                                    if (tongSK1 > 0)
-                                    {
-                                        tyLeSKCuaTong = Convert.ToDecimal(tongSK2) / Convert.ToDecimal(tongSK1) * 100;
-                                        <strong>@tyLeSKCuaTong.ToString("N0")%</strong>
-                                    }
-                                    else
-                                    {
-                                        <strong>0%</strong>
-                                    }
-
-                                }
-
-                            </td>
-                            <td>
-                                <!--tyLeDTCuaTong = doanhThu2Tong / doanhThu1Tong * 100-->
-                                @{
-                                    decimal tyLeDTCuaTong = 0;
-
-                                    if (doanhThu1Tong > 0)
-                                    {
-                                        tyLeDTCuaTong = doanhThu2Tong / doanhThu1Tong * 100;
-                                        <strong>@tyLeDTCuaTong.ToString("N0")%</strong>
-                                    }
-                                    else
-                                    {
-                                        <strong>0%</strong>
-                                    }
-
-                                }
-
-                            </td>
-                        </tr>
+                        
                     </tbody>
                 </table>
             </div>
