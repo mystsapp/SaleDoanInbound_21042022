@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\excelfolder\" />
+    <Folder Include="wwwroot\lib\ChartJs\" />
   </ItemGroup>
 
   <ItemGroup>

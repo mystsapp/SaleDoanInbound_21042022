@@ -29,6 +29,10 @@
     {
       "library": "numeral.js@2.0.6",
       "destination": "wwwroot/lib/numeral.js/"
+    },
+    {
+      "library": "Chart.js@2.9.4",
+      "destination": "wwwroot/lib/ChartJs/Chart.js/"
     }
   ]
 }
