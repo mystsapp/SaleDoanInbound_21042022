@@ -157,17 +157,18 @@
                                     <!-- nam trước -->
                                     <td class="tdVal">
                                         @{
-                                            var sk1 = tourBaoCao1[i].SoKhach.ToString("N0");
-
+                                            var sk1 = tourBaoCao1[i].SoKhach;
+                                            var sk1String = sk1.ToString("N0");
                                         }
-                                        @Html.DisplayFor(m => sk1)
+                                        @Html.DisplayFor(m => sk1String)
                                     </td>
                                     <td class="tdVal">
                                         @{
-                                            var doanhSo1 = tourBaoCao1[i].DoanhSo.ToString("N0");
+                                            var doanhSo1 = tourBaoCao1[i].DoanhSo;
+                                            var doanhSo1Tring = doanhSo1.ToString("N0");
 
                                         }
-                                        @Html.DisplayFor(m => doanhSo1)
+                                        @Html.DisplayFor(m => doanhSo1Tring)
                                     </td>
                                     @*//Doanh thu = Doanh So / 1,1 = Doanh So / 11/10 =DS *10/11*@
                                     @if (tourBaoCao1[i].DoanhSo == 0)
@@ -177,25 +178,27 @@
                                     else
                                     {
 
-                                        var doanhThu1 = (tourBaoCao1[i].DoanhSo * 10 / 11).ToString("N0");
-                                        doanhThu1Tong += decimal.Parse(doanhThu1);
-                                        <td class="tdVal">@(doanhThu1)</td>
+                                        var doanhThu1 = (tourBaoCao1[i].DoanhSo * 10 / 11);
+                                        doanhThu1Tong += doanhThu1;
+                                        var doanhThu1String = doanhThu1.ToString("N0");
+                                        <td class="tdVal">@doanhThu1String</td>
                                     }
                                     <!-- nam trước -->
                                     <!-- nam sau -->
                                     <td class="tdVal">
                                         @{
-                                            var sk2 = tourBaoCao2[i].SoKhach.ToString("N0");
-
+                                            var sk2 = tourBaoCao2[i].SoKhach;
+                                            var sk2String = sk2.ToString("N0");
                                         }
-                                        @Html.DisplayFor(m => sk2)
+                                        @Html.DisplayFor(m => sk2String)
                                     </td>
                                     <td class="tdVal">
                                         @{
-                                            var doanhSo2 = tourBaoCao2[i].DoanhSo.ToString("N0");
+                                            var doanhSo2 = tourBaoCao2[i].DoanhSo;
 
+                                            var doanhSo2String = doanhSo2.ToString("N0");
                                         }
-                                        @Html.DisplayFor(m => doanhSo2)
+                                        @Html.DisplayFor(m => doanhSo2String)
                                     </td>
                                     @*//Doanh thu = Doanh So / 1,1 = Doanh So / 11/10 =DS *10/11*@
                                     @if (tourBaoCao2[i].DoanhSo == 0)
@@ -204,19 +207,20 @@
                                     }
                                     else
                                     {
-                                        var doanhThu2 = (tourBaoCao2[i].DoanhSo * 10 / 11).ToString("N0");
-                                        doanhThu2Tong += decimal.Parse(doanhThu2);
-                                        <td class="tdVal">@(doanhThu2)</td>
+                                        var doanhThu2 = (tourBaoCao2[i].DoanhSo * 10 / 11);
+                                        doanhThu2Tong += doanhThu2;
+                                        var doanhThu2String = doanhThu2.ToString("N0");
+                                        <td class="tdVal">@(doanhThu2String)</td>
                                     }
                                     <!-- nam sau -->
                                     <!-- ty le -->
                                     @{
                                         decimal tyLeSK = 0, tyLeDT = 0;
                                         // SK
-                                        if (int.Parse(sk1) > 0)
+                                        if (sk1 > 0)
                                         {
-                                            var sk1Int = int.Parse(sk1);
-                                            var sk2Int = tourBaoCao2[i].SoKhach;
+                                            var sk1Int = sk1;
+                                            var sk2Int = sk2;// tourBaoCao2[i].SoKhach;
                                             tyLeSK = (sk2Int / sk1Int) * 100;
                                         }
                                         else
@@ -224,9 +228,9 @@
                                             tyLeSK = 0;
                                         }
                                         // DT
-                                        if (decimal.Parse(doanhSo1) > 0)
+                                        if (doanhSo1 > 0)
                                         {
-                                            tyLeDT = decimal.Parse(doanhSo2) / decimal.Parse(doanhSo1) * 100;
+                                            tyLeDT = doanhSo2 / doanhSo1 * 100;
                                         }
                                         else
                                         {
