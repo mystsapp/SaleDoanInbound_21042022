@@ -1,9 +1,11 @@
 ﻿using Data.Dtos;
+using Data.Models_IB;
 using Data.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Data.Services
 {
@@ -13,6 +15,7 @@ namespace Data.Services
         IEnumerable<TourBaoCaoDto> DoanhSoTheoThang(string searchFromDate, string searchToDate, List<string> MaCNs);
         IEnumerable<TourBaoCaoDto> DoanhSoTheoNgay(string searchFromDate, string searchToDate, string loaiTour, List<string> maCNs);
         IEnumerable<TourBaoCaoDto> DoanhSoTheoThiTruong(string searchFromDate, string searchToDate, List<string> thiTruongs);
+        Task<IEnumerable<Tour>> ChartDoanhSoTheoThiTruongs(DateTime date);
     }
     public class BaoCaoService : IBaoCaoService
     {
@@ -21,6 +24,12 @@ namespace Data.Services
         public BaoCaoService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
+        }
+
+        public async Task<IEnumerable<Tour>> ChartDoanhSoTheoThiTruongs(DateTime date)
+        {
+            IEnumerable<Tour> tours = await _unitOfWork.tourRepository.FindAsync(x => (x.NgayTao.Year == date.Year) && (x.NgayTao.Month == date.Month));
+            return tours;
         }
 
         public IEnumerable<TourBaoCaoDto> DoanhSoTheoNgay(string searchFromDate, string searchToDate, string loaiTour, List<string> maCNs)

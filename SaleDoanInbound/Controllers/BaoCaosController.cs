@@ -911,11 +911,11 @@ namespace SaleDoanInbound.Controllers
             {
                 ModelState.AddModelError("", "Ngày bắt đầu phải nhỏ hơn ngày kết thúc!");
                 //1
-                BaoCaoVM.TourBaoCaoTheoThangs1 = TourBaoCaoTheoThangViewModels("1", "12", nam1, BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList());
+                //.TourBaoCaoTheoThangs1 = TourBaoCaoTheoThangViewModels("1", "12", nam1, BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList());
                 //1
 
                 //2
-                BaoCaoVM.TourBaoCaoTheoThangs2 = TourBaoCaoTheoThangViewModels("1", "12", nam2, BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList());
+                //BaoCaoVM.TourBaoCaoTheoThangs2 = TourBaoCaoTheoThangViewModels("1", "12", nam2, BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList());
                 //2
                 return View(BaoCaoVM);
             }
