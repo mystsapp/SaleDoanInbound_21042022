@@ -1,31 +1,53 @@
-﻿@{
+﻿@model HomeViewModel
+
+@{
     ViewData["Title"] = "Home Page";
+
+    var thiTruongLabels = Newtonsoft.Json.JsonConvert.SerializeObject(Model.CurrentTourTheoThiTruongViewModels.Select(x => x.TenThiTruong));
+    <!-- doanh so -->
+    var dataDoanhSoCurrent = Newtonsoft.Json.JsonConvert.SerializeObject(Model.CurrentTourTheoThiTruongViewModels.Select(x => x.DoanhSo));
+    var dataDoanhSoPrevious = Newtonsoft.Json.JsonConvert.SerializeObject(Model.PreviousTourTheoThiTruongViewModels.Select(x => x.DoanhSo));
+    <!-- doanh so -->
+
+    <!-- SK -->
+    var dataSKCurrent = Newtonsoft.Json.JsonConvert.SerializeObject(Model.CurrentTourTheoThiTruongViewModels.Select(x => x.SoKhach));
+    var dataSKPrevious = Newtonsoft.Json.JsonConvert.SerializeObject(Model.PreviousTourTheoThiTruongViewModels.Select(x => x.SoKhach));
+    <!-- SK -->
+
 }
 
+<!-- doanh so -->
+<input type="hidden" value="@thiTruongLabels" id="hidThiTruongLabels" />
+<input type="hidden" value="@dataDoanhSoCurrent" id="hidDataDoanhSoCurrent" />
+<input type="hidden" value="@dataDoanhSoPrevious" id="hidDataDoanhSoPrevious" />
+<!-- doanh so -->
+<!-- SK -->
+<input type="hidden" value="@dataSKCurrent" id="hidDataSKCurrent" />
+<input type="hidden" value="@dataSKPrevious" id="hidDataSKPrevious" />
+<!-- SK -->
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1>Blank Page</h1>
-            </div>
-            <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active">Blank Page</li>
-                </ol>
-            </div>
-        </div>
+        @*<div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Blank Page</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Blank Page</li>
+                    </ol>
+                </div>
+            </div>*@
     </div><!-- /.container-fluid -->
 </section>
 
-<!-- Main content -->
+<!-- Doanh số theo thị trường -->
 <section class="content">
 
-    <!-- Default box -->
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Title</h3>
+            <h3 class="card-title">Doanh số theo thị trường</h3>
 
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
@@ -37,254 +59,284 @@
             </div>
         </div>
         <div class="card-body">
-            <canvas id="chartjs-1" class="chartjs chartjs-render-monitor" width="926" height="463" style="display: block; width: 842px; height: 421px;"></canvas>
+            @*<canvas id="chartjs-1" class="chartjs chartjs-render-monitor" width="926" height="463" style="display: block; width: 842px; height: 421px;"></canvas>
 
-            <canvas id="myChart" width="400" height="400"></canvas>
+                <canvas id="myChart" width="400" height="400"></canvas>*@
 
-            <canvas id="barChart" width="400" height="400" class="chartjs-render-monitor"></canvas>
+            @*<canvas id="barChart" width="400" height="400" class="chartjs-render-monitor"></canvas>*@
+            <div class="chart">
+                <div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                <canvas id="barChart_DS" class="chartjs-render-monitor"></canvas>
+            </div>
         </div>
-        <!-- /.card-body -->
-        <div class="card-footer">
-            Footer
-        </div>
-        <!-- /.card-footer-->
+
     </div>
-    <!-- /.card -->
 
 </section>
-<!-- /.content -->
 
+<!-- SK theo thị trường -->
+<section class="content">
+
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Số khách theo thị trường</h3>
+
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            @*<canvas id="chartjs-1" class="chartjs chartjs-render-monitor" width="926" height="463" style="display: block; width: 842px; height: 421px;"></canvas>
+
+                <canvas id="myChart" width="400" height="400"></canvas>*@
+
+            @*<canvas id="barChart" width="400" height="400" class="chartjs-render-monitor"></canvas>*@
+            <div class="chart">
+                <div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                <canvas id="barChart_SK" class="chartjs-render-monitor"></canvas>
+            </div>
+        </div>
+
+    </div>
+
+</section>
 
 @section Scripts{
-    <script>
-        var areaChartData = {
-            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-            datasets: [
-                {
-                    label: 'Digital Goods',
-                    backgroundColor: 'rgba(60,141,188,0.9)',
-                    borderColor: 'rgba(60,141,188,0.8)',
-                    pointRadius: false,
-                    pointColor: '#3b8bba',
-                    pointStrokeColor: 'rgba(60,141,188,1)',
-                    pointHighlightFill: '#fff',
-                    pointHighlightStroke: 'rgba(60,141,188,1)',
-                    data: [1128, 2848, 3744, 1919, 4186, 2827, 3690]
-                },
-                {
-                    label: 'Electronics',
-                    backgroundColor: 'rgba(210, 214, 222, 1)',
-                    borderColor: 'rgba(210, 214, 222, 1)',
-                    pointRadius: false,
-                    pointColor: 'rgba(210, 214, 222, 1)',
-                    pointStrokeColor: '#c1c7d1',
-                    pointHighlightFill: '#fff',
-                    pointHighlightStroke: 'rgba(220,220,220,1)',
-                    data: [1165, 2159, 3180, 2181, 3156, 2155, 2140]
-                },
-            ]
-        }
-        //-------------
-        //- BAR CHART -
-        //-------------
-        var barChartCanvas = $('#barChart').get(0).getContext('2d')
-        var barChartData = jQuery.extend(true, {}, areaChartData)
-        var temp0 = areaChartData.datasets[0]
-        var temp1 = areaChartData.datasets[1]
-        barChartData.datasets[0] = temp1
-        barChartData.datasets[1] = temp0
+    <script src="~/js/Admin/Home/indexController.js"></script>
+    @*<script>
+            //var areaChartData = {
+            //    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+            //    datasets: [
+            //        {
+            //            label: 'Digital Goods',
+            //            backgroundColor: 'rgba(60,141,188,0.9)',
+            //            borderColor: 'rgba(60,141,188,0.8)',
+            //            pointRadius: false,
+            //            pointColor: '#3b8bba',
+            //            pointStrokeColor: 'rgba(60,141,188,1)',
+            //            pointHighlightFill: '#fff',
+            //            pointHighlightStroke: 'rgba(60,141,188,1)',
+            //            data: [1128, 2848, 3744, 1919, 4186, 2827, 3690]
+            //        },
+            //        {
+            //            label: 'Electronics',
+            //            backgroundColor: 'rgba(210, 214, 222, 1)',
+            //            borderColor: 'rgba(210, 214, 222, 1)',
+            //            pointRadius: false,
+            //            pointColor: 'rgba(210, 214, 222, 1)',
+            //            pointStrokeColor: '#c1c7d1',
+            //            pointHighlightFill: '#fff',
+            //            pointHighlightStroke: 'rgba(220,220,220,1)',
+            //            data: [1165, 2159, 3180, 2181, 3156, 2155, 2140]
+            //        },
+            //    ]
+            //}
+            ////-------------
+            ////- BAR CHART -
+            ////-------------
+            //var barChartCanvas = $('#barChart').get(0).getContext('2d')
+            //var barChartData = jQuery.extend(true, {}, areaChartData)
+            //var temp0 = areaChartData.datasets[0]
+            //var temp1 = areaChartData.datasets[1]
+            //barChartData.datasets[0] = temp1
+            //barChartData.datasets[1] = temp0
 
-        var barChartOptions = {
-            responsive: true,
-            maintainAspectRatio: false,
-            datasetFill: false
-        }
+            //var barChartOptions = {
+            //    responsive: true,
+            //    maintainAspectRatio: false,
+            //    datasetFill: false
+            //}
 
-        var barChart = new Chart(barChartCanvas, {
-            type: 'bar',
-            data: barChartData,
-            options: {
-                //legend: {
-                //    display: false
-                //},
-                tooltips: {
-                    mode: 'label',
-                    label: 'mylabel',
-                    callbacks: {
-                        label: function (tooltipItem, data) {
-                            return tooltipItem.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                        },
-                    },
-                },
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        callback: function (label, index, labels) { return label.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); },
-                        beginAtZero: true,
-                        fontSize: 10,
-                    },
-                    gridLines: {
-                        display: false
-                    },
-                    scaleLabel: {
-                        display: true,
-                        //labelString: '000\'s',
-                        fontSize: 10,
-                    }
-                }],
-                xAxes: [{
-                    ticks: {
-                        beginAtZero: true,
-                        fontSize: 10
-                    },
-                    gridLines: {
-                        display: false
-                    },
-                    scaleLabel: {
-                        display: true,
-                        fontSize: 10,
-                    }
-                }]
-            }
-            }
-        })
+            //var barChart = new Chart(barChartCanvas, {
+            //    type: 'bar',
+            //    data: barChartData,
+            //    options: {
+            //        //legend: {
+            //        //    display: false
+            //        //},
+            //        tooltips: {
+            //            mode: 'label',
+            //            label: 'mylabel',
+            //            callbacks: {
+            //                label: function (tooltipItem, data) {
+            //                    return tooltipItem.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            //                },
+            //            },
+            //        },
+            //        scales: {
+            //            yAxes: [{
+            //                ticks: {
+            //                    callback: function (label, index, labels) { return label.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); },
+            //                    beginAtZero: true,
+            //                    fontSize: 10,
+            //                },
+            //                gridLines: {
+            //                    display: true
+            //                },
+            //                scaleLabel: {
+            //                    display: true,
+            //                    //labelString: '000\'s',
+            //                    fontSize: 10,
+            //                }
+            //            }],
+            //            xAxes: [{
+            //                ticks: {
+            //                    beginAtZero: true,
+            //                    fontSize: 10
+            //                },
+            //                gridLines: {
+            //                    display: true
+            //                },
+            //                scaleLabel: {
+            //                    display: true,
+            //                    fontSize: 10,
+            //                }
+            //            }]
+            //        }
+            //    }
+            //})
 
-    </script>
+        </script>*@
 
-    <script>
-        var ctx = document.getElementById('myChart').getContext('2d');
-        var myChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-                datasets: [{
-                    label: 'mylabel',
-                    data: [1200, 1900, 300, 500, 2000, 2300],
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                //legend: {
-                //    display: false
-                //},
-                tooltips: {
-                    mode: 'label',
-                    label: 'mylabel',
-                    callbacks: {
-                        label: function (tooltipItem, data) {
-                            return tooltipItem.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                        },
-                    },
-                },
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            callback: function (label, index, labels) { return label / 1000; },
-                            beginAtZero: true,
-                            fontSize: 10,
-                        },
-                        gridLines: {
-                            display: false
-                        },
-                        scaleLabel: {
-                            display: true,
-                            //labelString: '000\'s',
-                            fontSize: 10,
-                        }
-                    }],
-                    xAxes: [{
-                        ticks: {
-                            beginAtZero: true,
-                            fontSize: 10
-                        },
-                        gridLines: {
-                            display: false
-                        },
-                        scaleLabel: {
-                            display: true,
-                            fontSize: 10,
-                        }
+    @*<script>
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                    datasets: [{
+                        label: 'mylabel',
+                        data: [1200, 1900, 300, 500, 2000, 2300],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
                     }]
-                }
-            }
-        });
-    </script>
-    <script>
-
-        var ctx = document.getElementById("chartjs-1").getContext("2d");;
-
-        var myChart2 = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['sticks', 'stones', 'bones', 'abc'],
-                datasets: [{
-                    label: 'Amount',
-                    data: [2000, 3000, 4000, 10000],
-                    backgroundColor: 'rgba(0,0,255,0.2)',
-                    borderColor: 'rgba(0,0,255,0.2)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                //legend: {
-                //    display: false
-                //},
-                tooltips: {
-                    mode: 'label',
-                    label: 'my label',
-                    callbacks: {
-                        label: function (tooltipItem, data) {
-                            return tooltipItem.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                },
+                options: {
+                    //legend: {
+                    //    display: false
+                    //},
+                    tooltips: {
+                        mode: 'label',
+                        label: 'mylabel',
+                        callbacks: {
+                            label: function (tooltipItem, data) {
+                                return tooltipItem.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                            },
                         },
                     },
-                },
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            callback: function (label, index, labels) { return label / 1000; },
-                            beginAtZero: true,
-                            fontSize: 10,
-                        },
-                        gridLines: {
-                            display: false
-                        },
-                        scaleLabel: {
-                            display: true,
-                            //labelString: '000\'s',
-                            fontSize: 10,
-                        }
-                    }],
-                    xAxes: [{
-                        ticks: {
-                            beginAtZero: true,
-                            fontSize: 10
-                        },
-                        gridLines: {
-                            display: false
-                        },
-                        scaleLabel: {
-                            display: true,
-                            fontSize: 10,
-                        }
-                    }]
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                callback: function (label, index, labels) { return label / 1000; },
+                                beginAtZero: true,
+                                fontSize: 10,
+                            },
+                            gridLines: {
+                                display: false
+                            },
+                            scaleLabel: {
+                                display: true,
+                                //labelString: '000\'s',
+                                fontSize: 10,
+                            }
+                        }],
+                        xAxes: [{
+                            ticks: {
+                                beginAtZero: true,
+                                fontSize: 10
+                            },
+                            gridLines: {
+                                display: false
+                            },
+                            scaleLabel: {
+                                display: true,
+                                fontSize: 10,
+                            }
+                        }]
+                    }
                 }
-            }
-        });
-    </script>
+            });
+        </script>
+        <script>
+
+            var ctx = document.getElementById("chartjs-1").getContext("2d");;
+
+            var myChart2 = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['sticks', 'stones', 'bones', 'abc'],
+                    datasets: [{
+                        label: 'Amount',
+                        data: [2000, 3000, 4000, 10000],
+                        backgroundColor: 'rgba(0,0,255,0.2)',
+                        borderColor: 'rgba(0,0,255,0.2)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    //legend: {
+                    //    display: false
+                    //},
+                    tooltips: {
+                        mode: 'label',
+                        label: 'my label',
+                        callbacks: {
+                            label: function (tooltipItem, data) {
+                                return tooltipItem.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                            },
+                        },
+                    },
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                callback: function (label, index, labels) { return label / 1000; },
+                                beginAtZero: true,
+                                fontSize: 10,
+                            },
+                            gridLines: {
+                                display: false
+                            },
+                            scaleLabel: {
+                                display: true,
+                                //labelString: '000\'s',
+                                fontSize: 10,
+                            }
+                        }],
+                        xAxes: [{
+                            ticks: {
+                                beginAtZero: true,
+                                fontSize: 10
+                            },
+                            gridLines: {
+                                display: false
+                            },
+                            scaleLabel: {
+                                display: true,
+                                fontSize: 10,
+                            }
+                        }]
+                    }
+                }
+            });
+        </script>*@
 }

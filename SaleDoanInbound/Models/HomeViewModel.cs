@@ -10,6 +10,6 @@ namespace SaleDoanInbound.Models
     {
         public IEnumerable<Tour> Tours { get; set; }
         public IEnumerable<TourTheoThiTruongViewModel> CurrentTourTheoThiTruongViewModels { get; set; }
-        public IEnumerable<TourTheoThiTruongViewModel> PriviousTourTheoThiTruongViewModels { get; set; }
+        public IEnumerable<TourTheoThiTruongViewModel> PreviousTourTheoThiTruongViewModels { get; set; }
     }
 }

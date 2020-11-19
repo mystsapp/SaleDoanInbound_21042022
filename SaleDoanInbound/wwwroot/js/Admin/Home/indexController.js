@@ -61,58 +61,289 @@ var indexController = {
     },
 
     registerEvent: function () {
+        // bar chart
 
+        // doanhso
+        var thiTruongLabels = JSON.parse($('#hidThiTruongLabels').val());
+        var dataDoanhSoCurrent = JSON.parse($('#hidDataDoanhSoCurrent').val());
+        var dataDoanhSoPrevious = JSON.parse($('#hidDataDoanhSoPrevious').val());
+        
+        var areaChartData = {
+            labels: thiTruongLabels,
+            datasets: [
+                {
+                    label: 'Doanh số hiện tại',
+                    backgroundColor: 'rgba(60,141,188,0.9)',
+                    borderColor: 'rgba(60,141,188,0.8)',
+                    pointRadius: false,
+                    pointColor: '#3b8bba',
+                    pointStrokeColor: 'rgba(60,141,188,1)',
+                    pointHighlightFill: '#fff',
+                    pointHighlightStroke: 'rgba(60,141,188,1)',
+                    data: dataDoanhSoCurrent
+                },
+                {
+                    label: 'Doanh số tháng trước',
+                    backgroundColor: 'rgba(210, 214, 222, 1)',
+                    borderColor: 'rgba(210, 214, 222, 1)',
+                    pointRadius: false,
+                    pointColor: 'rgba(210, 214, 222, 1)',
+                    pointStrokeColor: '#c1c7d1',
+                    pointHighlightFill: '#fff',
+                    pointHighlightStroke: 'rgba(220,220,220,1)',
+                    data: dataDoanhSoPrevious
+                },
+            ]
+        }
+        var barChartCanvas = $('#barChart_DS').get(0).getContext('2d')
+        var barChartData = jQuery.extend(true, {}, areaChartData)
+        var temp0 = areaChartData.datasets[0]
+        var temp1 = areaChartData.datasets[1]
+        barChartData.datasets[0] = temp1
+        barChartData.datasets[1] = temp0
 
-        var abc = formatedDate(Date());
-        console(abc);
+        var barChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            datasetFill: false
+        }
 
-        $.each($('.cursor-pointer'), function (i, item) {
-
-            var huy = $(item).data('huy');
-            //console.log(huy);
-            if (huy === 'True') {
-                $(this).addClass('bg-secondary');
+        var barChart = new Chart(barChartCanvas, {
+            type: 'bar',
+            data: barChartData,
+            options: {
+                //legend: {
+                //    display: false
+                //},
+                tooltips: {
+                    mode: 'label',
+                    label: 'mylabel',
+                    callbacks: {
+                        label: function (tooltipItem, data) {
+                            return tooltipItem.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                        },
+                    },
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            callback: function (label, index, labels) { return label.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); },
+                            beginAtZero: true,
+                            fontSize: 10,
+                        },
+                        gridLines: {
+                            display: true
+                        },
+                        scaleLabel: {
+                            display: true,
+                            //labelString: '000\'s',
+                            fontSize: 10,
+                        }
+                    }],
+                    xAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            fontSize: 10
+                        },
+                        gridLines: {
+                            display: true
+                        },
+                        scaleLabel: {
+                            display: true,
+                            fontSize: 10,
+                        }
+                    }]
+                }
             }
+        })
+        // doanhso
+        
+        // SK
+        
+        var dataSKCurrent = JSON.parse($('#hidDataSKCurrent').val());
+        var dataSKPrevious = JSON.parse($('#hidDataSKPrevious').val());
 
-        });
 
+        var areaChartData_SK = {
+            labels: thiTruongLabels,
+            datasets: [
+                {
+                    label: 'SK hiện tại',
+                    backgroundColor: 'rgba(60,141,188,0.9)',
+                    borderColor: 'rgba(60,141,188,0.8)',
+                    pointRadius: false,
+                    pointColor: '#3b8bba',
+                    pointStrokeColor: 'rgba(60,141,188,1)',
+                    pointHighlightFill: '#fff',
+                    pointHighlightStroke: 'rgba(60,141,188,1)',
+                    data: dataSKCurrent
+                },
+                {
+                    label: 'SK tháng trước',
+                    backgroundColor: 'rgba(210, 214, 222, 1)',
+                    borderColor: 'rgba(210, 214, 222, 1)',
+                    pointRadius: false,
+                    pointColor: 'rgba(210, 214, 222, 1)',
+                    pointStrokeColor: '#c1c7d1',
+                    pointHighlightFill: '#fff',
+                    pointHighlightStroke: 'rgba(220,220,220,1)',
+                    data: dataSKPrevious
+                },
+            ]
+        }
+        var barChartCanvas_SK = $('#barChart_SK').get(0).getContext('2d')
+        var barChartData_SK = jQuery.extend(true, {}, areaChartData_SK)
+        var temp0_SK = areaChartData_SK.datasets[0]
+        var temp1_SK = areaChartData_SK.datasets[1]
+        barChartData_SK.datasets[0] = temp1_SK
+        barChartData_SK.datasets[1] = temp0_SK
 
-        //$.when(indexController.checkHuy(id)).done(function (response) {
-        //    if (response.status === true) { // check huy
-        //        console.log(response);
-        //        $('.cursor-pointer').addClass('bg-secondary');
+        var barChartOptions_ = {
+            responsive: true,
+            maintainAspectRatio: false,
+            datasetFill: false
+        }
+
+        var barChart_SK = new Chart(barChartCanvas_SK, {
+            type: 'bar',
+            data: barChartData_SK,
+            options: {
+                //legend: {
+                //    display: false
+                //},
+                tooltips: {
+                    mode: 'label',
+                    label: 'mylabel',
+                    callbacks: {
+                        label: function (tooltipItem, data) {
+                            return tooltipItem.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                        },
+                    },
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            callback: function (label, index, labels) { return label.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); },
+                            beginAtZero: true,
+                            fontSize: 10,
+                        },
+                        gridLines: {
+                            display: true
+                        },
+                        scaleLabel: {
+                            display: true,
+                            //labelString: '000\'s',
+                            fontSize: 10,
+                        }
+                    }],
+                    xAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            fontSize: 10
+                        },
+                        gridLines: {
+                            display: true
+                        },
+                        scaleLabel: {
+                            display: true,
+                            fontSize: 10,
+                        }
+                    }]
+                }
+            }
+        })
+
+        //var areaChartData_SK = {
+        //    labels: thiTruongLabels,
+        //    datasets: [
+        //        {
+        //            label: 'SK hiện tại',
+        //            backgroundColor: 'rgba(60,141,188,0.9)',
+        //            borderColor: 'rgba(60,141,188,0.8)',
+        //            pointRadius: false,
+        //            pointColor: '#3b8bba',
+        //            pointStrokeColor: 'rgba(60,141,188,1)',
+        //            pointHighlightFill: '#fff',
+        //            pointHighlightStroke: 'rgba(60,141,188,1)',
+        //            data: dataSKCurrent
+        //        },
+        //        {
+        //            label: 'SK tháng trước',
+        //            backgroundColor: 'rgba(210, 214, 222, 1)',
+        //            borderColor: 'rgba(210, 214, 222, 1)',
+        //            pointRadius: false,
+        //            pointColor: 'rgba(210, 214, 222, 1)',
+        //            pointStrokeColor: '#c1c7d1',
+        //            pointHighlightFill: '#fff',
+        //            pointHighlightStroke: 'rgba(220,220,220,1)',
+        //            data: dataSKPrevious
+        //        },
+        //    ]
+        //}
+        //var barChartCanvas_SK = $('#barChart_SK').get(0).getContext('2d')
+        //var barChartData_SK = jQuery.extend(true, {}, areaChartData_SK)
+        //var temp0_SK = areaChartData_SK.datasets[0]
+        //var temp1_SK = areaChartData_SK.datasets[1]
+        //barChartData_SK.datasets[0] = temp0_SK
+        //barChartData_SK.datasets[1] = temp1_SK
+
+        //var barChartOptions_SK = {
+        //    responsive: true,
+        //    maintainAspectRatio: false,
+        //    datasetFill: false
+        //}
+
+        //var barChart_SK = new Chart(barChartCanvas_SK, {
+        //    type: 'bar',
+        //    data: barChartData_SK,
+        //    options: {
+        //        //legend: {
+        //        //    display: false
+        //        //},
+        //        tooltips: {
+        //            mode: 'label',
+        //            label: 'mylabel',
+        //            callbacks: {
+        //                label: function (tooltipItem, data) {
+        //                    return tooltipItem.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        //                },
+        //            },
+        //        },
+        //        scales: {
+        //            yAxes: [{
+        //                ticks: {
+        //                    callback: function (label, index, labels) { return label.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); },
+        //                    beginAtZero: true,
+        //                    fontSize: 10,
+        //                },
+        //                gridLines: {
+        //                    display: true
+        //                },
+        //                scaleLabel: {
+        //                    display: true,
+        //                    //labelString: '000\'s',
+        //                    fontSize: 10,
+        //                }
+        //            }],
+        //            xAxes: [{
+        //                ticks: {
+        //                    beginAtZero: true,
+        //                    fontSize: 10
+        //                },
+        //                gridLines: {
+        //                    display: true
+        //                },
+        //                scaleLabel: {
+        //                    display: true,
+        //                    fontSize: 10,
+        //                }
+        //            }]
+        //        }
         //    }
         //})
-        //var invoicesCount = indexController.checkInvoices(id);
-        //if (invoicesCount > 0) {
-        //    $('#btnHuy').prop('disabled', true);
-        //}
-        //});
+        // SK
 
-        $('.btnKhoiPhucTour').off('click').on('click', function () {
-
-            id = $(this).data('id');
-            bootbox.confirm({
-                title: "Restore Confirm?",
-                message: "Bạn có muốn <b> khôi phục </b> item này không?",
-                buttons: {
-                    cancel: {
-                        label: '<i class="fa fa-times"></i> Cancel'
-                    },
-                    confirm: {
-                        label: '<i class="fa fa-check"></i> Confirm'
-                    }
-
-                },
-                callback: function (result) {
-                    if (result) {
-                        $('#hidId').val(id);
-                        $('#frmKhoiPhuc').submit();
-                    }
-                }
-
-            });
-        });
+        // bar chart
     }
 
 };
