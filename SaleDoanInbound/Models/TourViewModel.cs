@@ -15,6 +15,7 @@ namespace SaleDoanInbound.Models
         public IPagedList<TourDto> TourDtos { get; set; }
         public IEnumerable<Data.Models_QLTaiKhoan.Thanhpho> Thanhphos { get; set; } // qltaikhoan
         public IEnumerable<Company> Companies { get; set; } // qltour
+        public IEnumerable<ListViewModel> CompaniesViewModel { get; set; } // 
         public IEnumerable<Tourkind> Tourkinds { get; set; } // qltour
         public IEnumerable<Data.Models_QLT.Dmchinhanh> Dmchinhanhs { get; set; } // qltour
         public List<Data.Models_QLT.Phongban> listPhongMacode { get; set; } // qltour

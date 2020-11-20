@@ -126,8 +126,8 @@
 
                     <div class="form-group row">
                         <div class="form-group">
-                            <button type="button" id="btnSubmitEditCTInvoicePartial" class="btn btn-primary"><i class="fas fa-save"></i></button>
-                            <button type="button" id="btnBackEditCTInvoicePartial" class="btn btn-success" data-tourId="@Model.Invoice.TourId" ><i class="fas fa-backward"></i></button>
+                            <button type="button" id="btnSubmitEditCTInvoicePartial" class="btn btn-primary"><i class="fas fa-save"></i> Save</button>
+                            <button type="button" id="btnBackEditCTInvoicePartial" class="btn btn-success" data-tourId="@Model.Invoice.TourId" ><i class="fas fa-backward"></i> Back</button>
                         </div>
                     </div>
                 </div>
@@ -195,6 +195,15 @@
             // required: "Ngày đến không được để trống"
         }
     });
+
+    // btnBackEditCTInvoicePartial
+    //$('#btnBackEditCTInvoicePartial').off('click').on('click', function () {
+
+    //    $('#editInvoicePartial').hide(500);
+    //    $('#tabs_KeToan_TourInfo').show(500);
+    //});
+    
+        // btnBackEditCTInvoicePartial
 
 </script>
 

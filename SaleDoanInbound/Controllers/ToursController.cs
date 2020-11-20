@@ -199,6 +199,15 @@ namespace SaleDoanInbound.Controllers
             // get list phong ban / dh 
             TourVM.listPhongDH = GetListPhongBanDH(); // departoperator (qltour)
             // get list phong ban / dh
+
+            // CompaniesViewModel
+            var listCompany = new List<ListViewModel>();
+            foreach (var item in TourVM.Companies)
+            {
+                listCompany.Add(new ListViewModel() { CompanyId = item.CompanyId, CompanyName = item.CompanyId + " - " + item.Name });
+            }
+            TourVM.CompaniesViewModel = listCompany;
+            // CompaniesViewModel
             return View(TourVM);
         }
 
@@ -399,6 +408,7 @@ namespace SaleDoanInbound.Controllers
             // get list phong ban / dh 
             GetListPhongBanDH(); // departoperator (qltour)
             // get list phong ban / dh
+
             return View(TourVM);
         }
 

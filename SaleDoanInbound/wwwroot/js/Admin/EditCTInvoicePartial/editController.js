@@ -54,7 +54,7 @@ var editController = {
             dataType: 'json',
             type: 'GET',
             success: function (response) {
-                console.log(response);
+                // console.log(response);
                 if (response.status) {
                     amount = numeral(response.data).format('0,0');
                     $('#txtAmount').val(amount);

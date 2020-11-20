@@ -484,17 +484,18 @@ var indexController = {
             });
         });
         // edit CTInvoice
-
+        
         $('#btnBackEditCTInvoicePartial').off('click').on('click', function () {
-
+            
             //tourId = $(this).data('tourid');
             //indexController.Load_KeToan_TourInfoByTourPartial(tourId);
-            invoiceId = $('#hidInvoiceId').val();
-            indexController.Load_CTInvoice_CTVAT_Partial(invoiceId);
+            //invoiceId = $('#hidInvoiceId').val();
+            //indexController.Load_CTInvoice_CTVAT_Partial(invoiceId);
 
             $('#editCTInvoicePartial').hide(500);
             $('#cTInVoiceCTVAT').show(500);
         });
+
         $('#btnSubmitEditCTInvoicePartial').off('click').on('click', function () {
 
             // if frm valid

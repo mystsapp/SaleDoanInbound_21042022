@@ -11,5 +11,9 @@ namespace SaleDoanInbound.Models
         public string Name { get; set; }
         public string DienGiais { get; set; }
         public string SoTiens { get; set; }
+
+        // company view model
+        public string CompanyId { get; set; }
+        public string CompanyName { get; set; }
     }
 }

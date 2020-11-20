@@ -45,10 +45,10 @@
 
                     </div>
 
-                    <div class="form-group row">
+                    <div class="form-group">
                         <div class="form-group">
-                            <button type="button" id="btnEditBienNhanPartialSubmit" class="btn btn-primary" ><i class="fas fa-save"></i></button>
-                            <button type="button" id="btnEditBienNhanPartialBack" class="btn btn-success"><i class="fas fa-backward"></i></button>
+                            <button type="button" id="btnEditBienNhanPartialSubmit" class="btn btn-primary" ><i class="fas fa-save"></i> Save</button>
+                            <button type="button" id="btnEditBienNhanPartialBack" class="btn btn-success"><i class="fas fa-backward"></i> Back</button>
                         </div>
                     </div>
                 </div>
@@ -179,6 +179,15 @@
             });
         }
     });
+
+    // btnCreateCTBienNhanPartialBack
+    $('#btnEditBienNhanPartialBack').off('click').on('click', function () {
+
+        $('#EditCTBNPartial').hide(500);
+        $('#CTBienNhanInBienNhanPartial').show(500);
+    });
+        // btnCreateCTBienNhanPartialBack
+
 </script>
 
 <script src="~/js/Admin/EditCTBienNhanPartial/EditController.js"></script>

@@ -140,8 +140,8 @@
 
                     <div class="form-group row">
                         <div class="form-group">
-                            <button type="button" id="btnEditInvoicePartial" class="btn btn-primary"><i class="fas fa-save"></i></button>
-                            <button id="btnBackEditInvoicePartial" type="button" class="btn btn-success"><i class="fas fa-backward"></i></button>
+                            <button type="button" id="btnEditInvoicePartial" class="btn btn-primary"><i class="fas fa-save"></i> Save</button>
+                            <button id="btnBackEditInvoicePartial" type="button" class="btn btn-success"><i class="fas fa-backward"></i> Back</button>
                         </div>
                     </div>
                 </div>
@@ -235,9 +235,9 @@
 
                         toastr.success('Cập nhật invoice thành công!'); // toastr in admin/tour/indexController.js
 
-                        $('#editInvoicePartial').hide();
+                        $('#editInvoicePartial').hide(500);
 
-                        $('#tabs_KeToan_TourInfo').show();
+                        $('#tabs_KeToan_TourInfo').show(500);
                         tourId = tourIdInEditInvoicePartial; // receive it from EditInvoicePartial
                         indexController.Load_KeToan_TourInfoByTourPartial(tourId); // in admin/tour/indexController.js
 
@@ -263,6 +263,11 @@
                 }
             });
         }
+    });
+
+    $('#btnBackEditInvoicePartial').off('click').on('click', function () {
+        $('#editInvoicePartial').hide(500);
+        $('#tabs_KeToan_TourInfo').show(500);
     });
 
 </script>
