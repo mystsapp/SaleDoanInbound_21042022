@@ -70,6 +70,8 @@
         </div>
         <div class="card-body">
 
+            <div asp-validation-summary="All" class="text-danger"></div>
+
             <form method="get" autocomplete="off">
 
                 <div class="container" style="padding-bottom:10px; background-color: aliceblue;" id="search">
@@ -106,7 +108,11 @@
                                     <button type="submit" class="btn btn-primary " id="btnSubmit">
                                         <i class="fas fa-search"></i>
                                     </button>
-                                    <a class="btn btn-outline-info" asp-action="Create" asp-route-strUrl="@Model.StrUrl" title="Thêm mới"><i class="fas fa-plus"></i></a>
+                                    @if (user.Role.RoleName != "KeToans")
+                                    {
+                                        <a class="btn btn-outline-info" asp-action="Create" asp-route-strUrl="@Model.StrUrl" title="Thêm mới"><i class="fas fa-plus"></i></a>
+                                    }
+
                                 </div>
                             </div>
                         </div>
@@ -140,15 +146,15 @@
                         {
                             @foreach (var item in Model.TourDtos)
                             {
-                                
+
                                 <tr class="cursor-pointer " data-huy="@item.HuyTour" onclick="Tabs_KeToan_TourInfo()">
                                     @if (user.Role.RoleName != "KeToans")
                                     {
                                         <td>
                                             <div class="btn-group text-white" role="group">
                                                 @*<a class="text-info" title="Invoice" asp-action="Index" asp-controller="Invoices" asp-route-tourId="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-file-invoice"></i></a>
-        <span class="text-dark"> | </span>
-        <a class="text-success" title="Biên nhận" asp-action="Index" asp-controller="BienNhans" asp-route-tourId="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-file-alt"></i></a>*@
+                                            <span class="text-dark"> | </span>
+                                            <a class="text-success" title="Biên nhận" asp-action="Index" asp-controller="BienNhans" asp-route-tourId="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-file-alt"></i></a>*@
                                                 @*<span class="text-dark"> | </span>*@
 
                                                 @if (user.Role.RoleName == "Users")

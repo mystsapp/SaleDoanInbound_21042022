@@ -104,7 +104,7 @@ namespace Data.Models_IB
         [MaxLength(1), Column(TypeName = "varchar(1)")]
         public string TrangThai { get; set; }
 
-        public DateTime NgaySua { get; set; }
+        public DateTime? NgaySua { get; set; }
 
         [DisplayName("Người sửa")]
         [MaxLength(50), Column(TypeName = "varchar(50)")]

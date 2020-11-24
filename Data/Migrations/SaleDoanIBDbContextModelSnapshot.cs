@@ -1240,7 +1240,7 @@ namespace Data.Migrations
                     b.Property<DateTime?>("NgayNhanDuTien")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("NgaySua")
+                    b.Property<DateTime?>("NgaySua")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("NgayTao")
@@ -1510,6 +1510,10 @@ namespace Data.Migrations
                     b.Property<string>("PhongBanId")
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
+
+                    b.Property<string>("PhongBans")
+                        .HasColumnType("nvarchar(250)")
+                        .HasMaxLength(250);
 
                     b.Property<int>("RoleId")
                         .HasColumnType("int");

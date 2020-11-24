@@ -91,7 +91,7 @@ namespace Data.Dtos
         [DisplayName("Trạng thái")]
         public string TrangThai { get; set; }
 
-        public DateTime NgaySua { get; set; }
+        public DateTime? NgaySua { get; set; }
 
         [DisplayName("Người sửa")]
         public string NguoiSua { get; set; }

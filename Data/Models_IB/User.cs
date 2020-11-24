@@ -102,5 +102,11 @@ namespace Data.Models_IB
         public string NguoiCapNhat { get; set; }
 
         public DateTime NgayCapNhat { get; set; }
+
+
+        [DisplayName("Phòng ban QL")]
+        [MaxLength(250), Column(TypeName = "nvarchar(250)")]
+        public string PhongBans { get; set; }
+
     }
 }

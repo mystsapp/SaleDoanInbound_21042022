@@ -8,17 +8,17 @@
 <section class="content-header">
     <div class="container-fluid">
         @*<div class="row mb-2">
-            <div class="col-sm-6">
-                <h1>Thêm Mới</h1>
-            </div>
-            <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="/">Home</a></li>
-                    <li class="breadcrumb-item"><a asp-controller="KhachHangs" asp-route-strUrl="@Model.StrUrl" asp-action="DetailsRedirect">Danh Sách Ngành Nghề</a></li>
-                    <li class="breadcrumb-item active">Thêm mới phân khu CN</li>
-                </ol>
-            </div>
-        </div>*@
+                <div class="col-sm-6">
+                    <h1>Thêm Mới</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item"><a asp-controller="KhachHangs" asp-route-strUrl="@Model.StrUrl" asp-action="DetailsRedirect">Danh Sách Ngành Nghề</a></li>
+                        <li class="breadcrumb-item active">Thêm mới phân khu CN</li>
+                    </ol>
+                </div>
+            </div>*@
     </div><!-- /.container-fluid -->
 </section>
 
@@ -48,7 +48,7 @@
 
                     <div class="form-group row">
 
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <label asp-for="PhanKhuCN.RoleId" class="control-label"></label>
                             <select asp-for="PhanKhuCN.RoleId" class="form-control" id="txtTenKhuCN"
                                     asp-items="@(new SelectList(Model.Roles, "Id", "RoleName"))">
@@ -65,6 +65,16 @@
                             </select>
                             <span asp-validation-for="PhanKhuCN.ChiNhanhs" class="text-danger"></span>
                         </div>
+
+                        @*<div class="col-md-5">
+                            <label asp-for="PhanKhuCN.PhongBans" class="control-label"></label>
+                            <input type="hidden" asp-for="PhanKhuCN.PhongBans" id="hidDdlPhongBans" />
+                            <select class="phongBans select2-hidden-accessible" multiple="" data-placeholder="Chọn phòng ban" style="width: 100%;" data-select2-id="24" tabindex="-1" aria-hidden="true"
+                                    asp-items="@(new SelectList(Model.Phongbans, "Maphong", "Tenphong"))" id="ddlPhongBans">
+                            </select>
+
+                            <span asp-validation-for="PhanKhuCN.PhongBans" class="text-danger"></span>
+                        </div>*@
 
                     </div>
 
@@ -108,9 +118,14 @@
         //$('.select2bs4').select2({
         //    theme: 'bootstrap4'
         //})
-        $('.chiNhanhs').select2({
+        $('#ddlChiNhanhs').select2({
             theme: 'bootstrap4'
-        })
+        });
+
+        //$('#ddlPhongBans').select2({
+
+        //    theme: 'bootstrap4'
+        //});
 
     </script>
 

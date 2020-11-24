@@ -11,6 +11,7 @@ namespace SaleDoanInbound.Models
     {
         public IEnumerable<PhanKhuCN> PhanKhuCNs { get; set; }
         public IEnumerable<Dmchinhanh> Dmchinhanhs { get; set; }
+        public IEnumerable<Phongban> Phongbans { get; set; }
         public IEnumerable<Role> Roles { get; set; }
         public PhanKhuCN PhanKhuCN { get; set; }
         public string StrUrl { get; set; }

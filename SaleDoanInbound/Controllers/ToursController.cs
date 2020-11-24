@@ -87,6 +87,9 @@ namespace SaleDoanInbound.Controllers
             var chiNhanhs = TourVM.Dmchinhanhs;
             var cacNoiDungHuyTours = _unitOfWork.cacNoiDungHuyTourRepository.GetAll();
             List<string> listRoleChiNhanh = new List<string>();
+            List<string> phongBansQL = new List<string>();
+            var users = _unitOfWork.userRepository.GetAll().ToList();
+
             if (user.Role.RoleName != "Admins")
             {
                 if (user.Role.RoleName == "Users")
@@ -97,7 +100,18 @@ namespace SaleDoanInbound.Controllers
                 {
                     // add chinhanhs in PhanKhuCN
                     var phanKhuCN = await _unitOfWork.phanKhuCNRepository.GetByIdAsync(user.RoleId);
+                    if (phanKhuCN == null)
+                    {
+                        ModelState.AddModelError("", "Role của user này chưa được add chi nhánh.");
+                        return View(TourVM);
+                    }
                     listRoleChiNhanh.AddRange(phanKhuCN.ChiNhanhs.Split(','));
+                    if (!string.IsNullOrEmpty(user.PhongBans)) // phongbans trong ==> ql het
+                    {
+                        phongBansQL = user.PhongBans.Split(',').ToList();                        
+                        users = users.Where(item1 => phongBansQL.Any(item2 => item1.PhongBanId == item2)).ToList();
+                    }
+                    
                 }
             }
             else
@@ -107,27 +121,18 @@ namespace SaleDoanInbound.Controllers
                     listRoleChiNhanh.Add(item.Macn);
                 }
             }
-            TourVM.TourDtos = _unitOfWork.tourRepository.ListTour(searchString, companies, loaiTours, chiNhanhs, cacNoiDungHuyTours, page, searchFromDate, searchToDate, listRoleChiNhanh);
-            //if (user.Role.RoleName != "Admins")
-            //{
-            //    if (user.Role.RoleName == "Users")
-            //    {
-            //        TourVM.TourDtos = TourVM.TourDtos.Where(x => x.nguoi)
-            //    }
-            //    else
-            //    {
-            //        // add chinhanhs in PhanKhuCN
-            //        var phanKhuCN = await _unitOfWork.phanKhuCNRepository.GetByIdAsync(user.RoleId);
-            //        listRoleChiNhanh.AddRange(phanKhuCN.ChiNhanhs.Split(','));
-            //    }
-            //}
-            //else
-            //{
-            //    foreach (var item in chiNhanhs)
-            //    {
-            //        listRoleChiNhanh.Add(item.Macn);
-            //    }
-            //}
+
+            TourVM.TourDtos = _unitOfWork.tourRepository.ListTour(searchString, 
+                                                                  companies, 
+                                                                  loaiTours, 
+                                                                  chiNhanhs, 
+                                                                  cacNoiDungHuyTours, 
+                                                                  page, 
+                                                                  searchFromDate, 
+                                                                  searchToDate, 
+                                                                  listRoleChiNhanh,
+                                                                  users.Select(x => x.Username).ToList());
+           
             
             //--> click vao tour
             var tour = _unitOfWork.tourRepository.GetById(id);

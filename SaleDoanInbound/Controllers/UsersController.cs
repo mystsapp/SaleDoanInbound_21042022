@@ -285,7 +285,7 @@ namespace SaleDoanInbound.Controllers
             //return _unitOfWork.phongBanRepository.GetAll()
             //                                     .Where(x => !string.IsNullOrEmpty(x.Macode))
             //                                     .ToList();
-            return _unitOfWork.phongBanRepository.GetAll().ToList();
+            return _unitOfWork.phongBanRepository.GetAll().Where(x => !string.IsNullOrEmpty(x.Macode)).ToList();
         }
 
         public JsonResult IsStringNameAvailable(string TenCreate)

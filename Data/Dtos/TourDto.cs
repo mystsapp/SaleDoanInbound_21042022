@@ -92,7 +92,7 @@ namespace Data.Dtos
         [DisplayName("Trạng thái")]
         public string TrangThai { get; set; }
 
-        public DateTime NgaySua { get; set; }
+        public DateTime? NgaySua { get; set; }
 
         [DisplayName("Người sửa")]
         public string NguoiSua { get; set; }
@@ -161,5 +161,7 @@ namespace Data.Dtos
         public string LogFile { get; set; }
 
         public int Invoices { get; set; }
+
+        public string PhongBanNguoiTao { get; set; }
     }
 }

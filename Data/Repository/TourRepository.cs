@@ -13,7 +13,7 @@ namespace Data.Repository
 {
     public interface ITourRepository : IRepository<Tour>
     {
-        IPagedList<TourDto> ListTour(string searchString, IEnumerable<Company> companies, IEnumerable<Tourkind> loaiTours, IEnumerable<Dmchinhanh> chiNhanhs, IEnumerable<CacNoiDungHuyTour> cacNoiDungHuyTours, int? page, string searchFromDate, string searchToDate, List<string> listRoleChiNhanh);
+        IPagedList<TourDto> ListTour(string searchString, IEnumerable<Company> companies, IEnumerable<Tourkind> loaiTours, IEnumerable<Dmchinhanh> chiNhanhs, IEnumerable<CacNoiDungHuyTour> cacNoiDungHuyTours, int? page, string searchFromDate, string searchToDate, List<string> listRoleChiNhanh, List<string> userInPhongBanQL);
     }
     public class TourRepository : Repository<Tour>, ITourRepository
     {
@@ -21,7 +21,7 @@ namespace Data.Repository
         {
         }
 
-        public IPagedList<TourDto> ListTour(string searchString, IEnumerable<Company> companies, IEnumerable<Tourkind> loaiTours, IEnumerable<Dmchinhanh> chiNhanhs, IEnumerable<CacNoiDungHuyTour> cacNoiDungHuyTours, int? page, string searchFromDate, string searchToDate, List<string> listRoleChiNhanh)
+        public IPagedList<TourDto> ListTour(string searchString, IEnumerable<Company> companies, IEnumerable<Tourkind> loaiTours, IEnumerable<Dmchinhanh> chiNhanhs, IEnumerable<CacNoiDungHuyTour> cacNoiDungHuyTours, int? page, string searchFromDate, string searchToDate, List<string> listRoleChiNhanh, List<string> userInPhongBanQL)
         {
             // return a 404 if user browses to before the first page
             if (page.HasValue && page < 1)
@@ -30,7 +30,11 @@ namespace Data.Repository
             // retrieve list from database/whereverand
 
             var list = new List<TourDto>();
-            var tours = _context.Tours;
+            var tours = _context.Tours.ToList();
+            if(userInPhongBanQL.Count() > 0) // role khac' admins va users
+            {
+                tours = tours.Where(item1 => userInPhongBanQL.Any(item2 => item1.NguoiTao == item2)).ToList();
+            }
             if (tours == null)
             {
                 return null;
