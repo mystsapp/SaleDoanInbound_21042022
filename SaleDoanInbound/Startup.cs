@@ -19,6 +19,7 @@ using Data.Models_QLTaiKhoan;
 using Data.Models_QLT;
 using Data.Services;
 using Data.Models_HDDT;
+using Data.Models_Tourlewi;
 
 namespace SaleDoanInbound
 {
@@ -38,6 +39,7 @@ namespace SaleDoanInbound
             services.AddDbContext<SaleDoanIBDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("SaleDoanIBConnection"))/*.EnableSensitiveDataLogging()*/);
             services.AddDbContext<qltaikhoanContext>(options => options.UseSqlServer(Configuration.GetConnectionString("QLTaiKhoanConnection"))/*.EnableSensitiveDataLogging()*/);
             services.AddDbContext<hoadondientuContext>(options => options.UseSqlServer(Configuration.GetConnectionString("HDDTConection"))/*.EnableSensitiveDataLogging()*/);
+            services.AddDbContext<tourlewiContext>(options => options.UseSqlServer(Configuration.GetConnectionString("TourlewiConection"))/*.EnableSensitiveDataLogging()*/);
 
             services.AddTransient<IKhachHangRepository, KhachHangRepository>();
             services.AddTransient<IQuanRepository, QuanRepository>();
@@ -90,10 +92,17 @@ namespace SaleDoanInbound
             // HDDT
             services.AddTransient<IDSDangKyHDRepository, DSDangKyHDRepository>();
 
+            // TourleWI
+            services.AddTransient<ITourWIRepository, TourWIRepository>();
+
             // services layer
             services.AddTransient<IBaoCaoService, BaoCaoService>();
             services.AddTransient<IBienNhanService, BienNhanService>();
             services.AddTransient<IInvoiceService, InvoiceService>();
+            services.AddTransient<ITourleWIService, TourleWIService>();
+            services.AddTransient<ITourinfService, TourinfService>();
+            services.AddTransient<ITourService, TourService>();
+
             // services layer
 
             services.AddSession(options =>

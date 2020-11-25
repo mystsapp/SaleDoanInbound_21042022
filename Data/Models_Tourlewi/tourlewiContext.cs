@@ -101,11 +101,11 @@ namespace Data.Models_Tourlewi
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=118.68.170.128;Database=tourlewi;Trusted_Connection=True;User Id=vanhong;Password=Hong@2019;Integrated Security=false;MultipleActiveResultSets=true;");
-            }
+//            if (!optionsBuilder.IsConfigured)
+//            {
+//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+//                optionsBuilder.UseSqlServer("Server=118.68.170.128;Database=tourlewi;Trusted_Connection=True;User Id=vanhong;Password=Hong@2019;Integrated Security=false;MultipleActiveResultSets=true;");
+//            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

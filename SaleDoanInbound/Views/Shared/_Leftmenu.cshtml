@@ -26,12 +26,25 @@
     <!-- Sidebar -->
     <div class="sidebar">
         <!-- Sidebar user (optional) -->
-        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        @*<div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
                 <img src="~/lib/AdminLTE-3.0.5/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
                 <a href="#" class="d-block">Alexander Pierce</a>
+            </div>
+        </div>*@
+
+        <div class="mt-3 pb-3 mb-3 d-sm-flex">
+            <div class="image ">
+
+                <img src="~/images/user.svg" height="45px" class="img-circle elevation-2" alt="@user.Username">
+            </div>
+            <div class="info ml-3">
+                <p>
+                    <span class="text-white">@user.HoTen.ToUpper()</span>
+                    <a href="#" class="d-block " style="font-size:small;"><i class="fa fa-circle text-success"></i> Online</a>
+                </p>
             </div>
         </div>
 
@@ -40,16 +53,16 @@
             <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
                 @*<ul class="nav nav-pills nav-sidebar flex-column nav-flat nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">*@
                 <!-- Add icons to the links using the .nav-icon class
-    with font-awesome or any other icon font library -->
+            with font-awesome or any other icon font library -->
                 @*<li class="nav-item has-treeview ">
-            <a asp-action="Index" asp-controller="InvoiceTours" class="nav-link">
-                <i class="nav-icon fas fa-tachometer-alt"></i>
-                <p>
-                    Invoice tour
-                </p>
-            </a>
+                    <a asp-action="Index" asp-controller="InvoiceTours" class="nav-link">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>
+                            Invoice tour
+                        </p>
+                    </a>
 
-        </li>*@
+                </li>*@
 
                 <li class="nav-item has-treeview ">
                     <a asp-action="Index" asp-controller="Tours" class="nav-link">
@@ -85,19 +98,19 @@
 
                         <!-- dung danh muc thanh phong trong qltour-->
                         @*<li class="nav-item">
-                    <a asp-action="Index" asp-controller="ThanhPhos" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Thành phố</p>
-                    </a>
-                </li>*@
+                            <a asp-action="Index" asp-controller="ThanhPhos" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Thành phố</p>
+                            </a>
+                        </li>*@
                         <!-- dung danh muc thanh phong trong qltour-->
                         <!-- dung danh muc thanh phong trong qltour-->
                         @*<li class="nav-item">
-                <a asp-action="Index" asp-controller="DiemTQ" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Điểm TQ</p>
-                </a>
-                </li>*@
+                        <a asp-action="Index" asp-controller="DiemTQ" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Điểm TQ</p>
+                        </a>
+                        </li>*@
 
                         <li class="nav-item">
                             <a asp-action="Index" asp-controller="ChiNhanhs" class="nav-link">
@@ -108,25 +121,25 @@
 
                         <!-- modify trong qltour-->
                         @*<li class="nav-item">
-                <a asp-action="Index" asp-controller="LoaiTours" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Loại tour</p>
-                </a>
-                </li>*@
+                        <a asp-action="Index" asp-controller="LoaiTours" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Loại tour</p>
+                        </a>
+                        </li>*@
                         <!-- modify trong qltour-->
                         @*<li class="nav-item">
-                    <a asp-action="Index" asp-controller="KhuVucTGs" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Khu vực</p>
-                    </a>
-                </li>*@
+                            <a asp-action="Index" asp-controller="KhuVucTGs" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Khu vực</p>
+                            </a>
+                        </li>*@
 
                         @*<li class="nav-item">
-                    <a asp-action="Index" asp-controller="NganhNghes" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Ngành nghề</p>
-                    </a>
-                </li>*@
+                            <a asp-action="Index" asp-controller="NganhNghes" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Ngành nghề</p>
+                            </a>
+                        </li>*@
 
                         <li class="nav-item">
                             <a asp-action="Index" asp-controller="CacNoiDungHuyTours" class="nav-link">
@@ -143,7 +156,7 @@
                         </li>
                     </ul>
                 </li>
-                
+
                 <li class="nav-item has-treeview ">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -265,23 +278,23 @@
                         </li>
 
                         @* <li class="nav-item">
-            <a href="../layout/fixed-topnav.html" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Fixed Navbar</p>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="../layout/fixed-footer.html" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Fixed Footer</p>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="../layout/collapsed-sidebar.html" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Collapsed Sidebar</p>
-            </a>
-        </li>*@
+                            <a href="../layout/fixed-topnav.html" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Fixed Navbar</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="../layout/fixed-footer.html" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Fixed Footer</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="../layout/collapsed-sidebar.html" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Collapsed Sidebar</p>
+                            </a>
+                        </li>*@
                     </ul>
                 </li>
             </ul>

@@ -3,6 +3,7 @@ using Data.Models_HDDT;
 using Data.Models_IB;
 using Data.Models_QLT;
 using Data.Models_QLTaiKhoan;
+using Data.Models_Tourlewi;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -61,6 +62,10 @@ namespace Data.Repository
 
         // HDDT
         IDSDangKyHDRepository dSDangKyHDRepository { get; }
+
+        // TourleWI
+        ITourWIRepository tourWIRepository { get; }
+
         Task<int> Complete();
     }
     public class UnitOfwork : IUnitOfWork
@@ -69,16 +74,19 @@ namespace Data.Repository
         private readonly qltourContext _qltourContext;
         private readonly qltaikhoanContext _qltaikhoanContext;
         private readonly hoadondientuContext _hoadondientuContext;
+        private readonly tourlewiContext _tourlewiContext;
 
         public UnitOfwork(SaleDoanIBDbContext context, 
                           qltourContext qltourContext, 
                           qltaikhoanContext qltaikhoanContext, 
-                          hoadondientuContext hoadondientuContext)
+                          hoadondientuContext hoadondientuContext,
+                          tourlewiContext tourlewiContext)
         {
             _context = context;
             _qltourContext = qltourContext;
             _qltaikhoanContext = qltaikhoanContext;
             _hoadondientuContext = hoadondientuContext;
+            _tourlewiContext = tourlewiContext;
 
             khachHangRepository = new KhachHangRepository(qltourContext);
             quanRepository = new QuanRepository(_context);
@@ -130,6 +138,9 @@ namespace Data.Repository
 
             // HDDT
             dSDangKyHDRepository = new DSDangKyHDRepository(_hoadondientuContext);
+
+            // TourleWI
+            tourWIRepository = new TourWIRepository(_tourlewiContext);
         }
 
         public IKhachHangRepository khachHangRepository { get; }
@@ -204,12 +215,16 @@ namespace Data.Repository
         // HDDT
         public IDSDangKyHDRepository dSDangKyHDRepository { get; }
 
+        // TourleWI
+        public ITourWIRepository tourWIRepository { get; }
+
         public async Task<int> Complete()
         {
             await _context.SaveChangesAsync();
             await _qltourContext.SaveChangesAsync();
             await _qltaikhoanContext.SaveChangesAsync();
             await _hoadondientuContext.SaveChangesAsync();
+            await _tourlewiContext.SaveChangesAsync();
             return 1;
         }
 

@@ -225,7 +225,7 @@ namespace Data.Models_IB
         [MaxLength(15), Column(TypeName = "varchar(15)")]
         public string DienThoai { get; set; }
 
-        [MaxLength(15), Column(TypeName = "varchar(15)")]
+        [MaxLength(25), Column(TypeName = "varchar(25)")]
         public string Fax { get; set; }
 
         [DisplayName("Địa chỉ")]

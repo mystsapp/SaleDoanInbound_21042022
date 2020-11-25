@@ -8,6 +8,7 @@ using Data.Dtos;
 using Data.Models_IB;
 using Data.Models_QLT;
 using Data.Repository;
+using Data.Services;
 using Data.Utilities;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -24,14 +25,16 @@ namespace SaleDoanInbound.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly ITourService _tourService;
 
         [BindProperty]
         public TourViewModel TourVM { get; set; }
 
-        public ToursController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
+        public ToursController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment, ITourService tourService)
         {
             _unitOfWork = unitOfWork;
             _webHostEnvironment = webHostEnvironment;
+            _tourService = tourService;
 
             TourVM = new TourViewModel()
             {
@@ -50,7 +53,7 @@ namespace SaleDoanInbound.Controllers
                 TourDto = new TourDto()
             };
         }
-        public async Task<IActionResult> Index(long id = 0, string searchString = null, int page = 1,string searchFromDate = null, string searchToDate = null)
+        public async Task<IActionResult> Index(long id = 0, string searchString = null, int page = 1, string searchFromDate = null, string searchToDate = null)
         {
 
             TourVM.StrUrl = UriHelper.GetDisplayUrl(Request);
@@ -95,6 +98,7 @@ namespace SaleDoanInbound.Controllers
                 if (user.Role.RoleName == "Users")
                 {
                     listRoleChiNhanh.Add(user.MaCN);
+                    users = users.Where(x => x.PhongBanId == user.PhongBanId).ToList();
                 }
                 else
                 {
@@ -108,10 +112,10 @@ namespace SaleDoanInbound.Controllers
                     listRoleChiNhanh.AddRange(phanKhuCN.ChiNhanhs.Split(','));
                     if (!string.IsNullOrEmpty(user.PhongBans)) // phongbans trong ==> ql het
                     {
-                        phongBansQL = user.PhongBans.Split(',').ToList();                        
+                        phongBansQL = user.PhongBans.Split(',').ToList();
                         users = users.Where(item1 => phongBansQL.Any(item2 => item1.PhongBanId == item2)).ToList();
                     }
-                    
+
                 }
             }
             else
@@ -122,18 +126,18 @@ namespace SaleDoanInbound.Controllers
                 }
             }
 
-            TourVM.TourDtos = _unitOfWork.tourRepository.ListTour(searchString, 
-                                                                  companies, 
-                                                                  loaiTours, 
-                                                                  chiNhanhs, 
-                                                                  cacNoiDungHuyTours, 
-                                                                  page, 
-                                                                  searchFromDate, 
-                                                                  searchToDate, 
+            TourVM.TourDtos = _unitOfWork.tourRepository.ListTour(searchString,
+                                                                  companies,
+                                                                  loaiTours,
+                                                                  chiNhanhs,
+                                                                  cacNoiDungHuyTours,
+                                                                  page,
+                                                                  searchFromDate,
+                                                                  searchToDate,
                                                                   listRoleChiNhanh,
                                                                   users.Select(x => x.Username).ToList());
-           
-            
+
+
             //--> click vao tour
             var tour = _unitOfWork.tourRepository.GetById(id);
             if (tour != null)
@@ -299,7 +303,15 @@ namespace SaleDoanInbound.Controllers
             // create sgtcode
             var companies = await _unitOfWork.khachHangRepository.FindAsync(x => x.CompanyId == TourVM.Tour.MaKH); // find company by MaKH(companyId)
             var quocgias = await _unitOfWork.quocGiaRepository.FindAsync(x => x.Nation == companies.FirstOrDefault().Nation); // find by nation(vn)
-            var sgtCode = _unitOfWork.tourInfRepository.newSgtcode(Convert.ToDateTime(TourVM.Tour.NgayDen), user.MaCN, quocgias.FirstOrDefault().Telcode);
+            string sgtCode = "";
+            if (user.PhongBanId == "TF") // FRONT DESK
+            {
+                sgtCode = _tourService.newSgtcode(Convert.ToDateTime(TourVM.Tour.NgayDen), user.MaCN, "000"); // 000 --> macode cua front desk
+            }
+            else // nhung thi truong khac' lay theo telcode cua quocgia
+            {
+                sgtCode = _tourService.newSgtcode(Convert.ToDateTime(TourVM.Tour.NgayDen), user.MaCN, quocgias.FirstOrDefault().Telcode);
+            }
             TourVM.Tour.Sgtcode = sgtCode;
             // create sgtcode
 
@@ -307,9 +319,7 @@ namespace SaleDoanInbound.Controllers
             TourVM.Tour.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
 
             // insert tourinf
-
             Tourinf tourinf = new Tourinf();
-
             tourinf.Sgtcode = TourVM.Tour.Sgtcode;
             tourinf.Khachle = false;
             tourinf.CompanyId = TourVM.Tour.MaKH;
@@ -334,7 +344,6 @@ namespace SaleDoanInbound.Controllers
             tourinf.Chinhanhtao = user.MaCN; // user login
             tourinf.Createtour = TourVM.Tour.NgayTao;
             tourinf.Logfile = TourVM.Tour.LogFile;
-
             // insert tourinf
 
             try
@@ -344,6 +353,40 @@ namespace SaleDoanInbound.Controllers
                 // insert tourinf
                 _unitOfWork.tourInfRepository.Create(tourinf);
                 // insert tourinf
+                await _unitOfWork.Complete();
+
+                // insert tourlewi
+                if (user.PhongBanId == "TF") // FRONT DESK
+                {
+                    // insert 
+                    Data.Models_Tourlewi.Tour tourlewi = new Data.Models_Tourlewi.Tour();
+                    tourlewi.Sgtcode = TourVM.Tour.Sgtcode;
+                    tourlewi.Khachle = false;
+                    tourlewi.Makh = TourVM.Tour.MaKH;
+                    tourlewi.Loaitour = TourVM.Tour.LoaiTourId.ToString();
+                    tourlewi.Batdau = TourVM.Tour.NgayDen;
+                    tourlewi.Ketthuc = TourVM.Tour.NgayDi;
+                    tourlewi.Socho = TourVM.Tour.SoKhachTT;
+                    tourlewi.Chudetour = TourVM.Tour.ChuDeTour;
+                    tourlewi.Tuyentq = TourVM.Tour.TuyenTQ;
+                    tourlewi.Nguoitaotour = user.Username; // nguoi tao tour
+                                                           //tourlewi.Operators = ""; // nguoi dieu hanh
+                                                           //tourlewi.Departoperator = TourVM.Tour.PhongDH; //departoperator : qltour / phong dh
+                                                           //tourlewi.Departcreate = user.PhongBanId; // phong ban tao
+                                                           //tourlewi.Routing = "";
+                                                           //tourlewi.Rate = TourVM.Tour.TyGia;
+                                                           //tourlewi.Revenue = (TourVM.Tour.DoanhThuTT > 0) ? TourVM.Tour.DoanhThuTT : TourVM.Tour.DoanhThuDK;
+                                                           //tourlewi.PasstypeId = TourVM.Tour.LoaiKhach; // Inbound or tau bien
+                                                           //tourlewi.Currency = TourVM.Tour.LoaiTien;
+                    tourlewi.Chinhanh = user.MaCN; // chinhanh tao
+                                                   //tourlewi.Chinhanhtao = user.MaCN; // user login
+                    tourlewi.Ngaytao = TourVM.Tour.NgayTao;
+                    tourlewi.Logfile = TourVM.Tour.LogFile;
+                    // insert tourlewi
+
+                    _unitOfWork.tourWIRepository.Create(tourlewi);
+                }
+                // insert tourlewi
                 await _unitOfWork.Complete();
                 SetAlert("Thêm mới thành công.", "success");
 
@@ -440,7 +483,7 @@ namespace SaleDoanInbound.Controllers
                 TourVM.Tour.TuyenTQ = TourVM.Tour.TuyenTQ.Replace(',', '-');
 
                 // kiem tra trang thai
-                
+
                 if (TourVM.Tour.NgayDamPhan != null)
                 {
                     TourVM.Tour.TrangThai = "1";
