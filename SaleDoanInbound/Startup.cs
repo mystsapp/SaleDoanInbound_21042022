@@ -20,6 +20,7 @@ using Data.Models_QLT;
 using Data.Services;
 using Data.Models_HDDT;
 using Data.Models_Tourlewi;
+using Data.Models_HDVATOB;
 
 namespace SaleDoanInbound
 {
@@ -39,6 +40,7 @@ namespace SaleDoanInbound
             services.AddDbContext<SaleDoanIBDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("SaleDoanIBConnection"))/*.EnableSensitiveDataLogging()*/);
             services.AddDbContext<qltaikhoanContext>(options => options.UseSqlServer(Configuration.GetConnectionString("QLTaiKhoanConnection"))/*.EnableSensitiveDataLogging()*/);
             services.AddDbContext<hoadondientuContext>(options => options.UseSqlServer(Configuration.GetConnectionString("HDDTConection"))/*.EnableSensitiveDataLogging()*/);
+            services.AddDbContext<hdvatobContext>(options => options.UseSqlServer(Configuration.GetConnectionString("HDVATOBConection"))/*.EnableSensitiveDataLogging()*/);
             services.AddDbContext<tourlewiContext>(options => options.UseSqlServer(Configuration.GetConnectionString("TourlewiConection"))/*.EnableSensitiveDataLogging()*/);
 
             services.AddTransient<IKhachHangRepository, KhachHangRepository>();
@@ -91,6 +93,10 @@ namespace SaleDoanInbound
 
             // HDDT
             services.AddTransient<IDSDangKyHDRepository, DSDangKyHDRepository>();
+            services.AddTransient<IdsChiNhanh_HDDTRepository, dsChiNhanh_HDDTRepository>();
+            
+            // HDVATOB
+            services.AddTransient<IUserHDVATOBRepository, UserHDVATOBRepository>();
 
             // TourleWI
             services.AddTransient<ITourWIRepository, TourWIRepository>();

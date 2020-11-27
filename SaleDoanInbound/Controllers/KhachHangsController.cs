@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Data.Dtos;
 using Data.Models_IB;
-using Data.Models_QLTaiKhoan;
 using Data.Repository;
+using Data.Utilities;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Newtonsoft.Json;
 using SaleDoanInbound.Models;
-using Data.Utilities;
-using Data.Dtos;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ServiceModel;
+using System.Threading.Tasks;
 
 namespace SaleDoanInbound.Controllers
 {
@@ -21,6 +19,7 @@ namespace SaleDoanInbound.Controllers
 
         [BindProperty]
         public KhachHangViewModel KhachHangVM { get; set; }
+
         public KhachHangsController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
@@ -31,6 +30,7 @@ namespace SaleDoanInbound.Controllers
                 Quocgias = _unitOfWork.quocGiaRepository.GetAll()
             };
         }
+
         public IActionResult Index(decimal id = 0, string searchString = null, int page = 1)
         {
             KhachHangVM.StrUrl = UriHelper.GetDisplayUrl(Request);
@@ -39,11 +39,9 @@ namespace SaleDoanInbound.Controllers
             // for delete
             //if (id != 0)
             //{
-
             //    var khachHang = _unitOfWork.khachHangRepository.GetById(id);
             //    if (khachHang == null)
             //    {
-
             //        var lastId = _unitOfWork.khachHangRepository
             //                                  .GetAll().OrderByDescending(x => x.Id)
             //                                  .FirstOrDefault().Id;
@@ -59,7 +57,6 @@ namespace SaleDoanInbound.Controllers
 
         public IActionResult Create(string strUrl /*int maQuocGia = 0*/)
         {
-            
             KhachHangVM.StrUrl = strUrl;
 
             //ViewBag.OSRddl = new SelectList(KhachHangVM.ThanhPhos, "Id", "TenThanhPho", "4");
@@ -73,7 +70,6 @@ namespace SaleDoanInbound.Controllers
 
             return View(KhachHangVM);
         }
-
 
         [HttpPost, ActionName("Create")]
         [ValidateAntiForgeryToken]
@@ -106,11 +102,15 @@ namespace SaleDoanInbound.Controllers
                 SetAlert(ex.Message, "error");
                 return View(KhachHangVM);
             }
-
         }
 
-        public async Task<IActionResult> Edit(string id, string strUrl)
+        public async Task<IActionResult> Edit(string id, string strUrl, string messageForHDDT)
         {
+            if (!string.IsNullOrEmpty(messageForHDDT)) // xuat hddt co loi
+            {
+                ModelState.AddModelError("", messageForHDDT);
+                return View(KhachHangVM);
+            }
             KhachHangVM.StrUrl = strUrl;
             if (id == null)
                 return NotFound();
@@ -141,10 +141,9 @@ namespace SaleDoanInbound.Controllers
                     var quocgias = await _unitOfWork.quocGiaRepository.FindAsync(x => x.Nation == KhachHangVM.Company.Nation);
                     KhachHangVM.Company.Natione = quocgias.FirstOrDefault().Natione;
                 }
-                
+
                 try
                 {
-
                     _unitOfWork.khachHangRepository.Update(KhachHangVM.Company);
                     await _unitOfWork.Complete();
                     SetAlert("Cập nhật thành công", "success");
@@ -168,7 +167,7 @@ namespace SaleDoanInbound.Controllers
                 return NotFound();
 
             var nganhNghe = await _unitOfWork.khachHangRepository.GetByIdAsync(id);
-            
+
             if (nganhNghe == null)
                 return NotFound();
 
@@ -198,12 +197,16 @@ namespace SaleDoanInbound.Controllers
             }
         }
 
-
         #region Publish khách hàng lên hoá đơn điện tử VNPT
-        [HttpPost]
-        public async Task<IActionResult> TaoKhachhang(string id, string strUrl)
+
+        public async Task<IActionResult> TaoKhachhang(KhachHangViewModel khachHangViewModel, string id, string strUrl)
         {
-            var company = await _unitOfWork.khachHangRepository.GetByIdAsync(id);
+            
+            // from session
+            var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
+
+            //var company = await _unitOfWork.khachHangRepository.GetByIdAsync(id);
+            var company = khachHangViewModel.Company;
             //if (string.IsNullOrEmpty(company.Email))
             //{
             //    ModelState.AddModelError("", "Vui lòng cập nhật email, sau đó hãy tạo khách hàng trên VNPT");
@@ -231,66 +234,120 @@ namespace SaleDoanInbound.Controllers
             {
                 Name = company.Name,
                 Code = company.CompanyId,
-                TaxCode = company.Msthue,
-                Address = company.Address,
+                TaxCode = string.IsNullOrEmpty(company.Msthue) ? "" : company.Msthue,
+                Address = string.IsNullOrEmpty(company.Address) ? "" : company.Address,
                 BankAccountName = "",
                 BankName = "",
                 BankNumber = "",
                 Email = company.Email,
                 Fax = company.Fax,
                 Phone = company.Tel,
-                ContactPerson = company.Nguoilienhe,
-                RepresentPerson = company.Nguoidaidien,
+                ContactPerson = string.IsNullOrEmpty(company.Nguoilienhe) ? "" : company.Nguoilienhe,
+                RepresentPerson = string.IsNullOrEmpty(company.Nguoidaidien) ? "" : company.Nguoidaidien,
                 CusType = ""
             };
 
-            List<Customer> customers = new List<Customer>();
-            customers.Add(customer);
+            //List<Customer> customers = new List<Customer>();
+            //customers.Add(customer);
 
-            var abc = XmlUtil.Serializer(typeof(Customer), customer);
-            System.Diagnostics.Debug.WriteLine(abc);
+            //var xmlCusData = XmlUtil.Serializer(typeof(List<Customer>), customers);
 
             var inv = new PublishService.PublishServiceSoapClient(PublishService.PublishServiceSoapClient.EndpointConfiguration.PublishServiceSoap);
 
-            //var dkhd = _dsdangkyhdRepository.listDangkyhoadon().Where(x => x.kyhieuhd == HttpContext.Session.GetString("kyhieuhd") && x.chinhanh == HttpContext.Session.GetString("maviettat")).SingleOrDefault();
-            //var dkhd = _unitOfWork.dSDangKyHDRepository.FindAsync(x => x.Kyhieuhd == )
-            //string sitehddt = dkhd.sitehddt.Trim() + "/PublishService.asmx";
-            //string usersite = dkhd.usersite;
-            //string passsite = dkhd.passsite;
+            // HDVATOB user
+            var userInHDVATOB = _unitOfWork.userHDVATOBRepository.GetById(user.Username);
+            if (userInHDVATOB == null)
+            {
+                string message = "User này không tồn tại trong HDVATOB nên không puplish lên HDDT được.";
+                return RedirectToAction(nameof(Edit), new { id = id, strUrl = strUrl, message });
+            }
+            // HDVATOB user
 
-            //// Hàm add webservice động
-            //inv.ChannelFactory.Endpoint.Address = new EndpointAddress(sitehddt);
+            var usersInHDVATOB = _unitOfWork.userHDVATOBRepository.GetAll();
+            var dschinhanhInhoadondientu = _unitOfWork.dsChiNhanh_HDDTRepository.GetAll();
+            var dsdangkyhdInhoadondientu = _unitOfWork.dSDangKyHDRepository.GetAll();
 
-            //Task<PublishService.UpdateCusResponse> ketqua = inv.UpdateCusAsync(xmlCusData, usersite, passsite, 0);// HttpContext.Session.GetString("masohd"), HttpContext.Session.GetString("kyhieuhd"), 0);
+            // select ROW_NUMBER() OVER(ORDER BY username) AS id, username, accounthddt, passwordhddt, mausohd, kyhieuhd, isAdmin, u.maviettat,u.chinhanh
+            // from users u, hoadondientu.dbo.dschinhanh c, hoadondientu.dbo.dsdangkyhd d
+            // where u.chinhanh = c.machinhanh and u.maviettat = d.chinhanh and username = @username
 
-            //var wait = await ketqua;
-            //int result = Convert.ToInt32(wait.Body.UpdateCusResult.ToString());
-            //if (result == -1)
-            //{
-            //    SetAlert("Tài khoản không có quyền", "error");
-            //}
-            //if (result == -2)
-            //{
-            //    SetAlert("Không thêm được khách hàng trên hoá đơn điện tử", "error");
-            //}
-            //if (result == -3)
-            //{
-            //    SetAlert("Dữ liệu không hợp lệ", "error");
-            //}
-            //if (result == -5)
-            //{
-            //    SetAlert("Khách hàng đã tồn tại", "error");
-            //}
-            //if (result > 0)
-            //{
-            //    SetAlert("Tạo / cập nhật thông tin khách hàng trên hoá đơn điện tử thành công", "success");
-            //}
+            var userInfoViewModel = (from u in usersInHDVATOB
+                          join c in dschinhanhInhoadondientu on u.Chinhanh equals c.Machinhanh
+                          join d in dsdangkyhdInhoadondientu on u.Maviettat equals d.Chinhanh
+                          where u.Username.ToLower() == user.Username.ToLower()
+                          select new UserInfoViewModel()
+                          {
+                              username = u.Username,
+                              accounthddt = u.Accounthddt,
+                              passwordhddt = u.Passwordhddt,
+                              mausohd = d.Mausohd,
+                              kyhieuhd = d.Kyhieuhd,
+                              maviettat = u.Maviettat,
+                              chinhanh = u.Chinhanh
+                          }).FirstOrDefault();
+
+            string xmlCusData = "<Customers>";
+            xmlCusData += "<Customer>";
+            xmlCusData += "<Name>" + customer.Name.Replace("&", "&amp;") + "</Name>";
+            xmlCusData += "<Code>" + customer.Code.Trim() + userInHDVATOB.Maviettat + "</Code>";
+            xmlCusData += "<TaxCode>" + customer.TaxCode + "</TaxCode>";
+            xmlCusData += "<Address>" + customer.Address.Replace("&", "&amp;") + "</Address>";
+            xmlCusData += "<BankAccountName></BankAccountName>";
+            xmlCusData += "<BankName></BankName>";
+            xmlCusData += "<BankNumber></BankNumber>";
+            xmlCusData += "<Email>" + customer.Email + "</Email>";
+            xmlCusData += "<Fax>" + customer.Fax + "</Fax>";
+            xmlCusData += "<Phone>" + customer.Phone + "</Phone>";
+            xmlCusData += "<ContactPerson>" + customer.ContactPerson + "</ContactPerson>";
+            xmlCusData += "<RepresentPerson></RepresentPerson>";
+            xmlCusData += "<CusType>1</CusType>";
+            xmlCusData += "</Customer>";
+            xmlCusData += "</Customers>";
+
+            System.Diagnostics.Debug.WriteLine(xmlCusData);
+
+
+            // select ROW_NUMBER() OVER(ORDER BY username) AS id, username, accounthddt, passwordhddt, mausohd, kyhieuhd, isAdmin, u.maviettat,u.chinhanh
+            // from users u, hoadondientu.dbo.dschinhanh c, hoadondientu.dbo.dsdangkyhd d
+            // where u.chinhanh = c.machinhanh and u.maviettat = d.chinhanh and username = @username
+
+            var dkhd = _unitOfWork.dSDangKyHDRepository.Find(x => x.Kyhieuhd == userInfoViewModel.kyhieuhd && x.Chinhanh == userInfoViewModel.maviettat).SingleOrDefault();
+            string sitehddt = dkhd.Sitehddt.Trim() + "/PublishService.asmx";
+            string usersite = dkhd.Usersite;
+            string passsite = dkhd.Passsite;
+
+            // Hàm add webservice động
+            inv.ChannelFactory.Endpoint.Address = new EndpointAddress(sitehddt);
+
+            Task<PublishService.UpdateCusResponse> ketqua = inv.UpdateCusAsync(xmlCusData, usersite, passsite, 0);// HttpContext.Session.GetString("masohd"), HttpContext.Session.GetString("kyhieuhd"), 0);
+
+            var wait = await ketqua;
+            int result = Convert.ToInt32(wait.Body.UpdateCusResult.ToString());
+            if (result == -1)
+            {
+                SetAlert("Tài khoản không có quyền", "error");
+            }
+            if (result == -2)
+            {
+                SetAlert("Không thêm được khách hàng trên hoá đơn điện tử", "error");
+            }
+            if (result == -3)
+            {
+                SetAlert("Dữ liệu không hợp lệ", "error");
+            }
+            if (result == -5)
+            {
+                SetAlert("Khách hàng đã tồn tại", "error");
+            }
+            if (result > 0)
+            {
+                SetAlert("Tạo / cập nhật thông tin khách hàng trên hoá đơn điện tử thành công", "success");
+            }
 
             return Redirect(strUrl);
-
         }
-        #endregion
 
+        #endregion Publish khách hàng lên hoá đơn điện tử VNPT
 
         //[HttpGet]
         //public JsonResult GetThanhPhosByQuocGia(int idQuocGia)
@@ -329,7 +386,4 @@ namespace SaleDoanInbound.Controllers
             }
         }
     }
-
-
-
 }

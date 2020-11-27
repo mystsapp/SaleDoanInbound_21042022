@@ -1,5 +1,6 @@
 ﻿
 using Data.Models_HDDT;
+using Data.Models_HDVATOB;
 using Data.Models_IB;
 using Data.Models_QLT;
 using Data.Models_QLTaiKhoan;
@@ -62,6 +63,10 @@ namespace Data.Repository
 
         // HDDT
         IDSDangKyHDRepository dSDangKyHDRepository { get; }
+        IdsChiNhanh_HDDTRepository dsChiNhanh_HDDTRepository { get; }
+
+        // HDVATOB
+        IUserHDVATOBRepository userHDVATOBRepository { get; }
 
         // TourleWI
         ITourWIRepository tourWIRepository { get; }
@@ -75,18 +80,21 @@ namespace Data.Repository
         private readonly qltaikhoanContext _qltaikhoanContext;
         private readonly hoadondientuContext _hoadondientuContext;
         private readonly tourlewiContext _tourlewiContext;
+        private readonly hdvatobContext _hdvatobContext;
 
         public UnitOfwork(SaleDoanIBDbContext context, 
                           qltourContext qltourContext, 
                           qltaikhoanContext qltaikhoanContext, 
                           hoadondientuContext hoadondientuContext,
-                          tourlewiContext tourlewiContext)
+                          tourlewiContext tourlewiContext,
+                          hdvatobContext hdvatobContext)
         {
             _context = context;
             _qltourContext = qltourContext;
             _qltaikhoanContext = qltaikhoanContext;
             _hoadondientuContext = hoadondientuContext;
             _tourlewiContext = tourlewiContext;
+            _hdvatobContext = hdvatobContext;
 
             khachHangRepository = new KhachHangRepository(qltourContext);
             quanRepository = new QuanRepository(_context);
@@ -138,6 +146,10 @@ namespace Data.Repository
 
             // HDDT
             dSDangKyHDRepository = new DSDangKyHDRepository(_hoadondientuContext);
+            dsChiNhanh_HDDTRepository = new dsChiNhanh_HDDTRepository(_hoadondientuContext);
+
+            // HDVATOB
+            userHDVATOBRepository = new UserHDVATOBRepository(_hdvatobContext);
 
             // TourleWI
             tourWIRepository = new TourWIRepository(_tourlewiContext);
@@ -214,9 +226,13 @@ namespace Data.Repository
 
         // HDDT
         public IDSDangKyHDRepository dSDangKyHDRepository { get; }
+        public IdsChiNhanh_HDDTRepository dsChiNhanh_HDDTRepository { get; }
 
         // TourleWI
         public ITourWIRepository tourWIRepository { get; }
+
+        // HDVATOB
+        public IUserHDVATOBRepository userHDVATOBRepository { get; }
 
         public async Task<int> Complete()
         {

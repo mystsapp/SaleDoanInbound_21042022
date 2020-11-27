@@ -50,6 +50,7 @@
 
                     <input type="hidden" asp-for="Company.CompanyId" /> <!-- because it required-->
                     <input type="hidden" asp-for="TenCreate" value="abc" /> <!-- because it required-->
+                    <input type="hidden" asp-for="StrUrl" /> <!-- because it required-->
 
                     <div class="form-group row">
 
@@ -163,18 +164,27 @@
                             <a class="btn btn-success" asp-route-strUrl="@Model.StrUrl" asp-action="DetailsRedirect"><i class="fas fa-backward"></i></a>
                         </div>
                         <div class="col-md-6 float-lg-right">
-                            <button title="Tạo / cập nhật thông tin khách hàng trên hoá đơn điện tử " type="button" id="btnTaoKhachHang"
-                               onclick="return confirm('Bạn muốn tạo / cập nhật thông tin khách hàng trên hoá đơn điện tử VNPT?')">1111
+                            
+                            <input type="hidden" name="id" value="@Model.Company.CompanyId" />
+                            <input type="hidden" name="strUrl" value="@Model.StrUrl" />
+
+                            <button title="Tạo / cập nhật thông tin khách hàng trên hoá đơn điện tử " id="btnTaoKhachHang"
+                                    onclick="return confirm('Bạn muốn tạo / cập nhật thông tin khách hàng trên hoá đơn điện tử VNPT?')"
+                                    class="btn btn-outline-info"
+                                    formaction="/KhachHangs/TaoKhachhang"
+                                    formmethod="get"
+                                    type="submit">
+                                1111
                             </button>
                         </div>
                     </div>
                 </div>
             </form>
 
-            <form asp-action="TaoKhachhang" method="post" id="frmTaoKhachHang">
+            @*<form asp-action="TaoKhachhang" method="post" id="frmTaoKhachHang">
                 <input type="hidden" name="id" value="@Model.Company.CompanyId" />
                 <input type="hidden" name="strUrl" value="@Model.StrUrl" />
-            </form>
+            </form>*@
 
         </div>
         <!-- /.card-body -->

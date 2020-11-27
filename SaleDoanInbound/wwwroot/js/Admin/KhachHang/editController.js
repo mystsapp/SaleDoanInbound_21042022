@@ -11,10 +11,11 @@
                     title: "Infomation!",
                     message: "Vui lòng cập nhật email, sau đó hãy tạo khách hàng trên VNPTTour này đã có invoices!"
                 });
+                return;
             }
-            else {
-                $('#frmTaoKhachHang').submit();
-            }
+            //else {
+            //    $('#frmTaoKhachHang').submit();
+            //}
 
         })
 

@@ -285,7 +285,10 @@ namespace SaleDoanInbound.Controllers
             //return _unitOfWork.phongBanRepository.GetAll()
             //                                     .Where(x => !string.IsNullOrEmpty(x.Macode))
             //                                     .ToList();
-            return _unitOfWork.phongBanRepository.GetAll().Where(x => !string.IsNullOrEmpty(x.Macode)).ToList();
+            var phongbans = _unitOfWork.phongBanRepository.GetAll().Where(x => !string.IsNullOrEmpty(x.Macode)).ToList();
+            var phongban = _unitOfWork.phongBanRepository.Find(x => x.Maphong == "KT").FirstOrDefault();
+            phongbans.Add(phongban);
+            return phongbans;
         }
 
         public JsonResult IsStringNameAvailable(string TenCreate)
