@@ -109,7 +109,7 @@ namespace SaleDoanInbound.Controllers
             if (!string.IsNullOrEmpty(messageForHDDT)) // xuat hddt co loi
             {
                 ModelState.AddModelError("", messageForHDDT);
-                return View(KhachHangVM);
+                return View(strUrl);
             }
             KhachHangVM.StrUrl = strUrl;
             if (id == null)
@@ -258,8 +258,8 @@ namespace SaleDoanInbound.Controllers
             var userInHDVATOB = _unitOfWork.userHDVATOBRepository.GetById(user.Username);
             if (userInHDVATOB == null)
             {
-                string message = "User này không tồn tại trong HDVATOB nên không puplish lên HDDT được.";
-                return RedirectToAction(nameof(Edit), new { id = id, strUrl = strUrl, message });
+                string messageForHDDT = "User này không tồn tại trong HDVATOB nên không puplish lên HDDT được.";
+                return RedirectToAction(nameof(Edit), new { id = id, strUrl = strUrl, messageForHDDT });
             }
             // HDVATOB user
 

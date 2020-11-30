@@ -20,5 +20,7 @@ namespace SaleDoanInbound.Models
         [Remote("IsStringNameAvailable", "KhachHangs", ErrorMessage = "Tên KH đã tồn tại")]
         [Required(ErrorMessage = "Tên không được để trống.")]
         public string TenCreate { get; set; }
+
+        public string TaoKhachHangErrorMessage { get; set; }
     }
 }
