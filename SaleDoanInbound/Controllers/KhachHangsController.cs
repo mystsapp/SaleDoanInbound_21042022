@@ -108,8 +108,15 @@ namespace SaleDoanInbound.Controllers
         {
             if (!string.IsNullOrEmpty(messageForHDDT)) // xuat hddt co loi
             {
+                KhachHangVM.Company = await _unitOfWork.khachHangRepository.GetByIdAsync(id);
+                //KhachHangVM = new KhachHangViewModel
+                //{
+                //    Company = new Data.Models_QLT.Company(),
+                //    Dmchinhanhs = _unitOfWork.dmChiNhanhRepository.GetAll(),
+                //    Quocgias = _unitOfWork.quocGiaRepository.GetAll()
+                //};
                 ModelState.AddModelError("", messageForHDDT);
-                return View(strUrl);
+                return View(KhachHangVM);
             }
             KhachHangVM.StrUrl = strUrl;
             if (id == null)
