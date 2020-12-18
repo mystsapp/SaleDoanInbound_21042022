@@ -304,7 +304,8 @@ namespace SaleDoanInbound.Controllers
             var companies = await _unitOfWork.khachHangRepository.FindAsync(x => x.CompanyId == TourVM.Tour.MaKH); // find company by MaKH(companyId)
             var quocgias = await _unitOfWork.quocGiaRepository.FindAsync(x => x.Nation == companies.FirstOrDefault().Nation); // find by nation(vn)
             string sgtCode = "";
-            if (user.PhongBanId == "TF") // FRONT DESK
+            //if (user.PhongBanId == "TF") // FRONT DESK
+            if (quocgias.FirstOrDefault().Telcode == "000") // FRONT DESK
             {
                 sgtCode = _tourService.newSgtcode(Convert.ToDateTime(TourVM.Tour.NgayDen), user.MaCN, "000"); // 000 --> macode cua front desk
             }
@@ -351,12 +352,9 @@ namespace SaleDoanInbound.Controllers
 
                 _unitOfWork.tourRepository.Create(TourVM.Tour);
                 // insert tourinf
-                _unitOfWork.tourInfRepository.Create(tourinf);
-                // insert tourinf
-                await _unitOfWork.Complete();
-
+                
                 // insert tourlewi
-                if (user.PhongBanId == "TF") // FRONT DESK
+                if (quocgias.FirstOrDefault().Telcode == "000") // FRONT DESK
                 {
                     // insert 
                     Data.Models_Tourlewi.Tour tourlewi = new Data.Models_Tourlewi.Tour();
@@ -385,6 +383,13 @@ namespace SaleDoanInbound.Controllers
                     // insert tourlewi
 
                     _unitOfWork.tourWIRepository.Create(tourlewi);
+                }
+                else
+                {
+                    _unitOfWork.tourInfRepository.Create(tourinf);
+                    // insert tourinf
+                    //await _unitOfWork.Complete();
+
                 }
                 // insert tourlewi
                 await _unitOfWork.Complete();
