@@ -206,7 +206,8 @@ namespace SaleDoanInbound.Controllers
                                                     // get list phong ban / thi truong
 
             // get list phong ban / dh 
-            TourVM.listPhongDH = GetListPhongBanDH(); // departoperator (qltour)
+            //TourVM.listPhongDH = GetListPhongBanDH(); // departoperator (qltour)
+            TourVM.listPhongDH = GetListPhongBanDH().Where(x => x.Maphong == "DH" || x.Maphong == "TB").ToList();
             // get list phong ban / dh
 
             // CompaniesViewModel
@@ -352,7 +353,8 @@ namespace SaleDoanInbound.Controllers
 
                 _unitOfWork.tourRepository.Create(TourVM.Tour);
                 // insert tourinf
-                
+                _unitOfWork.tourInfRepository.Create(tourinf);
+
                 // insert tourlewi
                 if (quocgias.FirstOrDefault().Telcode == "000") // FRONT DESK
                 {
@@ -384,13 +386,13 @@ namespace SaleDoanInbound.Controllers
 
                     _unitOfWork.tourWIRepository.Create(tourlewi);
                 }
-                else
-                {
-                    _unitOfWork.tourInfRepository.Create(tourinf);
-                    // insert tourinf
-                    //await _unitOfWork.Complete();
+                //else
+                //{
+                //    //_unitOfWork.tourInfRepository.Create(tourinf);
+                //    //// insert tourinf
+                //    ////await _unitOfWork.Complete();
 
-                }
+                //}
                 // insert tourlewi
                 await _unitOfWork.Complete();
                 SetAlert("Thêm mới thành công.", "success");
