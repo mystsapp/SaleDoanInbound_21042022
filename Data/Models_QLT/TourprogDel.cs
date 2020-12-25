@@ -12,6 +12,7 @@ namespace Data.Models_QLT
         public string Time { get; set; }
         public int? Pax { get; set; }
         public int? Childern { get; set; }
+        public int Infant { get; set; }
         public string Srvtype { get; set; }
         public string Supplierid { get; set; }
         public string Srvcode { get; set; }
@@ -25,6 +26,7 @@ namespace Data.Models_QLT
         public string Pickuptime { get; set; }
         public decimal? Unitpricea { get; set; }
         public decimal? Unitpricec { get; set; }
+        public decimal? Unitpricei { get; set; }
         public int? Foc { get; set; }
         public string Carguide { get; set; }
         public decimal? Amount { get; set; }
@@ -39,5 +41,6 @@ namespace Data.Models_QLT
         public DateTime? Ngayhuydv { get; set; }
         public string Nguoihuydv { get; set; }
         public string Lydohuydv { get; set; }
+        public decimal Deposit { get; set; }
     }
 }

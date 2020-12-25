@@ -21,8 +21,9 @@ namespace Data.Models_QLT
         public string Carrier { get; set; }
         public string Airtype { get; set; }
         public string Pickuptime { get; set; }
-        public decimal? Unitpricea { get; set; }
-        public decimal? Unitpricec { get; set; }
+        public decimal Unitpricea { get; set; }
+        public decimal Unitpricec { get; set; }
+        public decimal Unitpricei { get; set; }
         public int? Foc { get; set; }
         public string Carguide { get; set; }
         public decimal? Amount { get; set; }
