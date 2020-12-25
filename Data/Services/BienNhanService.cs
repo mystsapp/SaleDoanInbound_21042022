@@ -12,7 +12,8 @@ namespace Data.Services
 {
     public interface IBienNhanService
     {
-        Task<IPagedList<BienNhanDto>> BienNhanPagedList(string searchString, string searchFromDate, string searchToDate, int? page);
+        Task<IPagedList<BienNhanDto>> BienNhanPagedList(string searchString, string searchFromDate, string searchToDate, int? page, List<User> users);
+        
     }
     public class BienNhanService : IBienNhanService
     {
@@ -23,13 +24,22 @@ namespace Data.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IPagedList<BienNhanDto>> BienNhanPagedList(string searchString, string searchFromDate, string searchToDate, int? page)
+        public async Task<IPagedList<BienNhanDto>> BienNhanPagedList(string searchString, string searchFromDate, string searchToDate, int? page, List<User> users)
         {
             // return a 404 if user browses to before the first page
             if (page.HasValue && page < 1)
                 return null;
 
             var bienNhans = await _unitOfWork.bienNhanRepository.GetAllIncludeOneAsync(x => x.Tour);
+
+            // phan quyen
+            if (users != null)// ko phai admin
+            {
+
+                bienNhans = bienNhans.Where(item1 => users.Any(item2 => item1.NguoiTao == item2.Username)).ToList(); // chi lay nhung item (list) co user trong users
+
+            }
+            // phan quyen
 
             List<BienNhanDto> listBNDto = new List<BienNhanDto>();
             foreach (var item in bienNhans)

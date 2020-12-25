@@ -37,6 +37,9 @@ namespace SaleDoanInbound.Controllers
         }
         public async Task<IActionResult> Index(string id, string searchString = null, string searchFromDate = null, string searchToDate = null, int page = 1)
         {
+            // from login session
+            var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
+
             InvoiceVM.StrUrl = UriHelper.GetDisplayUrl(Request);
 
             ViewBag.searchString = searchString;
@@ -56,7 +59,56 @@ namespace SaleDoanInbound.Controllers
             //    }
             //}
 
-            InvoiceVM.InvoicePagedList = await _invoiceService.InvoicePagedList(searchString, searchFromDate, searchToDate, page);
+            // phan quyen
+            List<string> listRoleChiNhanh = new List<string>();
+            List<string> phongBansQL = new List<string>();
+            var users = _unitOfWork.userRepository.GetAll().ToList();
+
+            if (user.Role.RoleName != "Admins")
+            {
+                if (user.Role.RoleName == "Users") // Role Users
+                {
+                    //listRoleChiNhanh.Add(user.MaCN);
+                    users = new List<User>();
+                    users.Add(user);
+                }
+                else // Role admin khu vuc
+                {
+                    // add chinhanhs in PhanKhuCN
+                    var phanKhuCN = await _unitOfWork.phanKhuCNRepository.GetByIdAsync(user.RoleId);
+                    if (phanKhuCN == null)
+                    {
+                        ModelState.AddModelError("", "Role của user này chưa được add chi nhánh.");
+                        return View(InvoiceVM);
+                    }
+                    else
+                    {
+                        listRoleChiNhanh.AddRange(phanKhuCN.ChiNhanhs.Split(','));// lay het tat ca user trong chinhanh minh QL
+                        users = users.Where(item1 => listRoleChiNhanh.Any(item2 => item1.MaCN == item2)).ToList();
+
+                        if (!string.IsNullOrEmpty(user.PhongBans)) // PhongBans: nhung phongban QL (chi nhung phongban duoc chi dinh)
+                        {
+                            phongBansQL = user.PhongBans.Split(',').ToList();
+                            users = users.Where(item1 => phongBansQL.Any(item2 => item1.PhongBanId == item2)).ToList();
+                        }
+
+                    }
+
+                }
+
+                InvoiceVM.InvoicePagedList = await _invoiceService.InvoicePagedList(searchString, searchFromDate, searchToDate, page, users);
+
+            }
+            else // user logon == admin
+            {
+
+                InvoiceVM.InvoicePagedList = await _invoiceService.InvoicePagedList(searchString, searchFromDate, searchToDate, page, null);
+
+            }
+
+            // phan quyen
+
+            //InvoiceVM.InvoicePagedList = await _invoiceService.InvoicePagedList(searchString, searchFromDate, searchToDate, page, user.Username);
 
             // invoice click
             if (!string.IsNullOrEmpty(id))

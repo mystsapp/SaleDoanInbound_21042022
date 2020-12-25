@@ -128,7 +128,7 @@
                             <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Pax)</th>
                             <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Currency)</th>
                             <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Rate)</th>
-
+                            <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().NguoiTao)</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -196,7 +196,7 @@
                             <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Pax)</td>
                             <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Currency)</td>
                             <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Rate)</td>
-
+                            <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.NguoiTao)</td>
                         </tr>
 
                         }

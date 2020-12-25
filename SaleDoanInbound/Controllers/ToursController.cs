@@ -192,6 +192,7 @@ namespace SaleDoanInbound.Controllers
         {
             // from session
             var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
+            
             if (user.Role.RoleName == "KeToans")
             {
                 return View("~/Views/Shared/AccessDenied.cshtml");

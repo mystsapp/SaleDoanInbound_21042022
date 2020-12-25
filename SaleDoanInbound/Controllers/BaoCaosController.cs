@@ -1458,6 +1458,8 @@ namespace SaleDoanInbound.Controllers
             var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
 
             //// moi load vao
+
+            BaoCaoVM.Tourkinds = BaoCaoVM.Tourkinds.Append(new Tourkind() { TourkindInf = "" }).OrderBy(x => x.TourkindInf);
             if (string.IsNullOrEmpty(searchFromDate) && string.IsNullOrEmpty(searchToDate))
             {
                 var currentTime = DateTime.Now;
@@ -1939,6 +1941,7 @@ namespace SaleDoanInbound.Controllers
             var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
 
             //// moi load vao
+            BaoCaoVM.Phongbans = BaoCaoVM.Phongbans.Where(x => x.Maphong == "KDIB");
             if (string.IsNullOrEmpty(searchFromDate) && string.IsNullOrEmpty(searchToDate))
             {
                 var currentTime = DateTime.Now;

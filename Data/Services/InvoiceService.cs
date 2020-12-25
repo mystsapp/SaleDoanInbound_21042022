@@ -11,7 +11,7 @@ namespace Data.Services
 {
     public interface IInvoiceService
     {
-        Task<IPagedList<Invoice>> InvoicePagedList(string searchString, string searchFromDate, string searchToDate, int? page);
+        Task<IPagedList<Invoice>> InvoicePagedList(string searchString, string searchFromDate, string searchToDate, int? page, List<User> users);
     }
     public class InvoiceService : IInvoiceService
     {
@@ -22,7 +22,7 @@ namespace Data.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IPagedList<Invoice>> InvoicePagedList(string searchString, string searchFromDate, string searchToDate, int? page)
+        public async Task<IPagedList<Invoice>> InvoicePagedList(string searchString, string searchFromDate, string searchToDate, int? page, List<User> users)
         {
 
             // return a 404 if user browses to before the first page
@@ -30,6 +30,16 @@ namespace Data.Services
                 return null;
 
             var list = await _unitOfWork.invoiceRepository.GetAllIncludeOneAsync(x => x.Tour);
+            
+            // phan quyen
+            if(users != null)// ko phai admin
+            {
+                
+                list = list.Where(item1 => users.Any(item2 => item1.NguoiTao == item2.Username)).ToList(); // chi lay nhung item (list) co user trong users
+                
+            }
+            // phan quyen
+
             list = list.OrderByDescending(x => x.Date).AsQueryable();
             if (!string.IsNullOrEmpty(searchString))
             {
@@ -41,7 +51,6 @@ namespace Data.Services
                                     (!string.IsNullOrEmpty(x.HopDong) && x.HopDong.ToLower().Contains(searchString.ToLower())) ||
                                     (!string.IsNullOrEmpty(x.Tour.Sgtcode) && x.Tour.Sgtcode.ToLower().Contains(searchString.ToLower())));
             }
-
 
             // search date
             DateTime fromDate, toDate;

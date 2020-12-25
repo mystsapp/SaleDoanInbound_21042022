@@ -168,6 +168,7 @@
                             <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().GhiChu)</th>
                             <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().LoaiTien)</th>
                             <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().TyGia)</th>
+                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().NguoiTao)</th>
 
                         </tr>
                     </thead>
@@ -175,63 +176,63 @@
                         @foreach (var item in Model.BienNhanPagedList)
                         {
 
-                            <tr id="bn_@item.Id" class="biennhan-cursor-pointer " data-huy="@item.HuyBN">
+                        <tr id="bn_@item.Id" class="biennhan-cursor-pointer " data-huy="@item.HuyBN">
 
-                                <td>
-                                    <div class="btn-group text-white" role="group">
-                                        @if (item.HuyBN == true)
-                                        {
-                                            <a class="disabled" title="Cập nhật"><i class="fas fa-edit"></i></a>
-                                            <span class="text-dark"> | </span>
-                                        }
-                                        else
-                                        {
-                                            <a class="text-primary btnEditBN" title="Cập nhật" asp-action="Edit" asp-controller="BienNhans" asp-route-id="@item.Id" asp-route-tourId="@item.TourId" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
-                                            <span class="text-dark"> | </span>
-                                        }
-                                        <!-- Print Pdf -->
-                                        <a data-id="@item.Id" data-strUrl="@Model.StrUrl" class="text-warning border-0 bg-transparent btnPrintBN" title="Print"><i class="fas fa-print"></i></a>
-
+                            <td>
+                                <div class="btn-group text-white" role="group">
+                                    @if (item.HuyBN == true)
+                                    {
+                                        <a class="disabled" title="Cập nhật"><i class="fas fa-edit"></i></a>
                                         <span class="text-dark"> | </span>
-                                        <a class="text-success" title="Chi tiết" asp-action="Details" asp-controller="BienNhans" asp-route-id="@item.Id" asp-route-tourId="@item.TourId" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
+                                    }
+                                    else
+                                    {
+                                        <a class="text-primary btnEditBN" title="Cập nhật" asp-action="Edit" asp-controller="BienNhans" asp-route-id="@item.Id" asp-route-tourId="@item.TourId" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
                                         <span class="text-dark"> | </span>
-                                        <form asp-action="Delete" asp-controller="BienNhans" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" method="post">
+                                    }
+                                    <!-- Print Pdf -->
+                                    <a data-id="@item.Id" data-strUrl="@Model.StrUrl" class="text-warning border-0 bg-transparent btnPrintBN" title="Print"><i class="fas fa-print"></i></a>
 
-                                            <span id="confirmDeleteSpan_@item.Id" style="display: none">
-                                                <span class="text-dark spanXoa">Hủy?</span>
-                                                <button type="button" data-id="@item.Id" data-url="@Model.StrUrl" class="btn btn-danger btn-xs btnHuyBN">Yes</button>
-                                                <button type="button" class="btn btn-primary btn-xs" onclick="confirmDelete('@item.Id', false)">No</button>
-                                            </span>
+                                    <span class="text-dark"> | </span>
+                                    <a class="text-success" title="Chi tiết" asp-action="Details" asp-controller="BienNhans" asp-route-id="@item.Id" asp-route-tourId="@item.TourId" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
+                                    <span class="text-dark"> | </span>
+                                    <form asp-action="Delete" asp-controller="BienNhans" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" method="post">
 
-                                            <span id="deleteSpan_@item.Id">
-                                                @if (item.HuyBN == true)
-                                                {
-                                                    <button type="button" class="text-danger border-0 bg-transparent disabled"><i class="fas fa-trash-alt"></i></button>
-                                                }
-                                                else
-                                                {
-                                                    <button title="Xóa" type="button" class="text-danger border-0 bg-transparent btnHuy" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
-                                                }
-                                            </span>
-                                        </form>
-                                    </div>
-                                </td>
+                                        <span id="confirmDeleteSpan_@item.Id" style="display: none">
+                                            <span class="text-dark spanXoa">Hủy?</span>
+                                            <button type="button" data-id="@item.Id" data-url="@Model.StrUrl" class="btn btn-danger btn-xs btnHuyBN">Yes</button>
+                                            <button type="button" class="btn btn-primary btn-xs" onclick="confirmDelete('@item.Id', false)">No</button>
+                                        </span>
 
-                                <td class="tdVal tdSoBN" data-id="@item.Id">@Html.DisplayFor(m => item.SoBN)</td>
-                                <td class="tdVal tdSoBN" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
-                                <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayBN.ToString("dd/MM/yyyy"))</td>
-                                <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.TenKhach)</td>
-                                <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.DienThoai)</td>
-                                <td class="tdVal" data-id="@item.Id">@Html.Raw(item.SoTien.ToString("N0"))</td>
-                                @*<td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.NoiDung)</td>*@
-                                <td class="tdVal" data-id="@item.Id">@Html.Raw(item.SK.ToString("N0"))</td>
-                                <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.GhiChu)</td>
-                                <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.LoaiTien)</td>
-                                @*<td class="tdVal" data-id="@item.Id">@Html.Raw(item.TyGia.ToString("0:##0"))</td>*@
-                                <td class="tdVal" data-id="@item.Id">@Html.Raw(string.Format("{0:#,##0.00}", item.TyGia))</td>
-                                @*@Html.Raw(string.Format("{0:#,##0.00}", item.sotiennt))*@
+                                        <span id="deleteSpan_@item.Id">
+                                            @if (item.HuyBN == true)
+                                            {
+                                                <button type="button" class="text-danger border-0 bg-transparent disabled"><i class="fas fa-trash-alt"></i></button>
+                                            }
+                                            else
+                                            {
+                                                <button title="Xóa" type="button" class="text-danger border-0 bg-transparent btnHuy" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
+                                            }
+                                        </span>
+                                    </form>
+                                </div>
+                            </td>
 
-                            </tr>
+                            <td class="tdVal tdSoBN" data-id="@item.Id">@Html.DisplayFor(m => item.SoBN)</td>
+                            <td class="tdVal tdSoBN" data-id="@item.Id">@Html.DisplayFor(m => item.Sgtcode)</td>
+                            <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayBN.ToString("dd/MM/yyyy"))</td>
+                            <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.TenKhach)</td>
+                            <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.DienThoai)</td>
+                            <td class="tdVal" data-id="@item.Id">@Html.Raw(item.SoTien.ToString("N0"))</td>
+                            @*<td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.NoiDung)</td>*@
+                            <td class="tdVal" data-id="@item.Id">@Html.Raw(item.SK.ToString("N0"))</td>
+                            <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.GhiChu)</td>
+                            <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.LoaiTien)</td>
+                            @*<td class="tdVal" data-id="@item.Id">@Html.Raw(item.TyGia.ToString("0:##0"))</td>*@
+                            <td class="tdVal" data-id="@item.Id">@Html.Raw(string.Format("{0:#,##0.00}", item.TyGia))</td>
+                            @*@Html.Raw(string.Format("{0:#,##0.00}", item.sotiennt))*@
+                            <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.NguoiTao)</td>
+                        </tr>
 
                         }
                     </tbody>
