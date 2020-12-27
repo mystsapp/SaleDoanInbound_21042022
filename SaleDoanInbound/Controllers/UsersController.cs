@@ -30,8 +30,11 @@ namespace SaleDoanInbound.Controllers
                 PhongBans = PhongBan()
             };
         }
-        public async Task<IActionResult> Index(string searchString = null, int page = 1)
+        public async Task<IActionResult> Index(string searchString = null, int page = 1, long roleId = 0)
         {
+            UserVM.Roles = UserVM.Roles.Append(new Role() { Id = 0, RoleName = "-- All --" }).OrderBy(x => x.Id);
+            ViewBag.role = roleId;
+
             UserVM.StrUrl = UriHelper.GetDisplayUrl(Request);
             ViewBag.searchString = searchString;
 
@@ -48,7 +51,7 @@ namespace SaleDoanInbound.Controllers
             //    }
             //}
 
-            UserVM.Users = await _unitOfWork.userRepository.ListUser(searchString, page);
+            UserVM.Users = await _unitOfWork.userRepository.ListUser(searchString, page, roleId);
             return View(UserVM);
         }
 

@@ -16,7 +16,7 @@ namespace Data.Repository
     {
         //LoginModel login(string username, string mact);
         //int changepass(string username, string newpass);
-        Task <IPagedList<User>> ListUser(string searchString, int? page);
+        Task <IPagedList<User>> ListUser(string searchString, int? page, long roleId);
     }
     public class UserRepository : Repository<User>, IUserRepository
     {
@@ -42,7 +42,7 @@ namespace Data.Repository
         //    }
         //}
 
-        public async System.Threading.Tasks.Task<IPagedList<User>> ListUser(string searchString, int? page)
+        public async System.Threading.Tasks.Task<IPagedList<User>> ListUser(string searchString, int? page, long roleId)
         {
             // return a 404 if user browses to before the first page
             if (page.HasValue && page < 1)
@@ -51,13 +51,19 @@ namespace Data.Repository
             // retrieve list from database/whereverand
 
             var list = await GetAllIncludeOneAsync(x => x.Role);
+            
+            if(roleId != 0)
+            {
+                list = list.Where(x => x.RoleId == roleId);
+            }
             if (!string.IsNullOrEmpty(searchString))
             {
                 list = list.Where(x => x.Username.ToLower().Contains(searchString.ToLower()) ||
                                        (!string.IsNullOrEmpty(x.HoTen) && x.HoTen.ToLower().Contains(searchString.ToLower())) ||
                                        (!string.IsNullOrEmpty(x.MaCN) && x.MaCN.ToLower().Contains(searchString.ToLower())) ||
                                        (!string.IsNullOrEmpty(x.Email) && x.Email.ToLower().Contains(searchString.ToLower())) ||
-                                       (!string.IsNullOrEmpty(x.DienThoai) && x.DienThoai.ToLower().Contains(searchString.ToLower())));
+                                       (!string.IsNullOrEmpty(x.DienThoai) && x.DienThoai.ToLower().Contains(searchString.ToLower())) ||
+                                       (!string.IsNullOrEmpty(x.PhongBanId) && x.PhongBanId.ToLower().Contains(searchString.ToLower())));
             }
 
             var count = list.Count();

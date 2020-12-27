@@ -13,16 +13,16 @@
 <section class="content-header">
     <div class="container-fluid">
         @*<div class="row mb-2">
-            <div class="col-sm-6">
-                <a class="btn btn-outline-info" asp-action="Create" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-plus"></i>&nbsp; Thêm Mới</a>
-            </div>
-            <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="/">Home</a></li>
-                    <li class="breadcrumb-item active">Danh sách user</li>
-                </ol>
-            </div>
-        </div>*@
+                <div class="col-sm-6">
+                    <a class="btn btn-outline-info" asp-action="Create" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-plus"></i>&nbsp; Thêm Mới</a>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item active">Danh sách user</li>
+                    </ol>
+                </div>
+            </div>*@
     </div><!-- /.container-fluid -->
 </section>
 
@@ -53,20 +53,26 @@
                     <div class="col-md-12">
                         <div class="row" style="padding-top: 10px;">
 
-                            <div class="col-md-2">
-                                Nhập thông tin
-                            </div>
                             <div class="col-md-3">
+                                Nhập thông tin
+
                                 @*@Html.Editor("searchName", new { htmlAttributes = new { @class = "form-control", @value="@ViewData["currentFilter"]" } })*@
                                 <input class="form-control" name="searchString" value="@ViewBag.searchString" />
                             </div>
 
+                            <div class="col-md-3">
+                                Role
+                                <select class="form-control" name="roleId"
+                                        asp-items="@(new SelectList(Model.Roles, "Id", "RoleName", ViewBag.role))">
+                                </select>
+                            </div>
+
                             <!-- click row and submit to index -->
                             @*<input type="hidden" name="id" id="hidId" />
-                                <input type="hidden" name="page" id="hidPage" />*@
+        <input type="hidden" name="page" id="hidPage" />*@
 
-                            <div class="col-md-2">
-                                
+                            <div class="col-md-3">
+                                <br />
                                 <div class="btn-group btn-block">
                                     <button type="submit" class="btn btn-primary" id="btnSubmit">
                                         <i class="fas fa-search"></i>
@@ -74,6 +80,15 @@
                                     <a class="btn btn-outline-info" asp-action="Create" asp-route-strUrl="@Model.StrUrl" title="Thêm mới"><i class="fas fa-plus"></i></a>
                                 </div>
                             </div>
+
+                            @*<div class="col-md-3">
+                                <br />
+                                <div class="btn-group btn-block">
+                                    <button type="submit" class="btn btn-outline-primary " id="btnSubmitSearch" formaction="/BaoCaos/DoanhSoTheoThiTruong" formmethod="get" title="Search"><i class="fas fa-search"></i></button>
+                                    <button type="submit" class="btn btn-outline-success " id="btnSubmitExcel" formaction="/BaoCaos/DoanhSoTheoThiTruongExcel" formmethod="post" title="Export excel"><i class="fas fa-file-excel"></i></button>
+                                </div>
+                            </div>*@
+
                         </div>
                     </div>
                 </div>
@@ -89,6 +104,7 @@
                             <th>@Html.DisplayNameFor(m => m.Users.FirstOrDefault().MaCN)</th>
                             <th>@Html.DisplayNameFor(m => m.Users.FirstOrDefault().RoleId)</th>
                             <th>@Html.DisplayNameFor(m => m.Users.FirstOrDefault().PhongBanId)</th>
+                            <th>@Html.DisplayNameFor(m => m.Users.FirstOrDefault().PhongBans)</th>
                             <th>@Html.DisplayNameFor(m => m.Users.FirstOrDefault().TrangThai)</th>
 
                         </tr>
@@ -101,18 +117,25 @@
 
                                 <td>
                                     <div class="btn-group text-white" role="group">
-                                        <a class="btn btn-primary btn-sm" title="Cập nhật" asp-action="Edit" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
-                                        <a class="btn btn-success btn-sm" title="Chi tiết" asp-action="Details" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
+                                        @*<a class="btn btn-primary btn-sm" title="Cập nhật" asp-action="Edit" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>*@
+                                        <a class="text-primary" title="Cập nhật" asp-action="Edit" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-edit"></i></a>
+                                        <span class="text-dark"> | </span>
+                                        @*<a class="btn btn-success btn-sm" title="Chi tiết" asp-action="Details" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>*@
+
+                                        <a class="text-success" title="Chi tiết" asp-action="Details" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
+                                        <span class="text-dark"> | </span>
+
                                         <form asp-action="Delete" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" method="post">
 
                                             <span id="confirmDeleteSpan_@item.Id" style="display: none">
                                                 <span class="text-dark">Xóa?</span>
-                                                <button type="submit" class="btn btn-danger">Yes</button>
-                                                <button type="button" class="btn btn-primary" onclick="confirmDelete('@item.Id', false)">No</button>
+                                                <button type="submit" class="btn btn-danger btn-xs">Yes</button>
+                                                <button type="button" class="btn btn-primary btn-xs" onclick="confirmDelete('@item.Id', false)">No</button>
                                             </span>
 
                                             <span id="deleteSpan_@item.Id">
-                                                <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
+                                                @*<button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>*@
+                                                <button title="Xóa" type="button" class="text-danger border-0 bg-transparent " onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
                                             </span>
                                         </form>
                                     </div>
@@ -123,6 +146,7 @@
                                 <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.MaCN)</td>
                                 <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Role.RoleName)</td>
                                 <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.PhongBanId)</td>
+                                <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.PhongBans)</td>
                                 <td class="tdVal" data-id="@item.Id">
                                     @if (item.TrangThai)
                                     {
@@ -181,7 +205,7 @@
             $('#listAll').DataTable({
                 "paging": false,
                 "lengthChange": true,
-                "searching": true,
+                "searching": false,
                 "ordering": true,
                 "info": true,
                 "autoWidth": false,
@@ -207,22 +231,22 @@
 
 
     <style>
-        #listAll {
+        /*#listAll {
             box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-        }
+        }*/
 
         #search {
             box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
         }
 
-        #listAll .cursor-pointer:hover {
+        /*#listAll .cursor-pointer:hover {
             background-color: #3E5C9A;
             cursor: pointer;
         }
 
         .hoverClass {
             background-color: #3E5C9A;
-        }
+        }*/
     </style>
 }
 
