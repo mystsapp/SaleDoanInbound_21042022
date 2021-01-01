@@ -1,9 +1,11 @@
 ﻿@model TourViewModel
 @using Microsoft.AspNetCore.Http
+@using Data.Utilities
 @inject IHttpContextAccessor HttpContextAccessor
 
 @{
     ViewData["Title"] = "Create";
+    var user = HttpContextAccessor.HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
 
 }
 
@@ -74,13 +76,13 @@
                         </div>
 
                         @*<div class="col-md-3"> <!-- qltour -->
-            <label asp-for="Tour.PhongBanMaCode" class="control-label"></label>
-            <select asp-for="Tour.PhongBanMaCode" class="form-control select2"
-                    asp-items="@(new SelectList(Model.listPhongMacode, "Macode", "Macode"))" id="ddlPhongBanMaCode">
+                                <label asp-for="Tour.PhongBanMaCode" class="control-label"></label>
+                                <select asp-for="Tour.PhongBanMaCode" class="form-control select2"
+                                        asp-items="@(new SelectList(Model.listPhongMacode, "Macode", "Macode"))" id="ddlPhongBanMaCode">
 
-            </select>
-            <span asp-validation-for="Tour.PhongBanMaCode" class="text-danger"></span>
-        </div>*@
+                                </select>
+                                <span asp-validation-for="Tour.PhongBanMaCode" class="text-danger"></span>
+                            </div>*@
 
                         <div class="col-md-3 ">
                             <label asp-for="Tour.NgayDen" class="control-label text-red"></label>(<strong class="text-red">*</strong>)
@@ -209,13 +211,26 @@
 
                     <div class="form-group row">
 
-                        <div class="col-md-5">
-                            <label asp-for="Tour.MaKH" class="control-label text-red"></label>(<strong class="text-red">*</strong>)
-                            <select asp-for="Tour.MaKH" class="form-control select2" id="ddlMaKh"
-                                    asp-items="@(new SelectList(Model.CompaniesViewModel, "CompanyId", "CompanyName"))">
-                            </select>
-                            <span asp-validation-for="Tour.MaKH" class="text-danger"></span>
-                        </div>
+                        @if (user.PhongBanId == "KDOB")
+                        {
+                            <div class="col-md-5">
+                                <label asp-for="Tour.MaKH" class="control-label text-red"></label>(<strong class="text-red">*</strong>)
+                                <input asp-for="Tour.MaKH" class="form-control" id="ddlMaKh" readonly/>
+                                <span asp-validation-for="Tour.MaKH" class="text-danger"></span>
+                            </div>
+
+                        }
+                        else
+                        {
+                            <div class="col-md-5">
+                                <label asp-for="Tour.MaKH" class="control-label text-red"></label>(<strong class="text-red">*</strong>)
+                                <select asp-for="Tour.MaKH" class="form-control select2" id="ddlMaKh"
+                                        asp-items="@(new SelectList(Model.CompaniesViewModel, "CompanyId", "CompanyName"))">
+                                </select>
+                                <span asp-validation-for="Tour.MaKH" class="text-danger"></span>
+                            </div>
+
+                        }
 
                         <div class="col-md-7">
                             <label asp-for="Tour.TenKH" class="control-label text-red"></label>(<strong class="text-red">*</strong>)

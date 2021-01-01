@@ -197,6 +197,12 @@ namespace SaleDoanInbound.Controllers
             {
                 return View("~/Views/Shared/AccessDenied.cshtml");
             }
+            if (user.PhongBanId == "KDOB")
+            {
+                
+                TourVM.Tour.MaKH = "50001";
+                TourVM.Tour.TenKH = "DU LICH NOI DIA";
+            }
             TourVM.StrUrl = strUrl;
             TourVM.Tour.SoHopDong = "";
             ViewBag.chiNhanhTaoId = _unitOfWork.dmChiNhanhRepository.Find(x => x.Macn == user.MaCN).FirstOrDefault().Id;
@@ -311,10 +317,17 @@ namespace SaleDoanInbound.Controllers
             {
                 sgtCode = _tourService.newSgtcode(Convert.ToDateTime(TourVM.Tour.NgayDen), user.MaCN, "000"); // 000 --> macode cua front desk
             }
+
+            // KDOB
+            if (user.PhongBanId == "KDOB")
+            {
+                sgtCode = _tourService.newSgtcodeKDOB(Convert.ToDateTime(TourVM.Tour.NgayDen), user.MaCN, quocgias.FirstOrDefault().Telcode);
+            }
             else // nhung thi truong khac' lay theo telcode cua quocgia
             {
                 sgtCode = _tourService.newSgtcode(Convert.ToDateTime(TourVM.Tour.NgayDen), user.MaCN, quocgias.FirstOrDefault().Telcode);
             }
+
             TourVM.Tour.Sgtcode = sgtCode;
             // create sgtcode
 

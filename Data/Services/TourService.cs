@@ -10,6 +10,7 @@ namespace Data.Services
     public interface ITourService
     {
         string newSgtcode(System.DateTime batdau, string chinhanh, string macode);
+        string newSgtcodeKDOB(DateTime dateTime, string maCN, string telcode);
     }
     public class TourService : ITourService
     {
@@ -23,6 +24,12 @@ namespace Data.Services
 
         GenerateId generateId = new GenerateId();
 
+        public string newSgtcodeKDOB(DateTime batdau, string chinhanh, string macode)
+        {
+
+            var newCode = generateId.NextId(lastCode(batdau, chinhanh, macode), chinhanh + macode + "-" + batdau.Year.ToString() + "-", "00001");
+            return newCode;
+        }
         public string newSgtcode(DateTime batdau, string chinhanh, string macode)
         {
 
