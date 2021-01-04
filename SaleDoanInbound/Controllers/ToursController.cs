@@ -55,6 +55,12 @@ namespace SaleDoanInbound.Controllers
         }
         public async Task<IActionResult> Index(long id = 0, string searchString = null, int page = 1, string searchFromDate = null, string searchToDate = null)
         {
+            if(string.IsNullOrEmpty(searchFromDate) && string.IsNullOrEmpty(searchToDate)) // moi load vao
+            {
+                var fromToDate = GetDate.LoadTuNgayDenNgay(DateTime.Now.Month.ToString(), DateTime.Now.Month.ToString(), DateTime.Now.Year.ToString());
+                searchFromDate = fromToDate.Split('-')[0];
+                searchToDate = fromToDate.Split('-')[1];
+            }
 
             TourVM.StrUrl = UriHelper.GetDisplayUrl(Request);
 
