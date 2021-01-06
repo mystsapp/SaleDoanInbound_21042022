@@ -27,8 +27,8 @@
                     <input asp-for="BienNhan.NgayTao" type="hidden" />
                     <input asp-for="BienNhan.NgayBN" type="hidden" />
                     <input asp-for="BienNhan.NguoiTao" type="hidden" />
-                    <input asp-for="BienNhan.SK" type="hidden" />
-                    <input asp-for="BienNhan.SoBN" type="hidden" />
+                    @*<input asp-for="BienNhan.SK" type="hidden" />*@
+                    @*<input asp-for="BienNhan.SoBN" type="hidden" />*@
                     <input asp-for="BienNhan.SoTien" type="hidden" />
 
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -53,7 +53,7 @@
 
                         <div class="col-md-2">
                             <label asp-for="BienNhan.SoBN" class="control-label"></label>
-                            <input asp-for="BienNhan.SoBN" class="form-control " readonly />
+                            <input asp-for="BienNhan.SoBN" class="form-control " />
                             <span asp-validation-for="BienNhan.SoBN" class="text-danger"></span>
                         </div>
 
@@ -76,7 +76,7 @@
 
                         <div class="col-md-2">
                             <label asp-for="BienNhan.SK" class="control-label"></label>
-                            <input asp-for="BienNhan.SK" class="form-control " readonly />
+                            <input asp-for="BienNhan.SK" class="form-control " />
                             <span asp-validation-for="BienNhan.SK" class="text-danger"></span>
                         </div>
 
@@ -98,30 +98,36 @@
 
                         </div>*@
 
-                    <div class="form-group row">
+                <div class="form-group row">
 
-                        <div class="col-md-2">
-                            <label asp-for="BienNhan.LoaiTien" class="control-label"></label>
-                            <select asp-for="BienNhan.LoaiTien" class="form-control " id="ddlLoaiTien"
-                                    asp-items="@(new SelectList(Model.Ngoaites, "MaNt", "MaNt"))">
-                                <!-- ngoaite: qltour-->
-                            </select>
-                            <span asp-validation-for="BienNhan.LoaiTien" class="text-danger"></span>
-                        </div>
-
-                        <div class="col-md-2">
-                            <label asp-for="BienNhan.TyGia" class="control-label"></label>
-                            <input asp-for="BienNhan.TyGia" class="form-control numbers" />
-                            <span asp-validation-for="BienNhan.TyGia" class="text-danger"></span>
-                        </div>
-
-                        <div class="col-md-8">
-                            <label asp-for="BienNhan.GhiChu" class="control-label"></label>
-                            <input asp-for="BienNhan.GhiChu" class="form-control" />
-                            <span asp-validation-for="BienNhan.GhiChu" class="text-danger"></span>
-                        </div>
-
+                    <div class="col-md-2">
+                        <label asp-for="BienNhan.LoaiTien" class="control-label"></label>
+                        <select asp-for="BienNhan.LoaiTien" class="form-control " id="ddlLoaiTien"
+                                asp-items="@(new SelectList(Model.Ngoaites, "MaNt", "MaNt"))">
+                            <!-- ngoaite: qltour-->
+                        </select>
+                        <span asp-validation-for="BienNhan.LoaiTien" class="text-danger"></span>
                     </div>
+
+                    <div class="col-md-2">
+                        <label asp-for="BienNhan.TyGia" class="control-label"></label>
+                        <input asp-for="BienNhan.TyGia" class="form-control numbers" />
+                        <span asp-validation-for="BienNhan.TyGia" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label asp-for="BienNhan.TongTien" class="control-label"></label>
+                        <input asp-for="BienNhan.TongTien" class="form-control numbers" id="txtTongTien" />
+                        <span asp-validation-for="BienNhan.TongTien" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label asp-for="BienNhan.GhiChu" class="control-label"></label>
+                        <input asp-for="BienNhan.GhiChu" class="form-control" />
+                        <span asp-validation-for="BienNhan.GhiChu" class="text-danger"></span>
+                    </div>
+
+                </div>
 
                     <div class="form-group ">
                         <button type="button" id="btnEditBienNhanPartialSubmit" class="btn btn-primary"><i class="fas fa-save"></i> Save</button>

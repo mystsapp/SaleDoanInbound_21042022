@@ -48,6 +48,11 @@ namespace Data.Models_IB
         [Column(TypeName = "decimal(18,2)")]
         [Required(ErrorMessage = "Tỷ giá không được để trống")]
         public decimal TyGia { get; set; }
+        
+        [DisplayName("Tổng tiền")]
+        [Column(TypeName = "decimal(18,2)")]
+        [Required(ErrorMessage = "Tỷ giá không được để trống")]
+        public decimal TongTien { get; set; }
 
         [DisplayName("Ngày hủy")]
         public DateTime? NgayHuy { get; set; }
