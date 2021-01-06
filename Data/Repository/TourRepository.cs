@@ -31,10 +31,11 @@ namespace Data.Repository
 
             var list = new List<TourDto>();
             var tours = _context.Tours.ToList();
-            if(userInPhongBanQL.Count() > 0) // role khac' admins va users
+            if (userInPhongBanQL.Count() > 0) // role khac' admins va users
             {
                 tours = tours.Where(item1 => userInPhongBanQL.Any(item2 => item1.NguoiTao == item2)).ToList();
             }
+
             if (tours == null)
             {
                 return null;
@@ -62,13 +63,13 @@ namespace Data.Repository
                 {
                     tourDto.NgayDamPhan = item.NgayDamPhan.Value;
                 }
-                
+
                 tourDto.HinhThucGiaoDich = item.HinhThucGiaoDich;
                 if (item.NgayKyHopDong.HasValue)
                 {
                     tourDto.NgayKyHopDong = item.NgayKyHopDong.Value;
                 }
-                
+
                 tourDto.NguoiKyHopDong = item.NguoiKyHopDong;
                 if (item.HanXuatVe.HasValue)
                 {
@@ -78,7 +79,7 @@ namespace Data.Repository
                 {
                     tourDto.NgayThanhLyHD = item.NgayThanhLyHD.Value;
                 }
-                
+
                 tourDto.SoKhachTT = item.SoKhachTT;
                 tourDto.SKTreEm = item.SKTreEm;
                 tourDto.DoanhThuTT = item.DoanhThuTT;
@@ -95,7 +96,7 @@ namespace Data.Repository
                 {
                     tourDto.NgayNhanDuTien = item.NgayNhanDuTien.Value;
                 }
-                
+
                 tourDto.LyDoNhanDu = item.LyDoNhanDu;
                 tourDto.SoHopDong = item.SoHopDong;
                 tourDto.LaiChuaVe = item.LaiChuaVe;
@@ -196,7 +197,7 @@ namespace Data.Repository
             // search date
 
             // List<string> listRoleChiNhanh --> chi lay nhung tour thuộc phanKhuCN cua minh
-            if(listRoleChiNhanh.Count > 0)
+            if (listRoleChiNhanh.Count > 0)
             {
                 list = list.Where(item1 => listRoleChiNhanh.Any(item2 => item1.MaCNTao == item2)).ToList();
             }
