@@ -780,7 +780,7 @@ namespace SaleDoanInbound.Controllers
                 }
                 else
                 {
-                    BienNhanVM.ChiTietBNPrint.DienGiais += "- " + "<b>" + item.Descript + "</b>" + "<br>";
+                    BienNhanVM.ChiTietBNPrint.DienGiais += "<b>" + item.Descript + "</b>" + "<br>";
                 }
                 BienNhanVM.ChiTietBNPrint.SoTiens += "<b>" + item.Amount.ToString("N0") + "</b>" + "<br />";
 
@@ -833,7 +833,7 @@ namespace SaleDoanInbound.Controllers
                 }
                 else
                 {
-                    BienNhanVM.ChiTietBNPrint.DienGiais += "- " + "<b>" + item.Descript + "</b>" + "<br>";
+                    BienNhanVM.ChiTietBNPrint.DienGiais += "<b>" + item.Descript + "</b>" + "<br>";
                 }
                 BienNhanVM.ChiTietBNPrint.SoTiens += "<b>" + item.Amount.ToString("N0") + "</b>" + "<br />";
 
@@ -918,7 +918,7 @@ namespace SaleDoanInbound.Controllers
                 }
                 else
                 {
-                    BienNhanVM.ChiTietBNPrint.DienGiais += "- " + "<b>" + item.Descript + "</b>" + "<br>";
+                    BienNhanVM.ChiTietBNPrint.DienGiais += "<b>" + item.Descript + "</b>" + "<br>";
                 }
                 BienNhanVM.ChiTietBNPrint.SoTiens += "<b>" + item.Amount.ToString("N0") + "</b>" + "<br />";
 

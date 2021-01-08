@@ -19,7 +19,7 @@ namespace Data.Models_IB
         public string TenKH { get; set; }
 
         [DisplayName("Ngày sinh")]
-        public DateTime NgaySinh { get; set; }
+        public DateTime? NgaySinh { get; set; }
 
         [DisplayName("Gới tính")]
         public bool GioiTinh { get; set; }
@@ -54,5 +54,14 @@ namespace Data.Models_IB
 
         [ForeignKey("TourId")]
         public virtual Tour Tour { get; set; }
+
+        public bool Del { get; set; }
+
+
+        [DisplayName("Điện thoại")]
+        [MaxLength(50), Column(TypeName = "varchar(50)")]
+        public string DienThoai { get; set; }
+
+
     }
 }

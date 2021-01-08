@@ -177,6 +177,38 @@ var indexController = {
         });
         // invoice click --> CTInvoices & CTVAT
 
+        //////////////////////////////////////////////////////////////////////////////// CreateKhachPartial
+
+        // create new
+        $('#btnNewKhachHang').off('click').on('click', function () {
+
+            tourid = $(this).data('tourid');
+
+            $('#sDSKhach').hide(500);
+
+            var url = '/DSKhachHangs/KhachHangCreatePartial';
+            $.get(url, { tourid: tourid }, function (response) {
+
+                $('#khachHangCreatePartial').show(500);
+
+                $('#khachHangCreatePartial').html(response);
+
+            });
+        });
+        // create new
+
+        // close create partial
+        $('#btnCloseKhachCreatePartial').off('click').on('click', function () {
+            $('#sDSKhach').show(500);
+        });
+        $('#btnBackKhachHangCreatePartial').off('click').on('click', function () {
+            $('#khachHangCreatePartial').hide(500);
+            $('#sDSKhach').show(500);
+        });
+        // close create invoice partial
+
+        //////////////////////////////////////////////////////////////////////////////// CreateKhachPartial
+
         //////////////////////////////////////////////////////////////////////////////// CreateInvoicePartial finish post
 
         // create new invoice

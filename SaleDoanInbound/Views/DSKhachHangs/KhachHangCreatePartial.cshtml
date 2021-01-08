@@ -1,0 +1,281 @@
+﻿@model DSKhachHangViewModel
+
+<!-- Main content -->
+<section class="content">
+
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-file text-info"></i> Thêm Mới Khách Hàng - <b>@Model.Tour.Sgtcode</b></h3>
+
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button id="btnCloseKhachCreatePartial" type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+
+            <form asp-action="CreateInvoicePartial" method="post" id="frmInvoiceCreatePartial" autocomplete="off">
+                <div class="p-4 border rounded">
+
+                    <input asp-for="KhachHang.TourId" type="hidden" /> <!-- this field is required-->
+
+                    <div asp-validation-summary="All" class="text-danger"></div>
+
+                    <div class="form-group row">
+
+                        <div class="col-md-1">
+                            <label asp-for="KhachHang.STT" class="control-label"></label>
+                            <input asp-for="KhachHang.STT" class="form-control " readonly />
+                            <span asp-validation-for="KhachHang.STT" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label asp-for="KhachHang.MaKH" class="control-label"></label>
+                            <input asp-for="KhachHang.MaKH" class="form-control " />
+                            <span asp-validation-for="KhachHang.MaKH" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label asp-for="KhachHang.TenKH" class="control-label"></label>
+                            <input asp-for="KhachHang.TenKH" class="form-control " />
+                            <span asp-validation-for="KhachHang.TenKH" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label asp-for="KhachHang.NgaySinh" class="control-label"></label>
+                            <input type="text" asp-for="KhachHang.NgaySinh" class="form-control maskInput" />
+                            <span asp-validation-for="KhachHang.NgaySinh" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-2 ">
+                            <label asp-for="KhachHang.GioiTinh" class="control-label"></label>
+                            <select asp-for="KhachHang.GioiTinh" class="form-control "
+                                    asp-items="@(new SelectList(Model.GioiTinhs, "GioiTinhId", "GioiTinhName"))">
+                            </select>
+                            <span asp-validation-for="KhachHang.GioiTinh" class="text-danger"></span>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-md-3">
+                            <label asp-for="KhachHang.QuocTich" class="control-label"></label>
+                            <input asp-for="KhachHang.QuocTich" class="form-control " />
+                            <span asp-validation-for="KhachHang.QuocTich" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label asp-for="KhachHang.HoChieu" class="control-label"></label>
+                            <input asp-for="KhachHang.HoChieu" class="form-control" />
+                            <span asp-validation-for="KhachHang.HoChieu" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label asp-for="KhachHang.CMND" class="control-label"></label>
+                            <input type="text" asp-for="KhachHang.CMND" class="form-control numbers" />
+                            <span asp-validation-for="KhachHang.CMND" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-2 ">
+                            <label asp-for="KhachHang.LoaiPhong" class="control-label"></label>
+                            <input asp-for="KhachHang.LoaiPhong" class="form-control" />
+                            <span asp-validation-for="KhachHang.LoaiPhong" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label asp-for="KhachHang.DiaChi" class="control-label"></label>
+                            <input asp-for="KhachHang.DiaChi" class="form-control " />
+                            <span asp-validation-for="KhachHang.DiaChi" class="text-danger"></span>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+
+                        <div class="col-md-3">
+                            <label asp-for="KhachHang.Visa" class="control-label"></label>
+                            <input asp-for="KhachHang.Visa" class="form-control " />
+                            <span asp-validation-for="KhachHang.Visa" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label asp-for="KhachHang.YeuCauVisa" class="control-label"></label>
+                            <input asp-for="KhachHang.YeuCauVisa" class="form-control " />
+                            <span asp-validation-for="KhachHang.YeuCauVisa" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label asp-for="KhachHang.DienThoai" class="control-label"></label>
+                            <input asp-for="KhachHang.DienThoai" class="form-control " />
+                            <span asp-validation-for="KhachHang.DienThoai" class="text-danger"></span>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="form-group">
+                            <button type="button" id="btnCreateInvoicePartial" class="btn btn-primary"><i class="fas fa-save"></i> Save</button>
+                            <button id="btnBackKhachHangCreatePartial" type="button" class="btn btn-success"><i class="fas fa-backward"></i> Back</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+@*<script>
+
+        $(function () {
+            $(".datepicker").datepicker({
+                dateFormat: 'dd/mm/yy'
+            });
+        });
+    </script>*@
+<script>
+    $(function () {
+        $('.select2').select2()
+    });
+    $(function () {
+        $(".maskInput").mask("99/99/9999");
+
+        //$('#AlertBox').removeClass('hide');
+        //$('#AlertBox').delay(1000).slideUp(1000);
+    });
+
+</script>
+
+<script src="~/js/Admin/KhachHangCreatePartial/CreateController.js"></script>
+<script src="~/js/Admin/Tours/indexController.js"></script>
+<!-- Validation -->
+<script>
+    var tourIdInCreateInvoicePartial = @Model.Tour.Id; // send it to indexController
+    @*$('#frmInvoiceCreatePartial').validate({
+        //rules: {
+        //    email: {
+        //        required: true,
+        //        email: true,
+        //    },
+        //    NgayDen: {
+        //        required: true
+        //    },
+        //    chuDetour1: {
+        //        required: true
+        //    },
+        //},
+        //messages: {
+        //    email: {
+        //        required: "Please enter a email address",
+        //        email: "Please enter a vaild email address"
+        //    },
+        //    NgayDen: {
+        //        required: "Please provide a date"
+        //    },
+        //    chuDetour1: "Please enter value"
+        //},
+        errorElement: 'span',
+        errorPlacement: function (error, element) {
+            // add error text
+
+            //error.addClass('invalid-feedback').removeClass('error');
+            //element.closest('.chuDeTourGroup').append(error);
+        },
+        highlight: function (element, errorClass, validClass) {
+            $(element).addClass('is-invalid');
+        },
+        unhighlight: function (element, errorClass, validClass) {
+            $(element).removeClass('is-invalid');
+        }
+    });
+
+    $('#ddlLoaiTien').rules('add', {
+        required: true,
+        messages: {
+            // required: "Ngày đến không được để trống"
+        }
+    });
+
+    $('#txtTyGia').rules('add', {
+        required: true,
+        messages: {
+            // required: "Ngày đến không được để trống"
+        }
+    });
+
+    //$('#btnCreateInvoicePartial').off('click').on('click', function () {
+    //    //if ($('#frmInvoiceCreatePartial').valid()){
+    //    //    alert('a');
+    //    //};
+    //});
+
+    $('#btnCreateInvoicePartial').off('click').on('click', function () {
+
+        // if frm valid
+        if ($('#frmInvoiceCreatePartial').valid()) {
+            var invoice = $('#frmInvoiceCreatePartial').serialize();
+            $.ajax({
+                type: "POST",
+                url: "/Invoices/CreateInvoicePartial",
+                data: invoice,
+                dataType: "json",
+                success: function (response) {
+                    if (response.status) {
+                        //EditTourProgControl.loadTourProg();
+                        debugger
+                        //$('tr .tdVal').click();
+
+                        $('#createInvoicePartial').hide();
+                        $('tr .tdVal').click(function () {
+
+                            tourId = @Model.Invoice.TourId;
+
+                            var url = '/Tours/KeToan_TourInfoByTourPartial';
+                            $.get(url, { tourId: tourId }, function (response) {
+
+                                $('#tabs_KeToan_TourInfo').html(response);
+
+                            });
+
+                        });
+                        $('#tabs_KeToan_TourInfo').show();
+
+                    }
+                    else {
+                        //  debugger
+                        // $('#createInvoiceModal').show();
+                        // $('.createInvoicePartial').html(response);
+                        //$('#createInvoiceModal').draggable();
+
+                        //tourid = $(this).data('tourid');
+                        //var url = '/Invoices/CreateInvoicePartial';
+                        //$.get(url, { tourid: tourid }, function (response) {
+
+                        //    $('#createInvoiceModal').show();
+                        //    $('.createInvoicePartial').html(response);
+                        //    $('#createInvoiceModal').draggable();
+
+                        //});
+
+                    }
+                }
+            });
+        }
+    });*@
+
+</script>
+
+<style>
+    #ddlLoaiIV {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+    }
+</style>

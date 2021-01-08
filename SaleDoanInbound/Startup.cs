@@ -108,6 +108,7 @@ namespace SaleDoanInbound
             services.AddTransient<ITourleWIService, TourleWIService>();
             services.AddTransient<ITourinfService, TourinfService>();
             services.AddTransient<ITourService, TourService>();
+            services.AddTransient<IDSKhachHangService, DSKhachHangService>();
 
             // services layer
 

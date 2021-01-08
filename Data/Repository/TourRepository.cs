@@ -21,7 +21,16 @@ namespace Data.Repository
         {
         }
 
-        public IPagedList<TourDto> ListTour(string searchString, IEnumerable<Company> companies, IEnumerable<Tourkind> loaiTours, IEnumerable<Dmchinhanh> chiNhanhs, IEnumerable<CacNoiDungHuyTour> cacNoiDungHuyTours, int? page, string searchFromDate, string searchToDate, List<string> listRoleChiNhanh, List<string> userInPhongBanQL)
+        public IPagedList<TourDto> ListTour(string searchString, 
+                                            IEnumerable<Company> companies, 
+                                            IEnumerable<Tourkind> loaiTours, 
+                                            IEnumerable<Dmchinhanh> chiNhanhs, 
+                                            IEnumerable<CacNoiDungHuyTour> cacNoiDungHuyTours, 
+                                            int? page, 
+                                            string searchFromDate, // ngay bat dau
+                                            string searchToDate, // ngay ket thuc
+                                            List<string> listRoleChiNhanh, 
+                                            List<string> userInPhongBanQL)
         {
             // return a 404 if user browses to before the first page
             if (page.HasValue && page < 1)
@@ -142,15 +151,17 @@ namespace Data.Repository
 
                 try
                 {
-                    fromDate = DateTime.Parse(searchFromDate);
-                    toDate = DateTime.Parse(searchToDate);
+                    fromDate = DateTime.Parse(searchFromDate); // ngay bat dau
+                    toDate = DateTime.Parse(searchToDate); // ngay ket thuc
 
                     if (fromDate > toDate)
                     {
                         return null;
                     }
-                    list = list.Where(x => x.NgayTao >= fromDate &&
-                                       x.NgayTao < toDate.AddDays(1)).ToList();
+                    //list = list.Where(x => x.NgayTao >= fromDate &&
+                    //                   x.NgayTao < toDate.AddDays(1)).ToList();
+                    list = list.Where(x => x.NgayDen >= fromDate &&
+                                       x.NgayDi < toDate.AddDays(1)).ToList();
                 }
                 catch (Exception)
                 {
@@ -158,20 +169,15 @@ namespace Data.Repository
                     return null;
                 }
 
-
-                //list.Where(x => x.NgayTao >= fromDate && x.NgayTao < (toDate.AddDays(1))/*.ToPagedList(page, pageSize)*/;
-
-
-
             }
             else
             {
-                if (!string.IsNullOrEmpty(searchFromDate))
+                if (!string.IsNullOrEmpty(searchFromDate)) // ngay bat dau
                 {
                     try
                     {
                         fromDate = DateTime.Parse(searchFromDate);
-                        list = list.Where(x => x.NgayTao >= fromDate).ToList();
+                        list = list.Where(x => x.NgayDen >= fromDate).ToList();
                     }
                     catch (Exception)
                     {
@@ -179,12 +185,12 @@ namespace Data.Repository
                     }
 
                 }
-                if (!string.IsNullOrEmpty(searchToDate))
+                if (!string.IsNullOrEmpty(searchToDate)) // ngay ket thuc
                 {
                     try
                     {
                         toDate = DateTime.Parse(searchToDate);
-                        list = list.Where(x => x.NgayTao < toDate.AddDays(1)).ToList();
+                        list = list.Where(x => x.NgayDi < toDate.AddDays(1)).ToList();
 
                     }
                     catch (Exception)

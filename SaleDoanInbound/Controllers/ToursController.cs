@@ -75,8 +75,8 @@ namespace SaleDoanInbound.Controllers
             }
 
             ViewBag.searchString = searchString;
-            ViewBag.searchFromDate = searchFromDate;
-            ViewBag.searchToDate = searchToDate;
+            ViewBag.searchFromDate = searchFromDate; // ngay bat dau
+            ViewBag.searchToDate = searchToDate; // ngay ket thuc
 
             // for delete
             //if (id != 0)
@@ -118,7 +118,7 @@ namespace SaleDoanInbound.Controllers
                     listRoleChiNhanh.AddRange(phanKhuCN.ChiNhanhs.Split(','));
                     if (!string.IsNullOrEmpty(user.PhongBans)) // phongbans trong ==> ql het
                     {
-                        listRoleChiNhanh = new List<string>(); // neu co ql phong ban nao do' ==> tinh theo phongban QL
+                        //listRoleChiNhanh = new List<string>(); // neu co ql phong ban nao do' ==> tinh theo phongban QL
                         phongBansQL = user.PhongBans.Split(',').ToList();
                         users = users.Where(item1 => phongBansQL.Any(item2 => item1.PhongBanId == item2)).ToList();
                     }
