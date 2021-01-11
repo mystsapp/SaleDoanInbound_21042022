@@ -1,0 +1,101 @@
+﻿@model DSKhachHangViewModel
+
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">
+                @*Sgtcode - <b>@Model.Tour.Sgtcode</b>*@
+
+                <button type="button" data-tourid="@Model.Tour.Id" id="btnNewKhachHang" class="btn btn-outline-info btn-xs" title="Thêm mới"><i class="fas fa-plus"></i>Thêm mới</button>
+            </h3>
+
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+
+            <div style="overflow-x:auto;">
+                <table class="table mytable text-nowrap tblEMD" id="listAll">
+                    <thead>
+                        <tr class="table-info">
+
+                            <th>STT</th>
+                            <th>Mã</th>
+                            <th>Họ tên</th>
+                            <th>Ngày sinh</th>
+                            <th>Phái</th>
+                            <th>Điện thoại</th>
+                            <th>Hộ chiếu</th>
+                            <th>CMND</th>
+                            <th>Quốc tịch</th>
+                            <th>Loại phòng</th>
+                            <th class="text-center">
+                                Vé máy bay<br /><input type="checkbox" class="tfoot" style="display:none;" onchange="checkAll('tbKhachHang')" /><span class="tfoot" style="display:none"> | </span><a href="javascript:;" id="btSavedata" class="fa fa-save fa-lg tfoot" style="display:none;"></a>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.ListDsKhach)
+                        {
+
+                            <tr class="cursor-pointer ">
+
+                                <td class="text-center">
+                                    @item.Stt
+                                </td>
+                                <td>
+                                    @item.Makh
+                                </td>
+                                <td>
+                                    @item.Hoten
+                                </td>
+                                <td>
+                                    @Html.Raw(item.Ngaysinh.HasValue ? item.Ngaysinh.Value.ToString("dd/MM/yyyy") : "/ /")
+                                </td>
+                                <td>
+                                    @Html.Raw(item.Phai == true ? "Nam" : "Nữ")
+                                </td>
+                                <td>@item.Dienthoai</td>
+                                <td>
+                                    @item.Hochieu
+                                </td>
+                                <td>
+                                    @item.Cmnd
+                                </td>
+                                <td>
+                                    @item.Quoctich
+                                </td>
+                                <td>
+                                    @item.Loaiphong
+                                </td>
+                                <td class="text-center">
+                                    <input type="checkbox" checked="@item.Vmb" name="vmb" class="ckId" disabled />
+                                </td>
+                                <td style="display:none">
+                                </td>
+                            </tr>
+
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+        <!-- /.card-body -->
+
+    </div>
+    <!-- /.card -->
+
+</section>
+
+<script src="~/js/Admin/DSKhachHang/indexController.js"></script>
+<script src="~/js/Admin/Tours/indexController.js"></script>

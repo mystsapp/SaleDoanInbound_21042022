@@ -1,5 +1,4 @@
 ﻿@model DSKhachHangViewModel
-
 <!-- Main content -->
 <section class="content">
 
@@ -18,7 +17,7 @@
         </div>
         <div class="card-body">
 
-            <form asp-action="CreateInvoicePartial" method="post" id="frmInvoiceCreatePartial" autocomplete="off">
+            <form asp-action="CreateInvoicePartial" method="post" id="frmCreateKhachHangPartial" autocomplete="off">
                 <div class="p-4 border rounded">
 
                     <input asp-for="KhachHang.TourId" type="hidden" /> <!-- this field is required-->
@@ -27,13 +26,13 @@
 
                     <div class="form-group row">
 
-                        <div class="col-md-1">
+                        <div class="col-md-2">
                             <label asp-for="KhachHang.STT" class="control-label"></label>
-                            <input asp-for="KhachHang.STT" class="form-control " readonly />
+                            <input asp-for="KhachHang.STT" class="form-control " id="txtStt" />
                             <span asp-validation-for="KhachHang.STT" class="text-danger"></span>
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <label asp-for="KhachHang.MaKH" class="control-label"></label>
                             <input asp-for="KhachHang.MaKH" class="form-control " />
                             <span asp-validation-for="KhachHang.MaKH" class="text-danger"></span>
@@ -75,19 +74,23 @@
                             <span asp-validation-for="KhachHang.HoChieu" class="text-danger"></span>
                         </div>
 
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <label asp-for="KhachHang.CMND" class="control-label"></label>
-                            <input type="text" asp-for="KhachHang.CMND" class="form-control numbers" />
+                            <input asp-for="KhachHang.CMND" class="form-control " />
                             <span asp-validation-for="KhachHang.CMND" class="text-danger"></span>
                         </div>
 
-                        <div class="col-md-2 ">
+                        <div class="col-md-3 ">
                             <label asp-for="KhachHang.LoaiPhong" class="control-label"></label>
                             <input asp-for="KhachHang.LoaiPhong" class="form-control" />
                             <span asp-validation-for="KhachHang.LoaiPhong" class="text-danger"></span>
                         </div>
+                    
+                    </div>
 
-                        <div class="col-md-2">
+                    <div class="form-group row">
+
+                        <div class="col-md-12">
                             <label asp-for="KhachHang.DiaChi" class="control-label"></label>
                             <input asp-for="KhachHang.DiaChi" class="form-control " />
                             <span asp-validation-for="KhachHang.DiaChi" class="text-danger"></span>
@@ -96,6 +99,12 @@
                     </div>
 
                     <div class="form-group row">
+
+                        <div class="col-md-3">
+                            <label asp-for="KhachHang.DienThoai" class="control-label"></label>
+                            <input asp-for="KhachHang.DienThoai" class="form-control " />
+                            <span asp-validation-for="KhachHang.DienThoai" class="text-danger"></span>
+                        </div>
 
                         <div class="col-md-3">
                             <label asp-for="KhachHang.Visa" class="control-label"></label>
@@ -109,17 +118,11 @@
                             <span asp-validation-for="KhachHang.YeuCauVisa" class="text-danger"></span>
                         </div>
 
-                        <div class="col-md-3">
-                            <label asp-for="KhachHang.DienThoai" class="control-label"></label>
-                            <input asp-for="KhachHang.DienThoai" class="form-control " />
-                            <span asp-validation-for="KhachHang.DienThoai" class="text-danger"></span>
-                        </div>
-
                     </div>
 
                     <div class="form-group row">
                         <div class="form-group">
-                            <button type="button" id="btnCreateInvoicePartial" class="btn btn-primary"><i class="fas fa-save"></i> Save</button>
+                            <button type="button" id="btnCreateKhachHangPartialSubmit" class="btn btn-primary"><i class="fas fa-save"></i> Save</button>
                             <button id="btnBackKhachHangCreatePartial" type="button" class="btn btn-success"><i class="fas fa-backward"></i> Back</button>
                         </div>
                     </div>
@@ -216,25 +219,24 @@
     //    //    alert('a');
     //    //};
     //});
-
-    $('#btnCreateInvoicePartial').off('click').on('click', function () {
+*@
+    $('#btnCreateKhachHangPartialSubmit').off('click').on('click', function () {
 
         // if frm valid
-        if ($('#frmInvoiceCreatePartial').valid()) {
-            var invoice = $('#frmInvoiceCreatePartial').serialize();
+        //if ($('#frmInvoiceCreatePartial').valid()) {
+        var khachHang = $('#frmCreateKhachHangPartial').serialize();
             $.ajax({
                 type: "POST",
-                url: "/Invoices/CreateInvoicePartial",
-                data: invoice,
+                url: "/DSKhachHangs/KhachHangCreatePartialPost",
+                data: khachHang,
                 dataType: "json",
                 success: function (response) {
                     if (response.status) {
-                        //EditTourProgControl.loadTourProg();
-                        debugger
-                        //$('tr .tdVal').click();
 
-                        $('#createInvoicePartial').hide();
-                        $('tr .tdVal').click(function () {
+                        toastr.success('Thêm mới khách hàng thành công!');
+
+                        $('#khachHangCreatePartial').hide(500);
+                        @*$('tr .tdVal').click(function () {
 
                             tourId = @Model.Invoice.TourId;
 
@@ -245,9 +247,8 @@
 
                             });
 
-                        });
-                        $('#tabs_KeToan_TourInfo').show();
-
+                        });*@
+                        $('#sDSKhach').show(500);
                     }
                     else {
                         //  debugger
@@ -268,14 +269,14 @@
                     }
                 }
             });
-        }
-    });*@
+        //}
+    });
 
 </script>
 
-<style>
-    #ddlLoaiIV {
+@*<style>
+    #txtStt {
         -webkit-appearance: none;
         -moz-appearance: none;
     }
-</style>
+</style>*@

@@ -283,7 +283,7 @@
                         <a class="nav-link" id="custom-tabs-four-profile-tab" data-toggle="pill" href="#tab_ghichu" role="tab" aria-controls="custom-tabs-four-profile" aria-selected="false">Ghi chú</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="custom-tabs-four-messages-tab" data-toggle="pill" href="#tab_Dskhach" role="tab" aria-controls="custom-tabs-four-messages" aria-selected="false">Danh sách khách</a>
+                        <a class="nav-link" id="tab_DsKhachHang" data-tourid="@Model.Tour.Id" data-toggle="pill" href="#tab_Dskhach" role="tab" aria-controls="custom-tabs-four-messages" aria-selected="false">Danh sách khách</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="custom-tabs-four-settings-tab" data-toggle="pill" href="#tab_chiphikhac" role="tab" aria-controls="custom-tabs-four-settings" aria-selected="false">Chi phí khác</a>
@@ -400,102 +400,98 @@
                     <div class="tab-pane fade" id="tab_Dskhach" role="tabpanel" aria-labelledby="custom-tabs-four-messages-tab">
 
                         <div id="sDSKhach">
-                            <section class="content">
+                            @*<section class="content">
 
-                                <!-- Default box -->
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h3 class="card-title">
-                                            @*Sgtcode - <b>@Model.Tour.Sgtcode</b>*@
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3 class="card-title">
 
-                                            <button type="button" data-tourid="@Model.Tour.Id" id="btnNewKhachHang" class="btn btn-outline-info btn-xs" title="Thêm mới"><i class="fas fa-plus"></i>Thêm mới</button>
-                                        </h3>
+                                                <button type="button" data-tourid="@Model.Tour.Id" id="btnNewKhachHang" class="btn btn-outline-info btn-xs" title="Thêm mới"><i class="fas fa-plus"></i>Thêm mới</button>
+                                            </h3>
 
-                                        <div class="card-tools">
-                                            <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
-                                                <i class="fas fa-minus"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
-                                                <i class="fas fa-times"></i>
-                                            </button>
+                                            <div class="card-tools">
+                                                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                                                    <i class="fas fa-minus"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="card-body">
+                                        <div class="card-body">
 
-                                        <div style="overflow-x:auto;">
-                                            <table class="table mytable text-nowrap tblEMD" id="listAll">
-                                                <thead>
-                                                    <tr class="table-info">
+                                            <div style="overflow-x:auto;">
+                                                <table class="table mytable text-nowrap tblEMD" id="listAll">
+                                                    <thead>
+                                                        <tr class="table-info">
 
-                                                        <th>STT</th>
-                                                        <th>Mã</th>
-                                                        <th>Họ tên</th>
-                                                        <th>Ngày sinh</th>
-                                                        <th>Phái</th>
-                                                        <th>Điện thoại</th>
-                                                        <th>Hộ chiếu</th>
-                                                        <th>CMND</th>
-                                                        <th>Quốc tịch</th>
-                                                        <th>Loại phòng</th>
-                                                        <th class="text-center">
-                                                            Vé máy bay<br /><input type="checkbox" class="tfoot" style="display:none;" onchange="checkAll('tbKhachHang')" /><span class="tfoot" style="display:none"> | </span><a href="javascript:;" id="btSavedata" class="fa fa-save fa-lg tfoot" style="display:none;"></a>
-                                                        </th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach (var item in Model.ListDsKhach)
-                                                    {
-
-                                                        <tr class="cursor-pointer ">
-
-                                                            <td class="text-center">
-                                                                @item.Stt
-                                                            </td>
-                                                            <td>
-                                                                @item.Makh
-                                                            </td>
-                                                            <td>
-                                                                @item.Hoten
-                                                            </td>
-                                                            <td>
-                                                                @Html.Raw(item.Ngaysinh.HasValue ? item.Ngaysinh.Value.ToString("dd/MM/yyyy") : "/ /")
-                                                            </td>
-                                                            <td>
-                                                                @Html.Raw(item.Phai == true ? "Nam" : "Nữ")
-                                                            </td>
-                                                            <td>@item.Dienthoai</td>
-                                                            <td>
-                                                                @item.Hochieu
-                                                            </td>
-                                                            <td>
-                                                                @item.Cmnd
-                                                            </td>
-                                                            <td>
-                                                                @item.Quoctich
-                                                            </td>
-                                                            <td>
-                                                                @item.Loaiphong
-                                                            </td>
-                                                            <td class="text-center">
-                                                                <input type="checkbox" checked="@item.Vmb" name="vmb" class="ckId" disabled />
-                                                            </td>
-                                                            <td style="display:none">
-                                                            </td>
+                                                            <th>STT</th>
+                                                            <th>Mã</th>
+                                                            <th>Họ tên</th>
+                                                            <th>Ngày sinh</th>
+                                                            <th>Phái</th>
+                                                            <th>Điện thoại</th>
+                                                            <th>Hộ chiếu</th>
+                                                            <th>CMND</th>
+                                                            <th>Quốc tịch</th>
+                                                            <th>Loại phòng</th>
+                                                            <th class="text-center">
+                                                                Vé máy bay<br /><input type="checkbox" class="tfoot" style="display:none;" onchange="checkAll('tbKhachHang')" /><span class="tfoot" style="display:none"> | </span><a href="javascript:;" id="btSavedata" class="fa fa-save fa-lg tfoot" style="display:none;"></a>
+                                                            </th>
                                                         </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var item in Model.ListDsKhach)
+                                                        {
 
-                                                    }
-                                                </tbody>
+                                                            <tr class="cursor-pointer ">
 
-                                            </table>
+                                                                <td class="text-center">
+                                                                    @item.Stt
+                                                                </td>
+                                                                <td>
+                                                                    @item.Makh
+                                                                </td>
+                                                                <td>
+                                                                    @item.Hoten
+                                                                </td>
+                                                                <td>
+                                                                    @Html.Raw(item.Ngaysinh.HasValue ? item.Ngaysinh.Value.ToString("dd/MM/yyyy") : "/ /")
+                                                                </td>
+                                                                <td>
+                                                                    @Html.Raw(item.Phai == true ? "Nam" : "Nữ")
+                                                                </td>
+                                                                <td>@item.Dienthoai</td>
+                                                                <td>
+                                                                    @item.Hochieu
+                                                                </td>
+                                                                <td>
+                                                                    @item.Cmnd
+                                                                </td>
+                                                                <td>
+                                                                    @item.Quoctich
+                                                                </td>
+                                                                <td>
+                                                                    @item.Loaiphong
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    <input type="checkbox" checked="@item.Vmb" name="vmb" class="ckId" disabled />
+                                                                </td>
+                                                                <td style="display:none">
+                                                                </td>
+                                                            </tr>
+
+                                                        }
+                                                    </tbody>
+
+                                                </table>
+                                            </div>
+
                                         </div>
 
                                     </div>
-                                    <!-- /.card-body -->
 
-                                </div>
-                                <!-- /.card -->
-
-                            </section>
+                                </section>*@
                         </div>
                         <div id="khachHangCreatePartial">
 
@@ -999,26 +995,25 @@
     }
 
 
-        // edit invoice
+//    // DSKhachHang
 
-        //$('.btnEditInvoice').off('click').on('click', function () {
+//    $('#tab_DsKhachHang').off('click').on('click', function () {
+//        debugger
+//        tourid = $(this).data('tourid');
 
-        //    tourid = $(this).data('tourid');
-        //    invoiceId = $(this).data('invoiceid');
+//        $('#khachHangCreatePartial').hide(500);
+//        //$('#createInvoicePartial').hide(500);
 
-        //    $('#tabs_KeToan_TourInfo').hide(500);
-        //    //$('#createInvoicePartial').hide(500);
+//        var url = '/DSKhachHangs/DSKhachHangPartial';
+//        $.get(url, { tourid: tourid }, function (response) {
 
-        //    var url = '/Invoices/EditInvoicePartial';
-        //    $.get(url, { tourid: tourid, invoiceId: invoiceId }, function (response) {
+//            $('#sDSKhach').html(response);
 
-        //        $('#editInvoicePartial').html(response);
+//            $('#sDSKhach').show(500);
 
-        //        $('#editInvoicePartial').show(500);
+//        });
+//    });
 
-        //    });
-        //});
-
-            // edit invoice
+//// DSKhachHang
 
 </script>

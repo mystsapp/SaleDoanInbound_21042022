@@ -179,22 +179,43 @@ var indexController = {
 
         //////////////////////////////////////////////////////////////////////////////// CreateKhachPartial
 
-        // create new
-        $('#btnNewKhachHang').off('click').on('click', function () {
+        // DSKhachHang
 
+        $('#tab_DsKhachHang').off('click').on('click', function () {
+            
             tourid = $(this).data('tourid');
 
-            $('#sDSKhach').hide(500);
+            $('#khachHangCreatePartial').hide(500);
+            //$('#createInvoicePartial').hide(500);
 
-            var url = '/DSKhachHangs/KhachHangCreatePartial';
+            var url = '/DSKhachHangs/DSKhachHangPartial';
             $.get(url, { tourid: tourid }, function (response) {
 
-                $('#khachHangCreatePartial').show(500);
+                $('#sDSKhach').html(response);
 
-                $('#khachHangCreatePartial').html(response);
+                $('#sDSKhach').show(500);
 
             });
         });
+
+        // DSKhachHang
+
+        // create new
+        //$('#btnNewKhachHang').off('click').on('click', function () {
+
+        //    tourid = $(this).data('tourid');
+
+        //    $('#sDSKhach').hide(500);
+
+        //    var url = '/DSKhachHangs/KhachHangCreatePartial';
+        //    $.get(url, { tourid: tourid }, function (response) {
+
+        //        $('#khachHangCreatePartial').show(500);
+
+        //        $('#khachHangCreatePartial').html(response);
+
+        //    });
+        //});
         // create new
 
         // close create partial
@@ -516,9 +537,9 @@ var indexController = {
             });
         });
         // edit CTInvoice
-        
+
         $('#btnBackEditCTInvoicePartial').off('click').on('click', function () {
-            
+
             //tourId = $(this).data('tourid');
             //indexController.Load_KeToan_TourInfoByTourPartial(tourId);
             //invoiceId = $('#hidInvoiceId').val();
@@ -739,7 +760,7 @@ var indexController = {
             bienNhanId = $('#hidBienNhanId').val();
 
             $('#CTBienNhanInBienNhanPartial').hide(500);
-            
+
             var url = '/ChiTietBNs/CreateCTBienNhanPartial';
             $.get(url, { bienNhanId: bienNhanId }, function (response) {
 
@@ -755,12 +776,12 @@ var indexController = {
 
         // edit CTBN Partial
         $('.btnEditCTBN').off('click').on('click', function () {
-            
+
             bienNhanId = $(this).data('biennhanid');
             ctBienNhanId = $(this).data('ctbiennhanid');
 
             $('#CTBienNhanInBienNhanPartial').hide(500);
-            
+
             var url = '/ChiTietBNs/EditCTBienNhanPartial';
             $.get(url, { bienNhanId: bienNhanId, ctBienNhanId: ctBienNhanId }, function (response) {
 
@@ -858,7 +879,6 @@ var indexController = {
             $('#CTBienNhanInBienNhanPartial').show(500);
         });
     }
-
 
 };
 indexController.init();
