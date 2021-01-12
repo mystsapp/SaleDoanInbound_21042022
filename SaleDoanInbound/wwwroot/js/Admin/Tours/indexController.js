@@ -185,17 +185,7 @@ var indexController = {
             
             tourid = $(this).data('tourid');
 
-            $('#khachHangCreatePartial').hide(500);
-            //$('#createInvoicePartial').hide(500);
-
-            var url = '/DSKhachHangs/DSKhachHangPartial';
-            $.get(url, { tourid: tourid }, function (response) {
-
-                $('#sDSKhach').html(response);
-
-                $('#sDSKhach').show(500);
-
-            });
+            indexController.Load_DSKhachHang(tourid);
         });
 
         // DSKhachHang
@@ -877,6 +867,20 @@ var indexController = {
 
             $('#CTBienNhanInBienNhanPartial').html(response);
             $('#CTBienNhanInBienNhanPartial').show(500);
+        });
+    },
+    Load_DSKhachHang: function (tourid) {
+
+        $('#khachHangCreatePartial').hide(500);
+        //$('#createInvoicePartial').hide(500);
+
+        var url = '/DSKhachHangs/DSKhachHangPartial';
+        $.get(url, { tourid: tourid }, function (response) {
+
+            $('#sDSKhach').html(response);
+
+            $('#sDSKhach').show(500);
+
         });
     }
 

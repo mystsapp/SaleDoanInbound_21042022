@@ -63,5 +63,10 @@ namespace Data.Models_IB
         public string DienThoai { get; set; }
 
 
+        [MaxLength(17), Column(TypeName = "varchar(17)")]
+        public string Sgtcode { get; set; }
+
+        [Column(TypeName = "nvarchar(MAX)")]
+        public string LogFile { get; set; }
     }
 }

@@ -1067,6 +1067,7 @@ namespace SaleDoanInbound.Controllers
 
                         //if (workSheet.Cells[i, 20].Value != null)
                         khachHang.TourId = tour.Id;
+                        //khachHang.Sgtcode = sgtCode;
 
                         khachHangs.Add(khachHang);
                     }

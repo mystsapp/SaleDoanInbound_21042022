@@ -31,6 +31,11 @@ namespace SaleDoanInbound.Controllers
 
         public async Task<IActionResult> Index()
         {
+            //var tours = _unitOfWork.tourRepository.GetAll();
+            //var khachTours = _unitOfWork.khachTourRepository.GetAll();
+            //khachTours = khachTours.Where(item1 => tours.Any(item2 => item1.Sgtcode == item2.Sgtcode)).ToList();
+            //var abc = khachTours.Count();
+
             var currentDateTime = DateTime.Now;
             var previousDateTime = currentDateTime.AddMonths(-1);
 

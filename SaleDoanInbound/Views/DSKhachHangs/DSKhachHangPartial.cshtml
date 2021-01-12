@@ -26,7 +26,7 @@
                 <table class="table mytable text-nowrap tblEMD" id="listAll">
                     <thead>
                         <tr class="table-info">
-
+                            <th>#</th>
                             <th>STT</th>
                             <th>Mã</th>
                             <th>Họ tên</th>
@@ -47,6 +47,30 @@
                         {
 
                             <tr class="cursor-pointer ">
+
+                                <td>
+                                    <div class="btn-group text-white" role="group">
+
+                                        <a class="text-primary btnEditBN" title="Cập nhật" asp-action="EditKhachHangPartial" asp-controller="DSKhachHangs" asp-route-id="@item.Idkhach"><i class="fas fa-edit"></i></a>
+                                        <span class="text-dark"> | </span>
+                                        @*<a class="text-success" title="Chi tiết" asp-action="Details" asp-controller="BienNhans" asp-route-id="@item.Id" asp-route-tourId="@item.TourId" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
+                                            <span class="text-dark"> | </span>*@
+                                        <form asp-action="Delete" asp-controller="DSKhachHangs" asp-route-id="@item.Idkhach" method="post">
+
+                                            <span id="confirmDeleteSpan_@item.Idkhach" style="display: none">
+                                                <span class="text-dark spanXoa">Hủy?</span>
+                                                <button type="button" data-id="@item.Idkhach" class="btn btn-danger btn-xs btnHuyBN">Yes</button>
+                                                <button type="button" class="btn btn-primary btn-xs" onclick="confirmDelete('@item.Idkhach', false)">No</button>
+                                            </span>
+
+                                            <span id="deleteSpan_@item.Idkhach">
+
+                                                <button title="Xóa" type="button" class="text-danger border-0 bg-transparent btnHuy" onclick="confirmDelete('@item.Idkhach', true)"><i class="fas fa-trash-alt"></i></button>
+
+                                            </span>
+                                        </form>
+                                    </div>
+                                </td>
 
                                 <td class="text-center">
                                     @item.Stt
@@ -99,3 +123,18 @@
 
 <script src="~/js/Admin/DSKhachHang/indexController.js"></script>
 <script src="~/js/Admin/Tours/indexController.js"></script>
+<script>
+    function confirmDelete(uniqueId, isDeleteClicked) {
+        var deleteSpan = 'deleteSpan_' + uniqueId;
+        var confirmDeleteSpan = 'confirmDeleteSpan_' + uniqueId;
+
+        if (isDeleteClicked) {
+            $('#' + deleteSpan).hide();
+            $('#' + confirmDeleteSpan).show();
+
+        } else {
+            $('#' + deleteSpan).show();
+            $('#' + confirmDeleteSpan).hide();
+        }
+    }
+</script>

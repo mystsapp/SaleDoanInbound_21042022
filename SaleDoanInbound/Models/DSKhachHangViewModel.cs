@@ -10,6 +10,7 @@ namespace SaleDoanInbound.Models
     public class DSKhachHangViewModel
     {
         public KhachHang KhachHang { get; set; }
+        public Khachtour KhachTour { get; set; }
         public IEnumerable<KhachHang> KhachHangs { get; set; }
         public Tour Tour { get; set; }
         public IEnumerable<ListViewModel> GioiTinhs { get; set; }

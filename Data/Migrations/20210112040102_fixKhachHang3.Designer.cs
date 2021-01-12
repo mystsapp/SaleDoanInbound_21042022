@@ -4,14 +4,16 @@ using Data.Models_IB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
     [DbContext(typeof(SaleDoanIBDbContext))]
-    partial class SaleDoanIBDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210112040102_fixKhachHang3")]
+    partial class fixKhachHang3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -774,9 +776,6 @@ namespace Data.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.Property<string>("LogFile")
-                        .HasColumnType("nvarchar(MAX)");
-
                     b.Property<string>("MaKH")
                         .HasColumnType("varchar(10)")
                         .HasMaxLength(10);
@@ -790,10 +789,6 @@ namespace Data.Migrations
 
                     b.Property<int>("STT")
                         .HasColumnType("int");
-
-                    b.Property<string>("Sgtcode")
-                        .HasColumnType("varchar(17)")
-                        .HasMaxLength(17);
 
                     b.Property<string>("TenKH")
                         .HasColumnType("nvarchar(50)")
