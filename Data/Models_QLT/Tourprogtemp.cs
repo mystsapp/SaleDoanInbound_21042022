@@ -31,7 +31,5 @@ namespace Data.Models_QLT
         public int? Vatin { get; set; }
         public int? Vatout { get; set; }
         public string Chinhanh { get; set; }
-
-        public virtual Tourtemplate CodeNavigation { get; set; }
     }
 }

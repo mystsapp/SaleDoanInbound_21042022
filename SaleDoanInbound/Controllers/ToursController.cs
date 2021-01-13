@@ -309,6 +309,7 @@ namespace SaleDoanInbound.Controllers
             TourVM.Tour.ChiNhanhTaoId = _unitOfWork.dmChiNhanhRepository.Find(x => x.Macn == user.MaCN).FirstOrDefault().Id;
             TourVM.Tour.NgayTao = DateTime.Now;
             TourVM.Tour.NguoiTao = user.Username;
+            TourVM.Tour.ChuDeTour = TourVM.Tour.ChuDeTour.ToUpper();
             if (string.IsNullOrEmpty(TourVM.Tour.SoHopDong))
             {
                 TourVM.Tour.SoHopDong = "";
@@ -509,6 +510,7 @@ namespace SaleDoanInbound.Controllers
                 TourVM.Tour.NguoiSua = user.Username;
 
                 TourVM.Tour.TuyenTQ = TourVM.Tour.TuyenTQ.Replace(',', '-');
+                TourVM.Tour.ChuDeTour = TourVM.Tour.ChuDeTour.ToUpper();
 
                 // kiem tra trang thai
 
@@ -684,7 +686,8 @@ namespace SaleDoanInbound.Controllers
                 tourinf.Concernto = TourVM.Tour.NguoiTao; // nguoi tao tour
                 tourinf.Operators = "";
                 tourinf.Departoperator = TourVM.Tour.PhongDH; //departoperator : qltour
-                tourinf.Departcreate = "IB";
+                //tourinf.Departcreate = "IB";
+                tourinf.Departcreate = user.PhongBanId;
                 tourinf.Routing = "";
                 //tourinf.Rate = TourVM.Tour.TyGia;
                 tourinf.Rate = 1;
@@ -705,6 +708,7 @@ namespace SaleDoanInbound.Controllers
                 {
 
                     _unitOfWork.tourRepository.Update(TourVM.Tour);
+                    
                     // insert tourinf
                     _unitOfWork.tourInfRepository.Update(tourinf);
                     // insert tourinf
@@ -738,10 +742,11 @@ namespace SaleDoanInbound.Controllers
                 catch (Exception ex)
                 {
                     SetAlert(ex.Message, "error");
-                    ViewBag.chiNhanhTaoId = _unitOfWork.dmChiNhanhRepository.Find(x => x.Macn == user.MaCN).FirstOrDefault().Id; // for compare
+                    var tourId = _unitOfWork.dmChiNhanhRepository.Find(x => x.Macn == user.MaCN).FirstOrDefault().Id; // for compare
+                    ViewBag.chiNhanhTaoId = tourId;
                     TourVM = new TourViewModel();
 
-                    TourVM.Tour = new Data.Models_IB.Tour();
+                    TourVM.Tour = _unitOfWork.tourRepository.GetById(id);
                     TourVM.Thanhphos = _unitOfWork.thanhPhoForTuyenTQRepository.GetAll();
                     TourVM.Companies = _unitOfWork.khachHangRepository.GetAll();
                     TourVM.Tourkinds = _unitOfWork.tourKindRepository.GetAll();
@@ -1067,7 +1072,7 @@ namespace SaleDoanInbound.Controllers
 
                         //if (workSheet.Cells[i, 20].Value != null)
                         khachHang.TourId = tour.Id;
-                        //khachHang.Sgtcode = sgtCode;
+                        khachHang.Sgtcode = sgtCode;
 
                         khachHangs.Add(khachHang);
                     }
@@ -1076,7 +1081,7 @@ namespace SaleDoanInbound.Controllers
                     //_db.SaveChanges();
                     try
                     {
-                        _unitOfWork.dSKhachHangRepository.CreateRange(khachHangs);
+                        _unitOfWork.dSKhachHangRepository.CreateRange(khachHangs); // and savechange
                         List<Khachtour> khachtours = new List<Khachtour>();
                         foreach (var item in khachHangs)
                         {
@@ -1093,10 +1098,12 @@ namespace SaleDoanInbound.Controllers
                                 Loaiphong = item.LoaiPhong,
                                 Cmnd = item.CMND.ToString(),
                                 Hochieu = item.HoChieu,
-                                Del = false
+                                Del = false,
+                                Visa = item.Visa,
+                                YeuCauVisa = item.YeuCauVisa
                             });
                         }
-                        _unitOfWork.khachTourRepository.CreateRange(khachtours);
+                        _unitOfWork.khachTourRepository.CreateRange(khachtours);// and savechange
                         //await _unitOfWork.Complete();
                     }
                     catch (Exception ex)

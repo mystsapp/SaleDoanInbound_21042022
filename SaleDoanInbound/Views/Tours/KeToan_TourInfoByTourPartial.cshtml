@@ -21,9 +21,7 @@
                 </button>
             </div>
             <div class="modal-body huyInvoicePartial">
-
             </div>
-
         </div>
         <!-- /.modal-content -->
     </div>
@@ -32,241 +30,222 @@
 <!-- huy tour modal-->
 <!--invoice - biennhan-->
 @*@if (user.Role.RoleName != "Users")
-{*@
-    <div class="row">
-        <div class="col-md-12 ">
-            <div class="card card-primary card-outline card-outline-tabs">
-                <div class="card-header p-0 border-bottom-0">
-                    <ul class="nav nav-tabs" id="invoiceBNTab" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" id="hrefToTabInvoices" data-tourid="@Model.Tour.Id" data-toggle="pill" href="#tab_invoices" role="tab" aria-controls="custom-tabs-four-home" aria-selected="true">Invoices</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="hrefToTabBienNhans" data-tourid="@Model.Tour.Id" data-toggle="pill" href="#tab_biennhans" role="tab" aria-controls="custom-tabs-four-profile" aria-selected="false">Biên nhận</a>
-                        </li>
+    {*@
+<div class="row">
+    <div class="col-md-12 ">
+        <div class="card card-primary card-outline card-outline-tabs">
+            <div class="card-header p-0 border-bottom-0">
+                <ul class="nav nav-tabs" id="invoiceBNTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="hrefToTabInvoices" data-tourid="@Model.Tour.Id" data-toggle="pill" href="#tab_invoices" role="tab" aria-controls="custom-tabs-four-home" aria-selected="true">Invoices</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="hrefToTabBienNhans" data-tourid="@Model.Tour.Id" data-toggle="pill" href="#tab_biennhans" role="tab" aria-controls="custom-tabs-four-profile" aria-selected="false">Biên nhận</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body">
+                <div class="tab-content" id="custom-tabs-four-tabContent">
 
-                    </ul>
-                </div>
-                <div class="card-body">
-                    <div class="tab-content" id="custom-tabs-four-tabContent">
+                    <!-- tab_invoices -->
+                    <div class="tab-pane fade active show" id="tab_invoices" role="tabpanel" aria-labelledby="custom-tabs-four-home-tab">
+                        <section class="content">
 
-                        <!-- tab_invoices -->
-                        <div class="tab-pane fade active show" id="tab_invoices" role="tabpanel" aria-labelledby="custom-tabs-four-home-tab">
-                            <section class="content">
+                            <!-- Default box -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Sgtcode - <b>@Model.Tour.Sgtcode</b></h3>
 
-                                <!-- Default box -->
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h3 class="card-title">Sgtcode - <b>@Model.Tour.Sgtcode</b></h3>
-
-                                        <div class="card-tools">
-                                            <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
-                                                <i class="fas fa-minus"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
-                                                <i class="fas fa-times"></i>
-                                            </button>
-                                        </div>
+                                    <div class="card-tools">
+                                        <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                                            <i class="fas fa-times"></i>
+                                        </button>
                                     </div>
-                                    <div class="card-body">
+                                </div>
+                                <div class="card-body">
 
-                                        <div style="overflow-x:auto;">
-                                            <table class="table mytable text-nowrap tblEMD" id="invoicesTbl">
-                                                <thead>
-                                                    <tr class="table-info">
-                                                        <th>
-                                                            <button type="button" class="btn btn-outline-info btn-sm text-bold btn-block" id="btnNewInvoice" data-tourid="@Model.Tour.Id" title="Thêm mới invoice" @*data-toggle="modal" data-target="#createInvoiceModal"*@><i class="fas fa-plus"></i></button>
-                                                        </th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Id)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Replace)</th>
-                                                        @*<th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Type)</th>*@
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().MaKH)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().TenKhach)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Ref)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().HopDong)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Date)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Arr)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Dep)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Pax)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Currency)</th>
-                                                        <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Rate)</th>
+                                    <div style="overflow-x:auto;">
+                                        <table class="table mytable text-nowrap tblEMD" id="invoicesTbl">
+                                            <thead>
+                                                <tr class="table-info">
+                                                    <th>
+                                                        <button type="button" class="btn btn-outline-info btn-sm text-bold btn-block" id="btnNewInvoice" data-tourid="@Model.Tour.Id" title="Thêm mới invoice" @*data-toggle="modal" data-target="#createInvoiceModal"*@><i class="fas fa-plus"></i></button>
+                                                    </th>
+                                                    <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Id)</th>
+                                                    <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Replace)</th>
+                                                    @*<th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Type)</th>*@
+                                                    <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().MaKH)</th>
+                                                    <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().TenKhach)</th>
+                                                    <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Ref)</th>
+                                                    <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().HopDong)</th>
+                                                    <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Date)</th>
+                                                    <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Arr)</th>
+                                                    <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Dep)</th>
+                                                    <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Pax)</th>
+                                                    <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Currency)</th>
+                                                    <th>@Html.DisplayNameFor(m => m.Invoices.FirstOrDefault().Rate)</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
 
+                                                @foreach (var item in Model.Invoices)
+                                                {
 
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
+                                                    <tr class="invoice-cursor-pointer " data-huy="@item.HuyInvoice" onclick="CTInvoiceCTVATDiv()">
 
-                                                    @foreach (var item in Model.Invoices)
-                                                    {
-
-                                                        <tr class="invoice-cursor-pointer " data-huy="@item.HuyInvoice" onclick="CTInvoiceCTVATDiv()">
-
-                                                            <td>
-                                                                <div class="btn-group text-white" role="group">
-                                                                    @if (item.HuyInvoice == true)
-                                                                    {
-                                                                        <button type="button" class="text-primary border-0 bg-transparent disabled" title="Cập nhật"><i class="fas fa-edit"></i></button>
-                                                                        <span class="text-dark"> | </span>
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        @*<button type="button" id="invoice_@item.Id" class="text-primary border-0 bg-transparent btnEditInvoice" title="Cập nhật" data-tourId="@Model.Tour.Id" data-invoiceId="@item.Id"><i class="fas fa-edit"></i></button>*@
-                                                                        <button class="text-primary border-0 bg-transparent btnEditInvoice" title="Cập nhật" data-tourId="@Model.Tour.Id" data-invoiceId="@item.Id"><i class="fas fa-edit"></i></button>
-                                                                        <span class="text-dark"> | </span>
-                                                                    }
+                                                        <td>
+                                                            <div class="btn-group text-white" role="group">
+                                                                @if (item.HuyInvoice == true)
+                                                                {
+                                                                    <button type="button" class="text-primary border-0 bg-transparent disabled" title="Cập nhật"><i class="fas fa-edit"></i></button>
+                                                                    <span class="text-dark"> | </span>
+                                                                }
+                                                                else
+                                                                {
+                                                                    @*<button type="button" id="invoice_@item.Id" class="text-primary border-0 bg-transparent btnEditInvoice" title="Cập nhật" data-tourId="@Model.Tour.Id" data-invoiceId="@item.Id"><i class="fas fa-edit"></i></button>*@
+                                                                    <button class="text-primary border-0 bg-transparent btnEditInvoice" title="Cập nhật" data-tourId="@Model.Tour.Id" data-invoiceId="@item.Id"><i class="fas fa-edit"></i></button>
+                                                                    <span class="text-dark"> | </span>
+                                                                }
+                                                                @if (user.Role.RoleName != "Users") // user ko duoc invoice ==> KT
+                                                                {
                                                                     <!--print invoice-->
                                                                     <a asp-controller="Invoices" asp-action="InvoicePdfViewer" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" class="text-warning btnPrintInvoice" title="Print"><i class="fas fa-print"></i></a>
-                                                                    @*<span class="text-dark"> | </span>
-                                                                        <a class="text-success" title="Chi tiết" asp-action="Details" asp-route-tourId="@Model.Tour.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>*@
-                                                                    <span class="text-dark"> | </span>
-                                                                    <form method="post">
-
-                                                                        <span id="confirmDeleteSpan_@item.Id" style="display: none">
-                                                                            <span class="text-dark">Hủy?</span>
-                                                                            <button type="button" data-id="@item.Id" data-invoiceId="@item.Id" data-url="@Model.StrUrl" class="btn btn-danger btn-xs btnHuyInvoice" data-toggle="modal" data-target=".huyInvoiceModal">Yes</button>
-                                                                            <button type="button" class="btn btn-primary btn-xs" onclick="confirmDelete('@item.Id', false)">No</button>
-                                                                        </span>
-
-                                                                        <span id="deleteSpan_@item.Id">
-                                                                            @if (item.HuyInvoice == true)
-                                                                            {
-                                                                                <button type="button" class="text-danger border-0 bg-transparent disabled"><i class="fas fa-trash-alt"></i></button>
-
-                                                                            }
-                                                                            else
-                                                                            {
-                                                                                <button type="button" class="text-danger border-0 bg-transparent btnHuy" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
-
-                                                                            }
-                                                                        </span>
-                                                                    </form>
-                                                                </div>
-                                                            </td>
-
-                                                            <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Id)</td>
-                                                            <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Replace)</td>
-                                                            @*<td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Type)</td>*@
-                                                            <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.MaKH)</td>
-                                                            <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.TenKhach)</td>
-                                                            <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Ref)</td>
-                                                            <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.HopDong)</td>
-                                                            <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.Raw(item.Date.ToString("dd/MM/yyyy"))</td>
-                                                            <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.Raw(item.Arr.ToString("dd/MM/yyyy"))</td>
-                                                            <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">
-                                                                @if (item.Dep.HasValue)
-                                                                {
-                                                                    @Html.Raw(item.Dep.Value.ToString("dd/MM/yyyy"))
                                                                 }
-                                                            </td>
-                                                            <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Pax)</td>
-                                                            <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Currency)</td>
-                                                            <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Rate)</td>
+                                                                @*<span class="text-dark"> | </span>
+                                                                    <a class="text-success" title="Chi tiết" asp-action="Details" asp-route-tourId="@Model.Tour.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>*@
+                                                                <span class="text-dark"> | </span>
+                                                                <form method="post">
 
+                                                                    <span id="confirmDeleteSpan_@item.Id" style="display: none">
+                                                                        <span class="text-dark">Hủy?</span>
+                                                                        <button type="button" data-id="@item.Id" data-invoiceId="@item.Id" data-url="@Model.StrUrl" class="btn btn-danger btn-xs btnHuyInvoice" data-toggle="modal" data-target=".huyInvoiceModal">Yes</button>
+                                                                        <button type="button" class="btn btn-primary btn-xs" onclick="confirmDelete('@item.Id', false)">No</button>
+                                                                    </span>
 
-                                                        </tr>
+                                                                    <span id="deleteSpan_@item.Id">
+                                                                        @if (item.HuyInvoice == true)
+                                                                        {
+                                                                            <button type="button" class="text-danger border-0 bg-transparent disabled"><i class="fas fa-trash-alt"></i></button>
 
-                                                    }
-                                                </tbody>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <button type="button" class="text-danger border-0 bg-transparent btnHuy" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
 
-                                            </table>
-                                        </div>
+                                                                        }
+                                                                    </span>
+                                                                </form>
+                                                            </div>
+                                                        </td>
 
+                                                        <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Id)</td>
+                                                        <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Replace)</td>
+                                                        @*<td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Type)</td>*@
+                                                        <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.MaKH)</td>
+                                                        <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.TenKhach)</td>
+                                                        <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Ref)</td>
+                                                        <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.HopDong)</td>
+                                                        <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.Raw(item.Date.ToString("dd/MM/yyyy"))</td>
+                                                        <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.Raw(item.Arr.ToString("dd/MM/yyyy"))</td>
+                                                        <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">
+                                                            @if (item.Dep.HasValue)
+                                                            {
+                                                                @Html.Raw(item.Dep.Value.ToString("dd/MM/yyyy"))
+                                                            }
+                                                        </td>
+                                                        <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Pax)</td>
+                                                        <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Currency)</td>
+                                                        <td class="tdInvoiceVal" data-id="@item.Id" data-tourid="@Model.Tour.Id">@Html.DisplayFor(m => item.Rate)</td>
+                                                    </tr>
+
+                                                }
+                                            </tbody>
+                                        </table>
                                     </div>
-                                    <!-- /.card-body -->
-
                                 </div>
-                                <!-- /.card -->
-
-                            </section>
-                            <!-- CTInvoice - CTVAT -->
-                            <div class="cTInVoiceCTVAT" id="cTInVoiceCTVAT">
-
+                                <!-- /.card-body -->
                             </div>
-                            <!-- CTInvoice - CTVAT -->
-                            <!--edit CT invoice-->
-                            <div id="editCTInvoicePartial">
-                            </div>
-                            <!--edit CT invoice-->
-
+                            <!-- /.card -->
+                        </section>
+                        <!-- CTInvoice - CTVAT -->
+                        <div class="cTInVoiceCTVAT" id="cTInVoiceCTVAT">
                         </div>
-                        <!-- Invoices -->
-                        <!-- Bien Nhan -->
-                        <div class="tab-pane fade" id="tab_biennhans" role="tabpanel" aria-labelledby="custom-tabs-four-settings-tab">
+                        <!-- CTInvoice - CTVAT -->
+                        <!--edit CT invoice-->
+                        <div id="editCTInvoicePartial">
+                        </div>
+                        <!--edit CT invoice-->
+                    </div>
+                    <!-- Invoices -->
+                    <!-- Bien Nhan -->
+                    <div class="tab-pane fade" id="tab_biennhans" role="tabpanel" aria-labelledby="custom-tabs-four-settings-tab">
 
-                            <!-- huy BN modal-->
-                            <div class="modal fade" id="huyBNModal" aria-hidden="true" style="display: none;">
-                                <div class="modal-dialog modal-lg">
+                        <!-- huy BN modal-->
+                        <div class="modal fade" id="huyBNModal" aria-hidden="true" style="display: none;">
+                            <div class="modal-dialog modal-lg">
 
-                                    <div class="modal-content ">
-                                        <div class="modal-header">
-                                            <h4 class="modal-title">Thông tin hủy BN</h4>
+                                <div class="modal-content ">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Thông tin hủy BN</h4>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body huyBNPartial">
+                                    </div>
+                                </div>
+                                <!-- /.modal-content -->
+                            </div>
+                            <!-- /.modal-dialog -->
+                        </div>
+                        <!-- huy BN modal-->
+                        <!-- print BN modal-->
+                        @*<div class="modal fade" id="PrintBNPartial" style="display: none;" aria-hidden="true">
+                                <div class="modal-dialog modal-xl">
+                                    <div class="modal-content">
+                                        <div class="modal-header bg-secondary">
+                                            <h4 class="modal-title ">Biên nhận <span id="spanSoBN"></span></h4>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">×</span>
                                             </button>
                                         </div>
-                                        <div class="modal-body huyBNPartial">
-
+                                        <div class="modal-body printBN" style="max-height: 400px !important; overflow-y:auto">
                                         </div>
-
+                                        <div class="modal-footer justify-content-between">
+                                            <form id="frmPrintBN" asp-action="ExportPdf" method="post">
+                                                <input type="hidden" name="id" id="hidBienNhanIdForPdfPrint" />
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary">Print</button>
+                                            </form>
+                                        </div>
                                     </div>
-                                    <!-- /.modal-content -->
                                 </div>
-                                <!-- /.modal-dialog -->
-                            </div>
-                            <!-- huy BN modal-->
-                            <!-- print BN modal-->
-                            @*<div class="modal fade" id="PrintBNPartial" style="display: none;" aria-hidden="true">
-                                    <div class="modal-dialog modal-xl">
-                                        <div class="modal-content">
-                                            <div class="modal-header bg-secondary">
-                                                <h4 class="modal-title ">Biên nhận <span id="spanSoBN"></span></h4>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">×</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body printBN" style="max-height: 400px !important; overflow-y:auto">
+                            </div>*@
 
-                                            </div>
-                                            <div class="modal-footer justify-content-between">
-                                                <form id="frmPrintBN" asp-action="ExportPdf" method="post">
-                                                    <input type="hidden" name="id" id="hidBienNhanIdForPdfPrint" />
-                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                    <button type="submit" class="btn btn-primary">Print</button>
-                                                </form>
-
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-                                </div>*@
-
-                            <!-- /.modal-dialog -->
-                            <!-- BienNhan --> <!-- CTBienNhan -->
-                            <div id="BienNhanAndCTBNPartial">
-
-                            </div>
-
-                            <div id="createBienNhanPartial">
-
-                            </div>
-
-                            <div id="editBienNhanPartial">
-
-                            </div>
-                            <!-- /BienNhan --> <!-- CTBienNhan -->
-                            @*<div class="cTietBN">
-
-                                </div>*@
-                            <!-- CTBienNhan -->
+                        <!-- /.modal-dialog -->
+                        <!-- BienNhan --> <!-- CTBienNhan -->
+                        <div id="BienNhanAndCTBNPartial">
                         </div>
 
+                        <div id="createBienNhanPartial">
+                        </div>
+
+                        <div id="editBienNhanPartial">
+                        </div>
+                        <!-- /BienNhan --> <!-- CTBienNhan -->
+                        @*<div class="cTietBN">
+                            </div>*@
+                        <!-- CTBienNhan -->
                     </div>
                 </div>
-                <!-- /.card -->
             </div>
+            <!-- /.card -->
         </div>
     </div>
+</div>
 @*}*@
 
 <!--invoice - biennhan-->
@@ -368,23 +347,17 @@
                                                         <td>@item.TourItem</td>
                                                         <td>@item.Srvnode</td>
                                                         <td>@item.Dieuhanh</td>
-
                                                     </tr>
 
                                                 }
                                             </tbody>
-
                                         </table>
                                     </div>
-
                                 </div>
                                 <!-- /.card-body -->
-
                             </div>
                             <!-- /.card -->
-
                         </section>
-
                     </div>
                     <!-- tab_cttour -->
                     <!-- Tournote -->
@@ -483,18 +456,13 @@
 
                                                         }
                                                     </tbody>
-
                                                 </table>
                                             </div>
-
                                         </div>
-
                                     </div>
-
                                 </section>*@
                         </div>
                         <div id="khachHangCreatePartial">
-
                         </div>
                     </div>
                     <!-- DS Khach -->
@@ -608,16 +576,12 @@
 
                                                 }
                                             </tbody>
-
                                         </table>
                                     </div>
-
                                 </div>
                                 <!-- /.card-body -->
-
                             </div>
                             <!-- /.card -->
-
                         </section>
                     </div>
                     <!-- Chi Phi Khac -->
@@ -661,7 +625,6 @@
                                                     <th>Giá VND/KM</th>
                                                     <th>Thành tiền</th>
                                                     <th>Lộ trình</th>
-
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -722,16 +685,12 @@
 
                                                 }
                                             </tbody>
-
                                         </table>
                                     </div>
-
                                 </div>
                                 <!-- /.card-body -->
-
                             </div>
                             <!-- /.card -->
-
                         </section>
                     </div>
                     <!-- Xe -->
@@ -776,7 +735,6 @@
                                                     <th>Phí đón tiễn</th>
                                                     <th>Phí đi đoàn</th>
                                                     <th>Trả phí</th>
-
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -840,16 +798,12 @@
 
                                                 }
                                             </tbody>
-
                                         </table>
                                     </div>
-
                                 </div>
                                 <!-- /.card-body -->
-
                             </div>
                             <!-- /.card -->
-
                         </section>
                     </div>
                     <!-- HD -->
@@ -921,7 +875,6 @@
                                                         <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().TyGia)</th>
                                                         <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().KhachLe)</th>
                                                         @*<th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().NoiDungHuy)</th>*@
-
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -962,23 +915,17 @@
 
                                                     }
                                                 </tbody>
-
                                             </table>
                                         </div>
-
                                     </div>
                                     <!-- /.card-body -->
-
                                 </div>
                                 <!-- /.card -->
-
                             </section>
 
                         }
-
                     </div>
                     <!-- Bien Nhan -->
-
                 </div>
             </div>
             <!-- /.card -->
@@ -993,7 +940,6 @@
     function CTInvoiceCTVATDiv() {
         location.href = "#cTInVoiceCTVAT";
     }
-
 
 //    // DSKhachHang
 
@@ -1015,5 +961,4 @@
 //    });
 
 //// DSKhachHang
-
 </script>

@@ -5,11 +5,6 @@ namespace Data.Models_QLT
 {
     public partial class Tourtemplate
     {
-        public Tourtemplate()
-        {
-            Tourprogtemp = new HashSet<Tourprogtemp>();
-        }
-
         public string Code { get; set; }
         public string Tourkind { get; set; }
         public string Tentour { get; set; }
@@ -18,7 +13,5 @@ namespace Data.Models_QLT
         public int Songay { get; set; }
         public string Chinhanh { get; set; }
         public string Nguoitao { get; set; }
-
-        public virtual ICollection<Tourprogtemp> Tourprogtemp { get; set; }
     }
 }

@@ -19,5 +19,6 @@ namespace Data.Models_QLT
         public decimal? Srvprofit { get; set; }
         public string Httt { get; set; }
         public string Chinhanh { get; set; }
+        public decimal? Idtourprogtemp { get; set; }
     }
 }

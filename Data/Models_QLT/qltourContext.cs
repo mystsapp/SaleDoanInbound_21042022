@@ -60,6 +60,7 @@ namespace Data.Models_QLT
         public virtual DbSet<Tuyentq> Tuyentq { get; set; }
         public virtual DbSet<Users> Users { get; set; }
         public virtual DbSet<VDmdiemtq> VDmdiemtq { get; set; }
+        public virtual DbSet<VSuppliertp> VSuppliertp { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -573,9 +574,13 @@ namespace Data.Models_QLT
                     .IsRequired()
                     .HasColumnName("homestaynote")
                     .HasMaxLength(200)
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValueSql("('')");
 
                 entity.Property(e => e.Homestaypax).HasColumnName("homestaypax");
+
+                entity.Property(e => e.Idtourprog)
+                    .HasColumnName("idtourprog")
+                    .HasColumnType("decimal(18, 0)");
 
                 entity.Property(e => e.Logfile).HasColumnName("logfile");
 
@@ -669,6 +674,10 @@ namespace Data.Models_QLT
                     .HasMaxLength(200);
 
                 entity.Property(e => e.Homestaypax).HasColumnName("homestaypax");
+
+                entity.Property(e => e.Idtourprog)
+                    .HasColumnName("idtourprog")
+                    .HasColumnType("decimal(18, 0)");
 
                 entity.Property(e => e.Logfile).HasColumnName("logfile");
 
@@ -766,6 +775,10 @@ namespace Data.Models_QLT
                     .HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.Homestaypax).HasColumnName("homestaypax");
+
+                entity.Property(e => e.Idtourprog)
+                    .HasColumnName("idtourprog")
+                    .HasColumnType("decimal(18, 0)");
 
                 entity.Property(e => e.Note)
                     .HasColumnName("note")
@@ -934,7 +947,11 @@ namespace Data.Models_QLT
 
                 entity.Property(e => e.Stt).HasColumnName("stt");
 
+                entity.Property(e => e.Visa).HasMaxLength(50);
+
                 entity.Property(e => e.Vmb).HasColumnName("vmb");
+
+                entity.Property(e => e.YeuCauVisa).HasMaxLength(50);
             });
 
             modelBuilder.Entity<Loaikhach>(entity =>
@@ -1072,6 +1089,10 @@ namespace Data.Models_QLT
                     .HasMaxLength(20)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Idtourprog)
+                    .HasColumnName("idtourprog")
+                    .HasColumnType("decimal(18, 0)");
+
                 entity.Property(e => e.PaxPrice).HasColumnType("decimal(12, 0)");
 
                 entity.Property(e => e.Serial)
@@ -1107,6 +1128,10 @@ namespace Data.Models_QLT
                 entity.Property(e => e.Httt)
                     .HasMaxLength(20)
                     .IsUnicode(false);
+
+                entity.Property(e => e.Idtourprog)
+                    .HasColumnName("idtourprog")
+                    .HasColumnType("decimal(18, 0)");
 
                 entity.Property(e => e.PaxPrice).HasColumnType("decimal(12, 0)");
 
@@ -1159,6 +1184,10 @@ namespace Data.Models_QLT
                     .HasColumnName("httt")
                     .HasMaxLength(20)
                     .IsUnicode(false);
+
+                entity.Property(e => e.Idtourprogtemp)
+                    .HasColumnName("idtourprogtemp")
+                    .HasColumnType("decimal(18, 0)");
 
                 entity.Property(e => e.Paxprice)
                     .HasColumnName("paxprice")
@@ -1799,7 +1828,7 @@ namespace Data.Models_QLT
 
                 entity.Property(e => e.Srvnode)
                     .HasColumnName("srvnode")
-                    .HasMaxLength(300);
+                    .HasMaxLength(500);
 
                 entity.Property(e => e.Srvtype)
                     .HasColumnName("srvtype")
@@ -1815,7 +1844,7 @@ namespace Data.Models_QLT
 
                 entity.Property(e => e.Time)
                     .HasColumnName("time")
-                    .HasMaxLength(5)
+                    .HasMaxLength(20)
                     .IsUnicode(false);
 
                 entity.Property(e => e.TourItem)
@@ -1824,25 +1853,19 @@ namespace Data.Models_QLT
 
                 entity.Property(e => e.Unitpricea)
                     .HasColumnName("unitpricea")
-                    .HasColumnType("decimal(12, 0)");
+                    .HasColumnType("decimal(12, 1)");
 
                 entity.Property(e => e.Unitpricec)
                     .HasColumnName("unitpricec")
-                    .HasColumnType("decimal(12, 0)");
+                    .HasColumnType("decimal(12, 1)");
 
                 entity.Property(e => e.Unitpricei)
                     .HasColumnName("unitpricei")
-                    .HasColumnType("decimal(12, 0)");
+                    .HasColumnType("decimal(12, 1)");
 
                 entity.Property(e => e.Vatin).HasColumnName("vatin");
 
                 entity.Property(e => e.Vatout).HasColumnName("vatout");
-
-                entity.HasOne(d => d.CodeNavigation)
-                    .WithMany(p => p.Tourprogtemp)
-                    .HasForeignKey(d => d.Code)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Tourprogtemp_Tourtemplate");
             });
 
             modelBuilder.Entity<Tourtemplate>(entity =>
@@ -1932,6 +1955,20 @@ namespace Data.Models_QLT
                 entity.Property(e => e.Tinhtp)
                     .HasColumnName("tinhtp")
                     .HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<VSuppliertp>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("vSuppliertp");
+
+                entity.Property(e => e.Code)
+                    .IsRequired()
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Tengiaodich).HasMaxLength(172);
             });
 
             OnModelCreatingPartial(modelBuilder);

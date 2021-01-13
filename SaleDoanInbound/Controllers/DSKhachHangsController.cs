@@ -101,7 +101,9 @@ namespace SaleDoanInbound.Controllers
                         Loaiphong = DSKhachHangVM.KhachHang.LoaiPhong,
                         Cmnd = DSKhachHangVM.KhachHang.CMND.ToString(),
                         Hochieu = DSKhachHangVM.KhachHang.HoChieu,
-                        Del = false
+                        Del = false,
+                        Visa = DSKhachHangVM.KhachHang.Visa,
+                        YeuCauVisa = DSKhachHangVM.KhachHang.YeuCauVisa
                     };
 
                     _unitOfWork.khachTourRepository.Create(khachtour);

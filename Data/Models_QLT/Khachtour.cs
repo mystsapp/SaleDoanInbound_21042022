@@ -25,5 +25,7 @@ namespace Data.Models_QLT
         public string Ghichu { get; set; }
         public string Logfile { get; set; }
         public bool? Del { get; set; }
+        public string Visa { get; set; }
+        public string YeuCauVisa { get; set; }
     }
 }

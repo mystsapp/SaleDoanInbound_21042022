@@ -139,7 +139,8 @@ namespace Data.Repository
                 list = list.Where(x => x.Sgtcode.ToLower().Contains(searchString.Trim().ToLower()) ||
                                        (!string.IsNullOrEmpty(x.SoHopDong.ToLower()) && x.SoHopDong.ToLower().Contains(searchString.ToLower())) ||
                                        (!string.IsNullOrEmpty(x.ChuDeTour.ToLower()) && x.ChuDeTour.ToLower().Contains(searchString.ToLower())) ||
-                                       (!string.IsNullOrEmpty(x.TuyenTQ.ToLower()) && x.TuyenTQ.ToLower().Contains(searchString.ToLower()))).ToList();
+                                       (!string.IsNullOrEmpty(x.TuyenTQ.ToLower()) && x.TuyenTQ.ToLower().Contains(searchString.ToLower())) ||
+                                       (!string.IsNullOrEmpty(x.NguoiTao.ToLower()) && x.NguoiTao.ToLower().Contains(searchString.ToLower()))).ToList();
             }
             list = list.OrderByDescending(x => x.NgayTao).ToList();
             var count = list.Count();

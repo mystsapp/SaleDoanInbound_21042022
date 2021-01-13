@@ -25,7 +25,7 @@ namespace Data.Models_QLT
         public decimal Exttwncost { get; set; }
         public int Homestay { get; set; }
         public int Homestaypax { get; set; }
-        public decimal? Homestaycost { get; set; }
+        public decimal Homestaycost { get; set; }
         public string Homestaynote { get; set; }
         public int Oth { get; set; }
         public int Othpax { get; set; }
@@ -34,5 +34,6 @@ namespace Data.Models_QLT
         public string Currency { get; set; }
         public string Note { get; set; }
         public string Logfile { get; set; }
+        public decimal? Idtourprog { get; set; }
     }
 }

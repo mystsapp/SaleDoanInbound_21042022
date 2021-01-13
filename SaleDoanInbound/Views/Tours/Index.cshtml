@@ -237,7 +237,7 @@
                                     }
 
                                     <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.SoHopDong)</td>
-                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.ChuDeTour)</td>
+                                    <td class="tdVal" data-id="@item.Id">@item.ChuDeTour.ToString().ToUpper()</td>
                                     <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.TuyenTQ)</td>
                                     <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayDen.ToString("dd/MM/yyyy"))</td>
                                     <td class="tdVal" data-id="@item.Id">@Html.Raw(item.NgayDi.ToString("dd/MM/yyyy"))</td>

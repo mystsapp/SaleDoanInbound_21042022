@@ -33,5 +33,6 @@ namespace Data.Models_QLT
         public string Othtype { get; set; }
         public string Currency { get; set; }
         public string Note { get; set; }
+        public decimal? Idtourprog { get; set; }
     }
 }

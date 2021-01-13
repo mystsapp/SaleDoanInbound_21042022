@@ -21,5 +21,6 @@ namespace Data.Models_QLT
         public string Chinhanh { get; set; }
         public string Httt { get; set; }
         public string Logfile { get; set; }
+        public decimal? Idtourprog { get; set; }
     }
 }
