@@ -112,6 +112,11 @@ namespace Data.Repository
             return _context.Set<T>().AsNoTracking().SingleOrDefault(predicate);
         }
 
+        public IEnumerable<T> GetAllAsNoTracking()
+        {
+            return _context.Set<T>().AsNoTracking();
+        }
+
         public async Task<IEnumerable<T>> FindIncludeOneAsync(Expression<Func<T, object>> expressObj, Expression<Func<T, bool>> expression)
         {
             return await _context.Set<T>().Include(expressObj).Where(expression).ToListAsync();

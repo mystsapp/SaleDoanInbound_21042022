@@ -155,7 +155,7 @@ namespace SaleDoanInbound.Controllers
 
         [HttpPost, ActionName("KhachHangEditPartialPost")]
         [ValidateAntiForgeryToken]
-        public async Task<JsonResult> KhachHangEditPartialPost()
+        public async Task<JsonResult> KhachHangEditPartialPost(decimal id)
         {
             var tour = await _unitOfWork.tourRepository.GetByLongIdAsync(DSKhachHangVM.KhachHang.TourId);
 
@@ -182,7 +182,9 @@ namespace SaleDoanInbound.Controllers
                         Loaiphong = DSKhachHangVM.KhachHang.LoaiPhong,
                         Cmnd = DSKhachHangVM.KhachHang.CMND.ToString(),
                         Hochieu = DSKhachHangVM.KhachHang.HoChieu,
-                        Del = false
+                        Del = false,
+                        Visa = DSKhachHangVM.KhachHang.Visa,
+                        YeuCauVisa = DSKhachHangVM.KhachHang.YeuCauVisa
                     };
 
                     _unitOfWork.khachTourRepository.Update(khachtour);

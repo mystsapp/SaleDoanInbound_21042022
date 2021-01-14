@@ -219,6 +219,42 @@ var indexController = {
         // close create invoice partial
 
         //////////////////////////////////////////////////////////////////////////////// CreateKhachPartial
+        
+        //////////////////////////////////////////////////////////////////////////////// EditKhachPartial
+
+        // DSKhachHang
+
+        $('.btnEditKhachHang').off('click').on('click', function () {
+
+            idKhachTour = $(this).data('id');
+
+            $('#sDSKhach').hide(500);
+            $('#khachHangCreatePartial').hide(500);
+            //$('#createInvoicePartial').hide(500);
+
+            var url = '/DSKhachHangs/KhachHangEditPartialPost';
+            $.get(url, { id: idKhachTour }, function (response) {
+
+                $('#khachHangEditPartial').show(500);
+
+                $('#khachHangEditPartial').html(response);
+
+            });
+        });
+
+        // DSKhachHang
+
+        // close create partial
+        $('#btnCloseKhachCreatePartial').off('click').on('click', function () {
+            $('#sDSKhach').show(500);
+        });
+        $('#btnBackKhachHangCreatePartial').off('click').on('click', function () {
+            $('#khachHangCreatePartial').hide(500);
+            $('#sDSKhach').show(500);
+        });
+        // close create invoice partial
+
+        //////////////////////////////////////////////////////////////////////////////// EditKhachPartial
 
         //////////////////////////////////////////////////////////////////////////////// CreateInvoicePartial finish post
 

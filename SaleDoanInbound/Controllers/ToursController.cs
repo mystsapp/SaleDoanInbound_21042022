@@ -310,10 +310,48 @@ namespace SaleDoanInbound.Controllers
             TourVM.Tour.NgayTao = DateTime.Now;
             TourVM.Tour.NguoiTao = user.Username;
             TourVM.Tour.ChuDeTour = TourVM.Tour.ChuDeTour.ToUpper();
-            if (string.IsNullOrEmpty(TourVM.Tour.SoHopDong))
+
+            // next SoHopdong --> bat buoc phai co'
+            if (TourVM.Tour.NgayKyHopDong != null)
+            {
+                DateTime dateTime;
+                dateTime = DateTime.Now;
+
+                var currentYear = dateTime.Year;
+                var subfix = "/IB/" + currentYear.ToString();
+                var tour = _unitOfWork.tourRepository.GetAllAsNoTracking().OrderByDescending(x => x.SoHopDong).ToList().FirstOrDefault();
+                if (string.IsNullOrEmpty(tour.SoHopDong))
+                {
+                    TourVM.Tour.SoHopDong = GetNextId.NextID("", "") + subfix;
+                }
+                else
+                {
+                    var oldYear = tour.SoHopDong.Substring(10, 4);
+                    // cung nam
+                    if (oldYear == currentYear.ToString())
+                    {
+                        var oldSoHopdong = tour.SoHopDong.Substring(0, 6);
+                        TourVM.Tour.SoHopDong = GetNextId.NextID(oldSoHopdong, "") + subfix;
+                    }
+                    else
+                    {
+                        // sang nam khac' chay lai tu dau
+                        TourVM.Tour.SoHopDong = GetNextId.NextID("", "") + subfix;
+                    }
+
+                }
+            }
+            else
             {
                 TourVM.Tour.SoHopDong = "";
             }
+            
+            // next SoHopdong
+
+            //if (string.IsNullOrEmpty(TourVM.Tour.SoHopDong))
+            //{
+            //    TourVM.Tour.SoHopDong = "";
+            //}
             TourVM.Tour.NguoiTao = user.Username;
 
             // create sgtcode
@@ -532,13 +570,51 @@ namespace SaleDoanInbound.Controllers
                 TourVM.Tour.TrangThai = TourVM.Tour.TrangThai ?? "0";
                 // kiem tra trang thai
 
+                // next SoHopdong --> bat buoc phai co'                
+                if (string.IsNullOrEmpty(TourVM.Tour.SoHopDong) && 
+                    TourVM.Tour.NgayKyHopDong != null) // SoHopDong = rong~ va` co' NgayKyHopDong
+                {
+                    DateTime dateTime;
+                    dateTime = DateTime.Now;
+
+                    var currentYear = dateTime.Year;
+                    var subfix = "/IB/" + currentYear.ToString();
+                    var tour = _unitOfWork.tourRepository.GetAllAsNoTracking().OrderByDescending(x => x.SoHopDong).ToList().FirstOrDefault();
+                    if (string.IsNullOrEmpty(tour.SoHopDong))
+                    {
+                        TourVM.Tour.SoHopDong = GetNextId.NextID("", "") + subfix;
+                    }
+                    else
+                    {
+                        var oldYear = tour.SoHopDong.Substring(10, 4);
+                        // cung nam
+                        if (oldYear == currentYear.ToString())
+                        {
+                            var oldSoHopdong = tour.SoHopDong.Substring(0, 6);
+                            TourVM.Tour.SoHopDong = GetNextId.NextID(oldSoHopdong, "") + subfix;
+                        }
+                        else
+                        {
+                            // sang nam khac' chay lai tu dau
+                            TourVM.Tour.SoHopDong = GetNextId.NextID("", "") + subfix;
+                        }
+
+                    }
+                }
+                //else
+                //{
+                //    TourVM.Tour.SoHopDong = "";
+                //}
+
+                // next SoHopdong
+
                 TourVM.Tour.SoHopDong = TourVM.Tour.SoHopDong ?? "";
 
                 // kiem tra thay doi : trong getbyid() va ngoai view
                 #region log file
                 //var t = _unitOfWork.tourRepository.GetById(id);
-                var t = _unitOfWork.tourRepository.GetByIdAsNoTracking(x => x.Id == id);
-
+                var t = _unitOfWork.tourRepository.GetSingleNoTracking(x => x.Id == id);
+                
                 if (t.ChiNhanhDHId != TourVM.Tour.ChiNhanhDHId)
                 {
                     temp += String.Format("- CN DH thay đổi: {0}->{1}", _unitOfWork.dmChiNhanhRepository.GetById(t.ChiNhanhDHId).Macn, _unitOfWork.dmChiNhanhRepository.GetById(TourVM.Tour.ChiNhanhDHId).Macn);
@@ -622,7 +698,7 @@ namespace SaleDoanInbound.Controllers
                 }
                 if (t.NgayKyHopDong != TourVM.Tour.NgayKyHopDong)
                 {
-                    temp += String.Format("- Ngày ký HD phán thay đổi: {0:dd/MM/yyyy}->{1:dd/MM/yyyy}", t.NgayKyHopDong, TourVM.Tour.NgayKyHopDong);
+                    temp += String.Format("- Ngày ký HD thay đổi: {0:dd/MM/yyyy}->{1:dd/MM/yyyy}", t.NgayKyHopDong, TourVM.Tour.NgayKyHopDong);
                 }
                 if (t.NguoiKyHopDong != TourVM.Tour.NguoiKyHopDong)
                 {

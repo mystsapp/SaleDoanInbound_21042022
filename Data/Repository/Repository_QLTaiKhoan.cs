@@ -115,5 +115,11 @@ namespace Data.Repository
         {
             return await _context.Set<T>().Include(expressObj).Where(expression).ToListAsync();
         }
+
+        public IEnumerable<T> GetAllAsNoTracking()
+        {
+            return _context.Set<T>().AsNoTracking();
+        }
+
     }
 }

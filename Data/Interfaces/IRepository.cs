@@ -9,6 +9,7 @@ namespace Data.Interfaces
     public interface IRepository<T> where T : class
     {
         IEnumerable<T> GetAll();
+        IEnumerable<T> GetAllAsNoTracking();
         Task<IEnumerable<T>> GetAllIncludeOneAsync(Expression<Func<T, object>> expression);
         Task<IEnumerable<T>> GetAllIncludeAsync(Expression<Func<T, object>> predicate, Expression<Func<T, object>> predicate2);
         IEnumerable<T> Find(Func<T, bool> predicate);
