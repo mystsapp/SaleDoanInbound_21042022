@@ -224,15 +224,16 @@ var indexController = {
 
         // DSKhachHang
 
-        $('.btnEditKhachHang').off('click').on('click', function () {
-
+        $('.btnEditKhachHang').off('click').on('click', function (e) {
+            e.preventDefault();
+            debugger
             idKhachTour = $(this).data('id');
 
             $('#sDSKhach').hide(500);
             $('#khachHangCreatePartial').hide(500);
             //$('#createInvoicePartial').hide(500);
 
-            var url = '/DSKhachHangs/KhachHangEditPartialPost';
+            var url = '/DSKhachHangs/KhachHangEditPartial';
             $.get(url, { id: idKhachTour }, function (response) {
 
                 $('#khachHangEditPartial').show(500);
@@ -244,15 +245,15 @@ var indexController = {
 
         // DSKhachHang
 
-        // close create partial
-        $('#btnCloseKhachCreatePartial').off('click').on('click', function () {
-            $('#sDSKhach').show(500);
-        });
-        $('#btnBackKhachHangCreatePartial').off('click').on('click', function () {
-            $('#khachHangCreatePartial').hide(500);
-            $('#sDSKhach').show(500);
-        });
-        // close create invoice partial
+        //// close create partial
+        //$('#btnCloseKhachCreatePartial').off('click').on('click', function () {
+        //    $('#sDSKhach').show(500);
+        //});
+        //$('#btnBackKhachHangCreatePartial').off('click').on('click', function () {
+        //    $('#khachHangCreatePartial').hide(500);
+        //    $('#sDSKhach').show(500);
+        //});
+        //// close create invoice partial
 
         //////////////////////////////////////////////////////////////////////////////// EditKhachPartial
 

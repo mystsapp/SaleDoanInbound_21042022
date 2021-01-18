@@ -315,7 +315,8 @@ namespace SaleDoanInbound.Controllers
             if (TourVM.Tour.NgayKyHopDong != null)
             {
                 DateTime dateTime;
-                dateTime = DateTime.Now;
+                //dateTime = DateTime.Now;
+                dateTime = TourVM.Tour.NgayKyHopDong.Value;
 
                 var currentYear = dateTime.Year;
                 var subfix = "/IB/" + currentYear.ToString();
@@ -575,7 +576,8 @@ namespace SaleDoanInbound.Controllers
                     TourVM.Tour.NgayKyHopDong != null) // SoHopDong = rong~ va` co' NgayKyHopDong
                 {
                     DateTime dateTime;
-                    dateTime = DateTime.Now;
+                    // dateTime = DateTime.Now;
+                    dateTime = TourVM.Tour.NgayKyHopDong.Value;
 
                     var currentYear = dateTime.Year;
                     var subfix = "/IB/" + currentYear.ToString();

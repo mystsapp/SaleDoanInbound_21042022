@@ -85,8 +85,9 @@ namespace SaleDoanInbound.Controllers
                 try
                 {
                     // SaleDoanIB
+                    DSKhachHangVM.KhachHang.Sgtcode = tour.Sgtcode;
                     _unitOfWork.dSKhachHangRepository.Create(DSKhachHangVM.KhachHang);
-                    // await _unitOfWork.Complete();
+                     // await _unitOfWork.Complete();
                     // qltour
                     Khachtour khachtour = new Khachtour()
                     {
@@ -136,8 +137,8 @@ namespace SaleDoanInbound.Controllers
             });
 
         }
-        
-        public IActionResult EditKhachHangPartial(decimal id)
+
+        public IActionResult KhachHangEditPartial(decimal id)
         {
             if (id == 0)
                 return NotFound();
@@ -149,15 +150,15 @@ namespace SaleDoanInbound.Controllers
                 return NotFound();
 
             DSKhachHangVM.KhachTour = khachtour;
+            DSKhachHangVM.Tour = _unitOfWork.tourRepository.Find(x => x.Sgtcode == khachtour.Sgtcode).FirstOrDefault();
 
             return PartialView(DSKhachHangVM);
         }
 
         [HttpPost, ActionName("KhachHangEditPartialPost")]
         [ValidateAntiForgeryToken]
-        public async Task<JsonResult> KhachHangEditPartialPost(decimal id)
+        public async Task<JsonResult> KhachHangEditPartialPost()
         {
-            var tour = await _unitOfWork.tourRepository.GetByLongIdAsync(DSKhachHangVM.KhachHang.TourId);
 
             // from login session
             //var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
@@ -165,33 +166,44 @@ namespace SaleDoanInbound.Controllers
             {
                 try
                 {
-                    // SaleDoanIB
-                    _unitOfWork.dSKhachHangRepository.Update(DSKhachHangVM.KhachHang);
-                    // await _unitOfWork.Complete();
-                    // qltour
-                    Khachtour khachtour = new Khachtour()
-                    {
-                        Sgtcode = tour.Sgtcode,
-                        Stt = DSKhachHangVM.KhachHang.STT,
-                        Makh = DSKhachHangVM.KhachHang.MaKH,
-                        Hoten = DSKhachHangVM.KhachHang.TenKH,
-                        Ngaysinh = DSKhachHangVM.KhachHang.NgaySinh,
-                        Phai = DSKhachHangVM.KhachHang.GioiTinh,
-                        Diachi = DSKhachHangVM.KhachHang.DiaChi,
-                        Quoctich = DSKhachHangVM.KhachHang.QuocTich,
-                        Loaiphong = DSKhachHangVM.KhachHang.LoaiPhong,
-                        Cmnd = DSKhachHangVM.KhachHang.CMND.ToString(),
-                        Hochieu = DSKhachHangVM.KhachHang.HoChieu,
-                        Del = false,
-                        Visa = DSKhachHangVM.KhachHang.Visa,
-                        YeuCauVisa = DSKhachHangVM.KhachHang.YeuCauVisa
-                    };
 
-                    _unitOfWork.khachTourRepository.Update(khachtour);
+                    // khachtour
+                    _unitOfWork.khachTourRepository.Update(DSKhachHangVM.KhachTour);
+                    await _unitOfWork.Complete(); // cap nhat xong khachtour
 
+                    var khachHangs = await _unitOfWork.dSKhachHangRepository.FindAsync(x => x.Sgtcode == DSKhachHangVM.KhachTour.Sgtcode);
+
+                    // delete all DSKhachHang by sgtcode and CreateRange == update for khachtour
+                    _unitOfWork.dSKhachHangRepository.DeleteRange(khachHangs);
                     await _unitOfWork.Complete();
-                    //SetAlert("Thêm mới thành công.", "success");
-                    //return Redirect(strUrl);
+
+                    var khachtours = await _unitOfWork.khachTourRepository.FindAsync(x => x.Sgtcode == DSKhachHangVM.KhachTour.Sgtcode);
+                    var tours = await _unitOfWork.tourRepository.FindAsync(x => x.Sgtcode == DSKhachHangVM.KhachTour.Sgtcode);
+                    
+                    foreach (var item in khachtours) // add lai
+                    {
+                        KhachHang khachHang = new KhachHang()
+                        {
+                            TourId = tours.FirstOrDefault().Id,
+                            Sgtcode = item.Sgtcode,
+                            STT = item.Stt ?? 0,
+                            MaKH = item.Makh,
+                            TenKH = item.Hoten,
+                            NgaySinh = item.Ngaysinh,
+                            GioiTinh = item.Phai.Value,
+                            DiaChi = item.Diachi,
+                            QuocTich = item.Quoctich,
+                            LoaiPhong = item.Loaiphong,
+                            CMND = Convert.ToInt32(item.Cmnd),
+                            HoChieu = item.Hochieu,
+                            Del = item.Del ?? false,
+                            Visa = item.Visa,
+                            YeuCauVisa = item.YeuCauVisa
+                        };
+                        _unitOfWork.dSKhachHangRepository.Create(khachHang);
+                    }
+                    await _unitOfWork.Complete();
+                    // delete all DSKhachHang by sgtcode and CreateRange == update for khachtour
 
                 }
                 catch (Exception ex)

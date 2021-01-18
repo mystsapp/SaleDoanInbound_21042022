@@ -1,4 +1,7 @@
 ﻿@model DSKhachHangViewModel
+@{
+    var id = Model.Tour.Id;
+}
 <!-- Main content -->
 <section class="content">
 
@@ -17,11 +20,12 @@
         </div>
         <div class="card-body">
 
-            <form asp-action="CreateInvoicePartial" method="post" id="frmEditKhachHangPartial" autocomplete="off">
+            <form asp-action="KhachHangEditPartialPost" method="post" id="frmEditKhachHangPartial" autocomplete="off">
                 <div class="p-4 border rounded">
 
                     <input asp-for="KhachTour.Idkhach" type="hidden" /> <!-- this field is required-->
                     <input asp-for="KhachTour.Sgtcode" type="hidden" /> <!-- this field is required-->
+                    <input asp-for="KhachTour.Del" type="hidden" /> <!-- this field is required-->
 
                     <div asp-validation-summary="All" class="text-danger"></div>
 
@@ -158,11 +162,11 @@
 
 </script>
 
-<script src="~/js/Admin/KhachHangEditPartial/EditController.js"></script>
+<script src="~/js/Admin/KhachHangPartial/EditController.js"></script>
 <script src="~/js/Admin/Tours/indexController.js"></script>
 <!-- Validation -->
 <script>
-    var tourIdInCreateInvoicePartial = @Model.KhachHang.TourId; // send it to indexController
+    var tourIdInKhachHangEditPartial = @Model.Tour.Id; // send it to indexController
     @*$('#frmInvoiceCreatePartial').validate({
         //rules: {
         //    email: {
@@ -220,7 +224,7 @@
     //    //    alert('a');
     //    //};
     //});
-*@
+*@      
     $('#btnEditKhachHangPartialSubmit').off('click').on('click', function () {
 
         // if frm valid
@@ -233,7 +237,7 @@
                 dataType: "json",
                 success: function (response) {
                     if (response.status) {
-
+                        
                         toastr.success('Cập nhật khách hàng thành công!');
 
                         $('#khachHangEditPartial').hide(500);
@@ -249,8 +253,10 @@
                             });
 
                         });*@
-                        indexController.Load_DSKhachHang(tourIdInCreateInvoicePartial);
-                        $('#sDSKhach').show(500);
+                        //indexController.Load_DSKhachHang(tourIdInCreateInvoicePartial);
+                        //$('#sDSKhach').show(500);
+
+                        Load_DSKhachHang(tourIdInKhachHangEditPartial)
                     }
                     else {
                         toastr.error('Cập nhật khách hàng không thành công!');
@@ -271,10 +277,28 @@
                         //});
 
                     }
+                },
+                error: function (err) {
+                    toastr.error(err.responseText);
                 }
             });
         //}
     });
+
+    function Load_DSKhachHang (tourid) {
+
+        $('#khachHangCreatePartial').hide(500);
+        //$('#createInvoicePartial').hide(500);
+
+        var url = '/DSKhachHangs/DSKhachHangPartial';
+        $.get(url, { tourid: tourid }, function (response) {
+
+            $('#sDSKhach').html(response);
+
+            $('#sDSKhach').show(500);
+
+        });
+    }
 
 </script>
 

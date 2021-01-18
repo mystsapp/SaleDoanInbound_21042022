@@ -9,6 +9,7 @@ namespace Data.Repository
     public interface IDSKhachHangRepository : IRepository<KhachHang>
     {
         void CreateRange(IEnumerable<KhachHang> khachHangs);
+        void DeleteRange(IEnumerable<KhachHang> khachHangs);
     }
     public class DSKhachHangRepository : Repository<KhachHang>, IDSKhachHangRepository
     {
@@ -19,6 +20,12 @@ namespace Data.Repository
         public void CreateRange(IEnumerable<KhachHang> khachHangs)
         {
             _context.AddRange(khachHangs);
+            _context.SaveChanges();
+        }
+        
+        public void DeleteRange(IEnumerable<KhachHang> khachHangs)
+        {
+            _context.RemoveRange(khachHangs);
             _context.SaveChanges();
         }
 
