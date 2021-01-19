@@ -59,7 +59,7 @@
 
                                             <span id="confirmDeleteSpan_@item.Idkhach" style="display: none">
                                                 <span class="text-dark spanXoa">Hủy?</span>
-                                                <button type="button" data-id="@item.Idkhach" class="btn btn-danger btn-xs btnHuyBN">Yes</button>
+                                                <button type="button" data-id="@item.Idkhach"  data-tourid="@Model.Tour.Id" class="btn btn-danger btn-xs btnXoaKhachHangPartial">Yes</button>
                                                 <button type="button" class="btn btn-primary btn-xs" onclick="confirmDelete('@item.Idkhach', false)">No</button>
                                             </span>
 

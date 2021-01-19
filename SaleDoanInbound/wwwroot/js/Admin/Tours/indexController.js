@@ -222,11 +222,9 @@ var indexController = {
         
         //////////////////////////////////////////////////////////////////////////////// EditKhachPartial
 
-        // DSKhachHang
-
         $('.btnEditKhachHang').off('click').on('click', function (e) {
             e.preventDefault();
-            debugger
+            
             idKhachTour = $(this).data('id');
 
             $('#sDSKhach').hide(500);
@@ -243,19 +241,50 @@ var indexController = {
             });
         });
 
-        // DSKhachHang
-
-        //// close create partial
-        //$('#btnCloseKhachCreatePartial').off('click').on('click', function () {
-        //    $('#sDSKhach').show(500);
-        //});
-        //$('#btnBackKhachHangCreatePartial').off('click').on('click', function () {
-        //    $('#khachHangCreatePartial').hide(500);
-        //    $('#sDSKhach').show(500);
-        //});
-        //// close create invoice partial
+        // close create partial
+        $('#btnCloseKhachEditPartial').off('click').on('click', function () {
+            $('#sDSKhach').show(500);
+        });
+        $('#btnBackKhachHangEditPartial').off('click').on('click', function () {
+            $('#khachHangEditPartial').hide(500);
+            $('#sDSKhach').show(500);
+        });
+        // close create invoice partial
 
         //////////////////////////////////////////////////////////////////////////////// EditKhachPartial
+
+        //////////////////////////////////////////////////////////////////////////////// XoaKhachPartial
+        
+        $('.btnXoaKhachHangPartial').off('click').on('click', function () {
+
+            id = $(this).data('id');
+            
+            $.ajax({
+                url: '/DSKhachHangs/Delete',
+                data: {
+                    id: id
+                },
+                dataType: 'json',
+                type: 'POST',
+                success: function (response) {
+                    if (response.status) {
+
+                        toastr.success('Xóa thành công!'); // toastr in admin/tour/indexController.js
+
+                        tourid = response.tourid;
+
+                        indexController.Load_DSKhachHang(tourid);
+                    }
+                    else {
+                        toastr.error(response.message);
+
+                    }
+                }
+            });
+
+        });
+        
+        //////////////////////////////////////////////////////////////////////////////// Xoa1KhachPartial
 
         //////////////////////////////////////////////////////////////////////////////// CreateInvoicePartial finish post
 
@@ -823,7 +852,7 @@ var indexController = {
 
         // xoa CTBN in CTBN Partial
         $('.btnXoaCTBienNhanInCTBienNhanPartial').off('click').on('click', function () {
-            debugger
+            
             chitietbnid = $(this).data('chitietbnid');
             biennhanid = $(this).data('biennhanid');
 
@@ -909,7 +938,7 @@ var indexController = {
     Load_DSKhachHang: function (tourid) {
 
         $('#khachHangCreatePartial').hide(500);
-        //$('#createInvoicePartial').hide(500);
+        $('#khachHangEditPartial').hide(500);
 
         var url = '/DSKhachHangs/DSKhachHangPartial';
         $.get(url, { tourid: tourid }, function (response) {
