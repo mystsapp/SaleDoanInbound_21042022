@@ -278,7 +278,7 @@
 
                         <div class="col-md-3">
                             <label asp-for="Tour.NgayKyHopDong" class="control-label"></label>
-                            <input type="text" value="" asp-for="Tour.NgayKyHopDong" class="form-control maskInput" />
+                            <input type="text" value="" asp-for="Tour.NgayKyHopDong" class="form-control maskInput" id="txtNgayKyHD"/>
                             <span asp-validation-for="Tour.NgayKyHopDong" class="text-danger"></span>
                         </div>
 
@@ -566,6 +566,13 @@
             required: true,
             messages: {
                 // required: "Ngày đến không được để trống"
+            }
+        });
+        
+        $('#txtNgayKyHD').rules('add', {
+            dateFormat: true,
+            messages: {
+                //date: "(***)"
             }
         });
 

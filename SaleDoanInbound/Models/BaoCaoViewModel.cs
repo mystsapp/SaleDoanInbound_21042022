@@ -3,6 +3,7 @@ using Data.Models_IB;
 using Data.Models_QLT;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Data.Dtos;
 using Data.Models_IB;
@@ -221,7 +222,7 @@ namespace SaleDoanInbound.Controllers
 
             // get list phong ban / dh 
             //TourVM.listPhongDH = GetListPhongBanDH(); // departoperator (qltour)
-            TourVM.listPhongDH = GetListPhongBanDH().Where(x => x.Maphong == "DH" || x.Maphong == "TB").ToList();
+            TourVM.listPhongDH = GetListPhongBanDH().Where(x => x.Maphong == "DH" || x.Maphong == "TB" || x.Maphong == "KDOB").ToList();
             // get list phong ban / dh
 
             // CompaniesViewModel
@@ -519,10 +520,15 @@ namespace SaleDoanInbound.Controllers
 
             // get list phong ban / thi truong
             TourVM.listPhongDH = GetListPhongBanDH(); // departoperator (qltour)
-            // get list phong ban / thi truong
+                                                      // get list phong ban / thi truong
+
+            //// get list phong ban / dh 
+            //GetListPhongBanDH(); // departoperator (qltour)
+            //// get list phong ban / dh
 
             // get list phong ban / dh 
-            GetListPhongBanDH(); // departoperator (qltour)
+            //TourVM.listPhongDH = GetListPhongBanDH(); // departoperator (qltour)
+            TourVM.listPhongDH = GetListPhongBanDH().Where(x => x.Maphong == "DH" || x.Maphong == "TB" || x.Maphong == "KDOB").ToList();
             // get list phong ban / dh
 
             return View(TourVM);
@@ -1646,6 +1652,22 @@ namespace SaleDoanInbound.Controllers
         //        status = tour.HuyTour
         //    });
 
+        //}
+
+        //public static string ReformatDate(string input)
+        //{
+        //    try
+        //    {
+        //        return Regex.Replace(input,
+        //              "\\b(?<year>\\d{2,4})/(?<month>\\d{1,2})/(?<day>\\d{1,2})\\b",
+        //              "${year}-${month}-${day}",
+        //              RegexOptions.IgnoreCase,
+        //              TimeSpan.FromMilliseconds(1000));
+        //    }
+        //    catch (RegexMatchTimeoutException)
+        //    {
+        //        return input;
+        //    }
         //}
     }
 }
