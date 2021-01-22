@@ -198,6 +198,7 @@ namespace SaleDoanInbound.Controllers
 
         public IActionResult Create(string strUrl)
         {
+
             // from session
             var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
             

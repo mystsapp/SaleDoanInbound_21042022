@@ -108,12 +108,15 @@ var CreateController = {
             dataType: 'json',
             success: function (response) {
                 var khachHang = JSON.parse(response.khachHang)
-                //console.log(khachHang.Address);
-                //console.log(khachHang);
-                $('#txtTenKH').val(khachHang.Name)
-                $('#txtDienThoai').val(khachHang.Tel)
-                $('#txtFax').val(khachHang.Fax)
-                $('#txtDiaChi').val(khachHang.Address)
+                if (khachHang !== null) { // moi load vao
+                    //console.log(khachHang.Address);
+                    //console.log(khachHang);
+                    $('#txtTenKH').val(khachHang.Name)
+                    $('#txtDienThoai').val(khachHang.Tel)
+                    $('#txtFax').val(khachHang.Fax)
+                    $('#txtDiaChi').val(khachHang.Address)
+                }
+                
             }
         });
     },
