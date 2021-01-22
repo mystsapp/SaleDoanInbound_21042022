@@ -274,13 +274,13 @@
 
                         <div class="col-md-3">
                             <label asp-for="Tour.NgayDamPhan" class="control-label"></label>
-                            <input type="text" asp-for="Tour.NgayDamPhan" class="form-control maskInput" asp-format="{0:dd/MM/yyyy}" />
+                            <input type="text" asp-for="Tour.NgayDamPhan" class="form-control maskInput" asp-format="{0:dd/MM/yyyy}" id="txtNgayDamPhan"/>
                             <span asp-validation-for="Tour.NgayDamPhan" class="text-danger"></span>
                         </div>
 
                         <div class="col-md-3">
                             <label asp-for="Tour.NgayKyHopDong" class="control-label"></label>
-                            <input type="text" asp-for="Tour.NgayKyHopDong" class="form-control maskInput" />
+                            <input type="text" asp-for="Tour.NgayKyHopDong" class="form-control maskInput" id="txtNgayKyHD"/>
                             <span asp-validation-for="Tour.NgayKyHopDong" class="text-danger"></span>
                         </div>
 
@@ -318,19 +318,19 @@
 
                         <div class="col-md-3">
                             <label asp-for="Tour.HanXuatVe" class="control-label"></label>
-                            <input type="text" asp-for="Tour.HanXuatVe" class="form-control maskInput" />
+                            <input type="text" asp-for="Tour.HanXuatVe" class="form-control maskInput" id="txtHanXuatVe"/>
                             <span asp-validation-for="Tour.HanXuatVe" class="text-danger"></span>
                         </div>
 
                         <div class="col-md-3">
                             <label asp-for="Tour.NgayThanhLyHD" class="control-label"></label>
-                            <input type="text" asp-for="Tour.NgayThanhLyHD" class="form-control maskInput" />
+                            <input type="text" asp-for="Tour.NgayThanhLyHD" class="form-control maskInput" id="txtNgayThanhLyHD"/>
                             <span asp-validation-for="Tour.NgayThanhLyHD" class="text-danger"></span>
                         </div>
 
                         <div class="col-md-3">
                             <label asp-for="Tour.NgayNhanDuTien" class="control-label"></label>
-                            <input type="text" asp-for="Tour.NgayNhanDuTien" class="form-control maskInput" />
+                            <input type="text" asp-for="Tour.NgayNhanDuTien" class="form-control maskInput" id="txtNgayNhanDuTien"/>
                             <span asp-validation-for="Tour.NgayNhanDuTien" class="text-danger"></span>
                         </div>
 
@@ -468,6 +468,7 @@
 
         $('#txtNgayDen').rules('add', {
             required: true,
+            dateFormat: true,
             messages: {
                 // required: "Ngày đến không được để trống"
             }
@@ -475,6 +476,7 @@
 
         $('#txtNgayDi').rules('add', {
             required: true,
+            dateFormat: true,
             messages: {
                 // required: "Ngày đến không được để trống"
             }
@@ -568,6 +570,42 @@
             required: true,
             messages: {
                 // required: "Ngày đến không được để trống"
+            }
+        });
+
+
+        $('#txtNgayKyHD').rules('add', {
+            dateFormat: true,
+            messages: {
+                //date: "(***)"
+            }
+        });
+
+        $('#txtNgayDamPhan').rules('add', {
+            dateFormat: true,
+            messages: {
+                //date: "(***)"
+            }
+        });
+
+        $('#txtHanXuatVe').rules('add', {
+            dateFormat: true,
+            messages: {
+                //date: "(***)"
+            }
+        });
+
+        $('#txtNgayThanhLyHD').rules('add', {
+            dateFormat: true,
+            messages: {
+                //date: "(***)"
+            }
+        });
+
+        $('#txtNgayNhanDuTien').rules('add', {
+            dateFormat: true,
+            messages: {
+                //date: "(***)"
             }
         });
 

@@ -1,4 +1,27 @@
-﻿function addCommas(x) {
+﻿$.validator.addMethod("dateFormat",
+    function (value, element) {
+        var check = false;
+        var re = /^\d{1,2}\/\d{1,2}\/\d{4}$/;
+        if (re.test(value)) {
+            var adata = value.split('/');
+            var dd = parseInt(adata[0], 10);
+            var mm = parseInt(adata[1], 10);
+            var yyyy = parseInt(adata[2], 10);
+            var xdata = new Date(yyyy, mm - 1, dd);
+            if ((xdata.getFullYear() === yyyy) && (xdata.getMonth() === mm - 1) && (xdata.getDate() === dd)) {
+                check = true;
+            }
+            else {
+                check = false;
+            }
+        } else {
+            check = false;
+        }
+        return this.optional(element) || check;
+    },
+    "Chưa đúng định dạng dd/mm/yyyy.");
+
+function addCommas(x) {
     var parts = x.toString().split(".");
     parts[0] = parts[0].replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     return parts.join(".");
@@ -68,7 +91,7 @@ var CreateController = {
         var tuyentq = $('#hidDdlTuyenTQ').val();
         selectedValues = tuyentq.split(',');
         $('#ddlTuyenTQ').val(selectedValues);
-        console.log(selectedValues);
+        // console.log(selectedValues);
         // for tuyentq edit
 
         $('#ddlMaKh').off('change').on('change', function () {
