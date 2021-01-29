@@ -1406,7 +1406,7 @@ namespace SaleDoanInbound.Controllers
 
         public IEnumerable<Khachtour> ListDsKhach(string id)
         {
-            var hd = _unitOfWork.khachTourRepository.Find(x => x.Sgtcode == id && x.Del == false).ToList();
+            var hd = _unitOfWork.khachTourRepository.Find(x => x.Sgtcode == id && x.Del == false).OrderBy(x => x.Stt).ToList();
 
             return hd;
         }

@@ -66,7 +66,7 @@ namespace SaleDoanInbound.Controllers
             //DSKhachHangVM.KhachHangs = await _unitOfWork.dSKhachHangRepository.FindIncludeOneAsync(x => x.Tour, y => y.TourId == tourId);
 
             //DSKhachHangVM.KhachHangs = await _unitOfWork.dSKhachHangRepository.FindAsync(x => x.TourId == tourId && x.Del == false);
-            var hd = _unitOfWork.khachTourRepository.Find(x => x.Sgtcode == DSKhachHangVM.Tour.Sgtcode && x.Del == false).ToList();
+            var hd = _unitOfWork.khachTourRepository.Find(x => x.Sgtcode == DSKhachHangVM.Tour.Sgtcode && x.Del == false).OrderBy(x => x.Stt).ToList();
 
             DSKhachHangVM.ListDsKhach = hd;
             return PartialView(DSKhachHangVM);
