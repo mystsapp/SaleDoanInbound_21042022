@@ -221,13 +221,14 @@ namespace SaleDoanInbound.Controllers
 
             //InvoiceVM.Invoice = new Data.Models_IB.Invoice();
             InvoiceVM.Invoice.Date = DateTime.Now;
-            InvoiceVM.Invoice.NgayVAT = DateTime.Now;
+            InvoiceVM.Invoice.NgayVAT = DateTime.Now; // ngaytao
             InvoiceVM.Invoice.NguoiTao = user.Username;
 
             #region next id
             ////// next id
             var currentYear = DateTime.Now.Year;
-            var invoice = _unitOfWork.invoiceRepository.GetAll().OrderByDescending(x => x.Id).FirstOrDefault();
+            //var invoice = _unitOfWork.invoiceRepository.GetAll().OrderByDescending(x => x.Id).FirstOrDefault();
+            var invoice = _unitOfWork.invoiceRepository.GetAllAsNoTracking().OrderByDescending(x => x.NgayVAT).FirstOrDefault();
             if (invoice == null)
             {
                 var id = GetNextId.NextID("", "");

@@ -12,7 +12,7 @@ var createController = {
 
         // format .numbers
         $('input.numbers').keyup(function (event) {
-
+            
             // Chỉ cho nhập số
             if (event.which >= 37 && event.which <= 40) return;
 

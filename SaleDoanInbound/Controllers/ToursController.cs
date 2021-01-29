@@ -1132,7 +1132,7 @@ namespace SaleDoanInbound.Controllers
                             khachHang.NgaySinh = DateTime.Parse(workSheet.Cells[i, 4].Value.ToString());
 
                         if (workSheet.Cells[i, 5].Value != null)
-                            khachHang.GioiTinh = (workSheet.Cells[i, 5].Value.ToString() == "Nam") ? true : false;
+                            khachHang.GioiTinh = (workSheet.Cells[i, 5].Value.ToString().ToLower() == "nam") ? true : false;
 
                         if (workSheet.Cells[i, 6].Value != null)
                             khachHang.QuocTich = workSheet.Cells[i, 6].Value.ToString();
@@ -1161,6 +1161,8 @@ namespace SaleDoanInbound.Controllers
 
                         khachHangs.Add(khachHang);
                     }
+
+                    var abc = "";
 
                     //_db.Customers.AddRange(customerList);
                     //_db.SaveChanges();

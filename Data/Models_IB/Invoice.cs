@@ -95,7 +95,7 @@ namespace Data.Models_IB
         public string MsThue { get; set; }
 
         [DisplayName("Hợp đồng")]
-        [MaxLength(10, ErrorMessage = "Chiều dài tối đa là 10 ký tự"), Column(TypeName = "varchar(10)")]
+        [MaxLength(20, ErrorMessage = "Chiều dài tối đa là 20 ký tự"), Column(TypeName = "varchar(20)")]
         public string HopDong { get; set; }
 
         [DisplayName("Ngày hủy")]

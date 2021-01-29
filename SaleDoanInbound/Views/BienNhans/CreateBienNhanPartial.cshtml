@@ -190,6 +190,7 @@
 
     $('#btnCreateBienNhanPartialSubmit').off('click').on('click', function () {
         debugger
+
         if ($('#frmCreateBienNhanPartial').valid()) {
             var bienNhan = $('#frmCreateBienNhanPartial').serialize();
             $.ajax({
