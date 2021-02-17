@@ -16,6 +16,7 @@ namespace Data.Services
         IEnumerable<TourBaoCaoDto> DoanhSoTheoNgay(string searchFromDate, string searchToDate, string loaiTour, List<string> maCNs);
         IEnumerable<TourBaoCaoDto> DoanhSoTheoThiTruong(string searchFromDate, string searchToDate, List<string> thiTruongs);
         Task<IEnumerable<TourBaoCaoDto>> ChartDoanhSoTheoThiTruongs(DateTime date);
+        Task<IEnumerable<BienNhanDto>> BienNhanExcel(string searchFromDate, string searchToDate, string searchString);
     }
     public class BaoCaoService : IBaoCaoService
     {
@@ -24,6 +25,123 @@ namespace Data.Services
         public BaoCaoService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
+        }
+
+        public async Task<IEnumerable<BienNhanDto>> BienNhanExcel(string searchFromDate, string searchToDate, string searchString)
+        {
+
+            var list = new List<BienNhanDto>();
+            var bienNhans = await _unitOfWork.bienNhanRepository.GetAllIncludeOneAsync(x => x.Tour);
+
+            if (bienNhans == null)
+            {
+                return null;
+            }
+
+            #region search date
+            DateTime fromDate, toDate;
+            if (!string.IsNullOrEmpty(searchFromDate) && !string.IsNullOrEmpty(searchToDate))
+            {
+
+                try
+                {
+                    fromDate = DateTime.Parse(searchFromDate);
+                    toDate = DateTime.Parse(searchToDate);
+
+                    if (fromDate > toDate)
+                    {
+                        return null;
+                    }
+                    bienNhans = bienNhans.Where(x => x.NgayTao >= fromDate &&
+                                       x.NgayTao < toDate.AddDays(1)).ToList();
+                }
+                catch (Exception)
+                {
+
+                    return null;
+                }
+
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(searchFromDate))
+                {
+                    try
+                    {
+                        fromDate = DateTime.Parse(searchFromDate);
+                        bienNhans = bienNhans.Where(x => x.NgayTao >= fromDate).ToList();
+                    }
+                    catch (Exception)
+                    {
+                        return null;
+                    }
+
+                }
+                if (!string.IsNullOrEmpty(searchToDate))
+                {
+                    try
+                    {
+                        toDate = DateTime.Parse(searchToDate);
+                        bienNhans = bienNhans.Where(x => x.NgayTao < toDate.AddDays(1)).ToList();
+
+                    }
+                    catch (Exception)
+                    {
+                        return null;
+                    }
+
+                }
+            }
+            #endregion search date
+
+            var cacNoiDungHuyTours = _unitOfWork.cacNoiDungHuyTourRepository.GetAll();
+            var tours = _unitOfWork.tourRepository.GetAll();
+            var chiTietBNs = _unitOfWork.chiTietBNRepository.GetAll();
+
+            foreach (var item in bienNhans)
+            {
+                var noiDungBN = chiTietBNs.Where(x => x.BienNhanId == item.Id).Select(x => x.Descript);
+                string noiDungBNString = "";
+                if(noiDungBN != null)
+                {
+                    foreach (var str in noiDungBN)
+                    {
+                        noiDungBNString += "- " + str + "\n";
+                    }
+                }
+                
+                list.Add(new BienNhanDto()
+                {
+                    DiaChi = item.DiaChi,
+                    DienThoai = item.DienThoai,
+                    GhiChu = item.GhiChu,
+                    HuyBN = item.HuyBN,
+                    Id = item.Id,
+                    SoBN = item.SoBN,
+                    KhachLe = item.KhachLe,
+                    LoaiTien = item.LoaiTien,
+                    LogFile = item.LogFile,
+                    NgayBN = item.NgayBN,
+                    NgayHuy = item.NgayHuy,
+                    NgaySua = item.NgaySua,
+                    NgayTao = item.NgayTao,
+                    NguoiSua = item.NguoiSua,
+                    NguoiTao = item.NguoiTao,
+                    NoiDung = noiDungBNString,
+                    NoiDungHuy = (item.NDHuyBNId == 0) ? "0" : _unitOfWork.cacNoiDungHuyTourRepository.GetById(item.NDHuyBNId).NoiDung,
+                    TourId = item.TourId,
+                    Sgtcode = item.Tour.Sgtcode,
+                    SK = item.SK,
+                    SoTien = item.SoTien,
+                    TenKhach = item.TenKhach,
+                    TyGia = item.TyGia,
+                    TrangThai = tours.Where(x => x.Id == item.TourId).FirstOrDefault().TrangThai
+
+                });
+            }
+
+            return list;
+
         }
 
         public async Task<IEnumerable<TourBaoCaoDto>> ChartDoanhSoTheoThiTruongs(DateTime date)
@@ -766,12 +884,12 @@ namespace Data.Services
             {
                 List<string> thiTruongList = new List<string>();
                 var usernames = list.Select(x => x.NguoiTao).Distinct();
-                foreach(var item in usernames)
+                foreach (var item in usernames)
                 {
                     var thiTruong = _unitOfWork.userRepository.Find(x => x.Username == item).FirstOrDefault().PhongBanId;
                     thiTruongList.Add(thiTruong);
                 }
-                
+
                 list = list.Where(item1 => thiTruongList.Any(item2 => item1.ThiTruongByNguoiTao == item2)).ToList();
             }
 

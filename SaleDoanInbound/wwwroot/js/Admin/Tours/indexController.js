@@ -134,7 +134,7 @@ var indexController = {
 
         // tour click --> load tourpro in qltour
         $('tr .tdVal').click(function () {
-
+            
             //$('#createInvoicePartial').hide();
             //$('#createCTInvoicePartial').hide();
             $('#editInvoicePartial').hide(500);

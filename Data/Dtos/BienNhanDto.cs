@@ -73,5 +73,7 @@ namespace Data.Dtos
         public string NguoiSua { get; set; }
 
         public string LogFile { get; set; }
+
+        public string TrangThai { get; set; }
     }
 }

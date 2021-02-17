@@ -35,5 +35,9 @@ namespace SaleDoanInbound.Models
         // theo THI TRUONNG
         public IEnumerable<Phongban> Phongbans { get; set; }
         // theo THI TRUONNG
+
+        // Bien nhan Excel
+        public IEnumerable<BienNhanDto> BienNhanDtos { get; set; }
+        // Bien nhan Excel
     }
 }
