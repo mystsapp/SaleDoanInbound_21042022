@@ -2401,11 +2401,11 @@ namespace SaleDoanInbound.Controllers
             // Định dạng chiều dài cho cột
             xlSheet.Column(1).Width = 10;// STT
             xlSheet.Column(2).Width = 20;// CODE ĐOÀN
-            xlSheet.Column(3).Width = 35;// SỐ BN
+            xlSheet.Column(3).Width = 20;// SỐ BN
             xlSheet.Column(4).Width = 15;// NGÀY BN
-            xlSheet.Column(5).Width = 40;// NỘI DUNG
-            xlSheet.Column(6).Width = 20;// SỐ TIỀN
-            xlSheet.Column(7).Width = 10;// NGƯỜI TẠO
+            xlSheet.Column(5).Width = 50;// NỘI DUNG
+            xlSheet.Column(6).Width = 15;// SỐ TIỀN
+            xlSheet.Column(7).Width = 15;// NGƯỜI TẠO
 
             xlSheet.Cells[1, 1].Value = "CÔNG TY DVLH SAIGONTOURIST";
             xlSheet.Cells[1, 1].Style.Font.SetFromFont(new Font("Times New Roman", 14, FontStyle.Bold));
@@ -2416,14 +2416,14 @@ namespace SaleDoanInbound.Controllers
             xlSheet.Cells[2, 1, 2, 7].Merge = true;
             setCenterAligment(2, 1, 2, 7, xlSheet);
             // dinh dang tu ngay den ngay
-            if (string.IsNullOrEmpty(searchFromDate) && string.IsNullOrEmpty(searchToDate))
-            {
-                ViewBag.searchFromDate = searchFromDate;
-                ViewBag.searchToDate = searchToDate;
-                SetAlert("Từ ngày đến ngày không được để trống.", "warning");
-                //return RedirectToAction(nameof(DoanhSoTheoSale));
-                return LocalRedirect("/BienNhans/Index");
-            }
+            //if (string.IsNullOrEmpty(searchFromDate) && string.IsNullOrEmpty(searchToDate))
+            //{
+            //    ViewBag.searchFromDate = searchFromDate;
+            //    ViewBag.searchToDate = searchToDate;
+            //    SetAlert("Từ ngày đến ngày không được để trống.", "warning");
+            //    //return RedirectToAction(nameof(DoanhSoTheoSale));
+            //    return LocalRedirect("/BienNhans/Index");
+            //}
             if (searchFromDate == searchToDate)
             {
                 fromTo = "Ngày: " + searchFromDate;
@@ -2498,14 +2498,16 @@ namespace SaleDoanInbound.Controllers
 
                     xlSheet.Cells[dong, 3].Value = item.SoBN;
                     TrSetCellBorder(xlSheet, dong, 3, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+                    //xlSheet.Cells[dong, 3].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
                     // xlSheet.Cells[dong, 3].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
                     xlSheet.Cells[dong, 4].Value = item.NgayBN.ToShortDateString();
                     TrSetCellBorder(xlSheet, dong, 4, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
                     //xlSheet.Cells[dong, 4].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
-                    xlSheet.Cells[dong, 5].Value = item.NoiDung;
+                    xlSheet.Cells[dong, 5].Value = item.NoiDung.Replace("*","\n");
                     TrSetCellBorder(xlSheet, dong, 5, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
+                    xlSheet.Cells[dong, 5].Style.WrapText = true;                    
                     // xlSheet.Cells[dong, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
                     xlSheet.Cells[dong, 6].Value = item.SoTien.ToString("N0");
@@ -2548,6 +2550,7 @@ namespace SaleDoanInbound.Controllers
             //setFontSize(6, 1, 6 + d.Count() + 2, 8, 11, xlSheet);
             // canh giua cot stt
             setCenterAligment(6, 1, 6 + dong, 1, xlSheet);
+            xlSheet.Cells.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
             // canh giua code chinhanh
             //setCenterAligment(6, 3, 6 + dong + 2, 3, xlSheet);
             // NumberFormat(6, 6, 6 + d.Count(), 6, xlSheet);

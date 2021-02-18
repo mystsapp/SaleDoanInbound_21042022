@@ -38,6 +38,18 @@ namespace Data.Services
                 return null;
             }
 
+            // searchString
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                bienNhans = bienNhans.Where(x => x.SoBN.ToLower().Contains(searchString.ToLower()) ||
+                                       (!string.IsNullOrEmpty(x.TenKhach) && x.TenKhach.ToLower().Contains(searchString.ToLower())) ||
+                                       (!string.IsNullOrEmpty(x.DienThoai) && x.DienThoai.ToLower().Contains(searchString.ToLower())) ||
+                                       (!string.IsNullOrEmpty(x.Tour.Sgtcode) && x.Tour.Sgtcode.ToLower().Contains(searchString.ToLower())));
+            }
+
+            // searchString
+
+
             #region search date
             DateTime fromDate, toDate;
             if (!string.IsNullOrEmpty(searchFromDate) && !string.IsNullOrEmpty(searchToDate))
@@ -102,11 +114,19 @@ namespace Data.Services
             {
                 var noiDungBN = chiTietBNs.Where(x => x.BienNhanId == item.Id).Select(x => x.Descript);
                 string noiDungBNString = "";
-                if(noiDungBN != null)
+                if(noiDungBN.Count() != 0)
                 {
                     foreach (var str in noiDungBN)
                     {
-                        noiDungBNString += "- " + str + "\n";
+                        int lastItem = noiDungBN.ToList().IndexOf(str);
+                        if(lastItem != noiDungBN.Count() - 1)
+                        {
+                            noiDungBNString += "- " + str + "*";
+                        }
+                        else
+                        {
+                            noiDungBNString += "- " + str;
+                        }
                     }
                 }
                 
