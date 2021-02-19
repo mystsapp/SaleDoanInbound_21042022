@@ -2454,7 +2454,7 @@ namespace SaleDoanInbound.Controllers
             int dong = 6;
 
             BaoCaoVM.BienNhanDtos = await _baoCaoService.BienNhanExcel(searchFromDate, searchToDate, searchString);
-            
+
             //du lieu
             //int iRowIndex = 6;
 
@@ -2501,13 +2501,20 @@ namespace SaleDoanInbound.Controllers
                     //xlSheet.Cells[dong, 3].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
                     // xlSheet.Cells[dong, 3].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
+                    if (item.HuyBN == true)
+                    {
+                        xlSheet.Cells[dong, 3].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        xlSheet.Cells[dong, 3].Style.Fill.BackgroundColor.SetColor(Color.Red);
+                        
+                    }
+                    
                     xlSheet.Cells[dong, 4].Value = item.NgayBN.ToShortDateString();
                     TrSetCellBorder(xlSheet, dong, 4, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
                     //xlSheet.Cells[dong, 4].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
-                    xlSheet.Cells[dong, 5].Value = item.NoiDung.Replace("*","\n");
+                    xlSheet.Cells[dong, 5].Value = item.NoiDung.Replace("*", "\n");
                     TrSetCellBorder(xlSheet, dong, 5, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
-                    xlSheet.Cells[dong, 5].Style.WrapText = true;                    
+                    xlSheet.Cells[dong, 5].Style.WrapText = true;
                     // xlSheet.Cells[dong, 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
                     xlSheet.Cells[dong, 6].Value = item.SoTien.ToString("N0");
