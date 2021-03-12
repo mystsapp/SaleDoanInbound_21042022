@@ -134,7 +134,7 @@ namespace SaleDoanInbound.Controllers
 
             ChiTietBNVM.ChiTietBN.NgayTao = DateTime.Now;
             ChiTietBNVM.ChiTietBN.NguoiTao = user.Username;
-
+            
             if (string.IsNullOrEmpty(ChiTietBNVM.ChiTietBN.Descript))
             {
                 ChiTietBNVM.ChiTietBN.Descript = "";
@@ -145,13 +145,18 @@ namespace SaleDoanInbound.Controllers
             ChiTietBNVM.ChiTietBN.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
             // sotien --> BN
             var bienNhan = _unitOfWork.bienNhanRepository.GetById(ChiTietBNVM.ChiTietBN.BienNhanId);
-            var st = bienNhan.SoTien + ChiTietBNVM.ChiTietBN.Amount;
+            //// tinh ra số tiền vnd
+            //ChiTietBNVM.ChiTietBN.Amount = ChiTietBNVM.ChiTietBN.Amount * bienNhan.TyGia; // tinh ra tien62 vnd, neu vnd --> ty gia == 1
+
+            var st = bienNhan.STNguyenTe + ChiTietBNVM.ChiTietBN.Amount;
 
             if (bienNhan.SoTien != st)
             {
                 temp += String.Format("- Số tiền thay đổi: {0:N0} -> {1:N0}, người thay đổi: {2}, vào lúc: {3} ", bienNhan.SoTien, st, user.Username, System.DateTime.Now.ToString());
             }
-            bienNhan.SoTien = st;
+            bienNhan.STNguyenTe = st;
+            bienNhan.SoTien = st * bienNhan.TyGia;
+            
             // kiem tra thay doi
             if (temp.Length > 0)
             {
@@ -359,14 +364,19 @@ namespace SaleDoanInbound.Controllers
                     temp += String.Format("- Tổng tiền thay đổi: {0:N0}->{1:N0}", t.Amount, ChiTietBNVM.ChiTietBN.Amount);
                     // sotien --> BN
                     bienNhan = _unitOfWork.bienNhanRepository.GetById(ChiTietBNVM.ChiTietBN.BienNhanId);
-                    var st = (bienNhan.SoTien - t.Amount) + ChiTietBNVM.ChiTietBN.Amount;
+                    //// tinh ra số tiền vnd
+                    //ChiTietBNVM.ChiTietBN.Amount = ChiTietBNVM.ChiTietBN.Amount * bienNhan.TyGia; // tinh ra tien62 vnd, neu vnd --> ty gia == 1
+
+                    var st = (bienNhan.STNguyenTe - t.Amount) + ChiTietBNVM.ChiTietBN.Amount;
                     string tempBN = "", logBN = "";
 
                     if (bienNhan.SoTien != st)
                     {
                         tempBN += String.Format("- Số tiền thay đổi: {0:N0} -> {1:N0}, người thay đổi: {2}, vào lúc: {3} ", bienNhan.SoTien, st, user.Username, System.DateTime.Now.ToString());
                     }
-                    bienNhan.SoTien = st;
+                    bienNhan.STNguyenTe = st;
+                    bienNhan.SoTien = st * bienNhan.TyGia;
+                    
                     _unitOfWork.bienNhanRepository.Update(bienNhan);
 
                     // kiem tra thay doi
@@ -534,7 +544,7 @@ namespace SaleDoanInbound.Controllers
 
             // sotien --> BN
             var bienNhan = _unitOfWork.bienNhanRepository.GetById(chiTietBN.BienNhanId);
-            var st = bienNhan.SoTien - chiTietBN.Amount;
+            var st = bienNhan.STNguyenTe - chiTietBN.Amount;
 
             string tempBN = "", logBN = "";
 
@@ -542,7 +552,8 @@ namespace SaleDoanInbound.Controllers
             {
                 tempBN += String.Format("- Số tiền thay đổi: {0:N0} -> {1:N0}, người thay đổi: {2}, vào lúc: {3} ", bienNhan.SoTien, st, user.Username, System.DateTime.Now.ToString());
             }
-            bienNhan.SoTien = st;
+            bienNhan.STNguyenTe = st;
+            bienNhan.SoTien = st * bienNhan.TyGia;
 
             // kiem tra thay doi
             if (tempBN.Length > 0)

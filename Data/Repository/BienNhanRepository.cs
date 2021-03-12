@@ -56,6 +56,7 @@ namespace Data.Repository
                     Sgtcode = item.Tour.Sgtcode,
                     SK = item.SK,
                     SoTien = item.SoTien,
+                    STNguyenTe = item.STNguyenTe,
                     TenKhach = item.TenKhach,
                     TyGia = item.TyGia
 

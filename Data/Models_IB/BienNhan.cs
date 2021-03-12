@@ -81,6 +81,10 @@ namespace Data.Models_IB
         [DisplayName("Số tiền")]
         [Column(TypeName = "decimal(18,2)")]
         public decimal SoTien { get; set; }
+        
+        [DisplayName("ST nguyên tệ")]
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal STNguyenTe { get; set; }
 
         [DisplayName("Ngày tạo")]
         public DateTime NgayTao { get; set; }

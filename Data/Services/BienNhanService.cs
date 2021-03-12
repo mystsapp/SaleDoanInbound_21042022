@@ -67,13 +67,14 @@ namespace Data.Services
                     Sgtcode = item.Tour.Sgtcode,
                     SK = item.SK,
                     SoTien = item.SoTien,
+                    STNguyenTe = item.STNguyenTe,
                     TenKhach = item.TenKhach,
                     TyGia = item.TyGia
 
                 });
             }
 
-            var list = listBNDto.AsQueryable();
+            var list = listBNDto.OrderByDescending(x => x.NgayBN).AsQueryable();
             if (!string.IsNullOrEmpty(searchString))
             {
                 list = list.Where(x => x.SoBN.ToLower().Contains(searchString.ToLower()) ||

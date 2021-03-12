@@ -60,6 +60,9 @@ namespace Data.Dtos
 
         [DisplayName("Số tiền")]
         public decimal SoTien { get; set; }
+        
+        [DisplayName("ST nguyên tệ")]
+        public decimal STNguyenTe { get; set; }
 
         [DisplayName("Ngày tạo")]
         public DateTime NgayTao { get; set; }

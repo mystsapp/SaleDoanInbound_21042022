@@ -56,8 +56,8 @@
                             <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().NgayBN)</th>
                             <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().TenKhach)</th>
                             <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().DienThoai)</th>
-                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().SoTien)</th>
-                            @*<th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().NoiDung)</th>*@
+                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().SoTien) VND</th>
+                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().STNguyenTe)</th>
                             <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().SK)</th>
                             <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().GhiChu)</th>
                             <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().LoaiTien)</th>
@@ -116,6 +116,7 @@
                                 <td class="tdBNVal" data-id="@item.Id">@Html.DisplayFor(m => item.TenKhach)</td>
                                 <td class="tdBNVal" data-id="@item.Id">@Html.DisplayFor(m => item.DienThoai)</td>
                                 <td class="tdBNVal" data-id="@item.Id">@Html.Raw(item.SoTien.ToString("N0"))</td>
+                                <td class="tdBNVal" data-id="@item.Id">@Html.Raw(item.STNguyenTe.ToString("N0"))</td>
                                 <td class="tdBNVal" data-id="@item.Id">@Html.Raw(item.SK.ToString("N0"))</td>
                                 <td class="tdBNVal" data-id="@item.Id">@Html.DisplayFor(m => item.GhiChu)</td>
                                 <td class="tdBNVal" data-id="@item.Id">@Html.DisplayFor(m => item.LoaiTien)</td>

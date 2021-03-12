@@ -393,7 +393,7 @@ namespace SaleDoanInbound.Controllers
             tourinf.Dep = TourVM.Tour.NgayDi;
             tourinf.Pax = TourVM.Tour.SoKhachTT;
             tourinf.Childern = TourVM.Tour.SKTreEm;
-            tourinf.Reference = TourVM.Tour.TuyenTQ;
+            tourinf.Reference = TourVM.Tour.ChuDeTour;
             tourinf.Concernto = user.Username; // nguoi tao tour
             tourinf.Operators = ""; // nguoi dieu hanh
             tourinf.Departoperator = TourVM.Tour.PhongDH; //departoperator : qltour / phong dh
@@ -767,7 +767,7 @@ namespace SaleDoanInbound.Controllers
                 tourinf.Dep = TourVM.Tour.NgayDi;
                 tourinf.Pax = TourVM.Tour.SoKhachTT;
                 tourinf.Childern = TourVM.Tour.SKTreEm;
-                tourinf.Reference = TourVM.Tour.TuyenTQ;
+                tourinf.Reference = TourVM.Tour.ChuDeTour;
                 tourinf.Concernto = TourVM.Tour.NguoiTao; // nguoi tao tour
                 tourinf.Operators = "";
                 tourinf.Departoperator = TourVM.Tour.PhongDH; //departoperator : qltour
@@ -1129,7 +1129,19 @@ namespace SaleDoanInbound.Controllers
                             khachHang.TenKH = workSheet.Cells[i, 3].Value.ToString();
 
                         if (workSheet.Cells[i, 4].Value != null)
-                            khachHang.NgaySinh = DateTime.Parse(workSheet.Cells[i, 4].Value.ToString());
+                        {
+                            DateTime ngaySinh;
+                            try
+                            {
+                                ngaySinh = DateTime.Parse(workSheet.Cells[i, 4].Value.ToString());
+                                khachHang.NgaySinh = ngaySinh;
+                            }
+                            catch (Exception ex)
+                            {
+                                khachHang.NgaySinh = null;
+                            }
+                        }
+                            
 
                         if (workSheet.Cells[i, 5].Value != null)
                             khachHang.GioiTinh = (workSheet.Cells[i, 5].Value.ToString().ToLower() == "nam") ? true : false;
