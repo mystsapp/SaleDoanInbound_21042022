@@ -76,6 +76,9 @@ namespace SaleDoanInbound
             services.AddTransient<IDichVuRepository, DichVuRepository>();
             services.AddTransient<IDieuXeRepository, DieuXeRepository>();
             services.AddTransient<IHuongDanRepository, HuongDanRepository>();
+            services.AddTransient<IUserQLTourRepository, UserQLTourRepository>();
+            services.AddTransient<ITraHauCanRepository, TraHauCanRepository>();
+            services.AddTransient<IThanhPho_QLT_Repository, ThanhPho_QLT_Repository>();
 
             // qltaikhoan
             services.AddTransient<IQuocGiaRepository, QuocGiaRepository>();
@@ -109,6 +112,7 @@ namespace SaleDoanInbound
             services.AddTransient<ITourinfService, TourinfService>();
             services.AddTransient<ITourService, TourService>();
             services.AddTransient<IDSKhachHangService, DSKhachHangService>();
+            services.AddTransient<IUserQLTourService, UserQLTourService>();
 
             // services layer
 

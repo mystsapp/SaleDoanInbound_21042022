@@ -6,9 +6,10 @@ namespace Data.Models_QLT
     public partial class VSupplier
     {
         public string Code { get; set; }
-        public string Codecn { get; set; }
+        public string Tapdoan { get; set; }
         public string Tengiaodich { get; set; }
         public string Tenthuongmai { get; set; }
+        public string Tinhtp { get; set; }
         public string Thanhpho { get; set; }
         public string Quocgia { get; set; }
         public string Diachi { get; set; }
@@ -23,5 +24,7 @@ namespace Data.Models_QLT
         public DateTime Ngaytao { get; set; }
         public string Nguoitao { get; set; }
         public string Chinhanh { get; set; }
+        public DateTime? Ngayhethan { get; set; }
+        public string Logfile { get; set; }
     }
 }

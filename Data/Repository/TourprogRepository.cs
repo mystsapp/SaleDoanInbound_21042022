@@ -14,6 +14,8 @@ namespace Data.Repository
         Task<Tourprog> GetByIdAsync(string id);
 
         IEnumerable<Tourprog> Find(Func<Tourprog, bool> predicate);
+
+        IEnumerable<Tourprog> ListTourProg(string code);
     }
     public class TourprogRepository : ITourprogRepository
     {
@@ -37,5 +39,11 @@ namespace Data.Repository
         {
             return await _qltourContext.Tourprog.FindAsync(id);
         }
+
+        public IEnumerable<Tourprog> ListTourProg(string code)
+        {
+            return _qltourContext.Tourprog.Where(x => x.Sgtcode == code).OrderBy(x => x.Stt);
+        }
+
     }
 }

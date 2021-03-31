@@ -14,6 +14,8 @@ namespace Data.Repository
         Task<Dieuxe> GetByIdAsync(decimal id);
 
         IEnumerable<Dieuxe> Find(Func<Dieuxe, bool> predicate);
+
+        IEnumerable<Dieuxe> ListXe(string code);
     }
 
     public class DieuXeRepository : IDieuXeRepository
@@ -37,6 +39,11 @@ namespace Data.Repository
         public async Task<Dieuxe> GetByIdAsync(decimal id)
         {
             return await _qltourContext.Dieuxe.FindAsync(id);
+        }
+
+        public IEnumerable<Dieuxe> ListXe(string code)
+        {
+            return _qltourContext.Dieuxe.Where(x => x.Sgtcode == code && x.Del == false).OrderBy(x => x.Sttxe);
         }
     }
 }

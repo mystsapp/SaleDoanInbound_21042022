@@ -47,6 +47,9 @@ namespace Data.Repository
         IDichVuRepository dichVuRepository { get; }
         IDieuXeRepository dieuXeRepository { get; }
         IHuongDanRepository huongDanRepository { get; }
+        IUserQLTourRepository userQLTourRepository { get; }
+        ITraHauCanRepository traHauCanRepository { get; }
+        IThanhPho_QLT_Repository thanhPho_QLT_Repository { get; }
 
         // qltaikhoan
         IUserQLTaiKhoanRepository userQLTaiKhoanRepository { get; }
@@ -130,6 +133,9 @@ namespace Data.Repository
             dieuXeRepository = new DieuXeRepository(_qltourContext);
             huongDanRepository = new HuongDanRepository(_qltourContext);
             quocGiaRepository = new QuocGiaRepository(_qltourContext);
+            userQLTourRepository = new UserQLTourRepository(_qltourContext);
+            traHauCanRepository = new TraHauCanRepository(_qltourContext);
+            thanhPho_QLT_Repository = new ThanhPho_QLT_Repository(_qltourContext);
 
             // qltaikhoan
 
@@ -215,8 +221,9 @@ namespace Data.Repository
         public IDichVuRepository dichVuRepository { get; }
         public IDieuXeRepository dieuXeRepository { get; }
         public IHuongDanRepository huongDanRepository { get; }
-
-
+        public IUserQLTourRepository userQLTourRepository { get; }
+        public ITraHauCanRepository traHauCanRepository { get; }
+        public IThanhPho_QLT_Repository thanhPho_QLT_Repository { get; }
         // qltaikhoan
         public IUserQLTaiKhoanRepository userQLTaiKhoanRepository { get; }
         public IQuocGiaRepository quocGiaRepository { get; }

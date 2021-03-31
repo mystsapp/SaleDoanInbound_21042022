@@ -22,5 +22,8 @@ namespace Data.Models_QLT
         public string Httt { get; set; }
         public string Logfile { get; set; }
         public decimal? Idtourprog { get; set; }
+        public string SerialOld { get; set; }
+        public int PaxOld { get; set; }
+        public int ChildernOld { get; set; }
     }
 }

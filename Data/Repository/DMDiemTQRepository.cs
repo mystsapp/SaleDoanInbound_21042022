@@ -15,6 +15,8 @@ namespace Data.Repository
         Task<Dmdiemtq> GetByIdAsync(string id);
 
         IEnumerable<Dmdiemtq> Find(Func<Dmdiemtq, bool> predicate);
+        
+        Dmdiemtq GetById(string id);
     }
     public class DMDiemTQRepository : IDMDiemTQRepository
     {
@@ -38,6 +40,11 @@ namespace Data.Repository
         public async Task<Dmdiemtq> GetByIdAsync(string id)
         {
             return await _qltourContext.Dmdiemtq.FindAsync(id);
+        }
+        
+        public Dmdiemtq GetById(string id)
+        {
+            return _qltourContext.Dmdiemtq.Find(id);
         }
     }
 }

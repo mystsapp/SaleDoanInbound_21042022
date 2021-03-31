@@ -77,7 +77,7 @@ namespace Data.Services
                 }
 
             }
-            catch
+            catch(Exception ex)
             {
                 return "";
             }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -19,6 +20,9 @@ using Microsoft.EntityFrameworkCore.Internal;
 using Newtonsoft.Json;
 using OfficeOpenXml;
 using SaleDoanInbound.Models;
+//using Xceed.Document.NET;
+using Xceed.Words.NET;
+using Novacode;
 
 namespace SaleDoanInbound.Controllers
 {
@@ -27,15 +31,17 @@ namespace SaleDoanInbound.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly ITourService _tourService;
+        private readonly IUserQLTourService _userQLTourService;
 
         [BindProperty]
         public TourViewModel TourVM { get; set; }
 
-        public ToursController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment, ITourService tourService)
+        public ToursController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment, ITourService tourService, IUserQLTourService userQLTourService)
         {
             _unitOfWork = unitOfWork;
             _webHostEnvironment = webHostEnvironment;
             _tourService = tourService;
+            _userQLTourService = userQLTourService;
 
             TourVM = new TourViewModel()
             {
@@ -1361,7 +1367,7 @@ namespace SaleDoanInbound.Controllers
                         break;
                     case "SSE":
                         var sse = _unitOfWork.sightseeingRepository.Find(x => x.Sgtcode == item.Sgtcode && x.Stt == item.Stt);
-                        var diemtq = await _unitOfWork.dMDiemTQRepository.GetByIdAsync(item.TourItem);// _diemtqRepository.GetById(item.tour_item);
+                        var diemtq = await _unitOfWork.dMDiemTQRepository.GetByIdAsync(item.TourItem);// _diemtqRepository.GetById(item.TourItem);
                         string tq = "";
                         if (diemtq != null)
                         {
@@ -1636,6 +1642,712 @@ namespace SaleDoanInbound.Controllers
             }
         }
         //-----------KhoiPhucTour------------
+
+        #region in chuong trinh tour
+        public IActionResult ExportWord(string sgtcode, bool ingia)
+        {
+            ingia = true;
+            var listTourPro = TourProgBySGTCode(sgtcode, ingia).OrderBy(x => x.Ngaythang);
+            var tourInfo = _unitOfWork.tourInfRepository.GetById(sgtcode);
+            var tourNote = _unitOfWork.tournoteRepository.GetById(sgtcode);
+            var userInfo = _userQLTourService.GetUserByUsername(tourInfo.Operators);
+            var saleInfo = _unitOfWork.userQLTourRepository.getSaleByUsername(tourInfo.Concernto, tourInfo.PasstypeId, tourInfo.Khachle);
+            var khachTours = _unitOfWork.khachTourRepository.ListKhachTour(sgtcode);
+            var congty = _unitOfWork.khachHangRepository.GetCompanyByCode(tourInfo.PasstypeId, tourInfo.CompanyId); // KhachHang = Company
+            var xe = _unitOfWork.dieuXeRepository.ListXe(sgtcode);
+            var hd = _unitOfWork.huongDanRepository.ListHuongdan(sgtcode);
+            var vListhc = _unitOfWork.traHauCanRepository.ListChiphiHaucan(sgtcode);
+            string tencongty = "";
+            if (congty != null)
+            {
+                tencongty = " - " + congty.Fullname;
+            }
+
+
+            Novacode.DocX doc = null;
+            string webRootPath = _webHostEnvironment.WebRootPath;
+            string fileName = webRootPath + @"\WordTemplateForTour.docx";
+            doc = Novacode.DocX.Load(fileName);
+
+            doc.AddCustomProperty(new Novacode.CustomProperty("sgtcode", "CHƯƠNG TRÌNH TOUR: " + sgtcode));
+            doc.AddCustomProperty(new CustomProperty("tuyen", "Tuyến: " + (string.IsNullOrEmpty(tourInfo.Reference) ? "" : tourInfo.Reference)));// _tuyentqRepository.GetById(tourInfo.routing).Tentuyen));
+            doc.AddCustomProperty(new CustomProperty("batDau", "Bắt đầu: " + tourInfo.Arr.ToString("dd/MM/yyyy")));
+            doc.AddCustomProperty(new CustomProperty("ketThuc", "Kết thúc: " + tourInfo.Dep.ToString("dd/MM/yyyy")));
+            string dh = "", dt = "", sale = "", dtsale = "";
+            if (userInfo != null && !string.IsNullOrEmpty(userInfo.hoten))
+            {
+                dh = userInfo.hoten;
+                dt = string.IsNullOrEmpty(userInfo.dienthoai) ? "" : " - " + userInfo.dienthoai;
+            }
+            else
+            {
+                userInfo = new UserInfo();
+            }
+            if (saleInfo != null && !string.IsNullOrEmpty(saleInfo.hoten))
+            {
+                sale = saleInfo.hoten.ToUpper();
+                dtsale = string.IsNullOrEmpty(saleInfo.dienthoai) ? "" : " - " + saleInfo.dienthoai;
+            }
+            else
+            {
+                sale = tourInfo.Concernto.ToUpper();
+            }
+            doc.AddCustomProperty(new CustomProperty("dieuHanh", "  Sale: " + sale + dtsale + " / Điều hành: " + dh + dt));
+            doc.AddCustomProperty(new CustomProperty("sk", "Sk: " + tourInfo.Pax + tencongty));
+            if (tourNote != null && !string.IsNullOrEmpty(tourNote.Headernode))
+            {
+                doc.InsertParagraph(tourNote.Headernode).Font("Times New Roman").FontSize(10);
+            }
+
+
+            var tourProgramTbl = doc.AddTable(1, 3);
+
+            tourProgramTbl.Rows[0].Cells[0].Paragraphs[0].Append("Giờ").Bold().Font("Times New Roman").FontSize(10).Alignment = Alignment.center;
+            tourProgramTbl.Rows[0].Cells[1].Paragraphs[0].Append("SK").Bold().Font("Times New Roman").FontSize(10).Alignment = Alignment.center;
+            tourProgramTbl.Rows[0].Cells[2].Paragraphs[0].Append("Chương trình").Bold().Font("Times New Roman").FontSize(10).Alignment = Alignment.center;
+
+            int dong = 0;
+            int tongkhach = 0;
+            string sokhach = "";
+            foreach (var i in listTourPro)
+            {
+                var row = tourProgramTbl.InsertRow();
+                tongkhach = i.Pax.Value + i.Childern.Value;
+                switch (i.Srvtype)
+                {
+                    case "ITI":
+                    case "TXT":
+                        break;
+                    default:
+                        if (tongkhach > 0)
+                            sokhach = tongkhach.ToString();
+                        else sokhach = "";
+                        break;
+                }
+                if (i.Date > 0)
+                {
+                    string ngaythang = i.Ngaythang == null ? "" : i.Ngaythang.Value.ToString("ddd, dd/MM/yyyy").ToUpper();
+                    string tu = "";
+                    string from = "", to = "";
+                    if (i.Srvtype == "ITI")
+                    {
+                        if (!string.IsNullOrEmpty(i.TourItem))
+                        {
+
+                            //from += _thanhphoRepository.ListThanhpho1().Where(x => x.Matp == i.TourItem).SingleOrDefault().Tentp;
+                            var thanhpho = _unitOfWork.thanhPhoForTuyenTQRepository.ListThanhpho1(x => x.Matp == i.TourItem);
+                            var count = thanhpho.Count();
+                            thanhpho = thanhpho.Where(x => x.Matp == i.TourItem);
+                            from += thanhpho.SingleOrDefault().Tentp;
+                        }
+                        if (!string.IsNullOrEmpty(i.Srvnode))
+                        {
+                            to += _unitOfWork.thanhPhoForTuyenTQRepository.ListThanhpho1(x => x.Matp == i.Srvnode).SingleOrDefault().Tentp;
+                        }
+
+                        if (from == "" && to != "")
+                        {
+                            tu += " Đến " + to;
+                        }
+                        else
+                        {
+                            if (from == to)
+                            {
+                                tu = from;
+                            }
+                            else
+                            {
+                                tu += from + (string.IsNullOrEmpty(to) ? "" : " - " + to);
+                            }
+
+                        }
+                    }
+
+                    string thu = ngaythang.Substring(0, 3);
+                    switch (thu)
+                    {
+                        case "MON": thu = "Thứ hai " + i.Ngaythang.Value.ToString("dd/MM/yyyy") + " " + tu; break;
+                        case "TUE": thu = "Thứ ba " + i.Ngaythang.Value.ToString("dd/MM/yyyy") + " " + tu; break;
+                        case "WED": thu = "Thứ tư " + i.Ngaythang.Value.ToString("dd/MM/yyyy") + " " + tu; break;
+                        case "THU": thu = "Thứ năm " + i.Ngaythang.Value.ToString("dd/MM/yyyy") + " " + tu; break;
+                        case "FRI": thu = "Thứ sáu " + i.Ngaythang.Value.ToString("dd/MM/yyyy") + " " + tu; break;
+                        case "SAT": thu = "Thứ bảy " + i.Ngaythang.Value.ToString("dd/MM/yyyy") + " " + tu; break;
+                        case "SUN": thu = "Chủ nhật " + i.Ngaythang.Value.ToString("dd/MM/yyyy") + " " + tu; break;
+                    }
+
+                    //     row.Cells[0].Paragraphs[0].Append("\n" + i.time).Alignment = Alignment.center;
+                    //row.Cells[1].Paragraphs[0].Append("\n"+i.pax.ToString()=="0"?"":i.pax.ToString()).Alignment = Alignment.center;
+
+                    //  row.Cells[1].Paragraphs[0].Append("\n" + sokhach).Alignment = Alignment.center;
+                    row.Cells[2].Paragraphs[0].Append("" + thu).Bold().Font("Times New Roman").FontSize(10);
+                    //row.Cells[2].Paragraphs[0].Append("\n- " + i.TourItem);
+                }
+                else
+                {
+                    row.Cells[0].Paragraphs[0].Append(i.Time).Font("Times New Roman").FontSize(10).Alignment = Alignment.center;
+                    row.Cells[1].Paragraphs[0].Append(sokhach).Font("Times New Roman").FontSize(10).Alignment = Alignment.center;
+                    row.Cells[2].Paragraphs[0].Append("- " + i.TourItem).Font("Times New Roman").FontSize(10);
+                }
+                dong++;
+                if (dong > 1)
+                {
+                    row.Cells[0].SetBorder(TableCellBorderType.Top, new Border(BorderStyle.Tcbs_dotDotDash, BorderSize.one, 0, Color.White));
+                    row.Cells[1].SetBorder(TableCellBorderType.Top, new Border(BorderStyle.Tcbs_dotDotDash, BorderSize.one, 0, Color.White));
+                    row.Cells[2].SetBorder(TableCellBorderType.Top, new Border(BorderStyle.Tcbs_dotDotDash, BorderSize.one, 0, Color.White));
+                }
+                if (dong == listTourPro.Count())
+                {
+
+                    row.Cells[2].Paragraphs[0].Append("\n Kết thúc chương trình").Bold().Font("Times New Roman").FontSize(10);
+                }
+            }
+            tourProgramTbl.AutoFit = AutoFit.Window;
+
+            tourProgramTbl.SetWidthsPercentage(new[] { 5f, 5f, 90f }, 500);
+
+            doc.InsertTable(tourProgramTbl);
+
+            if (tourNote != null && !string.IsNullOrEmpty(tourNote.Footernode))
+            {
+                doc.InsertParagraph();
+                doc.InsertParagraph(tourNote.Footernode).Font("Times New Roman").FontSize(10);
+            }
+            doc.InsertParagraph();
+
+            if (vListhc.Count() > 0)
+            {
+                string dsquatang = "";
+                foreach (var i in vListhc)
+                {
+                    if (string.IsNullOrEmpty(dsquatang))
+                    {
+                        dsquatang = (i.Soluong - i.Soluongtra) + " " + i.Tenhh;
+                    }
+                    else
+                    {
+                        dsquatang += " + " + (i.Soluong - i.Soluongtra) + " " + i.Tenhh;
+                    }
+                }
+                doc.InsertParagraph("** Quà tặng: " + dsquatang).Font("Times New Roman").FontSize(10);
+            }
+
+            string roomingList = "Danh sách khách (Rooming List): ";
+
+            //Formatting Title  
+            Novacode.Formatting titleFormat = new Novacode.Formatting();
+
+            titleFormat.Bold = true;
+            doc.InsertParagraph(roomingList, false, titleFormat);
+
+            var roomingListTbl = doc.AddTable(1, 6);
+            roomingListTbl.Rows[0].Cells[0].Paragraphs[0].Append("STT").Bold().Font("Times New Roman").FontSize(10).Alignment = Alignment.center;
+            roomingListTbl.Rows[0].Cells[1].Paragraphs[0].Append("Tên khách").Bold().Font("Times New Roman").FontSize(10).Alignment = Alignment.center;
+            roomingListTbl.Rows[0].Cells[2].Paragraphs[0].Append("Phái").Bold().Font("Times New Roman").FontSize(10).Alignment = Alignment.center;
+            roomingListTbl.Rows[0].Cells[3].Paragraphs[0].Append("Điện thoại").Bold().Font("Times New Roman").FontSize(10).Alignment = Alignment.center;
+            roomingListTbl.Rows[0].Cells[4].Paragraphs[0].Append("Hộ chiếu").Bold().Font("Times New Roman").FontSize(10).Alignment = Alignment.center;
+            roomingListTbl.Rows[0].Cells[5].Paragraphs[0].Append("Loại phòng").Bold().Font("Times New Roman").FontSize(10).Alignment = Alignment.center;
+            int dong_ = 0;
+            foreach (var k in khachTours)
+            {
+                var row = roomingListTbl.InsertRow();
+                row.Cells[0].Paragraphs[0].Append(k.Stt.ToString()).Font("Times New Roman").FontSize(10).Alignment = Alignment.center;
+                row.Cells[1].Paragraphs[0].Append(string.IsNullOrEmpty(k.Hoten) ? "" : k.Hoten.ToUpper()).Font("Times New Roman").FontSize(10);
+                row.Cells[2].Paragraphs[0].Append(!k.Phai.Value ? "Nữ" : "Nam").Font("Times New Roman").FontSize(10);
+                row.Cells[3].Paragraphs[0].Append(k.Dienthoai).Font("Times New Roman").FontSize(10);
+                row.Cells[4].Paragraphs[0].Append(k.Hochieu).Font("Times New Roman").FontSize(10);
+                row.Cells[5].Paragraphs[0].Append(k.Loaiphong).Font("Times New Roman").FontSize(10);
+                dong_++;
+                if (dong_ > 1)
+                {
+                    row.Cells[0].SetBorder(TableCellBorderType.Top, new Border(BorderStyle.Tcbs_inset, BorderSize.one, 0, Color.Silver));
+                    row.Cells[1].SetBorder(TableCellBorderType.Top, new Border(BorderStyle.Tcbs_inset, BorderSize.one, 0, Color.Silver));
+                    row.Cells[2].SetBorder(TableCellBorderType.Top, new Border(BorderStyle.Tcbs_inset, BorderSize.one, 0, Color.Silver));
+                    row.Cells[3].SetBorder(TableCellBorderType.Top, new Border(BorderStyle.Tcbs_inset, BorderSize.one, 0, Color.Silver));
+                    row.Cells[4].SetBorder(TableCellBorderType.Top, new Border(BorderStyle.Tcbs_inset, BorderSize.one, 0, Color.Silver));
+                    row.Cells[5].SetBorder(TableCellBorderType.Top, new Border(BorderStyle.Tcbs_inset, BorderSize.one, 0, Color.Silver));
+                }
+            }
+
+            roomingListTbl.AutoFit = AutoFit.Window;
+            roomingListTbl.SetWidthsPercentage(new[] { 2f, 35f, 5f, 20f, 20f, 10f }, 500);
+            doc.InsertTable(roomingListTbl);
+            // Chèn danh sách lái xe
+            if (xe.Count() > 0)
+            {
+                doc.InsertParagraph();
+                doc.InsertParagraph("Danh sách xe").Font("Times New Roman").FontSize(10).Bold();
+                var ListxeTbl = doc.AddTable(1, 7);
+                ListxeTbl.Rows[0].Cells[0].Paragraphs[0].Append("Xe").Bold().Font("Times New Roman").FontSize(10).Alignment = Alignment.center;
+                ListxeTbl.Rows[0].Cells[1].Paragraphs[0].Append("Số xe").Bold().Font("Times New Roman").FontSize(10).Alignment = Alignment.center;
+                ListxeTbl.Rows[0].Cells[2].Paragraphs[0].Append("Lái xe").Bold().Font("Times New Roman").FontSize(10).Alignment = Alignment.center;
+                ListxeTbl.Rows[0].Cells[3].Paragraphs[0].Append("Điện thoại").Bold().Font("Times New Roman").FontSize(10).Alignment = Alignment.center;
+                ListxeTbl.Rows[0].Cells[4].Paragraphs[0].Append("Từ ngày").Bold().Font("Times New Roman").FontSize(10).Alignment = Alignment.center;
+                ListxeTbl.Rows[0].Cells[5].Paragraphs[0].Append("Đến ngày").Bold().Font("Times New Roman").FontSize(10).Alignment = Alignment.center;
+                ListxeTbl.Rows[0].Cells[6].Paragraphs[0].Append("CN").Bold().Font("Times New Roman").FontSize(10).Alignment = Alignment.center;
+                int dong__ = 0;
+                foreach (var k in xe)
+                {
+                    var row = ListxeTbl.InsertRow();
+                    row.Cells[0].Paragraphs[0].Append(k.Loaixe.ToString()).Font("Times New Roman").FontSize(10).Alignment = Alignment.center;
+                    row.Cells[1].Paragraphs[0].Append(k.Soxe).Font("Times New Roman").FontSize(10).Alignment = Alignment.center;
+                    row.Cells[2].Paragraphs[0].Append(k.Laixe).Font("Times New Roman").FontSize(10).Alignment = Alignment.left;
+                    row.Cells[3].Paragraphs[0].Append(k.Dienthoai).Font("Times New Roman").FontSize(10).Alignment = Alignment.center;
+
+                    row.Cells[4].Paragraphs[0].Append(k.Ngaydon.HasValue ? k.Ngaydon.Value.ToString("dd/MM/yyyy") : "").Font("Times New Roman").FontSize(10).Alignment = Alignment.center;
+                    row.Cells[5].Paragraphs[0].Append(k.Denngay.HasValue ? k.Denngay.Value.ToString("dd/MM/yyyy") : "").Font("Times New Roman").FontSize(10).Alignment = Alignment.center;
+                    row.Cells[6].Paragraphs[0].Append(k.Chinhanh).Font("Times New Roman").FontSize(10).Alignment = Alignment.center;
+                    dong__++;
+                    if (dong__ > 1)
+                    {
+                        row.Cells[0].SetBorder(TableCellBorderType.Top, new Border(BorderStyle.Tcbs_inset, BorderSize.one, 0, Color.Silver));
+                        row.Cells[1].SetBorder(TableCellBorderType.Top, new Border(BorderStyle.Tcbs_inset, BorderSize.one, 0, Color.Silver));
+                        row.Cells[2].SetBorder(TableCellBorderType.Top, new Border(BorderStyle.Tcbs_inset, BorderSize.one, 0, Color.Silver));
+                        row.Cells[3].SetBorder(TableCellBorderType.Top, new Border(BorderStyle.Tcbs_inset, BorderSize.one, 0, Color.Silver));
+                        row.Cells[4].SetBorder(TableCellBorderType.Top, new Border(BorderStyle.Tcbs_inset, BorderSize.one, 0, Color.Silver));
+                        row.Cells[5].SetBorder(TableCellBorderType.Top, new Border(BorderStyle.Tcbs_inset, BorderSize.one, 0, Color.Silver));
+                        row.Cells[6].SetBorder(TableCellBorderType.Top, new Border(BorderStyle.Tcbs_inset, BorderSize.one, 0, Color.Silver));
+                    }
+                }
+
+                ListxeTbl.AutoFit = AutoFit.Window;
+                ListxeTbl.SetWidthsPercentage(new[] { 10f, 10f, 25f, 10f, 15f, 15f, 10f }, 500);
+
+                doc.InsertTable(ListxeTbl);
+            }
+
+            if (hd.Count() > 0)
+            {
+                doc.InsertParagraph();
+                doc.InsertParagraph("Danh sách hướng dẫn").Font("Times New Roman").FontSize(10).Bold();
+                var ListHuongdanTbl = doc.AddTable(1, 7);
+                ListHuongdanTbl.Rows[0].Cells[0].Paragraphs[0].Append("STT").Bold().Font("Times New Roman").FontSize(10).Alignment = Alignment.center;
+                ListHuongdanTbl.Rows[0].Cells[1].Paragraphs[0].Append("Tên hướng dẫn").Bold().Font("Times New Roman").FontSize(10).Alignment = Alignment.center;
+                ListHuongdanTbl.Rows[0].Cells[2].Paragraphs[0].Append("Điện thoại").Bold().Font("Times New Roman").FontSize(10).Alignment = Alignment.center;
+                ListHuongdanTbl.Rows[0].Cells[3].Paragraphs[0].Append("Từ ngày").Bold().Font("Times New Roman").FontSize(10).Alignment = Alignment.center;
+                ListHuongdanTbl.Rows[0].Cells[4].Paragraphs[0].Append("Đến ngày").Bold().Font("Times New Roman").FontSize(10).Alignment = Alignment.center;
+                ListHuongdanTbl.Rows[0].Cells[5].Paragraphs[0].Append("Ghi chú").Bold().Font("Times New Roman").FontSize(10).Alignment = Alignment.center;
+                ListHuongdanTbl.Rows[0].Cells[6].Paragraphs[0].Append("CN").Bold().Font("Times New Roman").FontSize(10).Alignment = Alignment.center;
+                int dong__ = 0;
+                foreach (var k in hd)
+                {
+                    var row = ListHuongdanTbl.InsertRow();
+                    row.Cells[0].Paragraphs[0].Append(k.Stt.ToString()).Font("Times New Roman").FontSize(10).Alignment = Alignment.center;
+                    row.Cells[1].Paragraphs[0].Append(k.Tenhd).Font("Times New Roman").FontSize(10).Alignment = Alignment.left;
+                    row.Cells[2].Paragraphs[0].Append(k.Dienthoai).Font("Times New Roman").FontSize(10).Alignment = Alignment.center;
+                    row.Cells[3].Paragraphs[0].Append(k.Batdau.HasValue ? k.Batdau.Value.ToString("dd/MM/yyyy") : "").Font("Times New Roman").FontSize(10).Alignment = Alignment.center;
+                    row.Cells[4].Paragraphs[0].Append(k.Ketthuc.HasValue ? k.Ketthuc.Value.ToString("dd/MM/yyyy") : "").Font("Times New Roman").FontSize(10).Alignment = Alignment.center;
+                    row.Cells[5].Paragraphs[0].Append(k.Ghichu).Font("Times New Roman").FontSize(10).Alignment = Alignment.left;
+                    row.Cells[6].Paragraphs[0].Append(k.Chinhanh).Font("Times New Roman").FontSize(10).Alignment = Alignment.center;
+                    dong__++;
+                    if (dong__ > 1)
+                    {
+                        row.Cells[0].SetBorder(TableCellBorderType.Top, new Border(BorderStyle.Tcbs_inset, BorderSize.one, 0, Color.Silver));
+                        row.Cells[1].SetBorder(TableCellBorderType.Top, new Border(BorderStyle.Tcbs_inset, BorderSize.one, 0, Color.Silver));
+                        row.Cells[2].SetBorder(TableCellBorderType.Top, new Border(BorderStyle.Tcbs_inset, BorderSize.one, 0, Color.Silver));
+                        row.Cells[3].SetBorder(TableCellBorderType.Top, new Border(BorderStyle.Tcbs_inset, BorderSize.one, 0, Color.Silver));
+                        row.Cells[4].SetBorder(TableCellBorderType.Top, new Border(BorderStyle.Tcbs_inset, BorderSize.one, 0, Color.Silver));
+                        row.Cells[5].SetBorder(TableCellBorderType.Top, new Border(BorderStyle.Tcbs_inset, BorderSize.one, 0, Color.Silver));
+                        row.Cells[6].SetBorder(TableCellBorderType.Top, new Border(BorderStyle.Tcbs_inset, BorderSize.one, 0, Color.Silver));
+                    }
+                }
+
+                ListHuongdanTbl.AutoFit = AutoFit.Window;
+                ListHuongdanTbl.SetWidthsPercentage(new[] { 8f, 25f, 15f, 15f, 15f, 25f, 10f }, 500);
+
+                doc.InsertTable(ListHuongdanTbl);
+            }
+
+            MemoryStream stream = new MemoryStream();
+
+            // Saves the Word document to MemoryStream
+            doc.SaveAs(stream);
+            stream.Position = 0;
+            // Download Word document in the browser
+            return File(stream, "application/msword", "Chuongtrinhtour_" + sgtcode + "_" + DateTime.Now + ".docx");
+        }
+
+        public IEnumerable<Tourprog> TourProgBySGTCode(string id, bool ingia)
+        {
+            string gia = "";
+            string ck = "";
+            var progtemp = _unitOfWork.tourproRepository.ListTourProg(id);
+            var t = _unitOfWork.tourInfRepository.GetById(id);
+            ViewBag.cn = HttpContext.Session.GetString("chinhanh");
+            foreach (var item in progtemp)
+            {
+                item.Logfile = item.Date > 0 ? t.Arr.AddDays(item.Date.Value - 1).ToString("ddd, dd/MM/yyyy").ToUpper() : "";
+                if (item.Debit)
+                {
+                    if (item.Foc > 0)
+                    {
+                        ck = ", trong đó có " + item.Foc + "FOC (" + item.Chinhanh + " CK)";
+                    }
+                    else
+                    {
+                        ck = " (" + item.Chinhanh + " CK)";
+                    }
+
+                }
+                else
+                {
+                    if (item.Foc > 0)
+                    {
+                        ck = ", trong đó có " + item.Foc + "FOC (" + item.Chinhanh + " TM)";
+                    }
+                    else
+                    {
+                        ck = " (" + item.Chinhanh + " TM)";
+                    }
+
+                }
+                switch (item.Srvtype)
+                {
+                    case "LUN":
+                    case "DIN":
+                    case "BRK":
+                        //case "SHP":
+
+                        if (item.Supplierid != null)
+                        {
+                            var supplier = _unitOfWork.supplierRepository.getSupplierById(item.Supplierid);
+                            item.TourItem = item.TourItem + " " + supplier.Tengiaodich + " phone: " + supplier.Dienthoai;
+                        }
+                        else
+                        {
+                            item.TourItem = item.TourItem;
+                        }
+                        if (ingia) // nếu được phép in giá thì in số khách và giá tiền
+                        {
+                            gia = "";
+                            if (item.Amount > 0)
+                            {
+                                gia = " Tổng chi phí: " + string.Format("{0:#,##0}", item.Amount) + item.Currency;
+                            }
+                            else
+                            {
+                                gia = " gồm có " + item.Pax + " Pax*" + string.Format("{0:#,##0}", item.Unitpricea) + item.Currency;
+                                if (item.Childern > 0)
+                                {
+                                    gia += " + " + item.Childern + " Childern*" + string.Format("{0:#,##0}", item.Unitpricec) + item.Currency;
+                                }
+                            }
+                            item.TourItem = item.TourItem + " " + gia;
+                        }
+                        else // nếu không được in giá thì chỉ in số khách
+                        {
+                            item.TourItem += item.TourItem + " gồm có " + (item.Pax + item.Childern) + "Pax";
+                        }
+                        item.TourItem = item.TourItem + (string.IsNullOrEmpty(item.Srvnode) ? "" : " (" + item.Srvnode + ")") + ck;
+                        break;
+                    case "OVR":
+                    case "PAC":
+                    case "OTH":
+                    case "GLF":
+                        if (item.Supplierid != null)
+                        {
+                            
+                            var supplier = _unitOfWork.supplierRepository.getSupplierById(item.Supplierid);
+                            item.TourItem = item.TourItem + " " + supplier.Tengiaodich;
+                        }
+                        else
+                        {
+                            item.TourItem = item.TourItem;
+                        }
+                        if (ingia)
+                        {
+                            gia = "";
+                            if (item.Amount > 0)
+                            {
+                                gia = " Tổng chi phí: " + string.Format("{0:#,##0}", item.Amount) + item.Currency;
+                            }
+                            else
+                            {
+                                gia = " gồm có " + item.Pax + " Pax*" + string.Format("{0:#,##0}", item.Unitpricea) + item.Currency;
+                                if (item.Childern > 0)
+                                {
+                                    gia += " + " + item.Childern + " Childern*" + string.Format("{0:#,##0}", item.Unitpricec) + item.Currency;
+                                }
+                            }
+                            item.TourItem = item.TourItem + " " + gia;
+                        }
+                        else // nếu không được in giá thì chỉ in số khách
+                        {
+                            item.TourItem += item.TourItem + " gồm có " + (item.Pax + item.Childern) + "Pax";
+                        }
+                        item.TourItem = item.TourItem + (string.IsNullOrEmpty(item.Srvnode) ? "" : " (" + item.Srvnode + ")") + ck;
+                        break;
+                    case "SHW":
+                    case "MUS":
+                    case "WPU":
+                        if (!string.IsNullOrEmpty(item.Supplierid))
+                        {
+                            
+                            var supplier = _unitOfWork.supplierRepository.getSupplierById(item.Supplierid);
+                            item.TourItem = item.TourItem + " " + supplier.Tengiaodich + item.Time ?? " " + item.Carrier;
+                        }
+                        else
+                        {
+                            item.TourItem = item.TourItem + " " + item.Time ?? " " + item.Carrier; ;
+                        }
+                        if (ingia)
+                        {
+                            gia = "";
+                            if (item.Amount > 0)
+                            {
+                                gia = " Tổng chi phí: " + string.Format("{0:#,##0}", item.Amount) + item.Currency;
+                            }
+                            else
+                            {
+                                gia = " gồm có " + item.Pax + " Pax*" + string.Format("{0:#,##0}", item.Unitpricea) + item.Currency;
+                                if (item.Childern > 0)
+                                {
+                                    gia += " + " + item.Childern + " Childern*" + string.Format("{0:#,##0}", item.Unitpricec) + item.Currency;
+                                }
+                            }
+                            item.TourItem = item.TourItem + " " + gia;
+                        }
+                        else // nếu không được in giá thì chỉ in số khách
+                        {
+                            item.TourItem += item.TourItem + " gồm có " + (item.Pax + item.Childern) + "Pax";
+                        }
+                        item.TourItem = item.TourItem + (string.IsNullOrEmpty(item.Srvnode) ? "" : " (" + item.Srvnode + ")") + ck;
+                        break;
+                    case "AIR":
+                    case "TRA":
+                        if (item.Airtype == "DON")
+                        {
+                            //item.TourItem = item.TourItem + " " + item.dep + "-" + item.arr + " chuyến: " + item.carrier + " đáp lúc " + item.time + " * " + String.Format("{0:#,##0.0}", item.unitpricea) + " " + item.currency;
+                            item.TourItem = item.TourItem + " " + item.Dep + "-" + item.Arr + " chuyến: " + item.Carrier + " đáp lúc " + item.Time + "  ";// + string.Format("{0:#,##0.0}", item.unitpricea) + " " + item.currency;
+                        }
+                        else if (item.Airtype == "TIEN")
+                        {
+                            //item.TourItem = item.TourItem + " tiển khách chặng: " + item.dep + "-" + item.arr + " chuyến: " + item.carrier + " * " + String.Format("{0:#,##0.0}", item.unitpricea) + " " + item.currency;
+                            item.TourItem = item.TourItem + " " + item.Dep + "-" + item.Arr + " chuyến: " + item.Carrier + " ";// + string.Format("{0:#,##0.0}", item.unitpricea) + " " + item.currency;
+                        }
+                        else
+                        {
+                            //item.TourItem = item.TourItem + " bay cùng khách chặng: " + item.dep + "-" + item.arr + " chuyến: " + item.carrier + " * " + String.Format("{0:#,##0.0}", item.unitpricea) + " " + item.currency;
+                            item.TourItem = item.TourItem + " " + item.Dep + "-" + item.Arr + " chuyến: " + item.Carrier + "  ";// + string.Format("{0:#,##0.0}", item.unitpricea) + " " + item.currency;
+                        }
+                        if (ingia)
+                        {
+                            gia = "";
+                            if (item.Amount > 0)
+                            {
+                                gia = " Tổng chi phí: " + string.Format("{0:#,##0}", item.Amount) + item.Currency;
+                            }
+                            else
+                            {
+                                gia = " gồm có " + item.Pax + " Pax*" + string.Format("{0:#,##0}", item.Unitpricea) + item.Currency;
+                                if (item.Childern > 0)
+                                {
+                                    gia += " + " + item.Childern + " Childern*" + string.Format("{0:#,##0}", item.Unitpricec) + item.Currency;
+                                }
+                                if (item.Infant > 0)
+                                {
+                                    gia += " + " + item.Infant + " Infant*" + string.Format("{0:#,##0}", item.Unitpricei) + item.Currency;
+                                }
+                            }
+
+                            item.TourItem = item.TourItem + " " + gia;
+                        }
+                        else
+                        {
+                            item.TourItem += item.TourItem + " gồm có " + (item.Pax + item.Childern) + "Pax";
+                        }
+                        item.TourItem = item.TourItem + " (" + (string.IsNullOrEmpty(item.Time) ? "giờ cất/ hạ cánh?" : item.Time.Replace('/', '-')) + ") " + (string.IsNullOrEmpty(item.Srvnode) ? "" : " (" + item.Srvnode + ")") + ck;
+                        break;
+                    case "HTL":
+                    case "CRU":
+                        if (item.Supplierid != null)
+                        {
+                            
+                            var supplier = _unitOfWork.supplierRepository.getSupplierById(item.Supplierid);
+                            item.TourItem = item.TourItem + " " + supplier.Tengiaodich + " - " + supplier.Diachi + " phone: " + supplier.Dienthoai;
+                            // item.TourItem = item.TourItem + " " + gia;
+                        }
+                        else
+                        {
+                            item.TourItem = item.TourItem;
+                        }
+                        var hotel = _unitOfWork.hotelRepository.listHotelByIdtourprog(item.Id);// (item.sgtcode, item.stt);//chi lay dich vu chua xoa
+                        if (hotel != null)
+                        {
+                            gia = "";
+                            foreach (var a in hotel)
+                            {
+                                if (a.Sgl > 0)
+                                {
+                                    gia += a.Sgl + "SGL" + "*";// +  string.Format("{0:#,##0.0}", a.sglcost) + a.currency;
+                                    if (ingia)
+                                    {
+                                        gia += string.Format("{0:#,##0}", a.Sglcost) + a.Currency;
+                                    }
+                                }
+                                /////////////////////////////////////////////////////////////////
+                                //if (a.sglfoc > 0)
+                                //{
+                                //    gia += ", có " + a.sglfoc + "SGL FOC";
+                                //}
+                                /////////////////////////////////////////////////////////////////
+                                if (a.Dbl > 0)
+                                {
+                                    gia += "," + a.Dbl + "DBL";// + "*" + string.Format("{0:#,##0.0}", a.dblcost) + a.currency;
+                                    if (ingia)
+                                    {
+                                        gia += "*" + string.Format("{0:#,##0}", a.Dblcost) + a.Currency;
+                                    }
+                                }
+                                if (a.Extdbl > 0)
+                                {
+                                    gia += "," + a.Extdbl + "EXT-DBL";// + "*" + string.Format("{0:#,##0.0}", a.extdblcost) + a.currency;
+                                    if (ingia)
+                                    {
+                                        gia += "*" + string.Format("{0:#,##0}", a.Extdblcost) + a.Currency;
+                                    }
+                                }
+                                /////////////////////////////////////////////////////////////////
+                                //if (a.dblfoc > 0)
+                                //{
+                                //    gia += ", có " + a.dblfoc + "DBL FOC";
+                                //}
+                                /////////////////////////////////////////////////////////////////
+                                if (a.Twn > 0)
+                                {
+                                    gia += "," + a.Twn + "TWN";// + "*" + string.Format("{0:#,##0.0}", a.twncost) + a.currency;
+                                    if (ingia)
+                                    {
+                                        gia += "*" + string.Format("{0:#,##0}", a.Twncost) + a.Currency;
+                                    }
+                                }
+                                if (a.Exttwn > 0)
+                                {
+                                    gia += "," + a.Exttwn + "EXT-TWN";// + "*" + string.Format("{0:#,##0.0}", a.exttwncost) + a.currency;
+                                    if (ingia)
+                                    {
+                                        gia += "*" + string.Format("{0:#,##0}", a.Exttwncost) + a.Currency;
+                                    }
+                                }
+                                /////////////////////////////////////////////////////////////////
+                                //if (a.twnfoc > 0)
+                                //{
+                                //    gia += ", có " + a.twnfoc + "TWN FOC";
+                                //}
+                                /////////////////////////////////////////////////////////////////
+                                if (a.Homestay > 0)
+                                {
+                                    gia += "," + a.Homestay + " Home stay" + "*" + a.Homestaypax + " pax ";// + string.Format("{0:#,##0.0}", a.homestaycost)+"/1pax " + a.currency+" - "+a.homestaynote;
+                                    if (ingia)
+                                    {
+                                        gia += string.Format("{0:#,##0}", a.Homestaycost) + "/1pax " + a.Currency + " - " + a.Homestaynote;
+                                    }
+                                }
+                                if (a.Oth > 0)
+                                {
+                                    gia += "," + a.Oth + " OTH-" + a.Othpax + "pax";// + "*" + string.Format("{0:#,##0.0}", a.othcost) + a.currency + "-" + a.othtype;
+                                    if (ingia)
+                                    {
+                                        gia += "*" + string.Format("{0:#,##0}", a.Othcost) + a.Currency + "-" + a.Othtype;
+                                    }
+                                }
+                                gia += string.IsNullOrEmpty(a.Note) ? "" : " (" + a.Note + ")";
+                            }
+                        }
+                        item.TourItem = item.TourItem + " " + gia;
+                        item.TourItem = item.TourItem + (string.IsNullOrEmpty(item.Srvnode) ? "" : " (" + item.Srvnode + ")") + ck;
+                        break;
+                    case "SSE":
+
+                        //var diemtq = _diemtqRepository.GetById(item.TourItem);
+                        var diemtq = _unitOfWork.dMDiemTQRepository.GetById(item.TourItem);
+                        string tq = "";
+                        if (diemtq != null)
+                        {
+                            tq = diemtq.Diemtq;
+                            if (ingia)
+                            {
+                                gia = "";
+                                if (item.Amount > 0)
+                                {
+                                    gia = " Tổng chi phí: " + string.Format("{0:#,##0}", item.Amount) + item.Currency;
+                                }
+                                else
+                                {
+                                    gia = " gồm có " + item.Pax + "Pax*" + string.Format("{0:#,##0}", item.Unitpricea) + item.Currency;
+                                    if (item.Childern > 0)
+                                    {
+                                        gia += " + " + item.Childern + "Childern*" + string.Format("{0:#,##0}", item.Unitpricec) + item.Currency;
+                                    }
+                                }
+                                tq += " " + gia;
+                            }
+                            else
+                            {
+                                tq += " gồm có " + (item.Pax + item.Childern) + "Pax";
+                            }
+                        }
+                        var sse = _unitOfWork.sightseeingRepository.listSighseeingByIdtourprog(item.Id);// (item.sgtcode, item.stt);
+                        if (sse.Count() > 0)
+                        {
+                            string tendtq = "";
+                            foreach (var d in sse)
+                            {
+                                var getdiemtq = _unitOfWork.dMDiemTQRepository.GetById(d.Codedtq);
+                                if (tendtq == "")
+                                {
+                                    //tendtq = _diemtqRepository.GetById(d.Codedtq).Diemtq;
+                                    tendtq = getdiemtq.Diemtq;
+                                    if (ingia)
+                                    {
+                                        gia = "";
+                                        if (d.Pax > 0 && d.PaxPrice > 0)
+                                        {
+                                            tendtq += " " + d.Pax + "Pax*" + string.Format("{0:#,##0}", d.PaxPrice);
+                                        }
+                                        if (d.Childern > 0 && d.ChildernPrice > 0)
+                                        {
+                                            tendtq += " " + d.Childern + "Chidern*" + string.Format("{0:#,##0}", d.ChildernPrice);
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    //tendtq += "," + _diemtqRepository.GetById(d.Codedtq).Diemtq;
+                                    tendtq += ", " + getdiemtq.Diemtq;
+                                    if (ingia)
+                                    {
+                                        if (d.Pax > 0 && d.PaxPrice > 0)
+                                        {
+                                            tendtq += d.Pax + "Pax*" + string.Format("{0:#,##0}", d.PaxPrice);
+                                        }
+                                        if (d.Childern > 0 && d.ChildernPrice > 0)
+                                        {
+                                            tendtq += d.Childern + "Chidern*" + string.Format("{0:#,##0}", d.ChildernPrice);
+                                        }
+                                    }
+                                }
+
+                            }
+                            item.TourItem = "Tham quan " + (string.IsNullOrEmpty(tq) ? "" : tq) + " " + tendtq;
+                        }
+                        else
+                        {
+                            item.TourItem = tq;
+                        }
+                        item.TourItem = item.TourItem + (string.IsNullOrEmpty(item.TourItem) ? "" : ", " + item.Srvnode) + ck;
+                        break;
+                    case "ITI":
+                        item.TourItem = item.TourItem;
+                        break;
+                    default:
+                        item.TourItem = item.TourItem + (string.IsNullOrEmpty(item.Srvnode) ? "" : " (" + item.Srvnode + ")");
+                        break;
+                }
+
+            }
+            return progtemp;
+        }
+        #endregion
 
         //public async Task<JsonResult> CheckInvoices(long tourId)
         //{

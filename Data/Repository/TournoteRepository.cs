@@ -14,6 +14,8 @@ namespace Data.Repository
         Task<Tournode> GetByIdAsync(string id);
 
         IEnumerable<Tournode> Find(Func<Tournode, bool> predicate);
+
+        Tournode GetById(string id);
     }
     public class TournoteRepository : ITournoteRepository
     {
@@ -37,6 +39,11 @@ namespace Data.Repository
         public async Task<Tournode> GetByIdAsync(string id)
         {
             return await _qltourContext.Tournode.FindAsync(id);
+        }
+        
+        public Tournode GetById(string id)
+        {
+            return _qltourContext.Tournode.Find(id);
         }
     }
 }

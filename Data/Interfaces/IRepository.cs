@@ -16,6 +16,7 @@ namespace Data.Interfaces
         T GetById(int id);
         T GetById(decimal id);
         T GetById(long id);
+        T GetById(string id);
         T GetByIdAsNoTracking(Func<T, bool> predicate);
         T GetSingleNoTracking(Func<T, bool> predicate);
         void Create(T entity);

@@ -121,5 +121,10 @@ namespace Data.Repository
         {
             return await _context.Set<T>().Include(expressObj).Where(expression).ToListAsync();
         }
+
+        public T GetById(string id)
+        {
+            return _context.Set<T>().Find(id);
+        }
     }
 }

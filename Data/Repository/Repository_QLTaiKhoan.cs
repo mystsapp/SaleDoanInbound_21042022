@@ -121,5 +121,9 @@ namespace Data.Repository
             return _context.Set<T>().AsNoTracking();
         }
 
+        public T GetById(string id)
+        {
+            return _context.Set<T>().Find(id);
+        }
     }
 }

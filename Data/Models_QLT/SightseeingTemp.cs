@@ -11,9 +11,9 @@ namespace Data.Models_QLT
         public string Codedtq { get; set; }
         public string Serial { get; set; }
         public string Debit { get; set; }
-        public decimal? Paxprice { get; set; }
-        public decimal? Childernprice { get; set; }
-        public decimal? Amount { get; set; }
+        public decimal Paxprice { get; set; }
+        public decimal Childernprice { get; set; }
+        public decimal Amount { get; set; }
         public int? Vatin { get; set; }
         public int? Vatout { get; set; }
         public decimal? Srvprofit { get; set; }

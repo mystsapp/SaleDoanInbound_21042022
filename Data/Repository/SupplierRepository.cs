@@ -14,6 +14,8 @@ namespace Data.Repository
         Task<Supplier> GetByIdAsync(string id);
 
         IEnumerable<Supplier> Find(Func<Supplier, bool> predicate);
+
+        Supplier getSupplierById(string code);
     }
     public class SupplierRepository : ISupplierRepository
     {
@@ -37,5 +39,11 @@ namespace Data.Repository
         {
             return await _qltourContext.Supplier.FindAsync(id);
         }
+
+        public Supplier getSupplierById(string code)
+        {
+            return _qltourContext.Supplier.Find(code);
+        }
+
     }
 }

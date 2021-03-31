@@ -14,6 +14,8 @@ namespace Data.Repository
         Task<Huongdan> GetByIdAsync(decimal id);
 
         IEnumerable<Huongdan> Find(Func<Huongdan, bool> predicate);
+        
+        IEnumerable<Huongdan> ListHuongdan(string code);
     }
 
     public class HuongDanRepository : IHuongDanRepository
@@ -38,5 +40,11 @@ namespace Data.Repository
         {
             return await _qltourContext.Huongdan.FindAsync(id);
         }
+
+        public IEnumerable<Huongdan> ListHuongdan(string code)
+        {
+            return _qltourContext.Huongdan.Where(x => x.Sgtcode == code && x.Del == false).OrderBy(x => x.Stt);
+        }
+
     }
 }

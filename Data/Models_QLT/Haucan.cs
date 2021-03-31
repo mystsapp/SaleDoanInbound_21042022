@@ -19,6 +19,7 @@ namespace Data.Models_QLT
         public string Ghichu { get; set; }
         public string Chinhanh { get; set; }
         public bool? Daxuat { get; set; }
+        public string Maphieudx { get; set; }
         public string Logfile { get; set; }
     }
 }

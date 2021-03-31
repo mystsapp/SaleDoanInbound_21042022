@@ -27,5 +27,12 @@ namespace Data.Models_QLT
         public string Chinhanh { get; set; }
         public string Logfile { get; set; }
         public bool Del { get; set; }
+        public string Hochieu { get; set; }
+        public DateTime? Hieuluchc { get; set; }
+        public DateTime? Ngaysinh { get; set; }
+        public bool? Phai { get; set; }
+        public bool Vemaybay { get; set; }
+        public string Phongks { get; set; }
+        public string Quoctich { get; set; }
     }
 }

@@ -14,6 +14,8 @@ namespace Data.Repository
         Task<Sightseeing> GetByIdAsync(decimal id);
 
         IEnumerable<Sightseeing> Find(Func<Sightseeing, bool> predicate);
+
+        List<Sightseeing> listSighseeingByIdtourprog(decimal idtourprog);
     }
     public class SightseeingRepository : ISightseeingRepository
     {
@@ -36,6 +38,11 @@ namespace Data.Repository
         public async Task<Sightseeing> GetByIdAsync(decimal id)
         {
             return await _qltourContext.Sightseeing.FindAsync(id);
+        }
+
+        public List<Sightseeing> listSighseeingByIdtourprog(decimal idtourprog)
+        {
+            return _qltourContext.Sightseeing.Where(x => x.Idtourprog == idtourprog).ToList();
         }
     }
 }

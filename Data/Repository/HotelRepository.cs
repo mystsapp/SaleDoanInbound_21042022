@@ -14,6 +14,8 @@ namespace Data.Repository
         Task<Hotel> GetByIdAsync(decimal id);
 
         IEnumerable<Hotel> Find(Func<Hotel, bool> predicate);
+
+        List<Hotel> listHotelByIdtourprog(decimal idtourprog);
     }
     public class HotelRepository : IHotelRepository
     {
@@ -37,6 +39,18 @@ namespace Data.Repository
         public async Task<Hotel> GetByIdAsync(decimal id)
         {
             return await _qltourContext.Hotel.FindAsync(id);
+        }
+
+        public List<Hotel> listHotelByIdtourprog(decimal idtourprog)
+        {
+            try
+            {
+                return _qltourContext.Hotel.Where(x => x.Idtourprog == idtourprog).OrderBy(x => x.Id).ToList();
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }

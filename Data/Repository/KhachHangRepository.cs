@@ -1,6 +1,8 @@
 ﻿using Data.Interfaces;
 using Data.Models_IB;
 using Data.Models_QLT;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +13,7 @@ namespace Data.Repository
     public interface IKhachHangRepository : IRepository<Company>
     {
         IPagedList<Company> ListKhachHang(string searchName, int? page);
+        Company GetCompanyByCode(string loaikhach, string makh);
     }
     public class KhachHangRepository : Repository_QLT<Company>, IKhachHangRepository
     {
@@ -57,6 +60,38 @@ namespace Data.Repository
 
 
             return listPaged;
+        }
+
+        public Company GetCompanyByCode(string loaikhach, string makh)
+        {
+            var parameter = new SqlParameter[]
+             {
+                    new SqlParameter("@makh",makh)
+             };
+
+            if (loaikhach == "NOIDIA")
+            {
+                try
+                {
+                    return _context.Company.FromSqlRaw("spGetKhachhangNdByCode @makh", parameter).FirstOrDefault();
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+            else
+            {
+                try
+                {
+                    return _context.Company.FromSqlRaw("spGetKhachhangObByCode @makh", parameter).FirstOrDefault();
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+
         }
     }
 }

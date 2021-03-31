@@ -74,7 +74,7 @@ namespace Data.Models_IB
         public string HTTT { get; set; }
 
         [DisplayName("Ngày tạo")]
-        public DateTime NgayVAT { get; set; }
+        public DateTime? NgayVAT { get; set; }
 
         [DisplayName("Người tạo")]
         [MaxLength(50), Column(TypeName = "varchar(50)")]
@@ -107,7 +107,7 @@ namespace Data.Models_IB
         [MaxLength(12, ErrorMessage = "Tối đa 12 ký tự"), Column(TypeName = "varchar(12)")]
         public string BillMoi { get; set; }
 
-        public DateTime NgayVATMoi { get; set; }
+        public DateTime? NgayVATMoi { get; set; }
 
         [DisplayName("Ký hiệu HD")]
         [MaxLength(10, ErrorMessage = "Tối đa 10 ký tự"), Column(TypeName = "varchar(10)")]
@@ -121,7 +121,7 @@ namespace Data.Models_IB
         [MaxLength(120), Column(TypeName = "varchar(120)")]
         public string KeyHDDT { get; set; }
 
-        public DateTime Lock { get; set; }
+        public DateTime? Lock { get; set; }
 
         [DisplayName("Mã KH")]
         [MaxLength(5), Column(TypeName = "varchar(5)")]
