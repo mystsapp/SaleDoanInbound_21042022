@@ -246,6 +246,10 @@ namespace SaleDoanInbound.Controllers
                 return NotFound();
             try
             {
+                //if (cTVAT.TiengAnh) // CTInvoice : co the da co' cai copy
+                //{
+                //    _unitOfWork.cTVATRepository.Find(x => x.Descript)
+                //}
                 _unitOfWork.cTVATRepository.Delete(cTVAT);
                 await _unitOfWork.Complete();
                 //SetAlert("Xóa thành công.", "success");
@@ -269,41 +273,41 @@ namespace SaleDoanInbound.Controllers
             }
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CopyCTInvoice_DS_To_CTVAT(string invoiceId, string strUrl)
-        {
-            // from login session
-            var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> CopyCTInvoice_DS_To_CTVAT(string invoiceId, string strUrl)
+        //{
+        //    // from login session
+        //    var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
 
-            CTVATVM.StrUrl = strUrl;
-            CTVATVM.Invoice = await _unitOfWork.invoiceRepository.GetByIdAsync(invoiceId);
-            //find CTinvoice co DS (doanh so) == true
-            var CTInvoices = await _unitOfWork.cTVATRepository.FindAsync(x => x.InvoiceId == invoiceId && x.DS && x.TiengAnh);
+        //    CTVATVM.StrUrl = strUrl;
+        //    CTVATVM.Invoice = await _unitOfWork.invoiceRepository.GetByIdAsync(invoiceId);
+        //    //find CTinvoice co DS (doanh so) == true
+        //    var CTInvoices = await _unitOfWork.cTVATRepository.FindAsync(x => x.InvoiceId == invoiceId && x.DS && x.TiengAnh);
 
-            foreach (var item in CTInvoices)
-            {
-                item.TiengAnh = false;
+        //    foreach (var item in CTInvoices)
+        //    {
+        //        item.TiengAnh = false;
 
-                // ghi log
-                item.LogFile = "-User copy: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString() + " copy từ CTInvoice " + item.Id.ToString(); // user.Username
-                item.Id = 0;
+        //        // ghi log
+        //        item.LogFile = "-User copy: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString() + " copy từ CTInvoice " + item.Id.ToString(); // user.Username
+        //        item.Id = 0;
 
-                _unitOfWork.cTVATRepository.Create(item);
-            }
-            try
-            {
-                await _unitOfWork.Complete();
-                SetAlert("Copy thành công.", "success");
+        //        _unitOfWork.cTVATRepository.Create(item);
+        //    }
+        //    try
+        //    {
+        //        await _unitOfWork.Complete();
+        //        SetAlert("Copy thành công.", "success");
 
-            }
-            catch (Exception ex)
-            {
-                SetAlert("Copy không thành công.", "error");
-            }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        SetAlert("Copy không thành công.", "error");
+        //    }
 
-            return Redirect(strUrl);
-        }
+        //    return Redirect(strUrl);
+        //}
         
         [HttpPost]
         //[ValidateAntiForgeryToken]

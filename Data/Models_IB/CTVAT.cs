@@ -44,8 +44,8 @@ namespace Data.Models_IB
         public decimal ServiceFee { get; set; }
 
         [DisplayName("%VAT")]
-        [Column(TypeName = "decimal(18,2)")]
-        public decimal VAT { get; set; }
+        //[Column(TypeName = "decimal(18,2)")]
+        public int VAT { get; set; }
 
         [DisplayName("%")]
         [Column(TypeName = "decimal(18,2)")]
@@ -76,7 +76,7 @@ namespace Data.Models_IB
         [MaxLength(50), Column(TypeName = "varchar(50)")]
         public string NguoiTao { get; set; }
 
-        public DateTime NgaySua { get; set; }
+        public DateTime? NgaySua { get; set; }
 
         [DisplayName("Người sửa")]
         [MaxLength(50), Column(TypeName = "varchar(50)")]

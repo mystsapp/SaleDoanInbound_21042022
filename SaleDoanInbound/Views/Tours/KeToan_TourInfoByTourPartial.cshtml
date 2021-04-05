@@ -102,20 +102,22 @@
                                                                 {
                                                                     <button type="button" class="text-primary border-0 bg-transparent disabled" title="Cập nhật"><i class="fas fa-edit"></i></button>
                                                                     <span class="text-dark"> | </span>
+                                                                    <a class="text-warning disabled" title="Print"><i class="fas fa-print"></i></a>
                                                                 }
                                                                 else
                                                                 {
                                                                     @*<button type="button" id="invoice_@item.Id" class="text-primary border-0 bg-transparent btnEditInvoice" title="Cập nhật" data-tourId="@Model.Tour.Id" data-invoiceId="@item.Id"><i class="fas fa-edit"></i></button>*@
                                                                     <button class="text-primary border-0 bg-transparent btnEditInvoice" title="Cập nhật" data-tourId="@Model.Tour.Id" data-invoiceId="@item.Id"><i class="fas fa-edit"></i></button>
                                                                     <span class="text-dark"> | </span>
-                                                                }
-                                                                @if (user.Role.RoleName != "Users") // user ko duoc invoice ==> KT
-                                                                {
-                                                                    <!--print invoice-->
                                                                     <a asp-controller="Invoices" asp-action="InvoicePdfViewer" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" class="text-warning btnPrintInvoice" title="Print"><i class="fas fa-print"></i></a>
                                                                 }
+                                                                @*@if (user.Role.RoleName != "Users") // user ko duoc invoice ==> KT
+        {*@
+                                                                <!--print invoice-->
+                                                                @*<a asp-controller="Invoices" asp-action="InvoicePdfViewer" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl" class="text-warning btnPrintInvoice" title="Print"><i class="fas fa-print"></i></a>*@
+                                                                @*}*@
                                                                 @*<span class="text-dark"> | </span>
-                                                                    <a class="text-success" title="Chi tiết" asp-action="Details" asp-route-tourId="@Model.Tour.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>*@
+        <a class="text-success" title="Chi tiết" asp-action="Details" asp-route-tourId="@Model.Tour.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>*@
                                                                 <span class="text-dark"> | </span>
                                                                 <form method="post">
 

@@ -73,14 +73,14 @@
                                             <span class="text-dark"> | </span>
                                             <form method="post">
 
-                                                <span id="confirmDeleteSpan_@item.Id" style="display: none">
+                                                <span id="confirmDeleteSpanCTInvoice_@item.Id" style="display: none">
                                                     <span class="text-dark">Xóa?</span>
-                                                    <button type="button" class="btn btn-danger btn-xs btnDeleteInCTInvoiceCTVATPartial" data-CTInvoiceId="@item.Id" data-invoiceId="@Model.Invoice.Id">Yes</button>
-                                                    <button type="button" class="btn btn-primary btn-xs" onclick="confirmDelete('@item.Id', false)">No</button>
+                                                    <button type="button" data-ctvatid="@item.Id" data-invoiceId="@Model.Invoice.Id" class="btn btn-danger btn-xs btnDeleteCTVAT" >Yes</button>
+                                                    <button type="button" class="btn btn-primary btn-xs" onclick="confirmDeleteCTInvoice('@item.Id', false)">No</button>
                                                 </span>
 
-                                                <span id="deleteSpan_@item.Id">
-                                                    <button type="button" class="text-danger border-0 bg-transparent" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
+                                                <span id="deleteSpanCTInvoice_@item.Id">
+                                                    <button type="button" class="text-danger border-0 bg-transparent" onclick="confirmDeleteCTInvoice('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
                                                 </span>
                                             </form>
                                         </div>
@@ -113,19 +113,19 @@
                                     <td>
                                         <div class="btn-group text-white" role="group">
                                             <a class="disabled" title="Cập nhật"><i class="fas fa-edit"></i></a>
-                                            <span class="text-dark"> | </span>
-                                            <a class="text-success" title="Chi tiết" asp-action="DetailsCTInvoice" asp-controller="CTVATs" asp-route-invoiceId="@Model.Invoice.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>
+                                            @*<span class="text-dark"> | </span>
+                                            <a class="text-success" title="Chi tiết" asp-action="DetailsCTInvoice" asp-controller="CTVATs" asp-route-invoiceId="@Model.Invoice.Id" asp-route-id="@item.Id" asp-route-strUrl="@Model.StrUrl"><i class="fas fa-list"></i></a>*@
                                             <span class="text-dark"> | </span>
                                             <form asp-action="DeleteCTInvoice" asp-controller="CTVATs" asp-route-id="@item.Id" asp-route-invoiceId="@Model.Invoice.Id" asp-route-strUrl="@Model.StrUrl" method="post">
 
-                                                <span id="confirmDeleteSpan_@item.Id" style="display: none">
+                                                <span id="confirmDeleteSpanCTInvoice_@item.Id" style="display: none">
                                                     <span class="text-dark">Xóa?</span>
-                                                    <button type="submit" class="btn btn-danger btn-xs">Yes</button>
-                                                    <button type="button" class="btn btn-primary btn-xs" onclick="confirmDelete('@item.Id', false)">No</button>
+                                                    <button type="button" data-ctvatid="@item.Id" data-invoiceId="@Model.Invoice.Id" class="btn btn-danger btn-xs btnDeleteCTVAT">Yes</button>
+                                                    <button type="button" class="btn btn-primary btn-xs" onclick="confirmDeleteCTInvoice('@item.Id', false)">No</button>
                                                 </span>
 
-                                                <span id="deleteSpan_@item.Id">
-                                                    <button type="button" disabled class="text-danger border-0 bg-transparent" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
+                                                <span id="deleteSpanCTInvoice_@item.Id">
+                                                    <button type="button" disabled class="text-danger border-0 bg-transparent" onclick="confirmDeleteCTInvoice('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
                                                 </span>
                                             </form>
                                         </div>
@@ -236,14 +236,14 @@
                                             <span class="text-dark"> | </span>*@
                                             <form asp-action="DeleteCTVAT" asp-controller="CTVATs" asp-route-id="@item.Id" asp-route-invoiceId="@Model.Invoice.Id" asp-route-strUrl="@Model.StrUrl" method="post">
 
-                                                <span id="confirmDeleteSpan_@item.Id" style="display: none">
+                                                <span id="confirmDeleteSpanCTVAT_@item.Id" style="display: none">
                                                     <span class="text-dark">Xóa?</span>
                                                     <button type="button" data-ctvatid="@item.Id" data-invoiceId="@Model.Invoice.Id" class="btn btn-danger btn-xs btnDeleteCTVAT">Yes</button>
-                                                    <button type="button" class="btn btn-primary btn-xs" onclick="confirmDelete('@item.Id', false)">No</button>
+                                                    <button type="button" class="btn btn-primary btn-xs" onclick="confirmDeleteCTVAT('@item.Id', false)">No</button>
                                                 </span>
 
-                                                <span id="deleteSpan_@item.Id">
-                                                    <button type="button" class="text-danger border-0 bg-transparent" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
+                                                <span id="deleteSpanCTVAT_@item.Id">
+                                                    <button type="button" class="text-danger border-0 bg-transparent" onclick="confirmDeleteCTVAT('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
                                                 </span>
                                             </form>
                                         </div>
@@ -278,13 +278,13 @@
                                             <span class="text-dark"> | </span>
                                             <form asp-action="DeleteCTVAT" asp-controller="CTVATs" asp-route-id="@item.Id" asp-route-invoiceId="@Model.Invoice.Id" asp-route-strUrl="@Model.StrUrl" method="post">
 
-                                                <span id="confirmDeleteSpan_@item.Id" style="display: none">
+                                                <span id="confirmDeleteSpanCTVAT_@item.Id" style="display: none">
                                                     <span class="text-dark">Xóa?</span>
                                                     <button type="submit" class="btn btn-danger btn-xs">Yes</button>
                                                     <button type="button" class="btn btn-primary btn-xs" onclick="confirmDelete('@item.Id', false)">No</button>
                                                 </span>
 
-                                                <span id="deleteSpan_@item.Id">
+                                                <span id="deleteSpanCTVAT_@item.Id">
                                                     <button type="button" disabled class="text-danger border-0 bg-transparent" onclick="confirmDelete('@item.Id', true)"><i class="fas fa-trash-alt"></i></button>
                                                 </span>
                                             </form>
@@ -337,6 +337,41 @@
         //    "autoWidth": false,
         //});
     });
+    function confirmDeleteCTVAT(uniqueId, isDeleteClicked) {
+        var deleteSpan = 'deleteSpanCTVAT_' + uniqueId;
+        var confirmDeleteSpan = 'confirmDeleteSpanCTVAT_' + uniqueId;
+
+        if (isDeleteClicked) {
+            $('#' + deleteSpan).hide();
+            $('#' + confirmDeleteSpan).show();
+
+
+        } else {
+            $('#' + deleteSpan).show();
+            $('#' + confirmDeleteSpan).hide();
+
+        }
+
+
+    }
+
+    function confirmDeleteCTInvoice(uniqueId, isDeleteClicked) {
+        var deleteSpan = 'deleteSpanCTInvoice_' + uniqueId;
+        var confirmDeleteSpan = 'confirmDeleteSpanCTInvoice_' + uniqueId;
+
+        if (isDeleteClicked) {
+            $('#' + deleteSpan).hide();
+            $('#' + confirmDeleteSpan).show();
+
+
+        } else {
+            $('#' + deleteSpan).show();
+            $('#' + confirmDeleteSpan).hide();
+
+        }
+
+
+    }
 </script>
 <script src="~/js/Admin/CTInvoicesCTVATsInInvoicePartial/indexController.js"></script>
 <script src="~/js/Admin/Tours/indexController.js"></script>
