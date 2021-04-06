@@ -69,11 +69,13 @@ namespace SaleDoanInbound.Controllers
                     if (!result.Trangthai)
                     {
                         ModelState.AddModelError("", "Tài khoản này đã bị khóa");
+                        return View();
                     }
                     string modelPass = MaHoaSHA1.EncodeSHA1(model.Password);
                     if (result.Password != modelPass)
                     {
                         ModelState.AddModelError("", "Mật khẩu không đúng");
+
                     }
                     if (result.Password == modelPass)
                     {
