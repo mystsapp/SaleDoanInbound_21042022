@@ -11,8 +11,8 @@
         clear: both;
         border: 1px solid darkgray;
         border-collapse: collapse;
-        margin: auto;
-        width: 100%;
+        /*margin: auto;*/
+        width: 92%;
     }
 
     .invoicetable1 {
@@ -97,6 +97,10 @@
         clear: both;
         display: table;
     }
+
+    .paddingRight{
+        padding-right: 30px;
+    }
 </style>
 <table>
     <tr>
@@ -144,11 +148,11 @@
 
                     <tr>
                         <td class="tdHead invoicecell1"><b><i>BIÊN NHẬN (RECEIPT)</i></b></td>
-                        <td class="tdHead numeric-cell1">Liên 1: lưu</td>
+                        <td class="tdHead numeric-cell1 paddingRight">Liên 1: lưu</td>
                     </tr>
                     <tr>
                         <td class="tdHead invoicecell1">Ngày: @Html.Raw(Model.BienNhan.NgayBN.ToString("dd/MM/yyyy"))</td>
-                        <td class="tdHead numeric-cell1"><b>Số: @Model.BienNhan.SoBN</b></td>
+                        <td class="tdHead numeric-cell1 paddingRight"><b>Số: @Model.BienNhan.SoBN</b></td>
                     </tr>
                 </tbody>
             </table>
@@ -159,11 +163,11 @@
 
                     <tr>
                         <td class="tdHead invoicecell1"><b><i>BIÊN NHẬN (RECEIPT)</i></b></td>
-                        <td class="tdHead numeric-cell1">Liên 2: khách hàng</td>
+                        <td class="tdHead numeric-cell1 paddingRight">Liên 2: khách hàng</td>
                     </tr>
                     <tr>
                         <td class="tdHead invoicecell1">Ngày: @Html.Raw(Model.BienNhan.NgayBN.ToString("dd/MM/yyyy"))</td>
-                        <td class="tdHead numeric-cell1"><b>Số: @Model.BienNhan.SoBN</b></td>
+                        <td class="tdHead numeric-cell1 paddingRight"><b>Số: @Model.BienNhan.SoBN</b></td>
                     </tr>
                 </tbody>
             </table>
@@ -221,12 +225,12 @@
 
                     <tr>
                         <td class="invoicecell1">Đoàn (group): @Model.BienNhan.Tour.Sgtcode</td>
-                        <td class="numeric-cell1">Số khách (Pax): @Model.BienNhan.SK</td>
+                        <td class="numeric-cell1 paddingRight">Số khách (Pax): @Model.BienNhan.SK</td>
                     </tr>
 
                     <tr>
                         <td class="invoicecell1">Loại tiền (Currency): @Model.BienNhan.LoaiTien</td>
-                        <td class="numeric-cell1">Tỷ giá (Rate): @Model.BienNhan.TyGia</td>
+                        <td class="numeric-cell1 paddingRight">Tỷ giá (Rate): @Model.BienNhan.TyGia</td>
                     </tr>
 
                 </tbody>
@@ -239,12 +243,12 @@
 
                     <tr>
                         <td class="invoicecell1">Đoàn (group): @Model.BienNhan.Tour.Sgtcode</td>
-                        <td class="numeric-cell1">Số khách (Pax): @Model.BienNhan.SK</td>
+                        <td class="numeric-cell1 paddingRight">Số khách (Pax): @Model.BienNhan.SK</td>
                     </tr>
 
                     <tr>
                         <td class="invoicecell1">Loại tiền (Currency): @Model.BienNhan.LoaiTien</td>
-                        <td class="numeric-cell1">Tỷ giá (Rate): @Model.BienNhan.TyGia</td>
+                        <td class="numeric-cell1 paddingRight">Tỷ giá (Rate): @Model.BienNhan.TyGia</td>
                     </tr>
 
                 </tbody>
@@ -272,7 +276,7 @@
     </tr>
     <tr>
         <td>
-            <table class="invoicetable">
+            <table class="invoicetable " >
                 <thead>
                     <tr>
                         <th class="invoicecell">
@@ -304,13 +308,13 @@
             </table>
         </td>
         <td>
-            <table class="invoicetable">
+            <table class="invoicetable ">
                 <thead>
                     <tr>
-                        <th class="invoicecell">
+                        <th class="invoicecell" >
                             Diễn giải (Description)
                         </th>
-                        <th class="invoicecell">
+                        <th class="invoicecell" >
                             Số tiền (Amount)
                         </th>
                     </tr>
@@ -360,8 +364,8 @@
             <td></td>
         </tr>*@
     <tr>
-        <td class="tdHead">Số tiền bằng chữ( Amount in words): <b>@Model.SoTienBangChu</b></td>
-        <td class="tdHead">Số tiền bằng chữ( Amount in words): <b>@Model.SoTienBangChu</b></td>
+        <td class="tdHead paddingRight">Số tiền bằng chữ( Amount in words): <b>@Model.SoTienBangChu</b></td>
+        <td class="tdHead paddingRight">Số tiền bằng chữ( Amount in words): <b>@Model.SoTienBangChu</b></td>
         <td class="tdHead">Số tiền bằng chữ( Amount in words): <b>@Model.SoTienBangChu</b></td>
     </tr>
     @*<tr>
@@ -453,7 +457,7 @@
                     <tr>
                         <td></td>
                         <td></td>
-                        <td>@Model.BienNhan.NguoiTao</td>
+                        <td style="padding-right: 5px">@Model.BienNhan.NguoiTao</td>
                     </tr>
                 </thead>
 
