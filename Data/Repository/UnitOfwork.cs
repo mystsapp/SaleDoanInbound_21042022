@@ -99,7 +99,7 @@ namespace Data.Repository
             _tourlewiContext = tourlewiContext;
             _hdvatobContext = hdvatobContext;
 
-            khachHangRepository = new KhachHangRepository(qltourContext);
+            khachHangRepository = new KhachHangRepository(_qltourContext);
             quanRepository = new QuanRepository(_context);
             dMNganhNgheRepository = new DMNganhNgheRepository(_context);
             khuVucTGRepository = new KhuVucTGRepository(_context);
@@ -254,6 +254,10 @@ namespace Data.Repository
         public void Dispose()
         {
             _context.Dispose();
+            _qltourContext.Dispose();
+            _qltaikhoanContext.Dispose();
+            _hoadondientuContext.Dispose();
+            _tourlewiContext.Dispose();
             GC.Collect();
         }
     }

@@ -1244,7 +1244,8 @@ namespace SaleDoanInbound.Controllers
         //-----------Tour Programe------------
         public async Task<IEnumerable<Tourprog>> listTourProgAsync(string id) // id == sgtcode
         {
-            var progtemp = _unitOfWork.tourproRepository.Find(x => x.Sgtcode == id);// _tourprogRepository.ListTourProg(id);
+            //var progtemp = _unitOfWork.tourproRepository.Find(x => x.Sgtcode == id).ToList();// _tourprogRepository.ListTourProg(id);
+            var progtemp = _unitOfWork.tourproRepository.ListTourProg(id);
             var t = await _unitOfWork.tourInfRepository.GetByIdAsync(id);// _tourinfRepository.GetById(id);
             ViewBag.cn = HttpContext.Session.GetString("chinhanh");
 
