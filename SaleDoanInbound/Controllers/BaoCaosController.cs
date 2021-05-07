@@ -377,7 +377,8 @@ namespace SaleDoanInbound.Controllers
                         TrSetCellBorder(xlSheet, dong, 8, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
                         // xlSheet.Cells[dong, 8].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
-                        xlSheet.Cells[dong, 9].Value = item.DoanhThuDK.ToString("N0");
+                        xlSheet.Cells[dong, 9].Value = item.DoanhThuDK;
+                        xlSheet.Cells[dong, 9].Style.Numberformat.Format = "#,##0";
                         TrSetCellBorder(xlSheet, dong, 9, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
                         //xlSheet.Cells[dong, 9].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
@@ -385,7 +386,8 @@ namespace SaleDoanInbound.Controllers
                         TrSetCellBorder(xlSheet, dong, 10, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
                         // xlSheet.Cells[dong, 10].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
-                        xlSheet.Cells[dong, 11].Value = item.DoanhThuTT.ToString("N0");
+                        xlSheet.Cells[dong, 11].Value = item.DoanhThuTT;
+                        xlSheet.Cells[dong, 11].Style.Numberformat.Format = "#,##0";
                         TrSetCellBorder(xlSheet, dong, 11, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
                         // xlSheet.Cells[dong, 10].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
@@ -1717,11 +1719,13 @@ namespace SaleDoanInbound.Controllers
                     TrSetCellBorder(xlSheet, dong, 5, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
                     //xlSheet.Cells[dong, 5].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
-                    xlSheet.Cells[dong, 6].Value = (item.SoKhachTT == 0) ? "0" : item.SoKhachTT.ToString("N0");
+                    xlSheet.Cells[dong, 6].Value = (item.SoKhachTT == 0) ? 0 : item.SoKhachTT;
+                    xlSheet.Cells[dong, 6].Style.Numberformat.Format = "#,##0";
                     TrSetCellBorder(xlSheet, dong, 6, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
                     // xlSheet.Cells[dong, 8].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
-                    xlSheet.Cells[dong, 7].Value = (item.DoanhThuTT == 0) ? "0" : item.DoanhThuTT.ToString("N0");
+                    xlSheet.Cells[dong, 7].Value = (item.DoanhThuTT == 0) ? 0 : item.DoanhThuTT;
+                    xlSheet.Cells[dong, 7].Style.Numberformat.Format = "#,##0";
                     TrSetCellBorder(xlSheet, dong, 7, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
                     //xlSheet.Cells[dong, 9].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
@@ -1865,22 +1869,43 @@ namespace SaleDoanInbound.Controllers
             //{
             //var sk = (item.SoKhachTT == 0) ? item.SoKhachDK : item.SoKhachTT;
             var sk = BaoCaoVM.TourBaoCaoDtos.Sum(x => (x.SoKhachTT == 0) ? x.SoKhachDK : x.SoKhachTT);
-            var ds = BaoCaoVM.TourBaoCaoDtos.Sum(x => (x.DoanhThuTT == 0) ? x.DoanhThuDK : x.DoanhThuTT);
+            //var ds = BaoCaoVM.TourBaoCaoDtos.Sum(x => (x.DoanhThuTT == 0) ? x.DoanhThuDK : x.DoanhThuTT);
+            var ds = BaoCaoVM.TourBaoCaoDtos.Sum(x => x.DoanhThuTT);
 
+            //var skCacDoanDaThanhLy = BaoCaoVM.TourBaoCaoDtos.Where(x => x.TrangThai == "3") // (3)
+            //                                                .Sum(x => (x.SoKhachTT == 0) ? x.SoKhachDK : x.SoKhachTT);
             var skCacDoanDaThanhLy = BaoCaoVM.TourBaoCaoDtos.Where(x => x.TrangThai == "3") // (3)
-                                                            .Sum(x => (x.SoKhachTT == 0) ? x.SoKhachDK : x.SoKhachTT);
+                                                            .Sum(x => x.SoKhachTT);
+
+            //var dsCacDoanDaThanhLy = BaoCaoVM.TourBaoCaoDtos.Where(x => x.TrangThai == "3")
+            //                                                .Sum(x => (x.DoanhThuTT == 0) ? x.DoanhThuDK : x.DoanhThuTT);
+            
             var dsCacDoanDaThanhLy = BaoCaoVM.TourBaoCaoDtos.Where(x => x.TrangThai == "3")
-                                                            .Sum(x => (x.DoanhThuTT == 0) ? x.DoanhThuDK : x.DoanhThuTT);
+                                                            .Sum(x => x.DoanhThuTT);
+
+            //var skCacDoanChuaThanhLy = BaoCaoVM.TourBaoCaoDtos.Where(x => x.TrangThai != "3") // gom moitao (0), da damphan (1), da ky Hd (2)
+            //                                                  .Sum(x => (x.SoKhachTT == 0) ? x.SoKhachDK : x.SoKhachTT);
 
             var skCacDoanChuaThanhLy = BaoCaoVM.TourBaoCaoDtos.Where(x => x.TrangThai != "3") // gom moitao (0), da damphan (1), da ky Hd (2)
-                                                              .Sum(x => (x.SoKhachTT == 0) ? x.SoKhachDK : x.SoKhachTT);
-            var dsCacDoanChuaThanhLy = BaoCaoVM.TourBaoCaoDtos.Where(x => x.TrangThai != "3")
-                                                              .Sum(x => (x.DoanhThuTT == 0) ? x.DoanhThuDK : x.DoanhThuTT);
+                                                  .Sum(x => x.SoKhachTT);
 
+            //var dsCacDoanChuaThanhLy = BaoCaoVM.TourBaoCaoDtos.Where(x => x.TrangThai != "3")
+            //                                                  .Sum(x => (x.DoanhThuTT == 0) ? x.DoanhThuDK : x.DoanhThuTT);
+
+            var dsCacDoanChuaThanhLy = BaoCaoVM.TourBaoCaoDtos.Where(x => x.TrangThai != "3")
+                                                              .Sum(x => x.DoanhThuTT);
+
+            //var skCacDoanChuaKyHD = BaoCaoVM.TourBaoCaoDtos.Where(x => x.TrangThai == "0" || x.TrangThai == "1") // gom moitao (0), da damphan (1)
+            //                                               .Sum(x => (x.SoKhachTT == 0) ? x.SoKhachDK : x.SoKhachTT);
+            
             var skCacDoanChuaKyHD = BaoCaoVM.TourBaoCaoDtos.Where(x => x.TrangThai == "0" || x.TrangThai == "1") // gom moitao (0), da damphan (1)
-                                                           .Sum(x => (x.SoKhachTT == 0) ? x.SoKhachDK : x.SoKhachTT);
+                                                           .Sum(x => x.SoKhachTT);
+
+            //var dsCacDoanChuaKyHD = BaoCaoVM.TourBaoCaoDtos.Where(x => x.TrangThai == "0" || x.TrangThai == "1")
+            //                                               .Sum(x => (x.DoanhThuTT == 0) ? x.DoanhThuDK : x.DoanhThuTT);
+            
             var dsCacDoanChuaKyHD = BaoCaoVM.TourBaoCaoDtos.Where(x => x.TrangThai == "0" || x.TrangThai == "1")
-                                                           .Sum(x => (x.DoanhThuTT == 0) ? x.DoanhThuDK : x.DoanhThuTT);
+                                                           .Sum(x => x.DoanhThuTT);
 
             BaoCaoVM.TourBaoCaoDtosTheoNgay.TongSK += sk;
             BaoCaoVM.TourBaoCaoDtosTheoNgay.TongDS += ds;
@@ -2237,11 +2262,13 @@ namespace SaleDoanInbound.Controllers
                     TrSetCellBorder(xlSheet, dong, 5, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Left, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
                     //xlSheet.Cells[dong, 5].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
-                    xlSheet.Cells[dong, 6].Value = (item.SoKhachTT == 0) ? "0" : item.SoKhachTT.ToString("N0");
+                    xlSheet.Cells[dong, 6].Value = (item.SoKhachTT == 0) ? 0 : item.SoKhachTT;
+                    xlSheet.Cells[dong, 6].Style.Numberformat.Format = "#,##0";
                     TrSetCellBorder(xlSheet, dong, 6, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
                     // xlSheet.Cells[dong, 8].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
-                    xlSheet.Cells[dong, 7].Value = (item.DoanhThuTT == 0) ? "0" : item.DoanhThuTT.ToString("N0");
+                    xlSheet.Cells[dong, 7].Value = (item.DoanhThuTT == 0) ? 0 : item.DoanhThuTT;
+                    xlSheet.Cells[dong, 7].Style.Numberformat.Format = "#,##0";
                     TrSetCellBorder(xlSheet, dong, 7, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Right, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
                     //xlSheet.Cells[dong, 9].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
