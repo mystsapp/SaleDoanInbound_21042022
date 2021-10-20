@@ -402,8 +402,10 @@ namespace Data.Services
                     {
                         return null;
                     }
-                    list = list.Where(x => x.NgayTao >= fromDate &&
-                                       x.NgayTao < toDate.AddDays(1)).ToList();
+                    //list = list.Where(x => x.NgayTao >= fromDate &&
+                    //                   x.NgayTao < toDate.AddDays(1)).ToList();
+                    list = list.Where(x => x.NgayDen >= fromDate &&
+                                       x.NgayDi < toDate.AddDays(1)).ToList(); // tungay denngay
                 }
                 catch (Exception)
                 {
@@ -424,7 +426,8 @@ namespace Data.Services
                     try
                     {
                         fromDate = DateTime.Parse(searchFromDate);
-                        list = list.Where(x => x.NgayTao >= fromDate).ToList();
+                        //list = list.Where(x => x.NgayTao >= fromDate).ToList();
+                        list = list.Where(x => x.NgayDen >= fromDate).ToList();
                     }
                     catch (Exception)
                     {
@@ -437,7 +440,8 @@ namespace Data.Services
                     try
                     {
                         toDate = DateTime.Parse(searchToDate);
-                        list = list.Where(x => x.NgayTao < toDate.AddDays(1)).ToList();
+                        //list = list.Where(x => x.NgayTao < toDate.AddDays(1)).ToList();
+                        list = list.Where(x => x.NgayDi < toDate.AddDays(1)).ToList();
 
                     }
                     catch (Exception)
