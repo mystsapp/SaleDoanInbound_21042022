@@ -75,8 +75,8 @@
                                         </div>
                                     </td>
 
-                                    <td class="tdVal" data-id="@item.Id">@Html.DisplayFor(m => item.Descript)</td>
-                                    <td class="tdVal" data-id="@item.Id">@Html.Raw(item.Amount.ToString("N0"))</td>
+                                    <td @*class="tdVal"*@ data-id="@item.Id">@Html.DisplayFor(m => item.Descript)</td>
+                                    <td @*class="tdVal"*@ data-id="@item.Id">@Html.Raw(item.Amount.ToString("N0"))</td>
                                 </tr>
 
                             }
