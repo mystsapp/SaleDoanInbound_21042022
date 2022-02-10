@@ -20,6 +20,7 @@ using Microsoft.EntityFrameworkCore.Internal;
 using Newtonsoft.Json;
 using OfficeOpenXml;
 using SaleDoanInbound.Models;
+
 //using Xceed.Document.NET;
 using Xceed.Words.NET;
 using Novacode;
@@ -60,9 +61,10 @@ namespace SaleDoanInbound.Controllers
                 TourDto = new TourDto()
             };
         }
+
         public async Task<IActionResult> Index(long id = 0, string searchString = null, int page = 1, string searchFromDate = null, string searchToDate = null)
         {
-            if(string.IsNullOrEmpty(searchFromDate) && string.IsNullOrEmpty(searchToDate)) // moi load vao
+            if (string.IsNullOrEmpty(searchFromDate) && string.IsNullOrEmpty(searchToDate)) // moi load vao
             {
                 var fromToDate = GetDate.LoadTuNgayDenNgay(DateTime.Now.Month.ToString(), DateTime.Now.Month.ToString(), DateTime.Now.Year.ToString());
                 searchFromDate = fromToDate.Split('-')[0];
@@ -129,7 +131,6 @@ namespace SaleDoanInbound.Controllers
                         phongBansQL = user.PhongBans.Split(',').ToList();
                         users = users.Where(item1 => phongBansQL.Any(item2 => item1.PhongBanId == item2)).ToList();
                     }
-
                 }
             }
             else
@@ -151,7 +152,6 @@ namespace SaleDoanInbound.Controllers
                                                                   listRoleChiNhanh,
                                                                   users.Select(x => x.Username).ToList());
 
-
             //--> click vao tour
             var tour = _unitOfWork.tourRepository.GetById(id);
             if (tour != null)
@@ -166,7 +166,6 @@ namespace SaleDoanInbound.Controllers
 
                 // DS invoice theo tour --> appear invoices and biennhan tabs
                 TourVM.Invoices = _unitOfWork.invoiceRepository.Find(x => x.TourId == id);
-
             }
             //--> click vao tour
 
@@ -204,17 +203,15 @@ namespace SaleDoanInbound.Controllers
 
         public IActionResult Create(string strUrl)
         {
-
             // from session
             var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
-            
+
             if (user.Role.RoleName == "KeToans")
             {
                 return View("~/Views/Shared/AccessDenied.cshtml");
             }
             if (user.PhongBanId == "KDOB")
             {
-                
                 TourVM.Tour.MaKH = "50001";
                 TourVM.Tour.TenKH = "DU LICH NOI DIA";
             }
@@ -227,7 +224,7 @@ namespace SaleDoanInbound.Controllers
             GetListPhongBanMacode(user.PhongBanId); // sinh ma cho sgtgode / phongbanid = maphong in qltour
                                                     // get list phong ban / thi truong
 
-            // get list phong ban / dh 
+            // get list phong ban / dh
             //TourVM.listPhongDH = GetListPhongBanDH(); // departoperator (qltour)
             TourVM.listPhongDH = GetListPhongBanDH().Where(x => x.Maphong == "DH" || x.Maphong == "TB" || x.Maphong == "KDOB").ToList();
             // get list phong ban / dh
@@ -347,14 +344,13 @@ namespace SaleDoanInbound.Controllers
                         // sang nam khac' chay lai tu dau
                         TourVM.Tour.SoHopDong = GetNextId.NextID("", "") + subfix;
                     }
-
                 }
             }
             else
             {
                 TourVM.Tour.SoHopDong = "";
             }
-            
+
             // next SoHopdong
 
             //if (string.IsNullOrEmpty(TourVM.Tour.SoHopDong))
@@ -372,11 +368,13 @@ namespace SaleDoanInbound.Controllers
             {
                 sgtCode = _tourService.newSgtcode(Convert.ToDateTime(TourVM.Tour.NgayDen), user.MaCN, "000"); // 000 --> macode cua front desk
             }
-
-            // KDOB
-            if (user.PhongBanId == "KDOB")
+            else if (user.PhongBanId == "KDOB")// KDOB
             {
                 sgtCode = _tourService.newSgtcodeKDOB(Convert.ToDateTime(TourVM.Tour.NgayDen), user.MaCN, quocgias.FirstOrDefault().Telcode);
+            }
+            else if (user.PhongBanId == "KO")
+            {
+                sgtCode = _tourService.newSgtcodeKDOB(Convert.ToDateTime(TourVM.Tour.NgayDen), user.MaCN, "666");
             }
             else // nhung thi truong khac' lay theo telcode cua quocgia
             {
@@ -419,7 +417,6 @@ namespace SaleDoanInbound.Controllers
 
             try
             {
-
                 _unitOfWork.tourRepository.Create(TourVM.Tour);
                 // insert tourinf
                 _unitOfWork.tourInfRepository.Create(tourinf);
@@ -427,7 +424,7 @@ namespace SaleDoanInbound.Controllers
                 // insert tourlewi
                 if (quocgias.FirstOrDefault().Telcode == "000") // FRONT DESK
                 {
-                    // insert 
+                    // insert
                     Data.Models_Tourlewi.Tour tourlewi = new Data.Models_Tourlewi.Tour();
                     tourlewi.Sgtcode = TourVM.Tour.Sgtcode;
                     tourlewi.Khachle = false;
@@ -466,15 +463,12 @@ namespace SaleDoanInbound.Controllers
                 await _unitOfWork.Complete();
                 SetAlert("Thêm mới thành công.", "success");
 
-
                 var fileCheck = Request.Form.Files;
                 if (fileCheck.Count > 0)
                 {
-
                     // upload excel
                     UploadExcelAsync(TourVM.Tour.Sgtcode);
                     // upload excel
-
                 }
 
                 return Redirect(strUrl);
@@ -484,7 +478,6 @@ namespace SaleDoanInbound.Controllers
                 SetAlert(ex.Message, "error");
                 return View(TourVM);
             }
-
         }
 
         public async Task<IActionResult> Edit(long id, string strUrl)
@@ -520,7 +513,6 @@ namespace SaleDoanInbound.Controllers
                 return View("~/Views/Shared/NotFound.cshtml");
             }
 
-
             // gang qua hid tuyentq
             TourVM.Tour.TuyenTQ = TourVM.Tour.TuyenTQ.Replace('-', ',');
             // gang qua hid tuyentq
@@ -529,11 +521,11 @@ namespace SaleDoanInbound.Controllers
             TourVM.listPhongDH = GetListPhongBanDH(); // departoperator (qltour)
                                                       // get list phong ban / thi truong
 
-            //// get list phong ban / dh 
+            //// get list phong ban / dh
             //GetListPhongBanDH(); // departoperator (qltour)
             //// get list phong ban / dh
 
-            // get list phong ban / dh 
+            // get list phong ban / dh
             //TourVM.listPhongDH = GetListPhongBanDH(); // departoperator (qltour)
             TourVM.listPhongDH = GetListPhongBanDH().Where(x => x.Maphong == "DH" || x.Maphong == "TB" || x.Maphong == "KDOB").ToList();
             // get list phong ban / dh
@@ -584,8 +576,8 @@ namespace SaleDoanInbound.Controllers
                 TourVM.Tour.TrangThai = TourVM.Tour.TrangThai ?? "0";
                 // kiem tra trang thai
 
-                // next SoHopdong --> bat buoc phai co'                
-                if (string.IsNullOrEmpty(TourVM.Tour.SoHopDong) && 
+                // next SoHopdong --> bat buoc phai co'
+                if (string.IsNullOrEmpty(TourVM.Tour.SoHopDong) &&
                     TourVM.Tour.NgayKyHopDong != null) // SoHopDong = rong~ va` co' NgayKyHopDong
                 {
                     DateTime dateTime;
@@ -613,7 +605,6 @@ namespace SaleDoanInbound.Controllers
                             // sang nam khac' chay lai tu dau
                             TourVM.Tour.SoHopDong = GetNextId.NextID("", "") + subfix;
                         }
-
                     }
                 }
                 //else
@@ -626,10 +617,12 @@ namespace SaleDoanInbound.Controllers
                 TourVM.Tour.SoHopDong = TourVM.Tour.SoHopDong ?? "";
 
                 // kiem tra thay doi : trong getbyid() va ngoai view
+
                 #region log file
+
                 //var t = _unitOfWork.tourRepository.GetById(id);
                 var t = _unitOfWork.tourRepository.GetSingleNoTracking(x => x.Id == id);
-                
+
                 if (t.ChiNhanhDHId != TourVM.Tour.ChiNhanhDHId)
                 {
                     temp += String.Format("- CN DH thay đổi: {0}->{1}", _unitOfWork.dmChiNhanhRepository.GetById(t.ChiNhanhDHId).Macn, _unitOfWork.dmChiNhanhRepository.GetById(TourVM.Tour.ChiNhanhDHId).Macn);
@@ -749,11 +742,12 @@ namespace SaleDoanInbound.Controllers
                 }
 
                 // loai tien, ty gia mac dinh: vnd, 1
-                #endregion
+
+                #endregion log file
+
                 // kiem tra thay doi
                 if (temp.Length > 0)
                 {
-
                     log = System.Environment.NewLine;
                     log += "=============";
                     log += System.Environment.NewLine;
@@ -797,9 +791,8 @@ namespace SaleDoanInbound.Controllers
 
                 try
                 {
-
                     _unitOfWork.tourRepository.Update(TourVM.Tour);
-                    
+
                     // insert tourinf
                     _unitOfWork.tourInfRepository.Update(tourinf);
                     // insert tourinf
@@ -1014,7 +1007,6 @@ namespace SaleDoanInbound.Controllers
                 new ListViewModel(){id = 2, Name = "Nước ngoài"},
                 new ListViewModel(){id = 3, Name = "Cửa khẩu"},
             };
-
         }
 
         private List<ListViewModel> NguonTour()
@@ -1023,7 +1015,6 @@ namespace SaleDoanInbound.Controllers
             {
                 new ListViewModel(){id = 1, Name = "Nội bộ" },
                 new ListViewModel(){id = 2, Name = "TMDT" },
-
             };
         }
 
@@ -1033,7 +1024,6 @@ namespace SaleDoanInbound.Controllers
             {
                 new ListViewModel(){id = 1, Name = "INBOUND" },
                 new ListViewModel(){id = 2, Name = "TÀU BIỂN" },
-
             };
         }
 
@@ -1048,7 +1038,6 @@ namespace SaleDoanInbound.Controllers
 
         private void GetListPhongBanMacode(string maPhong)
         {
-
             // get list maphong after distinct space and split ','
             var phongbans = _unitOfWork.phongBanRepository.GetAll().Where(x => x.Maphong == maPhong);// chi lay macode theo maphong user login
             var maPhongs = phongbans.Select(x => x.Macode).Distinct();
@@ -1060,7 +1049,6 @@ namespace SaleDoanInbound.Controllers
                 for (int i = 0; i < itemArray.Length; i++)
                 {
                     listString.Add(itemArray[i]);
-
                 }
             }
 
@@ -1071,21 +1059,18 @@ namespace SaleDoanInbound.Controllers
                     Maphong = phongbans.Where(x => x.Macode.Contains(maCode)).FirstOrDefault().Maphong,
                     Macode = maCode
                 });
-
             }
             // get list maphong after distinct space and split ','
         }
 
         private List<Phongban> GetListPhongBanDH()
         {
-
             // get list maphong after distinct space and split ','
             var phongbans = _unitOfWork.phongBanRepository.GetAll();
 
             return phongbans.Where(x => !string.IsNullOrEmpty(x.Macode)).ToList();
             // get list maphong after distinct space and split ','
         }
-
 
         [HttpPost]
         public void UploadExcelAsync(string sgtCode)
@@ -1116,7 +1101,7 @@ namespace SaleDoanInbound.Controllers
                 {
                     ExcelWorksheet workSheet = package.Workbook.Worksheets["Sheet1"];
                     //var list = workSheet.Cells.ToList();
-                    //var table = workSheet.Tables.ToList(); 
+                    //var table = workSheet.Tables.ToList();
                     int totalRows = workSheet.Dimension.Rows;
 
                     List<KhachHang> khachHangs = new List<KhachHang>();
@@ -1147,7 +1132,6 @@ namespace SaleDoanInbound.Controllers
                                 khachHang.NgaySinh = null;
                             }
                         }
-                            
 
                         if (workSheet.Cells[i, 5].Value != null)
                             khachHang.GioiTinh = (workSheet.Cells[i, 5].Value.ToString().ToLower() == "nam") ? true : false;
@@ -1282,6 +1266,7 @@ namespace SaleDoanInbound.Controllers
                             item.TourItem = item.TourItem;
                         }
                         break;
+
                     case "OVR":
                     case "PAC":
                     case "CAN":
@@ -1299,9 +1284,11 @@ namespace SaleDoanInbound.Controllers
                             item.TourItem = item.TourItem;
                         }
                         break;
+
                     case "AIR":
                         item.TourItem = item.TourItem + " chặng: " + item.Dep + "-" + item.Arr + " chuyến: " + item.Carrier + " * " + String.Format("{0:#,##0.0}", item.Unitpricea) + " " + item.Currency;
                         break;
+
                     case "HTL":
                         if (item.Supplierid != null)
                         {
@@ -1355,9 +1342,7 @@ namespace SaleDoanInbound.Controllers
                                     {
                                         gia += "," + a.Oth + " OTH-" + a.Othpax + "pax" + "*" + string.Format("{0:#,##0.0}", a.Othcost) + a.Currency + "-" + a.Othtype;
                                     }
-
                                 }
-
                             }
                             item.TourItem = item.TourItem + " " + gia;
                         }
@@ -1366,6 +1351,7 @@ namespace SaleDoanInbound.Controllers
                             item.TourItem = item.TourItem;
                         }
                         break;
+
                     case "SSE":
                         var sse = _unitOfWork.sightseeingRepository.Find(x => x.Sgtcode == item.Sgtcode && x.Stt == item.Stt);
                         var diemtq = await _unitOfWork.dMDiemTQRepository.GetByIdAsync(item.TourItem);// _diemtqRepository.GetById(item.TourItem);
@@ -1386,14 +1372,12 @@ namespace SaleDoanInbound.Controllers
                                     var dmDiemTQ = await _unitOfWork.dMDiemTQRepository.GetByIdAsync(d.Codedtq);
                                     tendtq = dmDiemTQ.Diemtq;
                                 }
-
                                 else
                                 {
                                     // tendtq += ", " + _diemtqRepository.GetById(d.Codedtq).Diemtq;
                                     var dmDiemTQ = await _unitOfWork.dMDiemTQRepository.GetByIdAsync(d.Codedtq);
                                     tendtq += ", " + dmDiemTQ.Diemtq;
                                 }
-
                             }
                             item.TourItem = "Tham quan " + (string.IsNullOrEmpty(tq) ? "" : tq) + "  " + tendtq;
                         }
@@ -1402,14 +1386,15 @@ namespace SaleDoanInbound.Controllers
                             item.TourItem = tq;
                         }
                         break;
+
                     default:
                         item.TourItem = item.TourItem;
                         break;
                 }
-
             }
             return progtemp;
         }
+
         //-----------Tour Programe------------
 
         //-----------Tour Programe------------
@@ -1419,6 +1404,7 @@ namespace SaleDoanInbound.Controllers
 
             return tournote;
         }
+
         //-----------Tour Programe------------
 
         //----------- KhachTour------------
@@ -1479,6 +1465,7 @@ namespace SaleDoanInbound.Controllers
             //ViewBag.sgtcode = id;
             return xe;
         }
+
         //-----------Xe------------
 
         //-----------HD------------
@@ -1545,7 +1532,6 @@ namespace SaleDoanInbound.Controllers
 
             if (temp.Length > 0)
             {
-
                 log = System.Environment.NewLine;
                 log += "=============";
                 log += System.Environment.NewLine;
@@ -1566,9 +1552,9 @@ namespace SaleDoanInbound.Controllers
             {
                 SetAlert("Error: " + ex.Message, "error");
                 return Redirect(TourVM.StrUrl);
-
             }
         }
+
         //-----------HuyTour------------
 
         //-----------KhoiPhucTour------------
@@ -1593,7 +1579,6 @@ namespace SaleDoanInbound.Controllers
                 tour.TrangThai = "1";
             }
 
-
             if (tour.NgayKyHopDong != null)
             {
                 tour.TrangThai = "2";
@@ -1603,7 +1588,6 @@ namespace SaleDoanInbound.Controllers
             {
                 tour.TrangThai = "3";
             }
-
             else
             {
                 tour.TrangThai = "0";
@@ -1618,7 +1602,6 @@ namespace SaleDoanInbound.Controllers
             temp += String.Format("- Ngày khôi phục: {0:dd/MM/yyyy} - Người khôi phục: {1}", DateTime.Now, user.Username); // username
             if (temp.Length > 0)
             {
-
                 log = System.Environment.NewLine;
                 log += "=============";
                 log += System.Environment.NewLine;
@@ -1639,12 +1622,13 @@ namespace SaleDoanInbound.Controllers
             {
                 SetAlert("Error: " + ex.Message, "error");
                 return Redirect(strUrl);
-
             }
         }
+
         //-----------KhoiPhucTour------------
 
         #region in chuong trinh tour
+
         public IActionResult ExportWord(string sgtcode, bool ingia)
         {
             ingia = true;
@@ -1663,7 +1647,6 @@ namespace SaleDoanInbound.Controllers
             {
                 tencongty = " - " + congty.Fullname;
             }
-
 
             Novacode.DocX doc = null;
             string webRootPath = _webHostEnvironment.WebRootPath;
@@ -1700,7 +1683,6 @@ namespace SaleDoanInbound.Controllers
                 doc.InsertParagraph(tourNote.Headernode).Font("Times New Roman").FontSize(10);
             }
 
-
             var tourProgramTbl = doc.AddTable(1, 3);
 
             tourProgramTbl.Rows[0].Cells[0].Paragraphs[0].Append("Giờ").Bold().Font("Times New Roman").FontSize(10).Alignment = Alignment.center;
@@ -1719,6 +1701,7 @@ namespace SaleDoanInbound.Controllers
                     case "ITI":
                     case "TXT":
                         break;
+
                     default:
                         if (tongkhach > 0)
                             sokhach = tongkhach.ToString();
@@ -1734,7 +1717,6 @@ namespace SaleDoanInbound.Controllers
                     {
                         if (!string.IsNullOrEmpty(i.TourItem))
                         {
-
                             //from += _thanhphoRepository.ListThanhpho1().Where(x => x.Matp == i.TourItem).SingleOrDefault().Tentp;
                             var thanhpho = _unitOfWork.thanhPhoForTuyenTQRepository.ListThanhpho1(x => x.Matp == i.TourItem);
                             var count = thanhpho.Count();
@@ -1760,7 +1742,6 @@ namespace SaleDoanInbound.Controllers
                             {
                                 tu += from + (string.IsNullOrEmpty(to) ? "" : " - " + to);
                             }
-
                         }
                     }
 
@@ -1798,7 +1779,6 @@ namespace SaleDoanInbound.Controllers
                 }
                 if (dong == listTourPro.Count())
                 {
-
                     row.Cells[2].Paragraphs[0].Append("\n Kết thúc chương trình").Bold().Font("Times New Roman").FontSize(10);
                 }
             }
@@ -1834,7 +1814,7 @@ namespace SaleDoanInbound.Controllers
 
             string roomingList = "Danh sách khách (Rooming List): ";
 
-            //Formatting Title  
+            //Formatting Title
             Novacode.Formatting titleFormat = new Novacode.Formatting();
 
             titleFormat.Bold = true;
@@ -1987,7 +1967,6 @@ namespace SaleDoanInbound.Controllers
                     {
                         ck = " (" + item.Chinhanh + " CK)";
                     }
-
                 }
                 else
                 {
@@ -1999,7 +1978,6 @@ namespace SaleDoanInbound.Controllers
                     {
                         ck = " (" + item.Chinhanh + " TM)";
                     }
-
                 }
                 switch (item.Srvtype)
                 {
@@ -2040,13 +2018,13 @@ namespace SaleDoanInbound.Controllers
                         }
                         item.TourItem = item.TourItem + (string.IsNullOrEmpty(item.Srvnode) ? "" : " (" + item.Srvnode + ")") + ck;
                         break;
+
                     case "OVR":
                     case "PAC":
                     case "OTH":
                     case "GLF":
                         if (item.Supplierid != null)
                         {
-                            
                             var supplier = _unitOfWork.supplierRepository.getSupplierById(item.Supplierid);
                             item.TourItem = item.TourItem + " " + supplier.Tengiaodich;
                         }
@@ -2077,12 +2055,12 @@ namespace SaleDoanInbound.Controllers
                         }
                         item.TourItem = item.TourItem + (string.IsNullOrEmpty(item.Srvnode) ? "" : " (" + item.Srvnode + ")") + ck;
                         break;
+
                     case "SHW":
                     case "MUS":
                     case "WPU":
                         if (!string.IsNullOrEmpty(item.Supplierid))
                         {
-                            
                             var supplier = _unitOfWork.supplierRepository.getSupplierById(item.Supplierid);
                             item.TourItem = item.TourItem + " " + supplier.Tengiaodich + item.Time ?? " " + item.Carrier;
                         }
@@ -2113,6 +2091,7 @@ namespace SaleDoanInbound.Controllers
                         }
                         item.TourItem = item.TourItem + (string.IsNullOrEmpty(item.Srvnode) ? "" : " (" + item.Srvnode + ")") + ck;
                         break;
+
                     case "AIR":
                     case "TRA":
                         if (item.Airtype == "DON")
@@ -2158,11 +2137,11 @@ namespace SaleDoanInbound.Controllers
                         }
                         item.TourItem = item.TourItem + " (" + (string.IsNullOrEmpty(item.Time) ? "giờ cất/ hạ cánh?" : item.Time.Replace('/', '-')) + ") " + (string.IsNullOrEmpty(item.Srvnode) ? "" : " (" + item.Srvnode + ")") + ck;
                         break;
+
                     case "HTL":
                     case "CRU":
                         if (item.Supplierid != null)
                         {
-                            
                             var supplier = _unitOfWork.supplierRepository.getSupplierById(item.Supplierid);
                             item.TourItem = item.TourItem + " " + supplier.Tengiaodich + " - " + supplier.Diachi + " phone: " + supplier.Dienthoai;
                             // item.TourItem = item.TourItem + " " + gia;
@@ -2257,6 +2236,7 @@ namespace SaleDoanInbound.Controllers
                         item.TourItem = item.TourItem + " " + gia;
                         item.TourItem = item.TourItem + (string.IsNullOrEmpty(item.Srvnode) ? "" : " (" + item.Srvnode + ")") + ck;
                         break;
+
                     case "SSE":
 
                         //var diemtq = _diemtqRepository.GetById(item.TourItem);
@@ -2327,7 +2307,6 @@ namespace SaleDoanInbound.Controllers
                                         }
                                     }
                                 }
-
                             }
                             item.TourItem = "Tham quan " + (string.IsNullOrEmpty(tq) ? "" : tq) + " " + tendtq;
                         }
@@ -2337,18 +2316,20 @@ namespace SaleDoanInbound.Controllers
                         }
                         item.TourItem = item.TourItem + (string.IsNullOrEmpty(item.TourItem) ? "" : ", " + item.Srvnode) + ck;
                         break;
+
                     case "ITI":
                         item.TourItem = item.TourItem;
                         break;
+
                     default:
                         item.TourItem = item.TourItem + (string.IsNullOrEmpty(item.Srvnode) ? "" : " (" + item.Srvnode + ")");
                         break;
                 }
-
             }
             return progtemp;
         }
-        #endregion
+
+        #endregion in chuong trinh tour
 
         //public async Task<JsonResult> CheckInvoices(long tourId)
         //{
