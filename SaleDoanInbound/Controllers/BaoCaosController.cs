@@ -83,7 +83,6 @@ namespace SaleDoanInbound.Controllers
                 string TuNgayDenNgayString = LoadTuNgayDenNgay(currentTime.Month.ToString(), currentTime.Month.ToString(), currentTime.Year.ToString());
                 searchFromDate = TuNgayDenNgayString.Split('-')[0];
                 searchToDate = TuNgayDenNgayString.Split('-')[1];
-
             }
             else // da chon ngay thang - // check date correct
             {
@@ -114,11 +113,9 @@ namespace SaleDoanInbound.Controllers
             ViewBag.searchFromDate = searchFromDate;
             ViewBag.searchToDate = searchToDate;
 
-
             List<string> maCns = new List<string>();
             if (user.Role.RoleName != "Admins")
             {
-
                 if (user.Role.RoleName == "Users")
                 {
                     BaoCaoVM.Dmchinhanhs = new List<Dmchinhanh>() { new Dmchinhanh() { Macn = user.MaCN } };
@@ -128,7 +125,6 @@ namespace SaleDoanInbound.Controllers
                 }
                 else
                 {
-
                     if (string.IsNullOrEmpty(Macn)) // moi load vao
                     {
                         var phanKhuCNs = await _unitOfWork.phanKhuCNRepository.FindIncludeOneAsync(x => x.Role, y => y.RoleId == user.RoleId);
@@ -139,7 +135,6 @@ namespace SaleDoanInbound.Controllers
                         BaoCaoVM.Dmchinhanhs = BaoCaoVM.Dmchinhanhs.Where(item1 => maCns.Any(item2 => item1.Macn == item2));
                         BaoCaoVM.TourBaoCaoDtos = _baoCaoService.DoanhSoTheoSale(searchFromDate, searchToDate, BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList());
                         DoanhSoTheoSaleGroupbyNguoiTao();
-
                     }
                     else // co' chon chinhanh
                     {
@@ -175,7 +170,6 @@ namespace SaleDoanInbound.Controllers
         }
 
         [HttpPost]
-        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> DoanhSoTheoSaleExcel(string searchFromDate = null, string searchToDate = null, string Macn = null)
         {
             // from session
@@ -266,7 +260,6 @@ namespace SaleDoanInbound.Controllers
                 }
                 else
                 {
-
                     if (string.IsNullOrEmpty(Macn)) // moi load vao
                     {
                         var phanKhuCNs = await _unitOfWork.phanKhuCNRepository.FindIncludeOneAsync(x => x.Role, y => y.RoleId == user.RoleId);
@@ -277,7 +270,6 @@ namespace SaleDoanInbound.Controllers
                         BaoCaoVM.Dmchinhanhs = BaoCaoVM.Dmchinhanhs.Where(item1 => maCns.Any(item2 => item1.Macn == item2));
                         BaoCaoVM.TourBaoCaoDtos = _baoCaoService.DoanhSoTheoSale(searchFromDate, searchToDate, BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList());
                         DoanhSoTheoSaleGroupbyNguoiTao();
-
                     }
                     else // co' chon chinhanh
                     {
@@ -501,7 +493,6 @@ namespace SaleDoanInbound.Controllers
         }
 
         [HttpPost]
-        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> DoanhSoTheoSaleExcelChart(string searchFromDate = null, string searchToDate = null, string Macn = null)
         {
             // from session
@@ -564,7 +555,6 @@ namespace SaleDoanInbound.Controllers
             List<string> maCns = new List<string>();
             if (user.Role.RoleName != "Admins")
             {
-
                 if (user.Role.RoleName == "Users")
                 {
                     BaoCaoVM.Dmchinhanhs = new List<Dmchinhanh>() { new Dmchinhanh() { Macn = user.MaCN } };
@@ -574,7 +564,6 @@ namespace SaleDoanInbound.Controllers
                 }
                 else
                 {
-
                     if (string.IsNullOrEmpty(Macn)) // moi load vao
                     {
                         var phanKhuCNs = await _unitOfWork.phanKhuCNRepository.FindIncludeOneAsync(x => x.Role, y => y.RoleId == user.RoleId);
@@ -585,7 +574,6 @@ namespace SaleDoanInbound.Controllers
                         BaoCaoVM.Dmchinhanhs = BaoCaoVM.Dmchinhanhs.Where(item1 => maCns.Any(item2 => item1.Macn == item2));
                         BaoCaoVM.TourBaoCaoDtos = _baoCaoService.DoanhSoTheoSale(searchFromDate, searchToDate, BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList());
                         DoanhSoTheoSaleGroupbyNguoiTao();
-
                     }
                     else // co' chon chinhanh
                     {
@@ -863,7 +851,7 @@ namespace SaleDoanInbound.Controllers
             //////////////////////////// group by/////////////////////////////////////////////////
         }
 
-        #endregion
+        #endregion Doanh so theo sale
 
         #region Doanh so theo thang
 
@@ -940,7 +928,6 @@ namespace SaleDoanInbound.Controllers
                 }
                 else
                 {
-
                     if (!string.IsNullOrEmpty(chiNhanh))  // da chon chinhanh
                     {
                         List<string> listMaCN = new List<string>();
@@ -952,29 +939,26 @@ namespace SaleDoanInbound.Controllers
                         BaoCaoVM.Dmchinhanhs = BaoCaoVM.Dmchinhanhs.Append(new Dmchinhanh() { Macn = "-- Select --" }).OrderBy(x => x.Macn);
                         //dmchinhanh theo role
 
-                        //1                    
+                        //1
                         BaoCaoVM.TourBaoCaoTheoThangs1 = TourBaoCaoTheoThangViewModels(tuThang1, denThang1, nam1, listMaCN);
                         //1
 
                         //2
                         BaoCaoVM.TourBaoCaoTheoThangs2 = TourBaoCaoTheoThangViewModels(tuThang2, denThang2, nam2, listMaCN);
                         //2
-
                     }
                     else // moi load vao
                     {
-
                         var listMaCN = _unitOfWork.phanKhuCNRepository.GetById(user.RoleId).ChiNhanhs.Split(',').ToList();
                         BaoCaoVM.Dmchinhanhs = BaoCaoVM.Dmchinhanhs.Where(item1 => listMaCN.Any(item2 => item1.Macn == item2));
                         BaoCaoVM.Dmchinhanhs = BaoCaoVM.Dmchinhanhs.Append(new Dmchinhanh() { Macn = "-- Select --" }).OrderBy(x => x.Macn);
-                        //1                    
+                        //1
                         BaoCaoVM.TourBaoCaoTheoThangs1 = TourBaoCaoTheoThangViewModels(tuThang1, denThang1, nam1, listMaCN);
                         //1
 
                         //2
                         BaoCaoVM.TourBaoCaoTheoThangs2 = TourBaoCaoTheoThangViewModels(tuThang2, denThang2, nam2, listMaCN);
                         //2
-
                     }
                 }
             }
@@ -1006,6 +990,7 @@ namespace SaleDoanInbound.Controllers
 
             return View(BaoCaoVM);
         }
+
         public IActionResult DoanhSoTheoThangExcel(string tuThang1, string denThang1, string nam1,
                                               string tuThang2, string denThang2, string nam2, string chiNhanh)
         {
@@ -1078,7 +1063,6 @@ namespace SaleDoanInbound.Controllers
                 }
                 else
                 {
-
                     // chon chi nhanh
                     if (chiNhanh != "-- Select --")// da chon chinhanh
                     {
@@ -1104,7 +1088,6 @@ namespace SaleDoanInbound.Controllers
                         //2
                         BaoCaoVM.TourBaoCaoTheoThangs2 = TourBaoCaoTheoThangViewModels(tuThang2, denThang2, nam2, listMaCN);
                         //2
-
                     }
                     // chon chi nhanh
                 }
@@ -1267,7 +1250,6 @@ namespace SaleDoanInbound.Controllers
                 if (tour1Array[i].SoKhach > 0)
                 {
                     tyLeSK = tour2Array[i].SoKhach / tour1Array[i].SoKhach * 100;
-
                 }
                 else
                 {
@@ -1289,7 +1271,6 @@ namespace SaleDoanInbound.Controllers
 
                 dong++;
                 //idem++;
-
             }
             // 1
             xlSheet.Cells[dong, 2].Value = "Tổng Cộng: ";
@@ -1437,7 +1418,6 @@ namespace SaleDoanInbound.Controllers
                     }
 
                     tourBaoCaoTheoThangViewModels = tourBaoCaoTheoThangViewModels.Concat(list);
-
                 }
                 else
                 {
@@ -1445,15 +1425,14 @@ namespace SaleDoanInbound.Controllers
                 }
 
                 // add cho du 12 con vao BaoCaoVM.TourBaoCaoTheoThangs1
-
             }
             return tourBaoCaoTheoThangViewModels;
-
         }
 
-        #endregion
+        #endregion Doanh so theo thang
 
         #region Doanh so theo ngay di
+
         public async Task<IActionResult> DoanhSoTheoNgayDi(string searchFromDate = null, string searchToDate = null, string loaiTour = null, string macn = null)
         {
             // from session
@@ -1468,7 +1447,6 @@ namespace SaleDoanInbound.Controllers
                 string TuNgayDenNgayString = LoadTuNgayDenNgay(currentTime.Month.ToString(), currentTime.Month.ToString(), currentTime.Year.ToString());
                 searchFromDate = TuNgayDenNgayString.Split('-')[0];
                 searchToDate = TuNgayDenNgayString.Split('-')[1];
-
             }
             else // da chon ngay thang - // check date correct
             {
@@ -1539,13 +1517,10 @@ namespace SaleDoanInbound.Controllers
                 DoanhSoTheoNgay();
             }
 
-
-
             return View(BaoCaoVM);
         }
 
         [HttpPost]
-        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> DoanhSoTheoNgayDiExcel(string searchFromDate = null, string searchToDate = null, string loaiTour = null, string macn = null)
         {
             BaoCaoVM.TourBaoCaoDtosTheoNgay = new TourBaoCaoDtosTheoNgay();
@@ -1569,12 +1544,12 @@ namespace SaleDoanInbound.Controllers
             xlSheet.Column(4).Width = 15;// Ngày về
             xlSheet.Column(5).Width = 40;// Tuyến tham quan
             xlSheet.Column(6).Width = 10;// Số khách
-            xlSheet.Column(7).Width = 15;// Doanh số 
+            xlSheet.Column(7).Width = 15;// Doanh số
             xlSheet.Column(8).Width = 15;// Sales
-            xlSheet.Column(9).Width = 35;// Tên công ty/Khách hàng            
+            xlSheet.Column(9).Width = 35;// Tên công ty/Khách hàng
             xlSheet.Column(10).Width = 25;// Loại tour
             xlSheet.Column(11).Width = 15;// Nguồn tour
-            xlSheet.Column(12).Width = 15;// Ngày tạo            
+            xlSheet.Column(12).Width = 15;// Ngày tạo
 
             xlSheet.Cells[1, 1].Value = "CÔNG TY DVLH SAIGONTOURIST";
             xlSheet.Cells[1, 1].Style.Font.SetFromFont(new Font("Times New Roman", 14, FontStyle.Bold));
@@ -1678,7 +1653,6 @@ namespace SaleDoanInbound.Controllers
 
             if (BaoCaoVM.TourBaoCaoDtosTheoNgay.TourBaoCaoDtos != null)
             {
-
                 foreach (var item in BaoCaoVM.TourBaoCaoDtosTheoNgay.TourBaoCaoDtos)
                 {
                     xlSheet.Cells[dong, 1].Value = idem;
@@ -1860,10 +1834,8 @@ namespace SaleDoanInbound.Controllers
             }
         }
 
-
         private void DoanhSoTheoNgay()
         {
-
             BaoCaoVM.TourBaoCaoDtosTheoNgay.TourBaoCaoDtos = BaoCaoVM.TourBaoCaoDtos;
             //foreach (var item in BaoCaoVM.TourBaoCaoDtos)
             //{
@@ -1879,7 +1851,7 @@ namespace SaleDoanInbound.Controllers
 
             //var dsCacDoanDaThanhLy = BaoCaoVM.TourBaoCaoDtos.Where(x => x.TrangThai == "3")
             //                                                .Sum(x => (x.DoanhThuTT == 0) ? x.DoanhThuDK : x.DoanhThuTT);
-            
+
             var dsCacDoanDaThanhLy = BaoCaoVM.TourBaoCaoDtos.Where(x => x.TrangThai == "3")
                                                             .Sum(x => x.DoanhThuTT);
 
@@ -1897,13 +1869,13 @@ namespace SaleDoanInbound.Controllers
 
             //var skCacDoanChuaKyHD = BaoCaoVM.TourBaoCaoDtos.Where(x => x.TrangThai == "0" || x.TrangThai == "1") // gom moitao (0), da damphan (1)
             //                                               .Sum(x => (x.SoKhachTT == 0) ? x.SoKhachDK : x.SoKhachTT);
-            
+
             var skCacDoanChuaKyHD = BaoCaoVM.TourBaoCaoDtos.Where(x => x.TrangThai == "0" || x.TrangThai == "1") // gom moitao (0), da damphan (1)
                                                            .Sum(x => x.SoKhachTT);
 
             //var dsCacDoanChuaKyHD = BaoCaoVM.TourBaoCaoDtos.Where(x => x.TrangThai == "0" || x.TrangThai == "1")
             //                                               .Sum(x => (x.DoanhThuTT == 0) ? x.DoanhThuDK : x.DoanhThuTT);
-            
+
             var dsCacDoanChuaKyHD = BaoCaoVM.TourBaoCaoDtos.Where(x => x.TrangThai == "0" || x.TrangThai == "1")
                                                            .Sum(x => x.DoanhThuTT);
 
@@ -1925,8 +1897,6 @@ namespace SaleDoanInbound.Controllers
             //{
             //    item1.TC = tongCong;
             //}
-
-
         }
 
         private string LoadTuNgayDenNgay(string tuThang1, string denThang1, string nam1)
@@ -1957,23 +1927,23 @@ namespace SaleDoanInbound.Controllers
             return searchFromDate + "-" + searchToDate;
         }
 
-        #endregion
+        #endregion Doanh so theo ngay di
 
         #region Doanh so theo thi truong
+
         public async Task<IActionResult> DoanhSoTheoThiTruong(string searchFromDate = null, string searchToDate = null, string thiTruong = null)
         {
             // from session
             var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
 
             //// moi load vao
-            BaoCaoVM.Phongbans = BaoCaoVM.Phongbans.Where(x => x.Maphong == "KDIB");
+            //BaoCaoVM.Phongbans = BaoCaoVM.Phongbans.Where(x => x.Maphong == "KDIB");
             if (string.IsNullOrEmpty(searchFromDate) && string.IsNullOrEmpty(searchToDate))
             {
                 var currentTime = DateTime.Now;
                 string TuNgayDenNgayString = LoadTuNgayDenNgay(currentTime.Month.ToString(), currentTime.Month.ToString(), currentTime.Year.ToString());
                 searchFromDate = TuNgayDenNgayString.Split('-')[0];
                 searchToDate = TuNgayDenNgayString.Split('-')[1];
-
             }
             else // da chon ngay thang - // check date correct
             {
@@ -2013,7 +1983,6 @@ namespace SaleDoanInbound.Controllers
             {
                 if (user.Role.RoleName == "Users")
                 {
-
                     BaoCaoVM.Phongbans = BaoCaoVM.Phongbans.Where(x => x.Maphong == user.PhongBanId);
                     BaoCaoVM.TourBaoCaoDtos = _baoCaoService.DoanhSoTheoThiTruong(searchFromDate, searchToDate, BaoCaoVM.Phongbans.Select(x => x.Maphong).ToList()); //, BaoCaoVM.Dmchinhanhs.Select(x => x.Macn).ToList());
 
@@ -2069,7 +2038,6 @@ namespace SaleDoanInbound.Controllers
         }
 
         [HttpPost]
-        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> DoanhSoTheoThiTruongExcel(string searchFromDate = null, string searchToDate = null, string thiTruong = null)
         {
             BaoCaoVM.TourBaoCaoDtosTheoNgay = new TourBaoCaoDtosTheoNgay();
@@ -2093,13 +2061,13 @@ namespace SaleDoanInbound.Controllers
             xlSheet.Column(4).Width = 15;// Ngày về
             xlSheet.Column(5).Width = 40;// Tuyến tham quan
             xlSheet.Column(6).Width = 10;// Số khách
-            xlSheet.Column(7).Width = 15;// Doanh số 
+            xlSheet.Column(7).Width = 15;// Doanh số
             xlSheet.Column(8).Width = 15;// Sales
-            xlSheet.Column(9).Width = 35;// Tên công ty/Khách hàng            
+            xlSheet.Column(9).Width = 35;// Tên công ty/Khách hàng
             xlSheet.Column(10).Width = 25;// Loại tour
             xlSheet.Column(11).Width = 15;// Nguồn tour
-            xlSheet.Column(12).Width = 15;// Ngày tạo            
-            xlSheet.Column(13).Width = 15;// Thị trường     
+            xlSheet.Column(12).Width = 15;// Ngày tạo
+            xlSheet.Column(13).Width = 15;// Thị trường
 
             xlSheet.Cells[1, 1].Value = "CÔNG TY DVLH SAIGONTOURIST";
             xlSheet.Cells[1, 1].Style.Font.SetFromFont(new Font("Times New Roman", 14, FontStyle.Bold));
@@ -2221,7 +2189,6 @@ namespace SaleDoanInbound.Controllers
 
             if (BaoCaoVM.TourBaoCaoDtosTheoNgay.TourBaoCaoDtos != null)
             {
-
                 foreach (var item in BaoCaoVM.TourBaoCaoDtosTheoNgay.TourBaoCaoDtos)
                 {
                     xlSheet.Cells[dong, 1].Value = idem;
@@ -2407,12 +2374,11 @@ namespace SaleDoanInbound.Controllers
             }
         }
 
-        #endregion
+        #endregion Doanh so theo thi truong
 
         #region
 
         [HttpPost]
-        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> BienNhanExcel(string searchFromDate = null, string searchToDate = null, string searchString = null)
         {
             // from session
@@ -2494,7 +2460,6 @@ namespace SaleDoanInbound.Controllers
 
             if (BaoCaoVM.BienNhanDtos != null)
             {
-
                 foreach (var item in BaoCaoVM.BienNhanDtos)
                 {
                     xlSheet.Cells[dong, 1].Value = idem;
@@ -2532,9 +2497,8 @@ namespace SaleDoanInbound.Controllers
                     {
                         xlSheet.Cells[dong, 3].Style.Fill.PatternType = ExcelFillStyle.Solid;
                         xlSheet.Cells[dong, 3].Style.Fill.BackgroundColor.SetColor(Color.Red);
-                        
                     }
-                    
+
                     xlSheet.Cells[dong, 4].Value = item.NgayBN.ToShortDateString();
                     TrSetCellBorder(xlSheet, dong, 4, ExcelBorderStyle.Thin, ExcelHorizontalAlignment.Center, Color.Silver, "Times New Roman", 12, FontStyle.Regular);
                     //xlSheet.Cells[dong, 4].Style.Border.Right.Style = ExcelBorderStyle.Thin;
@@ -2557,7 +2521,6 @@ namespace SaleDoanInbound.Controllers
                     dong++;
                     idem++;
                 }
-
             }
             else
             {
