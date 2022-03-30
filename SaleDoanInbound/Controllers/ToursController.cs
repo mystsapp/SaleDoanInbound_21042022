@@ -1258,6 +1258,7 @@ namespace SaleDoanInbound.Controllers
                     case "SHP":
                         if (item.Supplierid != null)
                         {
+                            //var supplier = await _unitOfWork.supplierRepository.GetByIdAsync(item.Supplierid); // _supplierRepository.GetById(item.supplierid);
                             var supplier = await _unitOfWork.supplierRepository.GetByIdAsync(item.Supplierid); // _supplierRepository.GetById(item.supplierid);
                             item.TourItem = item.TourItem + " " + supplier.Tengiaodich + " - " + supplier.Diachi + " phone: " + supplier.Dienthoai;
                         }

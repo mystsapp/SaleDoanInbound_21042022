@@ -11,12 +11,13 @@ namespace Data.Repository
     {
         IEnumerable<Supplier> GetAll();
 
-        Task<Supplier> GetByIdAsync(string id);
+        Task<VSupplier> GetByIdAsync(string id);
 
         IEnumerable<Supplier> Find(Func<Supplier, bool> predicate);
 
         Supplier getSupplierById(string code);
     }
+
     public class SupplierRepository : ISupplierRepository
     {
         private readonly qltourContext _qltourContext;
@@ -25,6 +26,7 @@ namespace Data.Repository
         {
             _qltourContext = qltourContext;
         }
+
         public IEnumerable<Supplier> Find(Func<Supplier, bool> predicate)
         {
             return _qltourContext.Supplier.Where(predicate);
@@ -35,15 +37,15 @@ namespace Data.Repository
             return _qltourContext.Supplier;
         }
 
-        public async Task<Supplier> GetByIdAsync(string id)
+        public async Task<VSupplier> GetByIdAsync(string id)
         {
-            return await _qltourContext.Supplier.FindAsync(id);
+            //return await _qltourContext.Supplier.FindAsync(id);
+            return _qltourContext.VSupplier.Where(x => x.Code == id).FirstOrDefault();
         }
 
         public Supplier getSupplierById(string code)
         {
             return _qltourContext.Supplier.Find(code);
         }
-
     }
 }
