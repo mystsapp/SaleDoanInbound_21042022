@@ -9,6 +9,5 @@ namespace Data.Models_QLTaiKhoan
         public string Mact { get; set; }
 
         public virtual Application MactNavigation { get; set; }
-        public virtual Users UsernameNavigation { get; set; }
     }
 }

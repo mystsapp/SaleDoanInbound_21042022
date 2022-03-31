@@ -48,16 +48,18 @@ namespace SaleDoanInbound.Controllers
             {
                 Tour = new Data.Models_IB.Tour(),
                 Invoice = new Invoice(),
+
                 Thanhphos = _unitOfWork.thanhPhoForTuyenTQRepository.GetAll(),
-                Companies = _unitOfWork.khachHangRepository.GetAll(),
-                Tourkinds = _unitOfWork.tourKindRepository.GetAll(),
-                Dmchinhanhs = _unitOfWork.dmChiNhanhRepository.GetAll(),
+                //Companies = _unitOfWork.khachHangRepository.GetAll(),
+                //Tourkinds = _unitOfWork.tourKindRepository.GetAll(),
+                //Dmchinhanhs = _unitOfWork.dmChiNhanhRepository.GetAll(),
+
                 NguonTours = NguonTour(),
                 LoaiKhachs = LoaiKhach(),
                 listPhongMacode = new List<Data.Models_QLT.Phongban>(),
                 listPhongDH = new List<Phongban>(),
                 ListCPKhac = new List<ChiPhiKhachDto>(),
-                Ngoaites = _unitOfWork.ngoaiTeRepository.GetAll(),
+                //Ngoaites = _unitOfWork.ngoaiTeRepository.GetAll(),
                 TourDto = new TourDto()
             };
         }
@@ -87,22 +89,9 @@ namespace SaleDoanInbound.Controllers
             ViewBag.searchFromDate = searchFromDate; // ngay bat dau
             ViewBag.searchToDate = searchToDate; // ngay ket thuc
 
-            // for delete
-            //if (id != 0)
-            //{
-            //    var nganhNghe = _unitOfWork.dMNganhNgheRepository.GetById(id);
-            //    if (nganhNghe == null)
-            //    {
-            //        var lastId = _unitOfWork.dMNganhNgheRepository
-            //                                  .GetAll().OrderByDescending(x => x.Id)
-            //                                  .FirstOrDefault().Id;
-            //        id = lastId;
-            //    }
-            //}
-
-            var companies = TourVM.Companies;
-            var loaiTours = TourVM.Tourkinds;
-            var chiNhanhs = TourVM.Dmchinhanhs;
+            var companies = _unitOfWork.khachHangRepository.GetAll();
+            var loaiTours = _unitOfWork.tourKindRepository.GetAll();
+            var chiNhanhs = _unitOfWork.dmChiNhanhRepository.GetAll();
             var cacNoiDungHuyTours = _unitOfWork.cacNoiDungHuyTourRepository.GetAll();
             List<string> listRoleChiNhanh = new List<string>();
             List<string> phongBansQL = new List<string>();
@@ -216,6 +205,7 @@ namespace SaleDoanInbound.Controllers
                 TourVM.Tour.TenKH = "DU LICH NOI DIA";
             }
             TourVM.StrUrl = strUrl;
+            TourVM.Ngoaites = _unitOfWork.ngoaiTeRepository.GetAll();
             TourVM.Tour.SoHopDong = "";
             ViewBag.chiNhanhTaoId = _unitOfWork.dmChiNhanhRepository.Find(x => x.Macn == user.MaCN).FirstOrDefault().Id;
 
@@ -231,6 +221,7 @@ namespace SaleDoanInbound.Controllers
 
             // CompaniesViewModel
             var listCompany = new List<ListViewModel>();
+            TourVM.Companies = _unitOfWork.khachHangRepository.GetAll();
             foreach (var item in TourVM.Companies)
             {
                 listCompany.Add(new ListViewModel() { CompanyId = item.CompanyId, CompanyName = item.CompanyId + " - " + item.Name });
@@ -482,6 +473,8 @@ namespace SaleDoanInbound.Controllers
 
         public async Task<IActionResult> Edit(long id, string strUrl)
         {
+            TourVM.Dmchinhanhs = _unitOfWork.dmChiNhanhRepository.GetAll();
+            TourVM.Ngoaites = _unitOfWork.ngoaiTeRepository.GetAll();
             // from session
             var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
             if (user.Role.RoleName == "KeToans")
@@ -889,6 +882,7 @@ namespace SaleDoanInbound.Controllers
 
         private TourDto TourDtoReturn(Tour tour)
         {
+            TourVM.Dmchinhanhs = _unitOfWork.dmChiNhanhRepository.GetAll();
             var tourDto = new TourDto();
 
             tourDto.Id = tour.Id;

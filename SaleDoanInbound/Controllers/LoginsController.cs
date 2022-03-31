@@ -9,6 +9,7 @@ using SaleDoanInbound.Models;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using LoginModel = Data.Models_IB.LoginModel;
 
 namespace SaleDoanInbound.Controllers
 {
@@ -75,7 +76,6 @@ namespace SaleDoanInbound.Controllers
                     if (result.Password != modelPass)
                     {
                         ModelState.AddModelError("", "Mật khẩu không đúng");
-
                     }
                     if (result.Password == modelPass)
                     {
@@ -147,6 +147,7 @@ namespace SaleDoanInbound.Controllers
             };
             return View(changpassmodel);
         }
+
         [HttpPost]
         public async Task<IActionResult> changepass(changepassModel model, string strUrl)
         {
@@ -195,7 +196,6 @@ namespace SaleDoanInbound.Controllers
                         ModelState.AddModelError("", "Không thể đổi mật khẩu.");
                     }
                 }
-
             }
             return View();
         }
@@ -222,6 +222,5 @@ namespace SaleDoanInbound.Controllers
                 TempData["AlertType"] = "alert-danger";
             }
         }
-
     }
 }
