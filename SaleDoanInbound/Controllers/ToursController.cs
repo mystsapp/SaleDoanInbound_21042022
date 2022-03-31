@@ -78,12 +78,12 @@ namespace SaleDoanInbound.Controllers
             // from session
             var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
 
-            // cat bo phai sau % --> too long error
-            var newStrUrl = TourVM.StrUrl.Split("+%");
-            if (newStrUrl.Length > 1)
-            {
-                TourVM.StrUrl = newStrUrl[0];
-            }
+            //// cat bo phai sau % --> too long error
+            //var newStrUrl = TourVM.StrUrl.Split("+%");
+            //if (newStrUrl.Length > 1)
+            //{
+            //    TourVM.StrUrl = newStrUrl[0];
+            //}
 
             ViewBag.searchString = searchString;
             ViewBag.searchFromDate = searchFromDate; // ngay bat dau
@@ -205,8 +205,11 @@ namespace SaleDoanInbound.Controllers
                 TourVM.Tour.TenKH = "DU LICH NOI DIA";
             }
             TourVM.StrUrl = strUrl;
-            TourVM.Ngoaites = _unitOfWork.ngoaiTeRepository.GetAll();
+            TourVM.Tourkinds = _unitOfWork.tourKindRepository.GetAll();
+            TourVM.Dmchinhanhs = _unitOfWork.dmChiNhanhRepository.GetAll();
+            TourVM.Ngoaites = _unitOfWork.ngoaiTeRepository.GetAll().OrderByDescending(x => x.MaNt);
             TourVM.Tour.SoHopDong = "";
+            TourVM.Tour.TyGia = 1;
             ViewBag.chiNhanhTaoId = _unitOfWork.dmChiNhanhRepository.Find(x => x.Macn == user.MaCN).FirstOrDefault().Id;
 
             //ViewBag.tuyenTQ = "BAL,BAN"; //"[BAL,BAN]"; // for test

@@ -15,6 +15,7 @@ namespace Data.Dtos
 
         [DisplayName("Tour")]
         public long TourId { get; set; }// relation --> foreignkey to tourIB
+
         public string Sgtcode { get; set; }
 
         [DisplayName("Ngày BN")]
@@ -60,7 +61,7 @@ namespace Data.Dtos
 
         [DisplayName("Số tiền")]
         public decimal SoTien { get; set; }
-        
+
         [DisplayName("ST nguyên tệ")]
         public decimal STNguyenTe { get; set; }
 
@@ -78,5 +79,8 @@ namespace Data.Dtos
         public string LogFile { get; set; }
 
         public string TrangThai { get; set; }
+
+        [MaxLength(2, ErrorMessage = "Chiều dài tối đa 2 ký tự")]
+        public string HTTT { get; set; }
     }
 }

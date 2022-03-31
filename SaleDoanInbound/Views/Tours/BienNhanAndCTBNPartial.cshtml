@@ -26,10 +26,9 @@
     <!-- /.modal-dialog -->
 </div>
 <!-- print BN modal-->
-
+@*
 <section class="content">
 
-    <!-- Default box -->
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">Danh sách biên nhận - <b>@Model.Tour.Sgtcode</b></h3>
@@ -44,8 +43,11 @@
             </div>
         </div>
         <div class="card-body">
+*@
 
-            <div style="overflow-x:auto; overflow-y: auto;">
+<div class="pl-2 "><h3>Danh sách biên nhận - <strong>@Model.Tour.Sgtcode</strong></h3></div>
+
+<div style="overflow-x:auto; overflow-y: auto;">
                 <table class="table mytable text-nowrap tblEMD" id="biennhansTbl">
                     <thead>
                         <tr class="table-info">
@@ -62,6 +64,7 @@
                             <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().GhiChu)</th>
                             <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().LoaiTien)</th>
                             <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().TyGia)</th>
+                            <th>@Html.DisplayNameFor(m => m.BienNhans.FirstOrDefault().HTTT)</th>
 
                         </tr>
                     </thead>
@@ -121,7 +124,7 @@
                                 <td class="tdBNVal" data-id="@item.Id">@Html.DisplayFor(m => item.GhiChu)</td>
                                 <td class="tdBNVal" data-id="@item.Id">@Html.DisplayFor(m => item.LoaiTien)</td>
                                 <td class="tdBNVal" data-id="@item.Id">@Html.Raw(string.Format("{0:#,##0.00}", item.TyGia))</td>
-                                @*@Html.Raw(string.Format("{0:#,##0.00}", item.sotiennt))*@
+                                <td class="tdBNVal" data-id="@item.Id">@Html.DisplayFor(m => item.HTTT)</td>
                             </tr>
 
                         }
@@ -130,14 +133,13 @@
                 </table>
 
             </div>
-
+@*
         </div>
-        <!-- /.card-body -->
+        
 
     </div>
-    <!-- /.card -->
-
-</section>
+    
+</section>*@
 <!-- CTBN -->
 <div id="CTBienNhanInBienNhanPartial">
 

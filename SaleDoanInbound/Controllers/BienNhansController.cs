@@ -36,6 +36,7 @@ namespace SaleDoanInbound.Controllers
                 ChiTietBNPrint = new ListViewModel()
             };
         }
+
         public async Task<IActionResult> Index(long id = 0, string searchString = null, string searchFromDate = null, string searchToDate = null, int page = 1)
         {
             // from login session
@@ -43,23 +44,10 @@ namespace SaleDoanInbound.Controllers
 
             BienNhanVM.StrUrl = UriHelper.GetDisplayUrl(Request);
             //BienNhanVM.BienNhan = _unitOfWork.bienNhanRepository.GetById(id);
-            
+
             ViewBag.searchString = searchString;
             ViewBag.searchFromDate = searchFromDate;
             ViewBag.searchToDate = searchToDate;
-
-            // for delete
-            //if (id != 0)
-            //{
-            //    var nganhNghe = _unitOfWork.dMNganhNgheRepository.GetById(id);
-            //    if (nganhNghe == null)
-            //    {
-            //        var lastId = _unitOfWork.dMNganhNgheRepository
-            //                                  .GetAll().OrderByDescending(x => x.Id)
-            //                                  .FirstOrDefault().Id;
-            //        id = lastId;
-            //    }
-            //}
 
             // phan quyen
             List<string> listRoleChiNhanh = new List<string>();
@@ -93,19 +81,14 @@ namespace SaleDoanInbound.Controllers
                             phongBansQL = user.PhongBans.Split(',').ToList();
                             users = users.Where(item1 => phongBansQL.Any(item2 => item1.PhongBanId == item2)).ToList();
                         }
-
                     }
-
                 }
 
                 BienNhanVM.BienNhanPagedList = await _bienNhanService.BienNhanPagedList(searchString, searchFromDate, searchToDate, page, users);
-
             }
             else // user logon == admin
             {
-
                 BienNhanVM.BienNhanPagedList = await _bienNhanService.BienNhanPagedList(searchString, searchFromDate, searchToDate, page, null);
-
             }
 
             // phan quyen
@@ -119,9 +102,9 @@ namespace SaleDoanInbound.Controllers
             }
             return View(BienNhanVM);
         }
+
         //public async Task<IActionResult> CTBNPartial(long bienNhanId)
         //{
-
         //        BienNhanVM.BienNhan = _unitOfWork.bienNhanRepository.GetById(bienNhanId);
         //        BienNhanVM.ChiTietBNs = await _unitOfWork.chiTietBNRepository.FindAsync(x => x.BienNhanId == bienNhanId);
 
@@ -145,22 +128,22 @@ namespace SaleDoanInbound.Controllers
         //    return PartialView(BienNhanVM);
         //}
 
-        public IActionResult Create(long tourId/*, string tabActive*/, string strUrl)
-        {
-            BienNhanVM.StrUrl = strUrl;// + "&tabActive=" + tabActive; // for redirect tab
-            BienNhanVM.Tour = _unitOfWork.tourRepository.GetById(tourId);
-            BienNhanVM.BienNhan.TourId = tourId;
-            BienNhanVM.BienNhan.SK = (BienNhanVM.Tour.SoKhachTT == 0) ? BienNhanVM.Tour.SoKhachDK : BienNhanVM.Tour.SoKhachTT;
-            BienNhanVM.BienNhan.LoaiTien = BienNhanVM.Tour.LoaiTien;
-            BienNhanVM.BienNhan.TyGia = BienNhanVM.Tour.TyGia.Value;
-            BienNhanVM.BienNhan.MaKH = BienNhanVM.Tour.MaKH;
-            BienNhanVM.BienNhan.TenKhach = BienNhanVM.Tour.TenKH;
-            BienNhanVM.BienNhan.DienThoai = BienNhanVM.Tour.DienThoai;
-            BienNhanVM.BienNhan.DiaChi = BienNhanVM.Tour.DiaChi;
-            return View(BienNhanVM);
-        }
+        //public IActionResult Create(long tourId/*, string tabActive*/, string strUrl)
+        //{
+        //    BienNhanVM.StrUrl = strUrl;// + "&tabActive=" + tabActive; // for redirect tab
+        //    BienNhanVM.Tour = _unitOfWork.tourRepository.GetById(tourId);
+        //    BienNhanVM.BienNhan.TourId = tourId;
+        //    BienNhanVM.BienNhan.SK = (BienNhanVM.Tour.SoKhachTT == 0) ? BienNhanVM.Tour.SoKhachDK : BienNhanVM.Tour.SoKhachTT;
+        //    BienNhanVM.BienNhan.LoaiTien = BienNhanVM.Tour.LoaiTien;
+        //    BienNhanVM.BienNhan.TyGia = BienNhanVM.Tour.TyGia.Value;
+        //    BienNhanVM.BienNhan.MaKH = BienNhanVM.Tour.MaKH;
+        //    BienNhanVM.BienNhan.TenKhach = BienNhanVM.Tour.TenKH;
+        //    BienNhanVM.BienNhan.DienThoai = BienNhanVM.Tour.DienThoai;
+        //    BienNhanVM.BienNhan.DiaChi = BienNhanVM.Tour.DiaChi;
+        //    return View(BienNhanVM);
+        //}
 
-        public IActionResult CreateBienNhanPartial(long tourId)
+        public async Task<IActionResult> CreateBienNhanPartial(long tourId)
         {
             BienNhanVM.Tour = _unitOfWork.tourRepository.GetById(tourId);
             BienNhanVM.BienNhan.TourId = tourId;
@@ -171,72 +154,72 @@ namespace SaleDoanInbound.Controllers
             BienNhanVM.BienNhan.TenKhach = BienNhanVM.Tour.TenKH;
             BienNhanVM.BienNhan.DienThoai = BienNhanVM.Tour.DienThoai;
             BienNhanVM.BienNhan.DiaChi = BienNhanVM.Tour.DiaChi;
+
+            BienNhanVM.Httts = await _bienNhanService.GetAllHTTT();
             return PartialView(BienNhanVM);
         }
 
-        [HttpPost, ActionName("Create")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreatePost()
-        {
-            // from login session
-            var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
+        //[HttpPost, ActionName("Create")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> CreatePost()
+        //{
+        //    // from login session
+        //    var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
 
-            //000099IB2020
-            if (!ModelState.IsValid)
-            {
-                return View(BienNhanVM);
-            }
+        //    //000099IB2020
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return View(BienNhanVM);
+        //    }
 
-            BienNhanVM.BienNhan.NgayBN = DateTime.Now;
-            BienNhanVM.BienNhan.NgayTao = DateTime.Now;
-            BienNhanVM.BienNhan.NguoiTao = user.Username;
-            BienNhanVM.BienNhan.DienThoai = BienNhanVM.BienNhan.DienThoai ?? "";
-            BienNhanVM.BienNhan.SoBN = "";
+        //    BienNhanVM.BienNhan.NgayBN = DateTime.Now;
+        //    BienNhanVM.BienNhan.NgayTao = DateTime.Now;
+        //    BienNhanVM.BienNhan.NguoiTao = user.Username;
+        //    BienNhanVM.BienNhan.DienThoai = BienNhanVM.BienNhan.DienThoai ?? "";
+        //    BienNhanVM.BienNhan.SoBN = "";
 
-            // next SoBN (so bien nhan)
-            var currentYear = DateTime.Now.Year;
-            var subfix = "IB" + currentYear.ToString();
-            var bienNhan = _unitOfWork.bienNhanRepository.GetAll().OrderByDescending(x => x.Id).FirstOrDefault();
-            if (bienNhan == null)
-            {
-                BienNhanVM.BienNhan.SoBN = GetNextId.NextID("", "") + subfix;
-            }
-            else
-            {
-                var oldYear = bienNhan.SoBN.Substring(8, 4);
-                // cung nam
-                if (oldYear == currentYear.ToString())
-                {
-                    var oldSoBN = bienNhan.SoBN.Substring(0, 6);
-                    BienNhanVM.BienNhan.SoBN = GetNextId.NextID(oldSoBN, "") + subfix;
-                }
-                else
-                {
-                    // sang nam khac' chay lai tu dau
-                    BienNhanVM.BienNhan.SoBN = GetNextId.NextID("", "") + subfix;
-                }
+        //    // next SoBN (so bien nhan)
+        //    var currentYear = DateTime.Now.Year;
+        //    var subfix = "IB" + currentYear.ToString();
+        //    var bienNhan = _unitOfWork.bienNhanRepository.GetAll().OrderByDescending(x => x.Id).FirstOrDefault();
+        //    if (bienNhan == null)
+        //    {
+        //        BienNhanVM.BienNhan.SoBN = GetNextId.NextID("", "") + subfix;
+        //    }
+        //    else
+        //    {
+        //        var oldYear = bienNhan.SoBN.Substring(8, 4);
+        //        // cung nam
+        //        if (oldYear == currentYear.ToString())
+        //        {
+        //            var oldSoBN = bienNhan.SoBN.Substring(0, 6);
+        //            BienNhanVM.BienNhan.SoBN = GetNextId.NextID(oldSoBN, "") + subfix;
+        //        }
+        //        else
+        //        {
+        //            // sang nam khac' chay lai tu dau
+        //            BienNhanVM.BienNhan.SoBN = GetNextId.NextID("", "") + subfix;
+        //        }
+        //    }
 
-            }
+        //    // next id (so bien nhan)
 
-            // next id (so bien nhan)
-
-            // ghi log
-            BienNhanVM.BienNhan.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
-            try
-            {
-                _unitOfWork.bienNhanRepository.Create(BienNhanVM.BienNhan);
-                await _unitOfWork.Complete();
-                SetAlert("Thêm mới thành công.", "success");
-                return Redirect(BienNhanVM.StrUrl);
-            }
-            catch (Exception ex)
-            {
-                SetAlert(ex.Message, "error");
-                ModelState.AddModelError("", ex.Message);
-                return View(BienNhanVM);
-            }
-
-        }
+        //    // ghi log
+        //    BienNhanVM.BienNhan.LogFile = "-User tạo: " + user.Username + " vào lúc: " + System.DateTime.Now.ToString(); // user.Username
+        //    try
+        //    {
+        //        _unitOfWork.bienNhanRepository.Create(BienNhanVM.BienNhan);
+        //        await _unitOfWork.Complete();
+        //        SetAlert("Thêm mới thành công.", "success");
+        //        return Redirect(BienNhanVM.StrUrl);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        SetAlert(ex.Message, "error");
+        //        ModelState.AddModelError("", ex.Message);
+        //        return View(BienNhanVM);
+        //    }
+        //}
 
         [HttpPost, ActionName("CreateBienNhanPartial")]
         [ValidateAntiForgeryToken]
@@ -279,7 +262,6 @@ namespace SaleDoanInbound.Controllers
                     // sang nam khac' chay lai tu dau
                     BienNhanVM.BienNhan.SoBN = GetNextId.NextID("", "") + subfix;
                 }
-
             }
 
             // next id (so bien nhan)
@@ -310,27 +292,26 @@ namespace SaleDoanInbound.Controllers
                     message = ex.Message
                 });
             }
-
         }
 
-        public IActionResult Edit(long id, long tourId, /*string tabActive, */string strUrl)
-        {
-            BienNhanVM.StrUrl = strUrl;// + "&tabActive=" + tabActive; // for redirect tab
-            BienNhanVM.Tour = _unitOfWork.tourRepository.GetById(tourId);
-            //BienNhanVM.BienNhan.TourIBId = tourIBId;
+        //public IActionResult Edit(long id, long tourId, /*string tabActive, */string strUrl)
+        //{
+        //    BienNhanVM.StrUrl = strUrl;// + "&tabActive=" + tabActive; // for redirect tab
+        //    BienNhanVM.Tour = _unitOfWork.tourRepository.GetById(tourId);
+        //    //BienNhanVM.BienNhan.TourIBId = tourIBId;
 
-            if (id == 0)
-                return NotFound();
+        //    if (id == 0)
+        //        return NotFound();
 
-            BienNhanVM.BienNhan = _unitOfWork.bienNhanRepository.GetById(id);
+        //    BienNhanVM.BienNhan = _unitOfWork.bienNhanRepository.GetById(id);
 
-            if (BienNhanVM.BienNhan == null)
-                return NotFound();
+        //    if (BienNhanVM.BienNhan == null)
+        //        return NotFound();
 
-            return View(BienNhanVM);
-        }
-        
-        public IActionResult EditBienNhanPartial(long bienNhanId, long tourId)
+        //    return View(BienNhanVM);
+        //}
+
+        public async Task<IActionResult> EditBienNhanPartial(long bienNhanId, long tourId)
         {
             BienNhanVM.Tour = _unitOfWork.tourRepository.GetById(tourId);
             //BienNhanVM.BienNhan.TourIBId = tourIBId;
@@ -343,6 +324,7 @@ namespace SaleDoanInbound.Controllers
             if (BienNhanVM.BienNhan == null)
                 return NotFound();
 
+            BienNhanVM.Httts = await _bienNhanService.GetAllHTTT();
             return PartialView(BienNhanVM);
         }
 
@@ -364,7 +346,9 @@ namespace SaleDoanInbound.Controllers
                 BienNhanVM.BienNhan.NguoiSua = user.Username;
 
                 // kiem tra thay doi : trong getbyid() va ngoai view
+
                 #region log file
+
                 //var t = _unitOfWork.tourRepository.GetById(id);
                 var t = _unitOfWork.bienNhanRepository.GetByIdAsNoTracking(x => x.Id == id);
                 if (t.NgayBN.ToShortDateString() != BienNhanVM.BienNhan.NgayBN.ToShortTimeString())
@@ -404,11 +388,12 @@ namespace SaleDoanInbound.Controllers
                 }
 
                 // loai tien, ty gia mac dinh: vnd, 1
-                #endregion
+
+                #endregion log file
+
                 // kiem tra thay doi
                 if (temp.Length > 0)
                 {
-
                     log = System.Environment.NewLine;
                     log += "=============";
                     log += System.Environment.NewLine;
@@ -419,7 +404,6 @@ namespace SaleDoanInbound.Controllers
 
                 try
                 {
-
                     _unitOfWork.bienNhanRepository.Update(BienNhanVM.BienNhan);
                     await _unitOfWork.Complete();
                     SetAlert("Cập nhật thành công", "success");
@@ -435,7 +419,7 @@ namespace SaleDoanInbound.Controllers
 
             return View(BienNhanVM);
         }
-        
+
         [HttpPost, ActionName("EditBienNhanPartial")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditBienNhanPartialPost()
@@ -451,7 +435,9 @@ namespace SaleDoanInbound.Controllers
                 BienNhanVM.BienNhan.NguoiSua = user.Username;
 
                 // kiem tra thay doi : trong getbyid() va ngoai view
+
                 #region log file
+
                 //var t = _unitOfWork.tourRepository.GetById(id);
                 var t = _unitOfWork.bienNhanRepository.GetByIdAsNoTracking(x => x.Id == BienNhanVM.BienNhan.Id);
                 //if (t.NgayBN.ToString("dd/MM/yyyy") != BienNhanVM.BienNhan.NgayBN.ToString("dd/MM/yyyy"))
@@ -491,11 +477,12 @@ namespace SaleDoanInbound.Controllers
                 }
 
                 // loai tien, ty gia mac dinh: vnd, 1
-                #endregion
+
+                #endregion log file
+
                 // kiem tra thay doi
                 if (temp.Length > 0)
                 {
-
                     log = System.Environment.NewLine;
                     log += "=============";
                     log += System.Environment.NewLine;
@@ -506,7 +493,6 @@ namespace SaleDoanInbound.Controllers
 
                 try
                 {
-
                     _unitOfWork.bienNhanRepository.Update(BienNhanVM.BienNhan);
                     await _unitOfWork.Complete();
                     //SetAlert("Cập nhật thành công", "success");
@@ -582,7 +568,6 @@ namespace SaleDoanInbound.Controllers
             }
         }
 
-
         //-----------HuyBN------------
         public async Task<IActionResult> HuyBNPartialIndex(long id, string strUrl)
         {
@@ -637,7 +622,6 @@ namespace SaleDoanInbound.Controllers
 
             if (temp.Length > 0)
             {
-
                 log = System.Environment.NewLine;
                 log += "=============";
                 log += System.Environment.NewLine;
@@ -657,9 +641,9 @@ namespace SaleDoanInbound.Controllers
                 SetAlert("Error: " + ex.Message, "error");
                 ModelState.AddModelError("", ex.Message);
                 return Redirect(BienNhanVM.StrUrl);
-
             }
         }
+
         //-----------HuyBN------------
         public async Task<IActionResult> HuyBNPartial(long id, string strUrl)
         {
@@ -714,7 +698,6 @@ namespace SaleDoanInbound.Controllers
 
             if (temp.Length > 0)
             {
-
                 log = System.Environment.NewLine;
                 log += "=============";
                 log += System.Environment.NewLine;
@@ -745,15 +728,14 @@ namespace SaleDoanInbound.Controllers
                     status = false,
                     message = ex.Message
                 });
-
             }
         }
+
         //-----------HuyBN------------
 
         //----------- Print BN partial ------------
         public async Task<IActionResult> PrintBNPartial(long id, string strUrl)
         {
-
             // from login session
             var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
 
@@ -783,13 +765,13 @@ namespace SaleDoanInbound.Controllers
                     BienNhanVM.ChiTietBNPrint.DienGiais += "<b>" + item.Descript + "</b>" + "<br>";
                 }
                 BienNhanVM.ChiTietBNPrint.SoTiens += "<b>" + item.Amount.ToString("N0") + "</b>" + "<br />";
-
             }
             // ChiTietBNPrint
 
             BienNhanVM.BienNhan.NguoiTao = user.HoTen;
             return PartialView(BienNhanVM);
         }
+
         public async Task<IActionResult> GetDetailBN(long id)
         {
             if (id == 0)
@@ -813,7 +795,6 @@ namespace SaleDoanInbound.Controllers
 
         public async Task<IActionResult> ExportPdf(long id)
         {
-
             // from login session
             var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
 
@@ -836,7 +817,6 @@ namespace SaleDoanInbound.Controllers
                     BienNhanVM.ChiTietBNPrint.DienGiais += "<b>" + item.Descript + "</b>" + "<br>";
                 }
                 BienNhanVM.ChiTietBNPrint.SoTiens += "<b>" + item.Amount.ToString("N0") + "</b>" + "<br />";
-
             }
             // ChiTietBNPrint
 
@@ -898,7 +878,6 @@ namespace SaleDoanInbound.Controllers
         [HttpPost]
         public async Task<IActionResult> ExportPdfPartial(long id)
         {
-
             // from login session
             var user = HttpContext.Session.Gets<User>("loginUser").SingleOrDefault();
 
@@ -921,7 +900,6 @@ namespace SaleDoanInbound.Controllers
                     BienNhanVM.ChiTietBNPrint.DienGiais += "<b>" + item.Descript + "</b>" + "<br>";
                 }
                 BienNhanVM.ChiTietBNPrint.SoTiens += "<b>" + item.Amount.ToString("N0") + "</b>" + "<br />";
-
             }
             // ChiTietBNPrint
 
@@ -949,12 +927,10 @@ namespace SaleDoanInbound.Controllers
                         // sang nam khac' chay lai tu dau
                         BienNhanVM.BienNhan.SoBN = GetNextId.NextID("", "") + subfix;
                     }
-
                 }
                 _unitOfWork.bienNhanRepository.Update(BienNhanVM.BienNhan);
 
                 await _unitOfWork.Complete();
-
             }
 
             //next id(so bien nhan)
@@ -979,6 +955,7 @@ namespace SaleDoanInbound.Controllers
 
             return pdf;
         }
+
         //----------- Print BN partial ------------
     }
 }

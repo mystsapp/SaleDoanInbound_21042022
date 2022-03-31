@@ -1,5 +1,6 @@
 ﻿using Data.Dtos;
 using Data.Models_IB;
+using Data.Models_QLTaiKhoan;
 using Data.Repository;
 using System;
 using System.Collections.Generic;
@@ -13,8 +14,10 @@ namespace Data.Services
     public interface IBienNhanService
     {
         Task<IPagedList<BienNhanDto>> BienNhanPagedList(string searchString, string searchFromDate, string searchToDate, int? page, List<User> users);
-        
+
+        Task<IEnumerable<Httt>> GetAllHTTT();
     }
+
     public class BienNhanService : IBienNhanService
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -35,9 +38,7 @@ namespace Data.Services
             // phan quyen
             if (users != null)// ko phai admin
             {
-
                 bienNhans = bienNhans.Where(item1 => users.Any(item2 => item1.NguoiTao == item2.Username)).ToList(); // chi lay nhung item (list) co user trong users
-
             }
             // phan quyen
 
@@ -70,7 +71,6 @@ namespace Data.Services
                     STNguyenTe = item.STNguyenTe,
                     TenKhach = item.TenKhach,
                     TyGia = item.TyGia
-
                 });
             }
 
@@ -83,12 +83,10 @@ namespace Data.Services
                                        (!string.IsNullOrEmpty(x.Sgtcode) && x.Sgtcode.ToLower().Contains(searchString.ToLower())));
             }
 
-
             // search date
             DateTime fromDate, toDate;
             if (!string.IsNullOrEmpty(searchFromDate) && !string.IsNullOrEmpty(searchToDate))
             {
-
                 try
                 {
                     fromDate = DateTime.Parse(searchFromDate);
@@ -103,15 +101,10 @@ namespace Data.Services
                 }
                 catch (Exception)
                 {
-
                     return null;
                 }
 
-
                 //list.Where(x => x.NgayTao >= fromDate && x.NgayTao < (toDate.AddDays(1))/*.ToPagedList(page, pageSize)*/;
-
-
-
             }
             else
             {
@@ -126,7 +119,6 @@ namespace Data.Services
                     {
                         return null;
                     }
-
                 }
                 if (!string.IsNullOrEmpty(searchToDate))
                 {
@@ -134,17 +126,14 @@ namespace Data.Services
                     {
                         toDate = DateTime.Parse(searchToDate);
                         list = list.Where(x => x.NgayBN < toDate.AddDays(1));
-
                     }
                     catch (Exception)
                     {
                         return null;
                     }
-
                 }
             }
             // search date
-
 
             // page the list
             const int pageSize = 10;
@@ -162,9 +151,12 @@ namespace Data.Services
             if (listPaged.PageNumber != 1 && page.HasValue && page > listPaged.PageCount)
                 return null;
 
-
             return listPaged;
+        }
 
+        public async Task<IEnumerable<Httt>> GetAllHTTT()
+        {
+            return await _unitOfWork.userQLTaiKhoanRepository.GetAllHTTT();
         }
     }
 }

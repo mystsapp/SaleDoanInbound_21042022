@@ -29,13 +29,22 @@
 
                         <div class="col-md-2">
                             <label asp-for="BienNhan.MaKH" class="control-label"></label>
-                            <input asp-for="BienNhan.MaKH" class="form-control " readonly />
+                            <input asp-for="BienNhan.MaKH" class="form-control form-control-sm " readonly />
                             <span asp-validation-for="BienNhan.MaKH" class="text-danger"></span>
                         </div>
+                        
+                        <div class="col-md-2">
+                            <label asp-for="BienNhan.HTTT" class="control-label"></label>
+                            <select asp-for="BienNhan.HTTT" class="form-control form-control-sm " id="ddlLoaiTien" style="outline: none;"
+                                    asp-items="@(new SelectList(Model.Httts, "Idhttt", "Diengiai"))">
+                                <!-- ngoaite: qltour-->
+                            </select>
+                            <span asp-validation-for="BienNhan.HTTT" class="text-danger"></span>
+                        </div>
 
-                        <div class="col-md-10">
+                        <div class="col-md-8">
                             <label asp-for="BienNhan.TenKhach" class="control-label"></label>
-                            <input asp-for="BienNhan.TenKhach" class="form-control " />
+                            <input asp-for="BienNhan.TenKhach" class="form-control form-control-sm " />
                             <span asp-validation-for="BienNhan.TenKhach" class="text-danger"></span>
 
                         </div>
@@ -46,19 +55,19 @@
 
                         <div class="col-md-2">
                             <label asp-for="BienNhan.DienThoai" class="control-label"></label>
-                            <input asp-for="BienNhan.DienThoai" class="form-control " />
+                            <input asp-for="BienNhan.DienThoai" class="form-control form-control-sm " />
                             <span asp-validation-for="BienNhan.DienThoai" class="text-danger"></span>
                         </div>
 
                         <div class="col-md-2">
                             <label asp-for="BienNhan.SK" class="control-label"></label>
-                            <input asp-for="BienNhan.SK" class="form-control " />
+                            <input asp-for="BienNhan.SK" class="form-control form-control-sm " />
                             <span asp-validation-for="BienNhan.SK" class="text-danger"></span>
                         </div>
 
                         <div class="col-md-8">
                             <label asp-for="BienNhan.DiaChi" class="control-label"></label>
-                            <input asp-for="BienNhan.DiaChi" class="form-control " />
+                            <input asp-for="BienNhan.DiaChi" class="form-control form-control-sm " />
                             <span asp-validation-for="BienNhan.DiaChi" class="text-danger"></span>
                         </div>
 
@@ -77,7 +86,7 @@
 
                         <div class="col-md-2">
                             <label asp-for="BienNhan.LoaiTien" class="control-label"></label>
-                            <select asp-for="BienNhan.LoaiTien" class="form-control " id="ddlLoaiTien"
+                            <select asp-for="BienNhan.LoaiTien" class="form-control form-control-sm " id="ddlLoaiTien"
                                     asp-items="@(new SelectList(Model.Ngoaites, "MaNt", "MaNt"))">
                                 <!-- ngoaite: qltour-->
                             </select>
@@ -86,19 +95,13 @@
 
                         <div class="col-md-2">
                             <label asp-for="BienNhan.TyGia" class="control-label"></label>
-                            <input asp-for="BienNhan.TyGia" class="form-control numbers" id="txtTyGia"/>
+                            <input asp-for="BienNhan.TyGia" class="form-control form-control-sm numbers" id="txtTyGia"/>
                             <span asp-validation-for="BienNhan.TyGia" class="text-danger"></span>
                         </div>
                         
-                        @*<div class="col-md-3">
-                            <label asp-for="BienNhan.TongTien" class="control-label"></label>
-                            <input asp-for="BienNhan.TongTien" class="form-control numbers" id="txtTongTien"/>
-                            <span asp-validation-for="BienNhan.TongTien" class="text-danger"></span>
-                        </div>*@
-
                         <div class="col-md-8">
                             <label asp-for="BienNhan.GhiChu" class="control-label"></label>
-                            <input asp-for="BienNhan.GhiChu" class="form-control" />
+                            <input asp-for="BienNhan.GhiChu" class="form-control form-control-sm " />
                             <span asp-validation-for="BienNhan.GhiChu" class="text-danger"></span>
                         </div>
 

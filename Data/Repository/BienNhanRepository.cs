@@ -1,6 +1,7 @@
 ﻿using Data.Dtos;
 using Data.Interfaces;
 using Data.Models_IB;
+using Data.Models_QLTaiKhoan;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -13,8 +14,10 @@ namespace Data.Repository
     public interface IBienNhanRepository : IRepository<BienNhan>
     {
         IEnumerable<BienNhanDto> ListBienNhan(string searchString, long tourId, string searchFromDate, string searchToDate);
+
         Task<BienNhan> GetByIdIncludeOneAsync(long id);
     }
+
     public class BienNhanRepository : Repository<BienNhan>, IBienNhanRepository
     {
         public BienNhanRepository(SaleDoanIBDbContext context) : base(context)
@@ -28,10 +31,9 @@ namespace Data.Repository
 
         public IEnumerable<BienNhanDto> ListBienNhan(string searchString, long tourId, string searchFromDate, string searchToDate)
         {
-
             var bienNhans = Find(x => x.TourId == tourId);
             List<BienNhanDto> list = new List<BienNhanDto>();
-            foreach(var item in bienNhans)
+            foreach (var item in bienNhans)
             {
                 list.Add(new BienNhanDto()
                 {
@@ -58,8 +60,8 @@ namespace Data.Repository
                     SoTien = item.SoTien,
                     STNguyenTe = item.STNguyenTe,
                     TenKhach = item.TenKhach,
-                    TyGia = item.TyGia
-
+                    TyGia = item.TyGia,
+                    HTTT = item.HTTT
                 });
             }
             if (!string.IsNullOrEmpty(searchString))
@@ -76,7 +78,6 @@ namespace Data.Repository
             DateTime fromDate, toDate;
             if (!string.IsNullOrEmpty(searchFromDate) && !string.IsNullOrEmpty(searchToDate))
             {
-
                 try
                 {
                     fromDate = DateTime.Parse(searchFromDate);
@@ -91,15 +92,10 @@ namespace Data.Repository
                 }
                 catch (Exception)
                 {
-
                     return null;
                 }
 
-
                 //list.Where(x => x.NgayTao >= fromDate && x.NgayTao < (toDate.AddDays(1))/*.ToPagedList(page, pageSize)*/;
-
-
-
             }
             else
             {
@@ -114,7 +110,6 @@ namespace Data.Repository
                     {
                         return null;
                     }
-
                 }
                 if (!string.IsNullOrEmpty(searchToDate))
                 {
@@ -122,19 +117,16 @@ namespace Data.Repository
                     {
                         toDate = DateTime.Parse(searchToDate);
                         list = list.Where(x => x.NgayBN < toDate.AddDays(1)).ToList();
-
                     }
                     catch (Exception)
                     {
                         return null;
                     }
-
                 }
             }
             // search date
 
             return list.OrderByDescending(x => x.NgayTao);
-
         }
     }
 }

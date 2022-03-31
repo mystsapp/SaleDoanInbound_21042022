@@ -1,6 +1,7 @@
 ﻿using Data.Dtos;
 using Data.Models_IB;
 using Data.Models_QLT;
+using Data.Models_QLTaiKhoan;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,12 +18,12 @@ namespace SaleDoanInbound.Models
         public IEnumerable<CacNoiDungHuyTour> CacNoiDungHuyTours { get; set; }
         public BienNhan BienNhan { get; set; }
         public IEnumerable<Ngoaite> Ngoaites { get; set; } // qltour
+        public IEnumerable<Httt> Httts { get; set; } // qltaikhoan
         public Tour Tour { get; set; }
         public TourIB TourIB { get; set; }
         public string StrUrl { get; set; }
         public string SoTienBangChu { get; set; }
 
         public ListViewModel ChiTietBNPrint { get; set; }
-
     }
 }

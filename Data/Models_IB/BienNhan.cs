@@ -8,6 +8,7 @@ namespace Data.Models_IB
     public class BienNhan
     {
         public long Id { get; set; }
+
         [DisplayName("Số biên nhận")]
         [MaxLength(12, ErrorMessage = "Chiều dài tối đa 12 ký tự"), Column(TypeName = "varchar(12)")]
         public string SoBN { get; set; } // biennhan in Mr.Son db
@@ -22,7 +23,6 @@ namespace Data.Models_IB
         [DisplayName("Ngày BN")]
         [Required(ErrorMessage = "Ngày không được để trống")]
         public DateTime NgayBN { get; set; }
-
 
         [DisplayName("Mã KH")]
         [MaxLength(5), Column(TypeName = "varchar(5)")]
@@ -48,7 +48,7 @@ namespace Data.Models_IB
         [Column(TypeName = "decimal(18,2)")]
         [Required(ErrorMessage = "Tỷ giá không được để trống")]
         public decimal TyGia { get; set; }
-        
+
         //[DisplayName("Tổng tiền")]
         //[Column(TypeName = "decimal(18,2)")]
         //[Required(ErrorMessage = "Tỷ giá không được để trống")]
@@ -81,7 +81,7 @@ namespace Data.Models_IB
         [DisplayName("Số tiền")]
         [Column(TypeName = "decimal(18,2)")]
         public decimal SoTien { get; set; }
-        
+
         [DisplayName("ST nguyên tệ")]
         [Column(TypeName = "decimal(18,2)")]
         public decimal STNguyenTe { get; set; }
@@ -102,5 +102,7 @@ namespace Data.Models_IB
         [Column(TypeName = "nvarchar(MAX)")]
         public string LogFile { get; set; }
 
+        [MaxLength(2, ErrorMessage = "Chiều dài tối đa 2 ký tự"), Column(TypeName = "varchar(2)")]
+        public string HTTT { get; set; }
     }
 }

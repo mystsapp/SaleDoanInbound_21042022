@@ -288,7 +288,7 @@
 
                     <!-- tab_cttour -->
                     <div class="tab-pane fade active show" id="tab_cttour" role="tabpanel" aria-labelledby="custom-tabs-four-home-tab">
-
+@*
                         <section class="content">
 
                             <!-- Default box -->
@@ -308,7 +308,12 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
-
+*@
+<div class="pl-2 ">
+    <h3>Sgtcode - <strong>@Model.Tour.Sgtcode</strong>
+        <a asp-action="ExportWord" asp-route-sgtcode="@Model.Tour.Sgtcode" id="btExportToWord" class="btn btn-outline-primary"><i class="fas fa-file-word"></i> In chương trình tour</a>
+    </h3>
+    </div>
                                     <div style="overflow-x:auto;">
                                         <table class="table mytable text-nowrap tblEMD" id="listAll">
                                             <thead>
@@ -357,11 +362,11 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                </div>
-                                <!-- /.card-body -->
+                            @*    </div>
+                            
                             </div>
-                            <!-- /.card -->
-                        </section>
+                            
+                        </section>*@
                     </div>
                     <!-- tab_cttour -->
                     <!-- Tournote -->
