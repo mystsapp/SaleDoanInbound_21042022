@@ -8,28 +8,28 @@ using System.Linq;
 using System.Text;
 using X.PagedList;
 
-
 namespace Data.Repository
 {
     public interface ITourRepository : IRepository<Tour>
     {
-        IPagedList<TourDto> ListTour(string searchString, IEnumerable<Company> companies, IEnumerable<Tourkind> loaiTours, IEnumerable<Dmchinhanh> chiNhanhs, IEnumerable<CacNoiDungHuyTour> cacNoiDungHuyTours, int? page, string searchFromDate, string searchToDate, List<string> listRoleChiNhanh, List<string> userInPhongBanQL);
+        IPagedList<TourDto> ListTour(string searchString, /*IEnumerable<Company> companies,*/ IEnumerable<Tourkind> loaiTours, IEnumerable<Dmchinhanh> chiNhanhs, IEnumerable<CacNoiDungHuyTour> cacNoiDungHuyTours, int? page, string searchFromDate, string searchToDate, List<string> listRoleChiNhanh, List<string> userInPhongBanQL);
     }
+
     public class TourRepository : Repository<Tour>, ITourRepository
     {
         public TourRepository(SaleDoanIBDbContext context) : base(context)
         {
         }
 
-        public IPagedList<TourDto> ListTour(string searchString, 
-                                            IEnumerable<Company> companies, 
-                                            IEnumerable<Tourkind> loaiTours, 
-                                            IEnumerable<Dmchinhanh> chiNhanhs, 
-                                            IEnumerable<CacNoiDungHuyTour> cacNoiDungHuyTours, 
-                                            int? page, 
+        public IPagedList<TourDto> ListTour(string searchString,
+                                            //IEnumerable<Company> companies,
+                                            IEnumerable<Tourkind> loaiTours,
+                                            IEnumerable<Dmchinhanh> chiNhanhs,
+                                            IEnumerable<CacNoiDungHuyTour> cacNoiDungHuyTours,
+                                            int? page,
                                             string searchFromDate, // ngay bat dau
                                             string searchToDate, // ngay ket thuc
-                                            List<string> listRoleChiNhanh, 
+                                            List<string> listRoleChiNhanh,
                                             List<string> userInPhongBanQL)
         {
             // return a 404 if user browses to before the first page
@@ -67,7 +67,7 @@ namespace Data.Repository
                 tourDto.TuyenTQ = item.TuyenTQ;
                 tourDto.SoKhachDK = item.SoKhachDK;
                 tourDto.DoanhThuDK = item.DoanhThuDK;
-                tourDto.CompanyName = companies.Where(x => x.CompanyId == item.MaKH).FirstOrDefault().Name;
+                //tourDto.CompanyName = companies.Where(x => x.CompanyId == item.MaKH).FirstOrDefault().Name;
                 if (item.NgayDamPhan.HasValue)
                 {
                     tourDto.NgayDamPhan = item.NgayDamPhan.Value;
@@ -149,7 +149,6 @@ namespace Data.Repository
             DateTime fromDate, toDate;
             if (!string.IsNullOrEmpty(searchFromDate) && !string.IsNullOrEmpty(searchToDate))
             {
-
                 try
                 {
                     fromDate = DateTime.Parse(searchFromDate); // ngay bat dau
@@ -166,10 +165,8 @@ namespace Data.Repository
                 }
                 catch (Exception)
                 {
-
                     return null;
                 }
-
             }
             else
             {
@@ -184,7 +181,6 @@ namespace Data.Repository
                     {
                         return null;
                     }
-
                 }
                 if (!string.IsNullOrEmpty(searchToDate)) // ngay ket thuc
                 {
@@ -192,13 +188,11 @@ namespace Data.Repository
                     {
                         toDate = DateTime.Parse(searchToDate);
                         list = list.Where(x => x.NgayDi < toDate.AddDays(1)).ToList();
-
                     }
                     catch (Exception)
                     {
                         return null;
                     }
-
                 }
             }
             // search date
@@ -226,9 +220,7 @@ namespace Data.Repository
             if (listPaged.PageNumber != 1 && page.HasValue && page > listPaged.PageCount)
                 return null;
 
-
             return listPaged;
-
         }
     }
 }

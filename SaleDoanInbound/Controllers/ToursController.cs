@@ -89,7 +89,7 @@ namespace SaleDoanInbound.Controllers
             ViewBag.searchFromDate = searchFromDate; // ngay bat dau
             ViewBag.searchToDate = searchToDate; // ngay ket thuc
 
-            var companies = _unitOfWork.khachHangRepository.GetAll();
+            //var companies = _unitOfWork.khachHangRepository.GetAll();
             var loaiTours = _unitOfWork.tourKindRepository.GetAll();
             var chiNhanhs = _unitOfWork.dmChiNhanhRepository.GetAll();
             var cacNoiDungHuyTours = _unitOfWork.cacNoiDungHuyTourRepository.GetAll();
@@ -131,7 +131,7 @@ namespace SaleDoanInbound.Controllers
             }
 
             TourVM.TourDtos = _unitOfWork.tourRepository.ListTour(searchString,
-                                                                  companies,
+                                                                  //companies,
                                                                   loaiTours,
                                                                   chiNhanhs,
                                                                   cacNoiDungHuyTours,
@@ -499,6 +499,7 @@ namespace SaleDoanInbound.Controllers
                 return View("~/Views/Shared/NotFound.cshtml");
             }
 
+            TourVM.Tourkinds = _unitOfWork.tourKindRepository.GetAll();
             TourVM.Tour = await _unitOfWork.tourRepository.GetByLongIdAsync(id);
             //TourVM.InvoicesInTour = await _unitOfWork.invoiceRepository.FindAsync(x => x.TourId == id);
             ViewBag.maCn = _unitOfWork.dmChiNhanhRepository.GetById(TourVM.Tour.ChiNhanhDHId).Macn; // for view
