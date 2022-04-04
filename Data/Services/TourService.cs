@@ -10,8 +10,10 @@ namespace Data.Services
     public interface ITourService
     {
         string newSgtcode(System.DateTime batdau, string chinhanh, string macode);
+
         string newSgtcodeKDOB(DateTime dateTime, string maCN, string telcode);
     }
+
     public class TourService : ITourService
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -21,34 +23,33 @@ namespace Data.Services
             _unitOfWork = unitOfWork;
         }
 
-
-        GenerateId generateId = new GenerateId();
+        private GenerateId generateId = new GenerateId();
 
         public string newSgtcodeKDOB(DateTime batdau, string chinhanh, string macode)
         {
-
             var newCode = generateId.NextId(lastCode(batdau, chinhanh, macode), chinhanh + macode + "-" + batdau.Year.ToString() + "-", "00001");
             return newCode;
         }
+
         public string newSgtcode(DateTime batdau, string chinhanh, string macode)
         {
-
             switch (chinhanh)
             {
                 case "STS":
                     chinhanh = "SGT";
                     break;
+
                 default:
                     break;
             }
             var newCode = generateId.NextId(lastCode(batdau, chinhanh, macode), chinhanh + macode + "-" + batdau.Year.ToString() + "-", "00001");
             return newCode;
         }
+
         public string lastCode(DateTime batdau, string chinhanh, string macode)
         {
             try
             {
-                
                 if (macode == "000")
                 {
                     var tourwi = _unitOfWork.tourWIRepository.Find(x => x.Sgtcode.Substring(0, 12) == chinhanh + macode + "-" + batdau.Year.ToString() + "-").OrderByDescending(x => x.Sgtcode).FirstOrDefault();
@@ -75,13 +76,11 @@ namespace Data.Services
                         return "";
                     }
                 }
-
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return "";
             }
         }
-
     }
 }
