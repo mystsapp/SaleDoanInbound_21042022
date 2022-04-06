@@ -42,5 +42,6 @@ namespace Data.Models_QLT
         public string Nguoihuydv { get; set; }
         public string Lydohuydv { get; set; }
         public decimal Deposit { get; set; }
+        public DateTime? Locktour { get; set; }
     }
 }

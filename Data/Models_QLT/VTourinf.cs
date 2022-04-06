@@ -10,8 +10,8 @@ namespace Data.Models_QLT
         public string CompanyId { get; set; }
         public DateTime Arr { get; set; }
         public DateTime Dep { get; set; }
-        public int? Pax { get; set; }
-        public int? Childern { get; set; }
+        public int Pax { get; set; }
+        public int Childern { get; set; }
         public string Concernto { get; set; }
         public string Operators { get; set; }
         public string Departoperator { get; set; }
@@ -21,9 +21,9 @@ namespace Data.Models_QLT
         public DateTime? Cancel { get; set; }
         public string Cancelnote { get; set; }
         public string PasstypeId { get; set; }
-        public decimal? Revenue { get; set; }
+        public decimal Revenue { get; set; }
         public string Currency { get; set; }
-        public decimal? Rate { get; set; }
+        public decimal Rate { get; set; }
         public DateTime? Createtour { get; set; }
         public DateTime? Locktour { get; set; }
         public string Userlock { get; set; }

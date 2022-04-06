@@ -38,6 +38,7 @@ namespace Data.Models_QLT
         public virtual DbSet<Khachtour> Khachtour { get; set; }
         public virtual DbSet<Loaikhach> Loaikhach { get; set; }
         public virtual DbSet<Loaivisa> Loaivisa { get; set; }
+        public virtual DbSet<Locktourchinhanh> Locktourchinhanh { get; set; }
         public virtual DbSet<LoginModel> LoginModel { get; set; }
         public virtual DbSet<Ngoaite> Ngoaite { get; set; }
         public virtual DbSet<Passenger> Passenger { get; set; }
@@ -66,19 +67,22 @@ namespace Data.Models_QLT
         public virtual DbSet<VChiphiHaucan> VChiphiHaucan { get; set; }
         public virtual DbSet<VDmdiemtq> VDmdiemtq { get; set; }
         public virtual DbSet<VDmdiemtqob> VDmdiemtqob { get; set; }
+        public virtual DbSet<VListChiphitour> VListChiphitour { get; set; }
         public virtual DbSet<VSupplier> VSupplier { get; set; }
         public virtual DbSet<VSuppliertp> VSuppliertp { get; set; }
+        public virtual DbSet<VTinh> VTinh { get; set; }
         public virtual DbSet<VTourinf> VTourinf { get; set; }
         public virtual DbSet<VTrahaucan> VTrahaucan { get; set; }
         public virtual DbSet<UserInfo> UserInfo { get; set; }
+        public virtual DbSet<SgtcodeString> SgtcodeString { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=.;database=qltour;Trusted_Connection=true;User Id=sa;Password=123456;Integrated security=false;MultipleActiveResultSets=true");
-            }
+            //            if (!optionsBuilder.IsConfigured)
+            //            {
+            //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+            //                optionsBuilder.UseSqlServer("Server=118.68.170.128;database=qltour;Trusted_Connection=true;User Id=vanhong;Password=Hong@2019;Integrated security=false;MultipleActiveResultSets=true");
+            //            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -146,6 +150,10 @@ namespace Data.Models_QLT
                 entity.Property(e => e.Guidedays).HasColumnName("guidedays");
 
                 entity.Property(e => e.Km).HasColumnName("km");
+
+                entity.Property(e => e.Locktour)
+                    .HasColumnName("locktour")
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.Logfile).HasColumnName("logfile");
 
@@ -374,6 +382,10 @@ namespace Data.Models_QLT
 
                 entity.Property(e => e.Loaixe).HasMaxLength(50);
 
+                entity.Property(e => e.Locktour)
+                    .HasColumnName("locktour")
+                    .HasColumnType("datetime");
+
                 entity.Property(e => e.Lotrinh).HasMaxLength(50);
 
                 entity.Property(e => e.Ngaydon).HasColumnType("date");
@@ -552,6 +564,10 @@ namespace Data.Models_QLT
                 entity.Property(e => e.Donvitinh).HasMaxLength(10);
 
                 entity.Property(e => e.Ghichu).HasMaxLength(50);
+
+                entity.Property(e => e.Locktour)
+                    .HasColumnName("locktour")
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.Mahh).HasMaxLength(15);
 
@@ -917,6 +933,10 @@ namespace Data.Models_QLT
                     .HasMaxLength(3)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Locktour)
+                    .HasColumnName("locktour")
+                    .HasColumnType("datetime");
+
                 entity.Property(e => e.Ndcongviec).HasMaxLength(100);
 
                 entity.Property(e => e.Ngaysinh)
@@ -1054,6 +1074,33 @@ namespace Data.Models_QLT
 
                 entity.Property(e => e.Visa)
                     .HasColumnName("visa")
+                    .HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<Locktourchinhanh>(entity =>
+            {
+                entity.HasKey(e => new { e.Sgtcode, e.Chinhanh });
+
+                entity.ToTable("locktourchinhanh");
+
+                entity.Property(e => e.Sgtcode)
+                    .HasColumnName("sgtcode")
+                    .HasMaxLength(17)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Chinhanh)
+                    .HasColumnName("chinhanh")
+                    .HasMaxLength(3)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Datelock)
+                    .HasColumnName("datelock")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Logfile).HasColumnName("logfile");
+
+                entity.Property(e => e.Userlock)
+                    .HasColumnName("userlock")
                     .HasMaxLength(50);
             });
 
@@ -1634,6 +1681,10 @@ namespace Data.Models_QLT
 
                 entity.Property(e => e.Infant).HasColumnName("infant");
 
+                entity.Property(e => e.Locktour)
+                    .HasColumnName("locktour")
+                    .HasColumnType("datetime");
+
                 entity.Property(e => e.Logfile).HasColumnName("logfile");
 
                 entity.Property(e => e.Lydohuydv)
@@ -1667,7 +1718,7 @@ namespace Data.Models_QLT
 
                 entity.Property(e => e.Srvcode)
                     .HasColumnName("srvcode")
-                    .HasMaxLength(5)
+                    .HasMaxLength(16)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Srvnode)
@@ -1689,7 +1740,7 @@ namespace Data.Models_QLT
 
                 entity.Property(e => e.Supplierid)
                     .HasColumnName("supplierid")
-                    .HasMaxLength(5)
+                    .HasMaxLength(16)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Time)
@@ -1781,6 +1832,10 @@ namespace Data.Models_QLT
                 entity.Property(e => e.Foc).HasColumnName("foc");
 
                 entity.Property(e => e.Infant).HasColumnName("infant");
+
+                entity.Property(e => e.Locktour)
+                    .HasColumnName("locktour")
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.Logfile).HasColumnName("logfile");
 
@@ -2019,6 +2074,10 @@ namespace Data.Models_QLT
 
                 entity.Property(e => e.Iddexuat).HasColumnType("decimal(18, 0)");
 
+                entity.Property(e => e.Locktour)
+                    .HasColumnName("locktour")
+                    .HasColumnType("datetime");
+
                 entity.Property(e => e.Mahh).HasMaxLength(15);
 
                 entity.Property(e => e.Maphieutra).HasMaxLength(20);
@@ -2089,11 +2148,17 @@ namespace Data.Models_QLT
 
                 entity.Property(e => e.Donvitinh).HasMaxLength(10);
 
+                entity.Property(e => e.Ghichu).HasMaxLength(50);
+
                 entity.Property(e => e.Ghichutra).HasMaxLength(50);
 
                 entity.Property(e => e.Id).HasColumnType("decimal(18, 0)");
 
                 entity.Property(e => e.IdTrahc).HasColumnType("decimal(18, 0)");
+
+                entity.Property(e => e.Locktour)
+                    .HasColumnName("locktour")
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.Mahh).HasMaxLength(15);
 
@@ -2146,6 +2211,72 @@ namespace Data.Models_QLT
                 entity.Property(e => e.Manuoc)
                     .HasColumnName("manuoc")
                     .HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<VListChiphitour>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("vListChiphitour_");
+
+                entity.Property(e => e.Chinhanh)
+                    .HasColumnName("chinhanh")
+                    .HasMaxLength(3);
+
+                entity.Property(e => e.Chinhanhdh)
+                    .IsRequired()
+                    .HasColumnName("chinhanhdh")
+                    .HasMaxLength(3)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Chinhanhtao)
+                    .IsRequired()
+                    .HasColumnName("chinhanhtao")
+                    .HasMaxLength(3)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Cpusd)
+                    .HasColumnName("cpusd")
+                    .HasColumnType("decimal(38, 1)");
+
+                entity.Property(e => e.Cpvnd)
+                    .HasColumnName("cpvnd")
+                    .HasColumnType("decimal(38, 1)");
+
+                entity.Property(e => e.Debit).HasColumnName("debit");
+
+                entity.Property(e => e.Diengiai).HasColumnName("diengiai");
+
+                entity.Property(e => e.Dv)
+                    .IsRequired()
+                    .HasColumnName("DV")
+                    .HasMaxLength(2)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Ngaythang)
+                    .HasColumnName("ngaythang")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Sgtcode)
+                    .HasColumnName("sgtcode")
+                    .HasMaxLength(17);
+
+                entity.Property(e => e.Srvnode).HasColumnName("srvnode");
+
+                entity.Property(e => e.Srvtype)
+                    .HasColumnName("srvtype")
+                    .HasMaxLength(5)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Tengiaodich)
+                    .HasColumnName("tengiaodich")
+                    .HasMaxLength(201);
+
+                entity.Property(e => e.Vatin).HasColumnName("vatin");
+
+                entity.Property(e => e.Vatout).HasColumnName("vatout");
             });
 
             modelBuilder.Entity<VSupplier>(entity =>
@@ -2212,6 +2343,34 @@ namespace Data.Models_QLT
                     .IsUnicode(false);
 
                 entity.Property(e => e.Tengiaodich).HasMaxLength(172);
+            });
+
+            modelBuilder.Entity<VTinh>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("vTinh");
+
+                entity.Property(e => e.Matinh)
+                    .IsRequired()
+                    .HasMaxLength(3);
+
+                entity.Property(e => e.Mien)
+                    .HasColumnName("mien")
+                    .HasMaxLength(2)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.TenMien).HasMaxLength(50);
+
+                entity.Property(e => e.TenVung).HasMaxLength(50);
+
+                entity.Property(e => e.Tentinh).HasMaxLength(50);
+
+                entity.Property(e => e.VungId)
+                    .IsRequired()
+                    .HasColumnName("vungId")
+                    .HasMaxLength(5)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<VTourinf>(entity =>
@@ -2349,6 +2508,10 @@ namespace Data.Models_QLT
 
                 entity.Property(e => e.IdTrahc).HasColumnType("decimal(18, 0)");
 
+                entity.Property(e => e.Locktour)
+                    .HasColumnName("locktour")
+                    .HasColumnType("datetime");
+
                 entity.Property(e => e.Mahh).HasMaxLength(15);
 
                 entity.Property(e => e.Maphieudx).HasMaxLength(20);
@@ -2366,9 +2529,9 @@ namespace Data.Models_QLT
                     .HasMaxLength(50);
             });
 
-            OnModelCreatingPartial(modelBuilder);
+            //OnModelCreatingPartial(modelBuilder);
         }
 
-        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+        //partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }

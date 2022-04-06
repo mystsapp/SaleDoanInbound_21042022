@@ -21,5 +21,6 @@ namespace Data.Models_QLT
         public bool? Daxuat { get; set; }
         public string Maphieudx { get; set; }
         public string Logfile { get; set; }
+        public DateTime? Locktour { get; set; }
     }
 }

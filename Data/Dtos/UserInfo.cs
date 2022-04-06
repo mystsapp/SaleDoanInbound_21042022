@@ -9,6 +9,7 @@ namespace Data.Dtos
     {
         [Key]
         public string username { get; set; }
+
         public string hoten { get; set; }
         public string dienthoai { get; set; }
         public string email { get; set; }

@@ -17,5 +17,6 @@ namespace Data.Models_QLT
         public decimal Iddexuat { get; set; }
         public string Maphieutra { get; set; }
         public string Logfile { get; set; }
+        public DateTime? Locktour { get; set; }
     }
 }

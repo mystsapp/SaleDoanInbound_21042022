@@ -8,6 +8,7 @@ namespace Data.Models_QLT
         public int? Soluongtra { get; set; }
         public DateTime? Ngayyeucau { get; set; }
         public string Nguoiyeucau { get; set; }
+        public string Ghichu { get; set; }
         public string Ghichutra { get; set; }
         public bool? Danhap { get; set; }
         public string Maphieutra { get; set; }
@@ -22,5 +23,6 @@ namespace Data.Models_QLT
         public string Chinhanh { get; set; }
         public string Tenhh { get; set; }
         public string Donvitinh { get; set; }
+        public DateTime? Locktour { get; set; }
     }
 }

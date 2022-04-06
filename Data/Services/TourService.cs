@@ -27,7 +27,8 @@ namespace Data.Services
 
         public string newSgtcodeKDOB(DateTime batdau, string chinhanh, string macode)
         {
-            var newCode = generateId.NextId(lastCode(batdau, chinhanh, macode), chinhanh + macode + "-" + batdau.Year.ToString() + "-", "00001");
+            //var newCode = generateId.NextId(lastCode(batdau, chinhanh, macode), chinhanh + macode + "-" + batdau.Year.ToString() + "-", "00001");
+            var newCode = lastCode(batdau, chinhanh, macode);//, chinhanh + macode + "-" + batdau.Year.ToString() + "-", "00001");
             return newCode;
         }
 
@@ -42,7 +43,8 @@ namespace Data.Services
                 default:
                     break;
             }
-            var newCode = generateId.NextId(lastCode(batdau, chinhanh, macode), chinhanh + macode + "-" + batdau.Year.ToString() + "-", "00001");
+            //var newCode = generateId.NextId(lastCode(batdau, chinhanh, macode), chinhanh + macode + "-" + batdau.Year.ToString() + "-", "00001");
+            var newCode = lastCode(batdau, chinhanh, macode);
             return newCode;
         }
 
@@ -65,16 +67,18 @@ namespace Data.Services
                 }
                 else
                 {
-                    var tourinf = _unitOfWork.tourInfRepository.Find(x => x.Sgtcode.Substring(0, 12) == chinhanh + macode + "-" + batdau.Year.ToString() + "-").OrderByDescending(x => x.Sgtcode).FirstOrDefault();
-                    if (tourinf != null)
-                    {
-                        var code = tourinf.Sgtcode;
-                        return code;
-                    }
-                    else
-                    {
-                        return "";
-                    }
+                    //var tourinf = _unitOfWork.tourInfRepository.Find(x => x.Sgtcode.Substring(0, 12) == chinhanh + macode + "-" + batdau.Year.ToString() + "-").OrderByDescending(x => x.Sgtcode).FirstOrDefault();
+                    //if (tourinf != null)
+                    //{
+                    //    var code = tourinf.Sgtcode;
+                    //    return code;
+                    //}
+                    //else
+                    //{
+                    //    return "";
+                    //}
+
+                    return _unitOfWork.tourInfRepository.lastCode(batdau, chinhanh, macode);
                 }
             }
             catch (Exception ex)

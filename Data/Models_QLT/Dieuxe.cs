@@ -28,5 +28,6 @@ namespace Data.Models_QLT
         public string Logfile { get; set; }
         public bool? Del { get; set; }
         public string YeuCauXe { get; set; }
+        public DateTime? Locktour { get; set; }
     }
 }

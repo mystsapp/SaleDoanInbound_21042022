@@ -27,5 +27,6 @@ namespace Data.Models_QLT
         public string Logfile { get; set; }
         public string Chinhanh { get; set; }
         public bool? Del { get; set; }
+        public DateTime? Locktour { get; set; }
     }
 }

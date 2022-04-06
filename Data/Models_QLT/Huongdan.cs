@@ -34,5 +34,6 @@ namespace Data.Models_QLT
         public bool Vemaybay { get; set; }
         public string Phongks { get; set; }
         public string Quoctich { get; set; }
+        public DateTime? Locktour { get; set; }
     }
 }

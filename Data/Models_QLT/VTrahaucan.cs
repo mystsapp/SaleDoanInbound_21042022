@@ -22,5 +22,6 @@ namespace Data.Models_QLT
         public string Chinhanh { get; set; }
         public string Tenhh { get; set; }
         public string Donvitinh { get; set; }
+        public DateTime? Locktour { get; set; }
     }
 }
