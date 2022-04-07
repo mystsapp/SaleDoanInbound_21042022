@@ -1,4 +1,5 @@
 ﻿using System;
+using Data.Dtos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -98,14 +99,15 @@ namespace Data.Models_Tourlewi
         public virtual DbSet<View1> View1 { get; set; }
         public virtual DbSet<Yeucauxe> Yeucauxe { get; set; }
         public virtual DbSet<YeucauxeLog> YeucauxeLog { get; set; }
+        public virtual DbSet<SgtcodeString> SgtcodeStrings { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-//            if (!optionsBuilder.IsConfigured)
-//            {
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-//                optionsBuilder.UseSqlServer("Server=118.68.170.128;Database=tourlewi;Trusted_Connection=True;User Id=vanhong;Password=Hong@2019;Integrated Security=false;MultipleActiveResultSets=true;");
-//            }
+            //            if (!optionsBuilder.IsConfigured)
+            //            {
+            //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+            //                optionsBuilder.UseSqlServer("Server=118.68.170.128;Database=tourlewi;Trusted_Connection=True;User Id=vanhong;Password=Hong@2019;Integrated Security=false;MultipleActiveResultSets=true;");
+            //            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -5490,9 +5492,9 @@ namespace Data.Models_Tourlewi
                     .HasDefaultValueSql("('I')");
             });
 
-            OnModelCreatingPartial(modelBuilder);
+            //OnModelCreatingPartial(modelBuilder);
         }
 
-        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+        //private partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }

@@ -63,7 +63,9 @@ namespace Data.Repository
                       new SqlParameter("@code",newSgtcode)
                   };
                 //var tourInfs = _context.Tourinf.FromSqlRaw("newSgtcode @code", parammeter).FirstOrDefault();
-                return _context.SgtcodeString.FromSqlRaw("newSgtcode @code", parammeter).AsEnumerable().FirstOrDefault().Sgtcode;// FirstOrDefault().Sgtcode;
+                string code = _context.SgtcodeString.FromSqlRaw("newSgtcode @code", parammeter).AsEnumerable().FirstOrDefault().Sgtcode;// FirstOrDefault().Sgtcode;
+
+                return code;
 
                 //if (tourInfs.Count() != 0)
                 //{

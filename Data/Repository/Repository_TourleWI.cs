@@ -12,12 +12,13 @@ namespace Data.Repository
 {
     public class Repository_TourleWI<T> : IRepository<T> where T : class
     {
-        private readonly tourlewiContext _context;
+        protected readonly tourlewiContext _context;
 
         public Repository_TourleWI(tourlewiContext context)
         {
             _context = context;
         }
+
         //protected void Save() => _context.SaveChanges();
         public int Count(Func<T, bool> predicate)
         {
@@ -54,7 +55,6 @@ namespace Data.Repository
         public void Update(T entity)
         {
             _context.Entry(entity).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-
         }
 
         public async Task<T> GetByIdAsync(int? id)

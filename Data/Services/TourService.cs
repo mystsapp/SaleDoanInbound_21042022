@@ -54,16 +54,19 @@ namespace Data.Services
             {
                 if (macode == "000")
                 {
-                    var tourwi = _unitOfWork.tourWIRepository.Find(x => x.Sgtcode.Substring(0, 12) == chinhanh + macode + "-" + batdau.Year.ToString() + "-").OrderByDescending(x => x.Sgtcode).FirstOrDefault();
-                    if (tourwi != null)
-                    {
-                        var code = tourwi.Sgtcode;
-                        return code;
-                    }
-                    else
-                    {
-                        return "";
-                    }
+                    //var tourwi = _unitOfWork.tourWIRepository.Find(x => x.Sgtcode.Substring(0, 12) == chinhanh + macode + "-" + batdau.Year.ToString() + "-").OrderByDescending(x => x.Sgtcode).FirstOrDefault();
+                    //if (tourwi != null)
+                    //{
+                    //    var code = tourwi.Sgtcode;
+                    //    return code;
+                    //}
+                    //else
+                    //{
+                    //    return "";
+                    //}
+
+                    var tourwi = _unitOfWork.tourWIRepository.lastCode(batdau, chinhanh, macode);
+                    return tourwi;
                 }
                 else
                 {
