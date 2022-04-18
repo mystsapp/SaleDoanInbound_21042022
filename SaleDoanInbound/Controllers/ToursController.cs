@@ -278,6 +278,15 @@ namespace SaleDoanInbound.Controllers
                     NguonTours = NguonTour(),
                     StrUrl = strUrl
                 };
+                // CompaniesViewModel
+                var listCompany = new List<ListViewModel>();
+                TourVM.Companies = _unitOfWork.khachHangRepository.GetAll();
+                foreach (var item in TourVM.Companies)
+                {
+                    listCompany.Add(new ListViewModel() { CompanyId = item.CompanyId, CompanyName = item.CompanyId + " - " + item.Name });
+                }
+                TourVM.CompaniesViewModel = listCompany;
+                // CompaniesViewModel
                 ModelState.AddModelError("", "Ngày bắt đầu không được lớn hơn ngày kết thúc");
                 return View(TourVM);
             }
@@ -389,7 +398,7 @@ namespace SaleDoanInbound.Controllers
             tourinf.TourkindId = TourVM.Tour.LoaiTourId;
             tourinf.Arr = TourVM.Tour.NgayDen;
             tourinf.Dep = TourVM.Tour.NgayDi;
-            tourinf.Pax = TourVM.Tour.SoKhachTT;
+            tourinf.Pax = TourVM.Tour.SoKhachTT == 0 ? 0 : TourVM.Tour.SoKhachDK;
             tourinf.Childern = TourVM.Tour.SKTreEm;
             tourinf.Reference = TourVM.Tour.ChuDeTour;
             tourinf.Concernto = user.Username; // nguoi tao tour
